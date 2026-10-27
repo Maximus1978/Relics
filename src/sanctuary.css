@@ -1,6 +1,7 @@
 body {
   background-color: #080d10;
   background-image: url('/art/stone-grain.svg'), radial-gradient(ellipse at 50% 10%, #263139, #080d10 70%);
+  background-size: 256px 256px, auto;
 }
 main { position: relative; isolation: isolate; }
 .sanctuary-environment { position: absolute; z-index: -1; pointer-events: none; top: 0; left: 0; width: 100%; height: 700px; overflow: hidden; mask-image: linear-gradient(#000 0%, #000 58%, transparent 100%); }
@@ -31,6 +32,7 @@ main { position: relative; isolation: isolate; }
   min-height: 110px;
   padding: 12px 8px 9px;
   background: url('/art/stone-grain.svg'), radial-gradient(ellipse at 50% 50%, var(--sphere-dark), #0e1418 74%);
+  background-size: 256px 256px, auto;
   box-shadow: inset 0 -12px 20px #0009, 0 4px 12px #0006;
 }
 .sphere-gallery > li + li { border-left: 0; }
@@ -40,6 +42,7 @@ main { position: relative; isolation: isolate; }
 .gemstone-name { text-shadow: 0 1px 2px #000; }
 .habit-card {
   background-image: url('/art/stone-grain.svg'), radial-gradient(ellipse at 0 0, var(--sphere-dark), transparent 68%), linear-gradient(130deg, #1b2020, #0e1417);
+  background-size: 256px 256px, auto, auto;
   box-shadow: inset 0 0 0 5px #0003, inset 0 1px 0 #e4cb9526, inset 0 -14px 26px #0005, 0 6px 15px #0007;
 }
 .habit-card::before { width: 1px; left: 5px; top: 19px; height: 36px; background: linear-gradient(transparent, var(--sphere), transparent); opacity: .8; }
@@ -73,7 +76,7 @@ main { position: relative; isolation: isolate; }
 .date-shortcuts button { border-radius: 2px; }
 .date-shortcuts button[aria-pressed='true'] { background: linear-gradient(#6a583544, #3a3323); box-shadow: inset 0 1px 0 #ddc28c2e, 0 1px 3px #000; }
 input { border-radius: 3px; box-shadow: inset 0 2px 5px #0005; }
-.journal, .creation-form, .archive-confirmation { background: url('/art/stone-grain.svg'), linear-gradient(120deg, #19201f, #0d1417); box-shadow: inset 0 0 0 5px #0003, 0 5px 14px #0006; }
+.journal, .creation-form, .archive-confirmation { background: url('/art/stone-grain.svg'), linear-gradient(120deg, #19201f, #0d1417); background-size: 256px 256px, auto; box-shadow: inset 0 0 0 5px #0003, 0 5px 14px #0006; }
 .journal > summary { border-radius: 0; }
 .journal-icon { filter: drop-shadow(0 2px 1px #000); }
 .habit-action-options { border-radius: 2px; border-color: #a68b5b; background: linear-gradient(#252b29, #101719); box-shadow: inset 0 0 0 3px #0004, 0 8px 18px #000b; }
