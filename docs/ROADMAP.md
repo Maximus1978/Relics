@@ -10,7 +10,7 @@ Scope: review requirements, consolidate canonical English documentation under `d
 
 Done when: required files exist, local document links resolve, sources and provisional choices are explicit, one-task rules are permanent, and the handoff states actual verification limits. No application code, migrations, dependency installation, gameplay implementation, or secret-catalog access belongs to this task.
 
-Status: completed. Documentation checks passed; see HANDOFF.md. No implementation task is active.
+Status: completed. Documentation checks passed; see HANDOFF.md for the current task.
 
 ## Completed CI recovery: BUILD-WIN-001 — Windows scaffold build in CI
 
@@ -20,7 +20,11 @@ The local attempt was BLOCKED by EPERM/TLS restrictions. GitHub-hosted recovery 
 
 ## Subsequent queue
 
-HABITS-001A implementation and build delivery are complete in [PR #2](https://github.com/Maximus1978/Relics/pull/2): creation with one/multiple canonical spheres, SQLite-loaded lists, existing data/sample preservation. All 12 tests and TypeScript/Vite/native Windows builds passed in [run 40565215658](https://github.com/Maximus1978/Relics/actions/runs/40565215658), tested head 97b97edb12c9d92752010a44a7f3a413fe4bbeac. The [new Windows artifact](https://github.com/Maximus1978/Relics/actions/runs/40565215658/artifacts/12762772475) is available. Native manual acceptance of Гитара/Mind/Recovery plus backdating/offline restart remains to be confirmed. PR #2 stays open for review; no later task has begun. This does not authorize remaining HABITS-001 lifecycle work. See [task evidence and acceptance](HABITS_001A.md).
+HABITS-001A is accepted and merged in [PR #2](https://github.com/Maximus1978/Relics/pull/2) at 544d813f26f5b6a4be39d36a81bc4bb7c1feba3e. The owner verified native custom creation, multiple spheres, backdated activities and offline SQLite persistence. Historical build evidence: [run 40565215658](https://github.com/Maximus1978/Relics/actions/runs/40565215658), 12 tests and TypeScript/Vite/native Windows build passed.
+
+## Delivered for acceptance: HABITS-001B
+
+Edit name/spheres; archive with confirmation; archived management and restore; preserve all historical snapshots. Add migration 2 without changing migration 1, sample IDs, database/app identity or cancellation semantics. Enforce active-only logging atomically in the repository. Local/CI SQLite tests: 23/23 passed. [PR #3](https://github.com/Maximus1978/Relics/pull/3) and [Windows run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811) deliver successful TypeScript/Vite/browser/native builds on fd97f6596dc400aebf37f28890a73e4bcc23df36. The [new executable ZIP](https://github.com/Maximus1978/Relics/actions/runs/40577256811/artifacts/12768437065) was downloaded and verified. A later documentation-only evidence commit leaves that source unchanged. See [task evidence and acceptance](HABITS_001B.md). Do not merge automatically. Next step: owner/product review using the new executable, then await instructions. Native management/migration/offline interaction remains manual acceptance. Do not begin another queued task.
 
 | Order | Task | Acceptance focus |
 | --- | --- | --- |
@@ -29,7 +33,7 @@ HABITS-001A implementation and build delivery are complete in [PR #2](https://gi
 | 3 | ANDROID-LOG-001 | Same journal behavior, background/resume, touch/text on Android |
 | 4 | AUDIT-001 | Auditable activity edits/removal with migration and correction tests |
 | 5 | BACKUP-001 | JSON backup/restore, validation, atomicity, clean-database round trip |
-| 6 | HABITS-001 | Remaining edit/archive/restore lifecycle; creation delivered by HABITS-001A |
+| 6 | HABITS-001 | Creation accepted in HABITS-001A; edit/archive/restore isolated in HABITS-001B; further changes require authorization |
 | 7 | WEIGHTS-001 | Decide and implement configurable multisphere contribution weights |
 | 8 | SCHEDULE-001 | Daily/scheduled/flexible recurrence, rest, unknown versus confirmed inactivity |
 | 9 | PROGRESS-001 | Decide and test pure deterministic lifetime/epoch progression and recent Resonance |
@@ -42,4 +46,4 @@ Each queued item must be narrowed if it cannot fit one reviewable task. Optional
 
 ## Vertical slice acceptance boundary
 
-The existing three-habit demo defines “log, close, return”: today/past date, multiple spheres, no duplicate, journal, restart without network, cancellation. Domain/SQLite tests passed previously; native Windows/Android acceptance has not. See [acceptance scenarios](ACCEPTANCE.md). Scheduling, weights, corrections audit, derived progression, and backups are explicitly missing, not implied by the demo.
+The initial three-habit demo defines “log, close, return”: today/past date, multiple spheres, no duplicate, journal, restart without network, cancellation. The owner accepted native Windows HABITS-001A behavior; Android and the new HABITS-001B management acceptance are separate. See [acceptance scenarios](ACCEPTANCE.md). Scheduling, weights, corrections audit, derived progression, and backups are explicitly missing.

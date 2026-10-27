@@ -2,7 +2,7 @@
 
 ## Implemented TypeScript contract
 
-`src/domain/activity.ts` currently defines `SphereId`, `Habit`, and `Activity`. `Habit` has `id`, `name`, and an unweighted `spheres` array. `Activity` has `id`, `habitId`, snapshot `habitName`/`spheres`, `occurredOn`, `recordedAt`, and `timezone`. These are scaffold types, not the complete target domain.
+`src/domain/activity.ts` currently defines `SphereId`, `Habit`, and `Activity`. `Habit` has `id`, `name`, an unweighted `spheres` array and nullable `archivedAt`. `Activity` has `id`, `habitId`, snapshot `habitName`/`spheres`, `occurredOn`, `recordedAt`, and `timezone`. These are scaffold types, not the complete target domain.
 
 ## Implemented SQLite schema
 
@@ -23,12 +23,18 @@ The repository now creates habits with a UUID, trimmed nonempty name and one or 
 
 Startup inserts only missing sample IDs and never updates definitions. Tests use the same repository methods/queries with a real Node SQLite adapter, including reopen compatibility with legacy activity rows. [HABITS_001A.md](HABITS_001A.md) records behavior, coverage and the native acceptance boundary.
 
+## HABITS-001B additions
+
+Migration `002_archive_habits.sql`, version 2, adds nullable `habits.archived_at` and an archive index. Migration 1 stays byte-for-byte unchanged. Existing rows default to active; the native SQL plugin registers both migrations. Archive/restore only changes this flag; definition edits only change name/spheres. No operation rewrites activities. Startup seeding never updates existing IDs, including archived samples.
+
+Repository queries distinguish active (default), archived and all habits. Logging atomically selects the current definition only from an active database row, rather than trusting UI state or stale objects. Conflict handling keeps one completion per habit/day; archived/missing habits are rejected. Names and sphere sets are snapshotted from SQLite at insertion. Parameter order follows SQLite binding occurrence order. Activity cancellation is unchanged. See [HABITS-001B](HABITS_001B.md) for tests and native acceptance limits.
+
 ## Required model evolution, not implemented
 
 | Entity / type | Responsibility |
 | --- | --- |
 | SphereContribution | Stable sphereId and configurable weight; normalization policy still open |
-| Habit + HabitSchedule | Editable definition, archivedAt, restoration; daily/scheduled/flexible recurrence; schedule versions |
+| HabitSchedule | Daily/scheduled/flexible recurrence; schedule versions; definition editing/archive/restore delivered separately in HABITS-001B |
 | Activity + ActivityRevision / JournalEvent | Stable identity, local day, optional instant, recordedAt, timezone, historical contribution snapshot, correction/deletion audit |
 | DayObservation | Explicit unknown, confirmed inactivity, or planned rest; missing data never implies failure |
 | DiaryEntry | Optional note/reflection independent of required logging |

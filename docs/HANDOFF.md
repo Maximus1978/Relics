@@ -1,41 +1,40 @@
 # Project handoff
 
-Updated 2026-10-27. HABITS-001A: implementation, automated persistence tests and Windows build delivery verified. Native manual acceptance of the new form remains pending. No further task has started.
+Updated 2026-10-27. HABITS-001B implementation/CI delivery is complete; owner/product acceptance is pending. [PR #3](https://github.com/Maximus1978/Relics/pull/3) stays open. Do not merge automatically or start another task.
 
-## Current delivery
+## Verified baseline
 
-- [PR #2](https://github.com/Maximus1978/Relics/pull/2), feature/habits-001a, remains open for review; master is unchanged.
-- [Windows CI run 40565215658](https://github.com/Maximus1978/Relics/actions/runs/40565215658): completed / success.
-- Tested feature head: 97b97edb12c9d92752010a44a7f3a413fe4bbeac. Tested PR merge source: 7383e0815e65cc7858b338c6f04c8af0cd4eac08.
-- All 12 tests passed locally and in CI. npm ci, TypeScript, Vite, basic browser rendering, locked Cargo fetch, native Tauri release compilation and artifact upload all passed.
-- [HABITS-001A Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40565215658/artifacts/12762772475), 4,280,480 bytes; contains relics.exe, dependency locks, metadata, checksum and launch note.
-- ZIP/EXE hashes were verified after download. The new executable was not launched in this task.
-- [Task contract, checksums and manual acceptance](HABITS_001A.md).
+GitHub PR #2 is merged; preparation verified master equals 544d813f26f5b6a4be39d36a81bc4bb7c1feba3e. The owner accepted HABITS-001A native Windows creation, multiple spheres, backdating and offline persistence, including October 26–27 records. Work starts from that exact integrated baseline on feature/habits-001b.
 
-The previous BUILD-WIN executable does not contain this feature. The owner can close the old version, extract the new ZIP and run relics.exe without compilation/tool installation. Application identifier/database location are unchanged, so the existing local data stays in use. Windows x64/WebView2 and unsigned-build limitations remain.
+## Current implementation
 
-## What changed
+- Shared creation/edit form with required name and one or more canonical sphere checkboxes/line icons, Save/Cancel/Escape, validation and focus handling.
+- Small Действия disclosure per row; edit, archive with explicit preserved-history confirmation, separate Архив привычек view and restore. Archived definitions can also be edited.
+- Additive migration 2 adds nullable archived_at/index. Migration 1, IDs, database sqlite:relics.db, application identifier and journal schema stay unchanged.
+- Edits update only the definition. Archive/restore updates only status. Startup INSERT OR IGNORE never reactivates archived samples.
+- New logging atomically selects the active persisted definition, including its current snapshots; archived/missing IDs are rejected even with stale caller state. Existing activity snapshots/metadata remain untouched.
+- One completion per habit/day and existing physical activity cancellation are preserved. Audit improvements remain AUDIT-001.
 
-A visible + Добавить привычку action opens an inline form with a required name, the five canonical sphere checkboxes/line icons, Save and Cancel/Escape. Validation trims names and rejects empty names, empty selections and unknown spheres. Keyboard focus moves into the form, to invalid fields, and back to the add action. Saving is serialized with existing logging; a failed write retains form input and shows an error.
+## Verification and publication
 
-The repository now lists and creates habits. Native UI renders the actual SQLite list, not sampleHabits. UUIDs identify new habits; names remain non-unique display values. The original three sample IDs are seeded with INSERT OR IGNORE, without updates/duplicates. Browser-only preview can display the form but cannot load/save native habits or activities.
+Local npm test: 23/23 passed, including all existing tests plus rename/sphere persistence, unchanged history, archive/restore, archived logging guards, repeated sample seeding, October 26–27 compatibility, invalid edits and v1 migration/restarts/integrity.
 
-Existing schema/migration 1, database filename, native identifier, pipeline, dependency declarations/locks and native source are unchanged. Activity logging retains selected past dates, one completion per habit/day and immutable name/sphere snapshots. No editing/archive/delete of habits, weights, schedules, progression, crafting, Android or visual redesign was implemented.
+Tests use temporary real SQLite files with production repository queries. Migration tests execute the real additive SQL with a test-only version marker, not the native SQL plugin's bookkeeping. Native plugin upgrade, UI interaction, keyboard behavior and offline lifecycle acceptance remain owner/reviewer checks. No personal database was opened or used for testing.
 
-## Evidence boundary
+[Windows CI run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811): completed / success. npm ci, 23/23 tests, TypeScript, Vite, basic browser rendering, locked Cargo dependencies, actual native Tauri release compilation and artifact upload passed. The browser screenshot was inspected. The existing pipeline/dependencies remain unchanged.
 
-Nine new tests use the production repository/queries against temporary real SQLite through an injected database port, alongside three existing tests. Coverage includes one/multiple spheres, Гитара/Mind/Recovery, invalid input, habit plus backdated activity after reopening, unchanged October 26/27 legacy records, repeated startup seeding, preserved definitions/custom habits, duplicate completion protection and historical snapshots.
+Tested feature head: fd97f6596dc400aebf37f28890a73e4bcc23df36. Tested PR merge source: 2dfe87302c238bcc8b7547d373d5ab33d0c36f90. A documentation-only evidence commit follows using [skip ci]; all executable source/tests/migrations/workflow remain identical to this tested head. Do not treat compilation as native UI runtime acceptance.
 
-No personal database was opened, altered or used by tests. Native Tauri bridge/form interaction and keyboard behavior were not automated. The owner explicitly reported successful baseline Windows launch, close/offline restart and persistence of October 26/27 records before this task. That feedback applies to the integrated foundation, not yet to this new form.
+[Download the new Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40577256811/artifacts/12768437065), 4,281,632 bytes, available until 2026-11-10. The local copy is outputs/Relics-HABITS-001B-windows-x64.zip outside the repository. It contains relics.exe, dependency locks, build-info.json, executable checksum and launch note. Metadata confirmed the exact tested SHAs; ZIP/executable hashes were checked after download. ZIP SHA256: b036352eac7d6f6aee93274585cae77da7f5e9c2d004e8a2f5796f150130c776. EXE SHA256: 26b747b7564c642004f71b1201336878050a41bb4faa0a2f1274250731e7cc23. The executable was not launched here.
 
-## Git and next step
+GitHub publication used the repository integration with expected-parent checks and no force-push/history rewrite. The local workspace tracks feature/habits-001b. The reviewed file list contains only feature source/tests, migration 2 and documentation; no private content, personal databases, credentials, logs or build artifacts were committed.
 
-Work started from integrated master 688ce28a306e754eda0c9f1c8f6d7c012b0379cb, following merged BUILD-WIN PR #1. Changes were published through the GitHub integration with expected-parent checks and no force-push/history rewrite. Local workspace tracks feature/habits-001a.
+## Next step and boundaries
 
-A documentation-only evidence commit may follow the tested source using [skip ci]; executable source/tests/workflow/data behavior remain the tested head above. Consult PR/Git history for that report commit separately. No merge of PR #2 was performed.
+Next queued step: the owner/product reviewer executes [HABITS-001B acceptance](HABITS_001B.md): rename Guitar to Гитара with Разум + Восстановление, archive Чтение, inspect archive/history, restart offline, restore and log an unused past date. Close the old application, extract the new ZIP separately and run relics.exe; no local compilation/toolchain setup is required. Review before merging. Do not start WIN-LOG-001 or another feature automatically.
 
-Next recommended step: review PR #2 and test Гитара with Разум + Восстановление, a previous-day completion, and offline restart using the new artifact. Check that old activities remain. Await the owner's next task; do not automatically begin habit editing, archiving, schedules, WIN-LOG or another milestone.
+The current work does not launch the executable against owner data. Browser preview has no native SQLite bridge. The unsigned Windows x64 artifact requires WebView2. Older-executable downgrade compatibility after migration is unverified. [Task details](HABITS_001B.md) and [data model](DATA_MODEL.md) explain evidence limits.
 
 ## Persistent context
 
-AGENTS.md, PRODUCT_VISION.md, GAME_DESIGN.md, UX_PRINCIPLES.md, DATA_MODEL.md and DECISIONS.md remain the source of truth. One task at a time; ask clarifying questions before uncertain decisions/dependent work. Reports are Russian, technical documentation/identifiers English. private/ stays excluded and unread. Historical local EPERM/TLS/credential-helper restrictions are documented in BUILD_WINDOWS.md; the owner is not required to repair them to obtain CI artifacts.
+AGENTS.md and docs/ remain the source of truth. Calm offline-first life balance, five canonical spheres, immutable historical snapshots and no penalties for absence. One task at a time; ask early about consequential uncertainty. Russian reports, English technical documentation. private/ stays excluded and unread. Historical local EPERM/TLS/credential restrictions remain; use the GitHub integration and existing CI without requiring owner toolchain repair.

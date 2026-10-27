@@ -1,12 +1,12 @@
 import { sampleHabits, validateDay, type Activity, type Habit, type SphereId } from '../domain/activity.ts';
-import { validateHabitInput } from '../domain/habit.ts';
+import { HabitStateError, validateHabitInput } from '../domain/habit.ts';
 
 export type SqlDatabase = {
   execute(query: string, values?: unknown[]): Promise<{ rowsAffected: number }>;
   select<Result>(query: string, values?: unknown[]): Promise<Result>;
 };
 
-type HabitRow = { id: string; name: string; spheres_json: string };
+type HabitRow = { id: string; name: string; spheres_json: string; archived_at: string | null };
 
 type ActivityRow = {
   id: string;
@@ -27,20 +27,43 @@ export async function openActivityRepository(connection?: SqlDatabase) {
     );
   }
   return {
-    async listHabits(): Promise<Habit[]> {
+    async listHabits(status: 'active' | 'archived' | 'all' = 'active'): Promise<Habit[]> {
+      const filter = status === 'active' ? ' WHERE archived_at IS NULL'
+        : status === 'archived' ? ' WHERE archived_at IS NOT NULL' : '';
       const rows = await database.select<HabitRow[]>(
-        'SELECT id, name, spheres_json FROM habits ORDER BY rowid',
+        `SELECT id, name, spheres_json, archived_at FROM habits${filter} ORDER BY rowid`,
       );
-      return rows.map(row => ({ id: row.id, name: row.name, spheres: JSON.parse(row.spheres_json) as SphereId[] }));
+      return rows.map(row => ({
+        id: row.id, name: row.name, spheres: JSON.parse(row.spheres_json) as SphereId[], archivedAt: row.archived_at,
+      }));
     },
     async createHabit(name: string, selectedSpheres: readonly string[]): Promise<Habit> {
       const input = validateHabitInput(name, selectedSpheres);
-      const habit: Habit = { id: crypto.randomUUID(), ...input };
+      const habit: Habit = { id: crypto.randomUUID(), ...input, archivedAt: null };
       await database.execute(
         'INSERT INTO habits (id, name, spheres_json) VALUES ($1, $2, $3)',
         [habit.id, habit.name, JSON.stringify(habit.spheres)],
       );
       return habit;
+    },
+    async updateHabit(id: string, name: string, selectedSpheres: readonly string[]): Promise<void> {
+      const input = validateHabitInput(name, selectedSpheres);
+      const result = await database.execute(
+        'UPDATE habits SET name = $1, spheres_json = $2 WHERE id = $3',
+        [input.name, JSON.stringify(input.spheres), id],
+      );
+      if (!result.rowsAffected) throw new HabitStateError('Привычка не найдена. Обновите список.');
+    },
+    async archiveHabit(id: string): Promise<void> {
+      const result = await database.execute(
+        'UPDATE habits SET archived_at = COALESCE(archived_at, $1) WHERE id = $2',
+        [new Date().toISOString(), id],
+      );
+      if (!result.rowsAffected) throw new HabitStateError('Привычка не найдена. Обновите список.');
+    },
+    async restoreHabit(id: string): Promise<void> {
+      const result = await database.execute('UPDATE habits SET archived_at = NULL WHERE id = $1', [id]);
+      if (!result.rowsAffected) throw new HabitStateError('Привычка не найдена. Обновите список.');
     },
     async list(): Promise<Activity[]> {
       const rows = await database.select<ActivityRow[]>(
@@ -54,14 +77,25 @@ export async function openActivityRepository(connection?: SqlDatabase) {
     },
     async log(habit: Habit, day: string): Promise<void> {
       validateDay(day);
-      await database.execute(
+      const result = await database.execute(
         `INSERT INTO activities
           (id, habit_id, habit_name_snapshot, spheres_snapshot_json, occurred_on, recorded_at, timezone)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
+         SELECT $1, id, name, spheres_json, $2, $3, $4 FROM habits
+         WHERE id = $5 AND archived_at IS NULL
          ON CONFLICT(habit_id, occurred_on) DO NOTHING`,
-        [crypto.randomUUID(), habit.id, habit.name, JSON.stringify(habit.spheres), day,
-          new Date().toISOString(), Intl.DateTimeFormat().resolvedOptions().timeZone],
+        [crypto.randomUUID(), day, new Date().toISOString(), Intl.DateTimeFormat().resolvedOptions().timeZone, habit.id],
       );
+      if (!result.rowsAffected) {
+        const [state] = await database.select<{ archived_at: string | null; completed: number }[]>(
+          `SELECT archived_at, EXISTS(SELECT 1 FROM activities WHERE habit_id = habits.id AND occurred_on = $1) AS completed
+           FROM habits WHERE id = $2`, [day, habit.id],
+        );
+        if (!state) throw new HabitStateError('Привычка не найдена. Обновите список.');
+        if (state.archived_at !== null) {
+          throw new HabitStateError('Привычка находится в архиве. Восстановите её перед отметкой.');
+        }
+        if (!state.completed) throw new HabitStateError('Состояние привычки изменилось. Повторите отметку.');
+      }
     },
     async remove(id: string): Promise<void> {
       await database.execute('DELETE FROM activities WHERE id = $1', [id]);

@@ -7,7 +7,7 @@ export const spheres = {
 } as const;
 
 export type SphereId = keyof typeof spheres;
-export type Habit = { id: string; name: string; spheres: SphereId[] };
+export type Habit = { id: string; name: string; spheres: SphereId[]; archivedAt: string | null };
 export type Activity = {
   id: string;
   habitId: string;
@@ -19,9 +19,9 @@ export type Activity = {
 };
 
 export const sampleHabits: Habit[] = [
-  { id: 'walk', name: 'Прогулка', spheres: ['body', 'recovery'] },
-  { id: 'read', name: 'Чтение', spheres: ['mind'] },
-  { id: 'connect', name: 'Разговор с близким', spheres: ['relationships'] },
+  { id: 'walk', name: 'Прогулка', spheres: ['body', 'recovery'], archivedAt: null },
+  { id: 'read', name: 'Чтение', spheres: ['mind'], archivedAt: null },
+  { id: 'connect', name: 'Разговор с близким', spheres: ['relationships'], archivedAt: null },
 ];
 
 export function localDay(date = new Date()): string {
