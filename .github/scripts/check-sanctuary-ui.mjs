@@ -162,4 +162,3 @@ try {
   await writeFile(join(output, 'failure.json'), JSON.stringify({ message: failure.message, checks, runtimeErrors, focus: await evaluate('document.activeElement.outerHTML') }, null, 2)).catch(() => {});
   throw failure;
 } finally { socket.close(); }
-

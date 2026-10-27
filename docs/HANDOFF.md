@@ -23,7 +23,7 @@ Local and CI npm test: 25/25 passed, including all 23 unchanged SQLite/domain te
 
 34 browser checks passed: labeled synthetic data, five emblems, 1000x800 first-card budget, Tab/Enter/Escape/focus/validation, one-click completion, date shortcuts/backdating, edits, history snapshots, archive/cancel/restore, journal cancellation, reload reset, overflow at 320/390/768/1000/1280px, 44px controls, 200% text enlargement and reduced motion. No reported runtime exceptions. Desktop, narrow-screen and expanded-journal screenshots were inspected. Token contrast spot checks are recorded in the design document; this is not a complete accessibility audit.
 
-Tested feature source: cbd98965e851c6d30f20718a5ee5ea378cf978ee. Tested PR merge source: ac3a89594df9f4ea2c9a0e338f7bd84b98d51cdc. A later documentation-only evidence commit uses [skip ci]; executable source/tests/browser scripts/migrations/workflow remain identical to the tested commit.
+Tested feature source: cbd98965e851c6d30f20718a5ee5ea378cf978ee. Tested PR merge source: ac3a89594df9f4ea2c9a0e338f7bd84b98d51cdc. Later evidence/formatting commits use [skip ci]; executable source/tests/migrations/workflow remain identical to the tested commit. The verification driver only loses an extra EOF blank line; its logic is unchanged.
 
 ## Artifacts and publication
 
