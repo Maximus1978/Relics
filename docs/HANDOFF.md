@@ -1,6 +1,8 @@
 # Project handoff
 
-Updated 2026-10-27. Last task: BUILD-WIN-001 — **BLOCKED**, not accepted as a successful Windows build. No later task has started.
+Updated 2026-10-27. Active task: BUILD-WIN-001 Recovery — establish and actually verify a GitHub-hosted Windows CI build, using the repository integration and PR workflow. Infrastructure only; no product/Android/private-content work. Do not retry the restricted local Git credential helper.
+
+Read [WINDOWS_CI.md](WINDOWS_CI.md) for the workflow plan and artifact retrieval. Current recovery status: workflow prepared locally; CI execution and artifacts not yet verified. The local master and remote master started this task at 3e93834babd6b4d1650be2cfe4c74d5b6f640542. Preserve that history. The previous local-runner blockers below remain historical evidence.
 
 ## Task scope and result
 
