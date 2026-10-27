@@ -2,6 +2,13 @@ import { spheres, type SphereId } from './activity.ts';
 
 export type HabitInput = { name: string; spheres: SphereId[] };
 
+export class HabitStateError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'HabitStateError';
+  }
+}
+
 export class HabitValidationError extends Error {
   field: 'name' | 'spheres';
 

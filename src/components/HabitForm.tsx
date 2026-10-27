@@ -1,18 +1,20 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { spheres, type SphereId } from '../domain/activity';
+import { spheres, type Habit, type SphereId } from '../domain/activity';
 import { HabitValidationError, validateHabitInput, type HabitInput } from '../domain/habit';
 import SphereIcon from './SphereIcon';
 
 type Props = {
   busy: boolean;
   canSave: boolean;
+  habit?: Habit;
+  saveError: string;
   onSave: (input: HabitInput) => Promise<void>;
   onCancel: () => void;
 };
 
-export default function AddHabitForm({ busy, canSave, onSave, onCancel }: Props) {
-  const [name, setName] = useState('');
-  const [selected, setSelected] = useState<SphereId[]>([]);
+export default function HabitForm({ busy, canSave, habit, saveError, onSave, onCancel }: Props) {
+  const [name, setName] = useState(habit?.name ?? '');
+  const [selected, setSelected] = useState<SphereId[]>(habit ? [...habit.spheres] : []);
   const [validationError, setValidationError] = useState<HabitValidationError | null>(null);
   const nameInput = useRef<HTMLInputElement>(null);
   const firstSphereInput = useRef<HTMLInputElement>(null);
@@ -38,7 +40,7 @@ export default function AddHabitForm({ busy, canSave, onSave, onCancel }: Props)
     onKeyDown={event => {
       if (event.key === 'Escape' && !busy) { event.preventDefault(); onCancel(); }
     }}>
-    <h3 id="create-habit-title">Новая привычка</h3>
+    <h3 id="create-habit-title">{habit ? 'Изменить привычку' : 'Новая привычка'}</h3>
     <label className="name-field" htmlFor="habit-name">Название привычки</label>
     <input id="habit-name" ref={nameInput} autoFocus required value={name} disabled={busy}
       aria-invalid={validationError?.field === 'name'}
@@ -59,6 +61,7 @@ export default function AddHabitForm({ busy, canSave, onSave, onCancel }: Props)
       </label>)}</div>
     </fieldset>
     {validationError && <p id="habit-validation-error" role="alert">{validationError.message}</p>}
+    {!validationError && saveError && <p role="alert">{saveError}</p>}
     <div className="form-actions"><button type="submit" disabled={busy || !canSave}>{busy ? 'Сохраняем…' : 'Сохранить'}</button>
       <button type="button" disabled={busy} onClick={onCancel}>Отмена</button></div>
   </form>;

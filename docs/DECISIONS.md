@@ -1,6 +1,6 @@
 # Decision log
 
-Updated 2026-10-26. `accepted`: owner requirement; `provisional`: reversible scaffold choice; `open`: unresolved; `superseded`: retained for traceability. New choices must state scope and evidence.
+Updated 2026-10-27. `accepted`: owner requirement; `provisional`: reversible scaffold choice; `open`: unresolved; `superseded`: retained for traceability. New choices must state scope and evidence.
 
 | ID | Status | Decision |
 | --- | --- | --- |
@@ -32,5 +32,6 @@ Updated 2026-10-26. `accepted`: owner requirement; `provisional`: reversible sca
 | D026 | accepted | One task at a time. No automatic next task, parallel feature work, or replacement work after a blocker. |
 | D027 | provisional | BUILD-WIN-001 recovery uses read-only GitHub-hosted Windows CI and a reviewable PR; Node 22.23.4/Rust 1.99.1 pin versions observed on the first run. Native build success does not imply native UI runtime acceptance. |
 | D028 | accepted | HABITS-001A creates habits with unweighted canonical sphere sets using the existing SQLite schema. Preserve migration 1, sample IDs, one completion per habit/day and activity snapshots; defer editing/archive/schedules/weights. |
+| D029 | accepted | HABITS-001B edits names/unweighted sphere sets and archives/restores any habit with additive migration 2. Keep migration 1, IDs, database/app identity and historical snapshots unchanged. Only active database rows can supply new activity snapshots, enforced atomically in the repository. Archive confirmation explains preserved history; sample seeding never reactivates records. Cancellation/audit remains D014. Deliver a PR for review; do not merge automatically. |
 
 D020–D026 record the supplied “RELICS — Project Foundation & Architecture” brief and the owner's one-task instruction. Existing source and migration remain unchanged during DOC-001. Previously recorded platform/dependency blockers remain historical facts, not freshly verified failures.

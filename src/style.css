@@ -12,7 +12,7 @@ input, button { font: inherit; min-height: 44px; padding: 10px 14px; border: 1px
 input { margin-left: 8px; }
 button { cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 button:disabled { cursor: default; opacity: .6; }
-button:focus-visible, input:focus-visible { outline: 3px solid #f3cd7e; outline-offset: 3px; }
+button:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid #f3cd7e; outline-offset: 3px; }
 svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; }
 ul { padding: 0; list-style: none; }
 li { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px solid #3c4745; }
@@ -32,4 +32,11 @@ li p { margin: 5px 0 0; font-size: .9rem; }
 .sphere-tags { display: flex; flex-wrap: wrap; gap: 8px 14px; }
 .sphere-tags span { display: inline-flex; align-items: center; gap: 5px; }
 .sphere-tags svg { width: 18px; height: 18px; }
+.habit-controls { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.habit-actions { position: relative; }
+.habit-actions summary { cursor: pointer; min-height: 44px; padding: 10px; border-radius: 7px; }
+.habit-action-options { position: absolute; right: 0; top: 100%; z-index: 1; display: grid; gap: 8px; min-width: 170px; padding: 10px; background: #192123; border: 1px solid #93815c; border-radius: 7px; }
+.archive-confirmation { margin: 16px 0 24px; padding: 16px; border: 1px solid #93815c; border-radius: 8px; }
+.archive-confirmation h3 { margin-top: 0; }
 @media (max-width: 500px) { section { padding: 16px; } li { align-items: flex-start; flex-direction: column; } li button { width: 100%; } }
+@media (max-width: 500px) { .habit-controls { width: 100%; } }
