@@ -1,6 +1,6 @@
 # Windows CI build
 
-BUILD-WIN-001 recovery moves compilation to GitHub-hosted Windows. First run 40540560435 exposed missing required Windows icons; run 40543659592 passed that stage and exposed a missing direct serde_json dependency required by tauri::generate_context!. Transparent technical icon placeholders and the required dependency address only these confirmed compilation defects. Both runs passed frontend checks and browser rendering. The corrected native build is being verified; no successful native result is claimed yet.
+BUILD-WIN-001 CI recovery: **PASS**, verified 2026-10-27. [Run 40544697531](https://github.com/Maximus1978/Relics/actions/runs/40544697531) completed successfully, including native release compilation and Windows artifact upload. Native UI runtime verification remains pending.
 
 ## Workflow and permissions
 
@@ -32,3 +32,21 @@ For a PR run, source SHA is GitHub's tested merge commit; build-info.json separa
 ## Acceptance boundary
 
 CI recovery passes only after a real run reports successful tests/frontend/native compilation and exposes the Windows artifact. A committed YAML file alone does not pass. Native UI launch/inspection remains a separate pending verification; do not proceed to product development automatically.
+
+## Verified result
+
+- Actual run state: completed / success.
+- Tested PR head: 24d5f5bb670e417bcaabfbe1d41fc6f12acfad66.
+- Tested GitHub PR merge source: cfdffaf4e91e84074af3361eb191fcdb90d8a4d5.
+- Three existing tests passed; npm ci, TypeScript, Vite, browser rendering, cargo fetch --locked, and Tauri release compilation all succeeded.
+- [Windows ZIP artifact 12753125929](https://github.com/Maximus1978/Relics/actions/runs/40544697531/artifacts/12753125929): 4,278,056 bytes, contains relics.exe, Cargo.lock, package-lock.json, build-info.json, executable-sha256.json and LAUNCH.txt.
+- ZIP SHA-256: 9c472182e19b6e0689a4f7501363beca95224c6b8596d0e9c9603240531ae944.
+- EXE SHA-256: c970d37fdc6cdf0070b1ce686f7dad994b2f0d53e75aa5da86a1869ae65162c2.
+- [Browser evidence artifact 12752462096](https://github.com/Maximus1978/Relics/actions/runs/40544697531/artifacts/12752462096): screenshot, rendered DOM and logs; browser-only, no native persistence.
+- Downloaded archive and executable digests were verified without launching the application. The artifacts expire on 2026-11-10.
+
+Two earlier runs document confirmed scaffold defects: [run 1](https://github.com/Maximus1978/Relics/actions/runs/40540560435) failed for missing required icon.ico; [run 2](https://github.com/Maximus1978/Relics/actions/runs/40543659592) passed icons and failed for missing direct serde_json. Only transparent build resources and that required dependency were added; no app behavior or design changed.
+
+[PR #1](https://github.com/Maximus1978/Relics/pull/1) remains open for review; master has not been modified. Merge the PR to make master push/manual triggers available on the default branch. Final evidence-only documentation may be committed with [skip ci]; the tested executable/workflow source remains the exact head SHA above. Such a report commit does not imply a newly compiled binary.
+
+The next recommended verification is to download/extract the ZIP and launch relics.exe on Windows to inspect the native UI. No local compilation, product development, or further task was started.

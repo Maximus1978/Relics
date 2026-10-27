@@ -12,11 +12,11 @@ Done when: required files exist, local document links resolve, sources and provi
 
 Status: completed. Documentation checks passed; see HANDOFF.md. No implementation task is active.
 
-## Active recovery: BUILD-WIN-001 — verify the Windows scaffold build in CI
+## Completed CI recovery: BUILD-WIN-001 — Windows scaffold build in CI
 
 Outcome: a reproducibly built Windows scaffold or one concrete diagnosed environment blocker. Scope: resolve dependencies, obtain lockfiles, typecheck/build, and perform the minimum Windows Tauri build/start check. Fix only issues preventing that result. Do not add product features or configure Android in the same task. Record exact evidence and stop.
 
-The local attempt was BLOCKED by EPERM/TLS restrictions. Recovery now uses GitHub-hosted Windows runners through [PR #1](https://github.com/Maximus1978/Relics/pull/1). npm ci, tests, TypeScript, Vite and browser rendering have passed in the first actual CI run; native compilation and the downloadable executable are still being verified. See [CI status and artifact retrieval](WINDOWS_CI.md). Native UI launch/inspection remains pending. Do not require the owner to compile locally or proceed to WIN-LOG-001.
+The local attempt was BLOCKED by EPERM/TLS restrictions. GitHub-hosted recovery now passes: [run 40544697531](https://github.com/Maximus1978/Relics/actions/runs/40544697531) succeeded on tested head 24d5f5bb670e417bcaabfbe1d41fc6f12acfad66. Locked dependencies, all three tests, TypeScript, Vite, browser rendering and the actual Tauri release build passed; a downloadable Windows artifact exists. [PR #1](https://github.com/Maximus1978/Relics/pull/1) is open, without changing master. See [CI evidence and artifact retrieval](WINDOWS_CI.md). Native UI launch/inspection remains pending; the next recommended step is to inspect the downloaded executable before WIN-LOG-001. No later task has begun.
 
 ## Subsequent queue
 

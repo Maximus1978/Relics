@@ -2,11 +2,11 @@
 
 ## GitHub-hosted recovery
 
-The preferred build path is now [Windows CI](WINDOWS_CI.md), proposed in [PR #1](https://github.com/Maximus1978/Relics/pull/1). The owner does not need to repair the local Codex runner or compile the application manually. The first real [Actions run](https://github.com/Maximus1978/Relics/actions/runs/40540560435) has passed npm ci, all existing tests, TypeScript, Vite and browser rendering; native compilation is still in progress at this documentation update. Consult WINDOWS_CI.md/HANDOFF.md for the final verified status and artifact links.
+The preferred build path is [Windows CI](WINDOWS_CI.md), delivered through [PR #1](https://github.com/Maximus1978/Relics/pull/1). [Run 40544697531](https://github.com/Maximus1978/Relics/actions/runs/40544697531) is completed/success: npm ci, all three tests, TypeScript, Vite, browser rendering, locked Cargo fetch and actual native release compilation passed. [Download the Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40544697531/artifacts/12753125929), extract it and run relics.exe. Native UI runtime verification is pending. The owner does not need to repair this local runner or compile manually.
 
 The sections below retain the previous local-runner failure evidence and optional developer commands. They are not a requirement for obtaining the CI artifact and do not describe CI failures.
 
-Task BUILD-WIN-001, checked 2026-10-27. Overall status: **BLOCKED**. The native Windows application has not been built, launched, or visually verified. A frontend typecheck is not native acceptance.
+Historical local attempt, checked 2026-10-27: **BLOCKED in the local runner**. This historical result is superseded for compilation by the successful GitHub-hosted build above. Native launch/inspection remains unverified.
 
 ## Verified environment
 
@@ -60,7 +60,7 @@ cargo --version
 If Rust is older than the current SQL plugin requirement, update the installed stable toolchain as an explicit owner action, then verify its version:
 
 ```powershell
-rustup update stable
+rustup toolchain install 1.99.1 --profile minimal
 rustc --version
 ```
 
@@ -107,7 +107,7 @@ The Tauri build hook performs the frontend build. bundle.active is false, so an 
 
 ## Completion and delivery boundary
 
-To finish BUILD-WIN-001: run clean install, frontend build and native build outside the restricted runner; generate Cargo.lock; inspect the actual Windows UI and capture its window; record evidence. The next queued feature task remains WIN-LOG-001, but must not start while BUILD-WIN-001 is blocked.
+The CI recovery task has passed without local environment repair. The remaining verification is to launch/inspect the downloaded Windows executable and capture its actual native window. WIN-LOG-001 remains queued and has not begun.
 
 This task's Git delivery must preserve master history and exclude node_modules, dist, target, databases, logs and private/. Verify remote master against the local commit after a successful non-force push; if authentication is unavailable, retain the local commit and report the manual recovery command.
 
