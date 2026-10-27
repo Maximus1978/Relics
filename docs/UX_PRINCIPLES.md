@@ -22,7 +22,7 @@ Sanctuary's dark stone, metal, gemstones, and restrained magic support hierarchy
 
 ## Implemented Sanctuary Daily Mode
 
-SANCTUARY-UI-001 applies original CSS/SVG stone/metal surfaces, a decorative architectural header and five labeled gemstone emblems. Body/Ruby/dumbbell, Mind/Sapphire/brain, Bonds/Garnet/heart, Work/Topaz/briefcase and Recovery/Emerald/leaf are category identities, not earned progress. Compact habit cards prioritize one-click logging with an explicit completed state. Today/Yesterday/calendar share the existing local date; management remains in a small disclosure and history in an expandable journal. No gameplay navigation, scores or decorative interruptions are introduced.
+SANCTUARY-UI-001 combines an original bundled painterly environment, CSS/SVG stone/metal surfaces and five labeled gemstone emblems. The owner explicitly approved raster environment art alongside CSS/SVG controls. One decorative scene sits behind the layout; CSS glazing/fading protects text and avoids repeated cathedral compositions. Body/Ruby/dumbbell, Mind/Sapphire/brain, Bonds/Garnet/heart, Work/Topaz/briefcase and Recovery/Emerald/leaf are category identities, not earned progress. Compact habit cards prioritize one-click logging with an explicit completed state. Today/Yesterday/calendar share the existing local date; management remains in a small disclosure and history in an expandable journal. No gameplay navigation, scores or decorative interruptions are introduced.
 
 Browser-only preview uses clearly labeled fictional in-memory data, resets on reload and never opens native SQLite. Native storage status and demo status are distinct. [Design, checks and acceptance](SANCTUARY_DAILY_MODE.md) record actual evidence separately from native owner review.
 

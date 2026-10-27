@@ -1,51 +1,52 @@
 # Project handoff
 
-Updated 2026-10-27. Active task: SANCTUARY-UI-001 raster-art integration in the existing [PR #4](https://github.com/Maximus1978/Relics/pull/4), open/unmerged. The owner explicitly approved original raster environment artwork plus CSS/SVG controls. Replace the vector environment, compare actual renders with both prototype references, verify CI and provide a new executable. Previous SVG evidence below is historical until this delivery is verified. No further asset-format confirmation is required. Do not merge automatically or start another task.
+Updated 2026-10-27. SANCTUARY-UI-001 painterly integration/CI delivery is complete; owner visual/native acceptance is pending. [PR #4](https://github.com/Maximus1978/Relics/pull/4) remains open/unmerged. Do not merge automatically or begin another task.
 
-## Owner correction and visual bar
+## Resolved owner direction
 
-The owner requires the atmosphere and authored detail of the supplied desktop/mobile prototype screens or better. Both reference images were reopened and compared with the actual browser render. The first flat SVG/palette delivery is not visually accepted. Material/architectural depth, engraved aged metal, dimensional gemstones and controlled lighting are acceptance criteria; green tests/builds alone cannot close the visual task.
+The owner requires the atmosphere/material/detail of both supplied prototype screens or better. A shared palette or green CI is not visual acceptance. Both reference images were reopened and the actual renders compared against them.
 
-The initial brief says “Use CSS, authored SVG, and reusable design tokens.” An asynchronous question asks whether original painterly raster environment artwork may complement the CSS/SVG controls. It remains unanswered. No raster artwork was generated/imported. Treat the current SVG proposal as concrete intermediate work, not proof of visual parity.
+The owner explicitly selected “Да: оригинальный растровый арт + CSS/SVG” on 2026-10-27. Original raster environment artwork is authorized; do not ask the asset-format question again. The earlier flat/vector-only proposals are superseded. Owner acceptance of this new visual candidate is still pending.
 
-## Baseline and unchanged behavior
+## Baseline and preserved scope
 
-HABITS-001B was accepted/merged at 8fc41b39d433fd1c9d26c71757580ae3a3567e77, still the master baseline. Continue the existing feature/sanctuary-ui-001 branch/PR, not another feature.
+Accepted HABITS-001B master is 8fc41b39d433fd1c9d26c71757580ae3a3567e77. Work continues on feature/sanctuary-ui-001 / PR #4.
 
-Habit creation/edit/archive/restore, multisphere definitions, local dates, activity snapshots/cancellation and SQLite persistence remain intact. Domain, SQL adapter, schema/migrations, native identity/database, dependencies and Windows workflow are unchanged. No owner database or private content was accessed. Browser fixtures are explicitly fictional and in-memory only.
+Habit creation/edit/archive/restore, multisphere definitions, today/backdating, snapshots, cancellation and SQLite persistence use unchanged rules/repository. Domain, SQL adapter, migrations/schema, original IDs, native identity/database, dependencies/locks and Windows workflow were compared to the baseline and remain unchanged. No private/ content or owner database was accessed. Browser demonstration is explicitly fictional/in-memory, not a native persistence test.
 
-## Current SVG proposal
+## Implemented presentation
 
-- Original authored gothic landscape engraving with architectural tracery, slate/masonry, mountains, bridge, trees, fog and warm windows.
-- Engraved nine-slice panel frames, fixed stone grain and shrine arches; physical-looking button bevels.
-- More layered medallions with aged-metal bands, prongs, engraved ornament, faceted glass, reflections and readable sphere inlays.
-- Both supplied references now have a permanent minimum-quality rule in AGENTS.md, UX_PRINCIPLES and the reference inventory.
-- Existing calm Daily Mode layout/actions and accessibility remain. No fake scores, game progression, unsupported navigation or new data functionality.
+- One original painted environment with detailed gothic architecture, worn stone, bridge/terraces, vegetation, mountains/mist and warm windows. CSS crop/glaze/fade protects UI readability; the cathedral is not duplicated in a separate hero.
+- Interactive controls/text/state remain React/CSS/SVG. Five canonical sphere labels/icons/gemstones, dimensional metal/gem settings, engraved panel frames, stone grain at 256px and beveled controls.
+- Frame source has fixed 120×120 dimensions to preserve ornament at different panel heights. No new library/font/dependency.
+- Existing fast completion, date shortcuts/calendar, validated forms, contextual management, explicit archive confirmation and expandable historical journal remain. No fake progress, unsupported navigation or gameplay.
 
-The environment still looks like vector illustration. The owner has not accepted its detail as equal to the painterly prototype. The unresolved raster-format option is the next decision, followed by another rendered comparison.
+## Asset provenance
 
-## Verified technical evidence
+The built-in imagegen tool generated a new environment; no CLI/API fallback, external asset download or prototype crop was used. The selected original PNG was copied byte-for-byte into public/art/sanctuary-environment-v1.png (1672×941; 3,049,722 bytes). SHA256 e3a600959a5ae893ef5f952cd1e9944f78856fed109a9ab55a70f4b68c2f8700. Runtime uses a bundled local URL and no generation/network service.
 
-[Windows CI run 40586705022](https://github.com/Maximus1978/Relics/actions/runs/40586705022) completed / success: npm ci, 25/25 tests, TypeScript, Vite, 35 browser/interaction/responsive checks, locked Cargo fetch, actual Tauri release compilation and uploads.
+[Exact final prompt, method and provenance](art/SANCTUARY_ENVIRONMENT.md). The preceding SVG engraving is retained as historical authored source but is no longer loaded by the screen. No secret artifact content was invented or imported.
 
-Tested feature source: 857c9dcd5233c6ca17ee5e78354235dce0216553. PR merge source: 98e16b4d4fbbd11e79a61f62e038b747d53cd3eb. A later documentation-only evidence commit uses [skip ci]; executable source/tests/art/browser scripts remain identical to that tested source.
+## Current verification
 
-Browser checks include local decorative asset loading, five emblems, first-card fit at 1000x800 excluding the demo-only banner, keyboard/focus/validation, one-click and backdated logging, edit/archive/cancel/restore, history snapshots/cancellation, reset on reload, 320–1280px overflow, 44px actions, text enlargement and reduced motion. Reported runtime exceptions: zero. Desktop/mobile/journal screenshots were inspected. This is browser evidence, not native WebView2/persistence verification.
+Tested feature source: 59481e388c37d665ef4eb1c5f595215788ec5d01. PR merge source: e304fb2677b6aaf3495b9d2c3002e8ab00409c65. [Windows run 40603575817](https://github.com/Maximus1978/Relics/actions/runs/40603575817) completed / success: npm ci, 25/25 tests (including all 23 unchanged SQLite/domain tests), TypeScript, Vite, 36 browser checks, locked Cargo fetch, actual native Tauri release compilation and uploads. A subsequent documentation-only evidence commit uses [skip ci]; runtime source/art/tests/browser scripts remain identical to this tested head.
 
-## Intermediate downloads
+[Browser evidence](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12778999481), 5,627,253 bytes. Downloaded ZIP digest matched GitHub: a2829c1f7c0b74e585df1bc3505d407d45aa61bc83ef21dc7af37fc5d6410fbd. Desktop 1280, desktop 1000, 390px narrow screen and expanded journal were inspected. Checks include local high-resolution asset/single-scene loading, keyboard/focus/validation, completion/date shortcuts/backdating, management/journal actions, original snapshots, preview reset, 320–1280px overflow, 44px actions, enlarged text and reduced motion. Reported runtime exceptions: zero.
 
-- [SVG proposal Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40586705022/artifacts/12772378768), 4,295,929 bytes; local outputs/Relics-Sanctuary-UI-001-svg-revision-windows-x64.zip.
-- ZIP SHA256: 367653de3d31d243daaf825dce7512be3d98ba2f5c3971ac90e5c1473e41a9a4. EXE SHA256: 25e36083851dbe299f759b788ba803aed87127bb500fea5d62ac4a264f875864. Downloaded ZIP/EXE hashes and build-info SHAs were verified; nativeUiRuntimeVerified=false. The executable was not launched here.
-- [Browser evidence](https://github.com/Maximus1978/Relics/actions/runs/40586705022/artifacts/12771686945), 2,740,662 bytes; downloaded ZIP digest matched GitHub. Local screenshots: outputs/Relics-Sanctuary-reference-revision.png and Relics-Sanctuary-reference-revision-mobile.png.
-- Artifacts expire 2026-11-10. Prior run 40583750205/executable describes the superseded flat presentation. These intermediate files are outside the repository.
-- Close the old app, extract the selected ZIP separately and run relics.exe. No compiler setup is required. Unsigned Windows x64/WebView2 limitations remain.
+Local screenshots outside the repo: outputs/Relics-Sanctuary-painterly-desktop.png, Relics-Sanctuary-painterly-1000.png, Relics-Sanctuary-painterly-mobile.png and Relics-Sanctuary-painterly-journal.png. These show fictional browser data and do not establish native runtime correctness.
 
-## Next action, not another task
+## Executable delivery
 
-Resolve the pending asset-format question with the owner, then continue only this visual revision and compare actual renders against the original prototype. If original raster art is approved, integrate it as bundled decorative art while keeping interactive controls in CSS/SVG and preserving offline behavior. If CSS/SVG only is required, discuss the remaining painterly-material quality gap explicitly. Do not claim visual parity without evidence/owner review.
+[Download the new Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12780441428), 7,305,764 bytes. Local copy: outputs/Relics-Sanctuary-UI-001-painterly-windows-x64.zip outside Git. It contains relics.exe, locks, build metadata, checksum and launch note. ZIP SHA256 db7905d43b22ba25c6ede8e5184919ff05b22b21e39ca8fc0f61bf582728d0ea; EXE SHA256 5a202681dbd94b58a2be85ed33f209e8d16a70af57a93109bb6ae40cf728e2b8. Downloaded ZIP matched GitHub's digest, EXE matched its manifest and build-info.json confirmed the exact feature/merge SHAs, unsigned output and nativeUiRuntimeVerified=false. Artifact retention ends 2026-11-10.
 
-No merge, public deployment, gameplay, Android, secret content or new feature work is authorized. After the visual revision is accepted, await the owner's next task.
+Git publication uses expected-parent checks and no force push/history rewrite. The local workspace tracks feature/sanctuary-ui-001. The approved runtime PNG is intentionally versioned; owner databases, private content, credentials, logs, EXE/ZIP/build outputs and screenshots are excluded from commits.
+
+## Next queued step and limits
+
+Owner/product visual and native review is next. Close the old Relics, extract the new ZIP separately and run relics.exe without compiler installation. Compare the atmosphere/detail with both original references and check native WebView2 appearance, keyboard/readability, today/yesterday/past-date logging, create/edit/archive/cancel/restore, journal cancellation and offline restart with old history. Await instructions after that review; do not start another development task.
+
+The new executable has not been launched here. Unsigned Windows x64/WebView2 limitations remain. Do not deploy publicly, work on Android/gameplay, access secret content, merge automatically or begin another task.
 
 ## Persistent context
 
-AGENTS.md and docs/ remain authoritative. Russian reports; English technical documentation. One task at a time; ask before consequential uncertain choices. Preserve calm offline-first life balance, canonical five spheres, historical snapshots and no penalties for absence. private/ stays unread/excluded. Publication uses GitHub integration and CI rather than the restricted local credential helper; never force-push or rewrite history.
+AGENTS.md and docs/ are authoritative. Russian reports; English technical documentation. One task at a time. Preserve calm offline-first life balance, canonical five spheres, immutable historical snapshots and no punishment for absence. GitHub integration/CI avoids the restricted local credential helper; no force-push/history rewrite. Store databases/secrets/build outputs outside Git.

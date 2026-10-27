@@ -1,67 +1,64 @@
-# SANCTUARY-UI-001 — first visual Daily Mode
+# SANCTUARY-UI-001 — painterly Daily Mode
 
-## Scope and baseline
+## Scope and owner direction
 
-The owner accepted HABITS-001B; GitHub confirms PR #3 merged at 8fc41b39d433fd1c9d26c71757580ae3a3567e77, the master used for this task. This is presentation work only. Domain rules, SQLite adapter, migrations, application identity, snapshots and the Windows workflow are unchanged. Only its browser verification script is expanded for useful visual/interaction evidence.
+Started from accepted HABITS-001B master 8fc41b39d433fd1c9d26c71757580ae3a3567e77. The original desktop/mobile prototype screens set the minimum target for atmosphere, material depth and authored detail, not just color. The first flat/vector proposals were not visually accepted.
 
-## Visual language
+On 2026-10-27 the owner explicitly approved original raster environment artwork plus CSS/SVG controls. That asset-format question is resolved; do not ask again. This remains the same task and PR #4. No gameplay, progression, statistics, museum, secret content, Android build or data-rule expansion.
 
-### Latest reference-driven SVG proposal (not final visual acceptance)
+## Implemented presentation
 
-The revision adds an original gothic landscape engraving, nine-slice engraved panel frames, fixed authored stone-grain/shrine artwork, more layered aged-metal settings, prongs, beveled facets and glass reflections. Assets under public/art are original authored SVG, not cropped prototype artwork, proprietary assets or secret content. The landscape is still vector illustration and does not establish parity with the painterly prototypes. Do not mark the visual task complete while the asset-format question is unanswered.
+One original painted environment sits behind the layout: layered gothic cathedral architecture, carved/aged stone, bridge and terraces, vegetation, distant mountains/mist and restrained warm windows against cool ambient light. It is bundled at public/art/sanctuary-environment-v1.png, 1672×941 and 3,049,722 bytes. No external image request or runtime image generation is required. The selected built-in imagegen output was copied byte-for-byte into the repo, with no resize/conversion/crop/repaint of the file. [Full final prompt, method, hash and provenance](art/SANCTUARY_ENVIRONMENT.md).
 
-[Windows run 40586705022](https://github.com/Maximus1978/Relics/actions/runs/40586705022) passed 25 tests, 35 browser checks including decorative image loading, TypeScript, Vite and native Tauri release compilation. Tested feature SHA: 857c9dcd5233c6ca17ee5e78354235dce0216553; PR merge source: 98e16b4d4fbbd11e79a61f62e038b747d53cd3eb. [SVG-proposal Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40586705022/artifacts/12772378768), 4,295,929 bytes, and [desktop/mobile/journal evidence](https://github.com/Maximus1978/Relics/actions/runs/40586705022/artifacts/12771686945) were downloaded/inspected. ZIP/EXE digests and source metadata were verified; no native launch against owner data occurred. ZIP SHA256: 367653de3d31d243daaf825dce7512be3d98ba2f5c3971ac90e5c1473e41a9a4. EXE SHA256: 25e36083851dbe299f759b788ba803aed87127bb500fea5d62ac4a264f875864. A subsequent documentation-only evidence commit leaves runtime source unchanged. Artifacts expire 2026-11-10.
+The screen uses a single image, with CSS crop/fade/glazing for desktop and narrow widths. It does not repeat the cathedral in a separate hero image. The raster contains no interface labels, scores or controls. All actual text, input, icons, state, medallions and management remain React/CSS/SVG.
 
-Local deliveries outside the repo: outputs/Relics-Sanctuary-reference-revision.png, Relics-Sanctuary-reference-revision-mobile.png and Relics-Sanctuary-UI-001-svg-revision-windows-x64.zip. This proposal is available for concrete comparison, not an assertion that the prototype quality has been reached. Original raster environment art remains an explicitly asked, unanswered format option; do not create it without that answer.
+Authored SVG metal settings add bands, engraving, prongs, faceted glass/reflections and symbol inlays. Panel frames use fixed 120×120 source dimensions for stable nine-slicing; authored stone grain tiles at 256px. No new libraries, fonts or dependencies were added. Georgia/system serif supplies headings; Segoe UI/system sans supplies controls/Cyrillic. The earlier vector engraving is retained as historical authored source but is not loaded by the current screen.
 
-Owner correction after the first visual delivery: the supplied desktop/mobile prototype screens are the quality bar for atmosphere and detail, not merely palette inspiration. The current flat cathedral, thin rings and gradient rectangles need revision. Judge actual rendered screens against layered gothic architecture, stone/aged-metal material, dimensional gemstone facets, engraved ornament, controlled cold ambient/warm candle lighting and integrated panel frames. Successful compilation does not establish this visual acceptance. Preserve usable Daily Mode and the unchanged data/gameplay scope; do not import prototype scores or inactive navigation. Asset-format clarification is pending because the original brief named CSS/authored SVG and painterly environmental detail may need original raster artwork.
-
-Original CSS/SVG artwork: charcoal stone, restrained antique metal, architectural Sanctuary illustration and faceted medallions. Georgia/system serif supplies display typography; Segoe UI/system sans supplies controls and Cyrillic UI. The design uses shipped CSS/SVG and installed system fonts, with no remote asset requests or new UI libraries/dependencies. No protected game assets are used.
-
-| Token / identity | Presentation |
+| Sphere / gemstone | Symbol and color |
 | --- | --- |
-| Surface / raised surface | #181e20 / #20282a |
-| Primary ink / muted text | #eee7d8 / #b5b6ad |
-| Antique gold | #d7bc83 |
-| Body / Ruby | Dumbbell; muted red #e4958c |
-| Mind / Sapphire | Brain; blue #92bce8 |
-| Bonds / Garnet | Heart; rose #e0a0b4 |
-| Work / Topaz | Briefcase; amber #e2bd79 |
-| Recovery / Emerald | Leaf; green #93c9a8 |
+| Body / Ruby | Dumbbell; muted red |
+| Mind / Sapphire | Brain; blue |
+| Bonds / Garnet | Heart; rose; stable domain ID relationships |
+| Work / Topaz | Briefcase; amber |
+| Recovery / Emerald | Leaf; green |
 
-Stable domain ID relationships still means Bonds / Отношения. SphereVisuals is presentation metadata, not a progression model. SphereMedallion reuses SphereSymbol and accepts a gemstone accent, frame color, ornaments and static illumination. These are drawing options, never earned tiers or unlocks. The five emblems identify categories only. Labels/shapes accompany color in the overview, cards, journal and form.
+These identities and ornamental frame options are decorative categories, never earned tiers or unlocks. Names and shapes accompany color in the overview, cards, form and journal.
 
-## Daily hierarchy and interaction
+## Daily Mode remains functional
 
-Brand/local status → Sanctuary header/art → five sphere categories → date and habit collection → expandable journal. Native data comes from the existing SQLite repository. Active cards retain one-click completion and an explicit Отмечено/check state. A small contextual disclosure preserves edit/archive/restore. Existing forms, validation, confirmation, focus return and journal cancellation are retained and styled.
+Brand/local status → Sanctuary → five categories → selected date/active habits → expandable journal. Active habit cards keep one-click completion and explicit check/Отмечено state. The existing shared validated form, edit/archive/restore disclosure, archive confirmation, errors and focus return remain. Historical activity snapshots and cancellation use the unchanged repository.
 
-Today and Yesterday update the same selected local-day state as the calendar input. Yesterday uses local calendar arithmetic, including month/year/leap/DST boundaries. Arbitrary past dates and the existing future-date/domain validation remain. The journal is initially collapsed, available through a keyboard-accessible summary with its real record count; expanded rows use original snapshots and cancellation.
+Today/Yesterday/calendar share the same selected local-day state and existing domain validation. Yesterday uses local calendar arithmetic. The journal starts collapsed; its count is real, and expanded rows retain historical name/sphere snapshots and cancellation.
 
-Responsive columns become single cards on narrow screens; the sphere gallery wraps to three columns on small phones. A compact header at 1000px keeps the first complete card within an 800px-tall browser content area when the demo-only banner is excluded; this is not native runtime evidence. Interactive targets retain 44px height. Focus outlines, skip link, native checkboxes/date input/disclosures and Russian accessible names remain. No required animation; reduced motion removes smooth scrolling/transitions. No fake counters, progression, quests or nonfunctional navigation.
+Responsive cards become one column and the category gallery wraps on narrow screens. Visible actions retain 44px target height. Tab/Enter/Escape, skip link, native inputs/disclosures, screen-reader names, focus outlines, reduced-motion handling and text enlargement remain. A browser check verifies the first card fits a 1000×800 content area when demo-only banner height is excluded. This does not assert native runtime acceptance.
 
-Token contrast spot checks: primary text on the base panel 13.70:1; muted text on the darkest red card tint 6.19:1; gold-button ink on the darker gradient endpoint 6.15:1. These checks do not replace native font/high-contrast or screen-reader review.
+## Data and preview safety
 
-## Safe browser demonstration
+Domain, SQLite adapter, migrations/schema, IDs, database/app identity, dependency locks and Windows workflow remain unchanged. No personal database or private/ content was read. Browser preview is explicitly fictional, interactive only in memory, resets on reload and never opens SQLite or persistent browser storage.
 
-Outside Tauri only, a dynamically imported in-memory fixture supplies explicitly fictional sample habits and journal entries. A visible banner says changes are not saved and disappear on reload. The native SQLite adapter is not opened, localStorage/IndexedDB are not used, and no personal database is read. Demo success messages explicitly qualify the in-memory effect. Recreating the preview resets its data; the preview cannot establish persistence or native runtime correctness.
+Windows compilation and browser interaction evidence must not be described as native UI/persistence verification. The owner accepted the previous native tracker baseline; this redesigned presentation still needs its own native visual/offline review. Visual quality is an owner acceptance decision and cannot be inferred from green CI alone.
 
-The fixture implements the existing repository shape solely to exercise the same view/form callbacks. It reuses current validation, but is not a second persistent backend or a new domain service. Native methods and SQL remain unchanged.
+## Verification and delivery
 
-## Historical first delivery verification
+Local and Windows CI tests passed 25/25, including all 23 unchanged SQLite/domain tests. [Windows run 40603575817](https://github.com/Maximus1978/Relics/actions/runs/40603575817) completed successfully: npm ci, TypeScript, Vite, 36 browser checks, locked Cargo fetch, actual native Tauri release compilation and artifact uploads. Node v22.23.4 and Rust/Cargo 1.99.1 were used.
 
-Local and Windows CI npm test: 25/25 passed, including all 23 existing SQLite/domain tests plus local-calendar Yesterday and isolated/resetting preview tests. [Windows CI run 40583750205](https://github.com/Maximus1978/Relics/actions/runs/40583750205) completed successfully: npm ci, tests, TypeScript, Vite, 34 browser checks, locked Cargo fetch, actual native Tauri release compilation and artifact upload. Node v22.23.4 and Rust/Cargo 1.99.1 were used.
+- [PR #4](https://github.com/Maximus1978/Relics/pull/4) remains open/unmerged for owner visual/native review.
+- Tested feature source: 59481e388c37d665ef4eb1c5f595215788ec5d01. Tested PR merge source: e304fb2677b6aaf3495b9d2c3002e8ab00409c65. A subsequent documentation-only evidence commit uses [skip ci]; runtime source/art/tests/browser scripts stay identical to this tested source.
+- [Painterly Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12780441428), 7,305,764 bytes. Local copy: outputs/Relics-Sanctuary-UI-001-painterly-windows-x64.zip outside the repo. ZIP SHA256 db7905d43b22ba25c6ede8e5184919ff05b22b21e39ca8fc0f61bf582728d0ea.
+- relics.exe: 15,178,240 bytes; SHA256 5a202681dbd94b58a2be85ed33f209e8d16a70af57a93109bb6ae40cf728e2b8. Downloaded ZIP digest matched GitHub, EXE matched its manifest, and build-info.json confirmed both exact source SHAs above. nativeUiRuntimeVerified=false and signed=false.
+- [Browser evidence](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12778999481), 5,627,253 bytes. Downloaded digest verified: a2829c1f7c0b74e585df1bc3505d407d45aa61bc83ef21dc7af37fc5d6410fbd. All four screenshots were inspected against the references. Local copies: outputs/Relics-Sanctuary-painterly-desktop.png, Relics-Sanctuary-painterly-1000.png, Relics-Sanctuary-painterly-mobile.png and Relics-Sanctuary-painterly-journal.png.
+- GitHub artifact retention ends 2026-11-10. No native executable was launched against owner data by this task; native appearance/accessibility/offline restart acceptance remains manual.
 
-- [PR #4](https://github.com/Maximus1978/Relics/pull/4), feature/sanctuary-ui-001 → master, remains open/unmerged for visual review.
-- Tested feature source: cbd98965e851c6d30f20718a5ee5ea378cf978ee. Tested PR merge source: ac3a89594df9f4ea2c9a0e338f7bd84b98d51cdc.
-- [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40583750205/artifacts/12772035041): relics-windows-x64-ac3a89594df9f4ea2c9a0e338f7bd84b98d51cdc, 4,290,103 bytes. Local delivery: outputs/Relics-Sanctuary-UI-001-windows-x64.zip outside the repository. SHA256 c170731c4116d335d88353f37ad8049b20b411d814bd5f00b2d1287fc7ba66ad.
-- relics.exe: 12,163,072 bytes; SHA256 e4eaed849d443609a4c33cde4a09a179de65c24206052dbc34c1fb612a7339a0. Downloaded ZIP digest matched GitHub; executable digest matched its manifest; build-info.json confirmed both source SHAs and nativeUiRuntimeVerified=false.
-- [Browser screenshots/evidence](https://github.com/Maximus1978/Relics/actions/runs/40583750205/artifacts/12771015646): desktop, 390px mobile and expanded journal PNGs, rendered DOM and result.json with all 34 passing checks and zero reported runtime exceptions. All three screenshots were inspected. Browser ZIP SHA256 3c9a3b0d87d09ef543cddebe5e695d975ba97753af27b8f05d4d7bf34611c08d matched its downloaded digest. Copies are delivered outside the repo as outputs/Relics-Sanctuary-desktop.png, Relics-Sanctuary-mobile.png and Relics-Sanctuary-journal.png.
-- GitHub artifact retention ends 2026-11-10. Screenshots use explicitly fictional in-memory data, not the owner's database.
+Browser evidence includes desktop 1280px, desktop 1000px, 390px narrow layout and expanded journal PNGs, rendered DOM and result.json. Checks include the single local high-resolution environment, five sphere emblems, keyboard/forms/validation/focus, completion/date shortcuts/backdating, edit/archive/cancel/restore, old journal snapshots/cancellation, preview reset, 320–1280px overflow, 44px actions, enlarged text and reduced motion.
 
-Later evidence/formatting commits use [skip ci]. Executable source, tests, migrations and workflow remain identical to the tested feature commit; the verification driver only loses an extra blank line at EOF. The executable was not launched here; native WebView2 appearance, accessibility and offline restart acceptance remain manual.
+## Historical iterations
 
-The browser verifier uses the hosted runner's Edge and built-in Node WebSocket/DevTools protocol, with no added dependency. It checks rendering, preview labeling, keyboard/validation/focus, completion/date shortcuts, edits, archive confirmation/cancellation/restore, journal snapshots/cancellation, reload reset, responsive overflow/44px controls, text enlargement and reduced motion. It captures desktop, narrow-screen and expanded-journal PNGs. [Protocol reference](https://chromedevtools.github.io/devtools-protocol/) documents the automation interface. This is browser-only evidence.
+- First flat presentation: run 40583750205, source cbd98965e851c6d30f20718a5ee5ea378cf978ee.
+- More detailed SVG proposal: run 40586705022, source 857c9dcd5233c6ca17ee5e78354235dce0216553.
+- Those earlier executables/screenshots do not contain the current painted environment.
 
-## Owner visual review
+## Owner visual/native review, before merging
 
-Close the previous app, extract the new Windows ZIP separately and run relics.exe; no compiler is required. Review at the actual native 1000×800 window, resized widths and text scaling. Check all five symbols, readability and quiet lighting; log today, yesterday and another past date, edit a habit, archive/cancel/restore, expand/cancel in the journal and restart offline. Existing history should remain. Native Windows/WebView2 focus, font rendering and persistence still require this acceptance. The unsigned x64/WebView2 limitations remain. Do not merge automatically or start another feature; await visual review.
+Close the previous Relics instance, extract the new Windows ZIP separately and run relics.exe; no compiler/toolchain installation is needed. Review the standard window, resized widths and text scaling. Check architecture/material richness against both prototype references, readable text/focus and quick logging. Log today/yesterday/another past date; create/edit/archive/cancel/restore a habit; expand/cancel journal; close/reopen offline and confirm existing history.
+
+No automatic merge or next task. Unsigned Windows x64/WebView2 limitations remain. Await owner/product visual acceptance after delivery.
