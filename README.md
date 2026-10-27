@@ -13,7 +13,7 @@ A personal life-balance application with authored RPG exploration. Offline first
 
 ## Current state
 
-The native tracker loads habits from SQLite and supports creating named habits with one or more canonical life spheres. HABITS-001A is owner-accepted and merged in master. HABITS-001B adds editing and reversible archiving, with preserved journal snapshots and additive migration 2; its native acceptance is separate. Date selection, idempotent daily logging and cancellation remain. Browser preview cannot load/save native records. See [current handoff](docs/HANDOFF.md) and [HABITS-001B acceptance](docs/HABITS_001B.md) for delivery evidence and the latest executable.
+The native tracker supports SQLite-backed habit creation, editing, archive/restore, multiple spheres, dated logging and historical snapshots. HABITS-001B is accepted and merged at 8fc41b39d433fd1c9d26c71757580ae3a3567e77. SANCTUARY-UI-001 adds an original dark-gothic Daily Mode: five sphere medallions, compact cards, Today/Yesterday/calendar and expandable history. Browser preview uses clearly labeled fictional in-memory data, discards changes on reload and never accesses native records. See [current handoff](docs/HANDOFF.md) and [visual design/acceptance](docs/SANCTUARY_DAILY_MODE.md) for current build evidence and the latest executable.
 
 BUILD-WIN-001 CI recovery is **PASS**: the [successful Windows run](https://github.com/Maximus1978/Relics/actions/runs/40544697531) installed locked dependencies, passed all three tests/TypeScript/Vite/browser checks, and compiled the actual Tauri release executable. [Download the Windows application ZIP](https://github.com/Maximus1978/Relics/actions/runs/40544697531/artifacts/12753125929), extract it and run relics.exe; no Node/Rust/build tools are needed for the owner. The build is unsigned and requires Windows x64 with WebView2. The owner subsequently confirmed native launch and offline activity persistence for that foundation. [PR #1](https://github.com/Maximus1978/Relics/pull/1) was merged into master at ae7c71db54a12583fd9a0e995fb461ca6635846e on the owner's explicit instruction; the workflow and minimal compilation fixes are now on the default branch. [CI documentation](docs/WINDOWS_CI.md) records exact source SHAs, artifacts and limitations. Audit revisions, schedules, weights, backup/restore, progression and gameplay remain future work.
 
@@ -30,7 +30,7 @@ npm.cmd run tauri -- dev
 
 Windows requires Rust, MSVC Build Tools, and WebView2. Android setup is a separate task requiring JDK, Android SDK/NDK, Rust targets, and a device/emulator. Once configured: `npm run tauri android init`, then `npm run tauri android dev`. Consult [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) and [SQL plugin documentation](https://v2.tauri.app/plugin/sql/).
 
-For browser-only preview, run `npm.cmd run dev` and open http://localhost:1420; persistence is unavailable there. Stop that server before starting Tauri dev. One task at a time: HABITS-001B requires separate review/native acceptance; no Android or game feature should start automatically. Read [HANDOFF](docs/HANDOFF.md) for the current boundary.
+For browser-only preview, run `npm.cmd run dev` and open http://localhost:1420; the labeled fictional demonstration is interactive but has no persistent storage. Stop that server before starting Tauri dev. One task at a time: SANCTUARY-UI-001 awaits visual/native review; no Android or game feature should start automatically. Read [HANDOFF](docs/HANDOFF.md) for the current boundary.
 
 ## Data and content
 

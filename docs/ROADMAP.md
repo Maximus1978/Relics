@@ -22,9 +22,13 @@ The local attempt was BLOCKED by EPERM/TLS restrictions. GitHub-hosted recovery 
 
 HABITS-001A is accepted and merged in [PR #2](https://github.com/Maximus1978/Relics/pull/2) at 544d813f26f5b6a4be39d36a81bc4bb7c1feba3e. The owner verified native custom creation, multiple spheres, backdated activities and offline SQLite persistence. Historical build evidence: [run 40565215658](https://github.com/Maximus1978/Relics/actions/runs/40565215658), 12 tests and TypeScript/Vite/native Windows build passed.
 
-## Delivered for acceptance: HABITS-001B
+## Accepted baseline: HABITS-001B
 
-Edit name/spheres; archive with confirmation; archived management and restore; preserve all historical snapshots. Add migration 2 without changing migration 1, sample IDs, database/app identity or cancellation semantics. Enforce active-only logging atomically in the repository. Local/CI SQLite tests: 23/23 passed. [PR #3](https://github.com/Maximus1978/Relics/pull/3) and [Windows run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811) deliver successful TypeScript/Vite/browser/native builds on fd97f6596dc400aebf37f28890a73e4bcc23df36. The [new executable ZIP](https://github.com/Maximus1978/Relics/actions/runs/40577256811/artifacts/12768437065) was downloaded and verified. A later documentation-only evidence commit leaves that source unchanged. See [task evidence and acceptance](HABITS_001B.md). Do not merge automatically. Next step: owner/product review using the new executable, then await instructions. Native management/migration/offline interaction remains manual acceptance. Do not begin another queued task.
+The owner accepted habit editing/archive/restore and merged [PR #3](https://github.com/Maximus1978/Relics/pull/3) at 8fc41b39d433fd1c9d26c71757580ae3a3567e77. Its 23 tests and TypeScript/Vite/native Windows build passed in [run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811). [Historical delivery evidence](HABITS_001B.md) remains available.
+
+## Active task: SANCTUARY-UI-001
+
+Original Sanctuary Daily Mode presentation, reusable sphere symbols/medallions, compact habit cards, Today/Yesterday/calendar, accessible expandable history and preserved management. Do not change domain rules, SQLite, migrations, identity or gameplay. Browser-only demo uses explicitly fictional ephemeral data. Local 25/25 tests passed, including all 23 existing tests. Existing Windows CI must verify TypeScript/Vite, useful desktop/mobile screenshots, keyboard/responsive interactions and a new native executable. CI evidence is pending. [Design and acceptance](SANCTUARY_DAILY_MODE.md). Deliver a focused unmerged PR, then await owner/product visual review. Do not begin another queued task.
 
 | Order | Task | Acceptance focus |
 | --- | --- | --- |
@@ -46,4 +50,4 @@ Each queued item must be narrowed if it cannot fit one reviewable task. Optional
 
 ## Vertical slice acceptance boundary
 
-The initial three-habit demo defines “log, close, return”: today/past date, multiple spheres, no duplicate, journal, restart without network, cancellation. The owner accepted native Windows HABITS-001A behavior; Android and the new HABITS-001B management acceptance are separate. See [acceptance scenarios](ACCEPTANCE.md). Scheduling, weights, corrections audit, derived progression, and backups are explicitly missing.
+The initial three-habit demo defines “log, close, return”: today/past date, multiple spheres, no duplicate, journal, restart without network, cancellation. The owner accepted native Windows HABITS-001B; Android and the new Sanctuary presentation acceptance are separate. See [acceptance scenarios](ACCEPTANCE.md). Scheduling, weights, corrections audit, derived progression, and backups are explicitly missing.

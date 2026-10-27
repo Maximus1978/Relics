@@ -20,6 +20,12 @@ Confirm persistence only after storage succeeds. Keep retry possible after failu
 
 Sanctuary's dark stone, metal, gemstones, and restrained magic support hierarchy and readability. Decorative backgrounds must not obscure controls. Epoch switching explicitly explains lifetime preservation and the museum before the user confirms.
 
+## Implemented Sanctuary Daily Mode
+
+SANCTUARY-UI-001 applies original CSS/SVG stone/metal surfaces, a decorative architectural header and five labeled gemstone emblems. Body/Ruby/dumbbell, Mind/Sapphire/brain, Bonds/Garnet/heart, Work/Topaz/briefcase and Recovery/Emerald/leaf are category identities, not earned progress. Compact habit cards prioritize one-click logging with an explicit completed state. Today/Yesterday/calendar share the existing local date; management remains in a small disclosure and history in an expandable journal. No gameplay navigation, scores or decorative interruptions are introduced.
+
+Browser-only preview uses clearly labeled fictional in-memory data, resets on reload and never opens native SQLite. Native storage status and demo status are distinct. [Design, checks and acceptance](SANCTUARY_DAILY_MODE.md) record actual evidence separately from native owner review.
+
 ## Reference policy
 
 The desktop panorama and Android collage are art-direction references. Screen composition, navigation, sample statistics, recipe examples, gemstone assignments, and textual feature promises are not approved specifications. See [reference inventory](visual-references/README.md). Sphere names in some concepts differ from the canonical model.

@@ -1,0 +1,153 @@
+import assert from 'node:assert/strict';
+import { writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+
+const output = process.argv[2];
+if (!output) throw new Error('Browser evidence output directory is required.');
+const targets = await (await fetch('http://127.0.0.1:9222/json/list')).json();
+const target = targets.find(target => target.type === 'page');
+if (!target) throw new Error('Edge debugging page is unavailable.');
+const socket = new WebSocket(target.webSocketDebuggerUrl);
+await new Promise((resolve, reject) => { socket.addEventListener('open', resolve, { once: true }); socket.addEventListener('error', reject, { once: true }); });
+let identifier = 0;
+const pending = new Map();
+const runtimeErrors = [];
+const checks = [];
+socket.addEventListener('message', event => {
+  const message = JSON.parse(event.data);
+  if (message.method === 'Runtime.exceptionThrown') runtimeErrors.push(message.params.exceptionDetails.text);
+  const request = pending.get(message.id);
+  if (!request) return;
+  pending.delete(message.id); clearTimeout(request.timeout);
+  if (message.error) request.reject(new Error(JSON.stringify(message.error)));
+  else request.resolve(message.result);
+});
+function send(method, params = {}) {
+  const id = ++identifier;
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => { pending.delete(id); reject(new Error(`CDP timeout: ${method}`)); }, 20000);
+    pending.set(id, { resolve, reject, timeout }); socket.send(JSON.stringify({ id, method, params }));
+  });
+}
+async function evaluate(expression) {
+  const response = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
+  if (response.exceptionDetails) throw new Error(response.exceptionDetails.text);
+  return response.result.value;
+}
+async function until(expression, description) {
+  for (let attempt = 0; attempt < 100; attempt++) {
+    if (await evaluate(expression)) { checks.push(description); return; }
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  throw new Error(`Browser check failed: ${description}`);
+}
+async function press(key, code, virtualKey) {
+  await send('Input.dispatchKeyEvent', { type: 'keyDown', key, code, windowsVirtualKeyCode: virtualKey });
+  await send('Input.dispatchKeyEvent', { type: 'keyUp', key, code, windowsVirtualKeyCode: virtualKey });
+}
+async function click(selector) {
+  const point = await evaluate(`(() => { const element = document.querySelector(${JSON.stringify(selector)}); if (!element) throw Error('Missing control'); element.scrollIntoView({block:'center'}); const bounds = element.getBoundingClientRect(); return { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2 }; })()`);
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', ...point, button: 'left', clickCount: 1 });
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', ...point, button: 'left', clickCount: 1 });
+}
+async function viewport(width, height = 1000) {
+  await send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
+}
+async function screenshot(name) {
+  await evaluate('window.scrollTo(0, 0)');
+  const { cssContentSize } = await send('Page.getLayoutMetrics');
+  const captured = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip: { x: 0, y: 0, width: cssContentSize.width, height: cssContentSize.height, scale: 1 } });
+  await writeFile(join(output, name), Buffer.from(captured.data, 'base64'));
+}
+const card = '[data-habit-id="demo-guitar"]';
+try {
+  await send('Page.enable'); await send('Runtime.enable');
+  await viewport(1280, 1100);
+  await send('Page.navigate', { url: 'http://127.0.0.1:1420' });
+  await until('document.querySelectorAll(".habit-card").length === 6', 'Six explicitly synthetic preview habits render');
+  await until('document.querySelector(".preview-notice").textContent.includes("не сохраняются")', 'Preview storage limitation is visible');
+  assert.equal(await evaluate('document.querySelectorAll(".sphere-gallery .medallion").length'), 5);
+  checks.push('Five distinct labeled sphere medallions render');
+  await screenshot('sanctuary-desktop.png');
+  await writeFile(join(output, 'rendered-dom.html'), await evaluate('document.documentElement.outerHTML'));
+
+  await evaluate('document.activeElement.blur(); window.scrollTo(0, 0)');
+  await press('Tab', 'Tab', 9);
+  await until('document.activeElement.matches(".skip-link")', 'Tab reaches skip link');
+  await press('Enter', 'Enter', 13);
+  await until('document.activeElement.id === "habits-title"', 'Keyboard skip link reaches habits');
+
+  await click('.collection-heading button');
+  await until('document.activeElement.id === "habit-name"', 'Creation form receives keyboard focus');
+  await click('.creation-form button[type="submit"]');
+  await until('document.querySelector("#habit-validation-error") && document.activeElement.id === "habit-name"', 'Empty-name validation retains focus');
+  await send('Input.insertText', { text: 'Проверка интерфейса' });
+  await click('.creation-form button[type="submit"]');
+  await until('document.querySelector("#habit-validation-error") && document.activeElement.type === "checkbox"', 'Empty-sphere validation focuses selection');
+  await press('Escape', 'Escape', 27);
+  await until('!document.querySelector(".creation-form") && document.activeElement.matches(".collection-heading button")', 'Escape cancels and returns focus');
+
+  await click(`${card} .completion-button`);
+  await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled && document.querySelector("[data-habit-id=demo-guitar] .completion-button").textContent.includes("Отмечено")', 'One-click completion has unambiguous disabled saved state');
+  await click('.date-shortcuts button:nth-child(2)');
+  await until('document.querySelector(".date-shortcuts button:nth-child(2)").getAttribute("aria-pressed") === "true" && !document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled', 'Yesterday selects its own completion state');
+  await click(`${card} .completion-button`);
+  await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled && document.querySelector("[data-habit-id=demo-guitar] .completion-button").textContent.includes("Отмечено")', 'Backdated completion works in the in-memory preview');
+  await click('.date-shortcuts button:first-child');
+  await until('document.querySelector(".date-shortcuts button:first-child").getAttribute("aria-pressed") === "true"', 'Today shortcut restores selected day');
+
+  await click(`${card} .habit-actions summary`);
+  await press('Tab', 'Tab', 9);
+  await until('document.activeElement.textContent === "Изменить"', 'Context actions are reachable by keyboard');
+  await press('Enter', 'Enter', 13);
+  await until('document.querySelector("#habit-name")?.value === "Гитара"', 'Editing reuses the existing definition');
+  await evaluate('document.querySelector("#habit-name").select()');
+  await send('Input.insertText', { text: 'Гитара у окна' });
+  await click('.creation-form button[type="submit"]');
+  await until('!document.querySelector(".creation-form") && document.querySelector("[data-habit-id=demo-guitar] h4").textContent === "Гитара у окна"', 'Edited definition renders');
+  await click('.journal > summary');
+  await until('document.querySelector(".journal").open && [...document.querySelectorAll(".entry h3")].filter(title => title.textContent === "Гитара").length === 2', 'Expandable journal preserves historical name snapshots');
+  await screenshot('sanctuary-journal.png');
+
+  await click(`${card} .habit-actions summary`);
+  await click(`${card} .habit-action-options button:nth-child(2)`);
+  await until('document.querySelector(".archive-confirmation")?.textContent.includes("сохранятся") && document.activeElement.textContent === "Отмена"', 'Archive confirmation explains preserved history and focuses Cancel');
+  await press('Escape', 'Escape', 27);
+  await until('!document.querySelector(".archive-confirmation")', 'Archive confirmation cancels with Escape');
+  await click(`${card} .habit-actions summary`);
+  await click(`${card} .habit-action-options button:nth-child(2)`);
+  await click('.archive-confirmation .form-actions button:first-child');
+  await until('!document.querySelector("[data-habit-id=demo-guitar]")', 'Archive hides the active card');
+  await click('.list-heading button');
+  await until('document.querySelectorAll(".habit-card").length === 1 && !document.querySelector(".completion-button")', 'Archive management omits completion controls');
+  await click(`${card} .habit-actions summary`);
+  await click(`${card} .habit-action-options button:nth-child(2)`);
+  await until('!document.querySelector("[data-habit-id=demo-guitar]")', 'Restore removes the card from the archive');
+  await click('.list-heading button');
+  await until('document.querySelector("[data-habit-id=demo-guitar] h4")?.textContent === "Гитара у окна"', 'Restore retains edited definition');
+  const entryCount = await evaluate('document.querySelectorAll(".entry").length');
+  await click('.entry button');
+  await until(`document.querySelectorAll('.entry').length === ${entryCount - 1}`, 'Existing journal cancellation remains accessible');
+
+  await send('Page.reload');
+  await until('document.querySelector("[data-habit-id=demo-guitar] h4")?.textContent === "Гитара"', 'Preview reload discards changes');
+  for (const width of [320, 390, 768, 1000, 1280]) {
+    await viewport(width);
+    await until('document.documentElement.scrollWidth <= window.innerWidth', `No horizontal overflow at ${width}px`);
+    const dimensions = await evaluate(`(() => { const targets = [...document.querySelectorAll('button, input[type=date], .habit-actions summary, .journal > summary')].filter(element => element.getClientRects().length); return targets.every(element => element.getBoundingClientRect().height >= 44); })()`);
+    assert.ok(dimensions, `44px action targets at ${width}px`);
+    if (width === 390) await screenshot('sanctuary-mobile.png');
+  }
+  checks.push('Visible controls retain 44px target height across responsive widths');
+  await viewport(640);
+  await evaluate('document.documentElement.style.fontSize = "200%"');
+  await until('document.documentElement.scrollWidth <= window.innerWidth', 'Text enlargement has no horizontal overflow');
+  await evaluate('document.documentElement.style.fontSize = ""');
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'auto');
+  checks.push('Reduced motion removes smooth scrolling');
+  await viewport(1280, 1100);
+  assert.deepEqual(runtimeErrors, []);
+  await writeFile(join(output, 'result.json'), JSON.stringify({ browserRendering: 'passed', interactionChecks: checks, runtimeErrors, nativeUiRuntimeVerified: false, storage: 'Synthetic in-memory demonstration; resets on reload' }, null, 2));
+  console.log(`Sanctuary browser verification passed: ${checks.length} checks. Native runtime remains unverified.`);
+} finally { socket.close(); }

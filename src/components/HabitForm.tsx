@@ -49,7 +49,7 @@ export default function HabitForm({ busy, canSave, habit, saveError, onSave, onC
     <fieldset disabled={busy} aria-describedby={validationError?.field === 'spheres' ? 'habit-validation-error' : 'habit-spheres-help'}>
       <legend>Сферы жизни</legend>
       <p id="habit-spheres-help">Выберите одну или несколько сфер.</p>
-      <div className="sphere-options">{(Object.keys(spheres) as SphereId[]).map(sphere => <label className="sphere-option" key={sphere}>
+      <div className="sphere-options">{(Object.keys(spheres) as SphereId[]).map(sphere => <label className="sphere-option" data-sphere={sphere} key={sphere}>
         <input type="checkbox" name="habit-spheres" value={sphere} checked={selected.includes(sphere)}
           ref={sphere === 'body' ? firstSphereInput : undefined}
           onChange={event => {
@@ -62,7 +62,7 @@ export default function HabitForm({ busy, canSave, habit, saveError, onSave, onC
     </fieldset>
     {validationError && <p id="habit-validation-error" role="alert">{validationError.message}</p>}
     {!validationError && saveError && <p role="alert">{saveError}</p>}
-    <div className="form-actions"><button type="submit" disabled={busy || !canSave}>{busy ? 'Сохраняем…' : 'Сохранить'}</button>
+    <div className="form-actions"><button className="button-primary" type="submit" disabled={busy || !canSave}>{busy ? 'Сохраняем…' : 'Сохранить'}</button>
       <button type="button" disabled={busy} onClick={onCancel}>Отмена</button></div>
   </form>;
 }

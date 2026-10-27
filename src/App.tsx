@@ -1,15 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { isTauri } from '@tauri-apps/api/core';
-import { localDay, spheres, type Activity, type Habit } from './domain/activity';
+import { localDay, spheres, type Activity, type Habit, type SphereId } from './domain/activity';
 import { openActivityRepository } from './data/activityRepository';
 import HabitForm from './components/HabitForm';
 import HabitActions from './components/HabitActions';
 import SphereIcon from './components/SphereIcon';
+import SphereMedallion from './components/SphereMedallion';
+import SanctuaryScene from './components/SanctuaryScene';
+import { sphereVisuals } from './ui/sphereVisuals';
+import { displayDay, yesterday } from './ui/dates';
 import { HabitStateError, HabitValidationError, type HabitInput } from './domain/habit';
 
 type Repository = Awaited<ReturnType<typeof openActivityRepository>>;
 
 export default function App() {
+  const native = isTauri();
   const [day, setDay] = useState(localDay);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -30,12 +35,13 @@ export default function App() {
   const visibleHabits = habits.filter(habit => (habit.archivedAt !== null) === showArchived);
 
   useEffect(() => {
-    if (!isTauri()) return;
     let active = true;
-    openActivityRepository().then(async store => {
+    const opening = native ? openActivityRepository()
+      : import('./preview/sanctuaryPreview').then(preview => preview.createSanctuaryPreview());
+    opening.then(async store => {
       const [entries, savedHabits] = await Promise.all([store.list(), store.listHabits('all')]);
       if (active) { setActivities(entries); setHabits(savedHabits); setRepository(store); }
-    }).catch(() => { if (active) setError('Не удалось открыть локальную базу. Перезапустите приложение, чтобы повторить.'); });
+    }).catch(() => { if (active) setError(native ? 'Не удалось открыть локальную базу. Перезапустите приложение, чтобы повторить.' : 'Не удалось открыть демонстрацию. Обновите страницу.'); });
     return () => { active = false; };
   }, []);
 
@@ -57,9 +63,9 @@ export default function App() {
       saved = true;
       const [entries, savedHabits] = await Promise.all([repository.list(), repository.listHabits('all')]);
       setActivities(entries); setHabits(savedHabits);
-      setMessage(success);
+      setMessage(native ? success : `Демонстрация: ${success} Изменения только в памяти этой страницы.`);
     } catch (failure) {
-      setError(saved ? 'Изменение сохранено, но список не обновился. Перезапустите приложение.'
+      setError(saved ? native ? 'Изменение сохранено, но список не обновился. Перезапустите приложение.' : 'Демонстрация изменена, но список не обновился. Обновите страницу.'
         : failure instanceof HabitStateError || failure instanceof HabitValidationError ? failure.message
         : failure instanceof Error && failure.message.startsWith('Выберите') ? failure.message
         : failure instanceof Error && /дат/.test(failure.message) ? failure.message
@@ -90,15 +96,41 @@ export default function App() {
     setCreatingHabit(false); setEditingHabit(null); setArchivingHabit(null); setError('');
   }
 
-  return <main>
-    <header><span className="eyebrow">RELICS · первая эпоха</span><h1>Sanctuary</h1>
-      <p>Небольшие действия оставляют след. Возвращайтесь в своём ритме.</p></header>
-    {!isTauri() && <p role="status">Просмотр каркаса. Локальное сохранение доступно в приложении Windows или Android.</p>}
-    <section aria-labelledby="habits-title">
-      <div className="section-heading"><h2 id="habits-title">Отметить действие</h2>
-        <button ref={addHabitButton} type="button" disabled={busy || managingHabit || (isTauri() && !repository)}
+  return <main id="main-content">
+    <a className="skip-link" href="#habits-title">Перейти к привычкам</a>
+    <header className="masthead">
+      <a className="brand" href="#main-content" aria-label="Relics — начало страницы">
+        <svg className="brand-mark" viewBox="0 0 40 48" aria-hidden="true"><path d="M20 2 37 24 20 46 3 24ZM20 9v30M10 24h20m-15-8 5 8-5 8m10-16-5 8 5 8" /></svg>
+        <span>Relics<span className="brand-caption">Жизнь оставляет след</span></span>
+      </a>
+      <span className="storage-note"><span className="status-dot" />{native ? 'Локально · без спешки' : 'Браузерная демонстрация'}</span>
+    </header>
+    {!native && <aside className="preview-notice" aria-label="Режим демонстрации">
+      <strong>Демонстрация</strong><span>Вымышленные данные. Можно попробовать действия; изменения не сохраняются и исчезнут после обновления страницы.</span>
+    </aside>}
+    <section className="hero" aria-labelledby="sanctuary-title">
+      <div className="hero-copy"><span className="eyebrow"><span className="tiny-diamond" />Первая эпоха · ваше убежище</span>
+        <h1 id="sanctuary-title">Sanctuary</h1>
+        <p>Маленькие действия.<br /><em>Ваша большая история.</em></p>
+        <span className="hero-note">Возвращайтесь в своём ритме. Здесь нет спешки.</span>
+      </div>
+      <SanctuaryScene />
+      <span className="hero-ornament" aria-hidden="true">◇</span>
+    </section>
+    <section className="sphere-overview" aria-labelledby="spheres-title">
+      <div className="section-kicker"><h2 id="spheres-title">Пять граней жизни</h2><span>Разные стороны вашего пути</span></div>
+      <ul className="sphere-gallery">{(Object.keys(spheres) as SphereId[]).map(sphere => <li key={sphere} data-sphere={sphere}>
+        <SphereMedallion sphere={sphere} illuminated />
+        <div><h3>{spheres[sphere]}</h3><p className="gemstone-name">{sphereVisuals[sphere].gemstone}</p></div>
+      </li>)}</ul>
+    </section>
+    <section className="daily-section" aria-labelledby="habits-title">
+      <div className="section-heading collection-heading"><div><span className="eyebrow">Ежедневный путь</span><h2 id="habits-title" tabIndex={-1}>Ваши привычки</h2>
+        <p>Выберите, чему хочется уделить внимание.</p></div>
+        <button ref={addHabitButton} className="button-primary" type="button" disabled={busy || managingHabit || !repository}
           aria-expanded={creatingHabit} aria-controls="create-habit-panel"
-          onClick={() => { setError(''); setMessage(''); returnFocus.current = addHabitButton.current; setCreatingHabit(true); }}>+ Добавить привычку</button></div>
+          onClick={() => { setError(''); setMessage(''); returnFocus.current = addHabitButton.current; setCreatingHabit(true); }}>
+          <span aria-hidden="true">+</span> Добавить привычку</button></div>
       {formOpen && <div id="create-habit-panel"><HabitForm key={editingHabit?.id ?? 'new'} busy={busy} canSave={!!repository}
         habit={editingHabit ?? undefined} saveError={error} onSave={saveHabit} onCancel={cancelManagement} /></div>}
       {archivingHabit && <div className="archive-confirmation" role="group" aria-labelledby="archive-confirm-title"
@@ -110,42 +142,59 @@ export default function App() {
         }, 'Привычка перемещена в архив. История сохранена.')}>В архив</button>
           <button type="button" autoFocus disabled={busy} onClick={cancelManagement}>Отмена</button></div>
       </div>}
-      <label>Дата <input type="date" value={day} max={localDay()} disabled={busy || managingHabit}
-        onChange={event => setDay(event.target.value)} /></label>
-      {!isTauri() && <p>В браузерном просмотре привычки из SQLite не загружаются. Можно посмотреть форму создания; сохранение доступно в приложении.</p>}
-      <div className="section-heading"><h3>{showArchived ? 'Архив привычек' : 'Активные привычки'}</h3>
-        <button ref={archiveToggle} type="button" disabled={busy || managingHabit} aria-controls="habit-list"
+      <div className="date-toolbar">
+        <div className="date-shortcuts" role="group" aria-label="Быстрый выбор даты">
+          <button type="button" aria-pressed={day === localDay()} disabled={busy || managingHabit} onClick={() => setDay(localDay())}>Сегодня</button>
+          <button type="button" aria-pressed={day === yesterday()} disabled={busy || managingHabit} onClick={() => setDay(yesterday())}>Вчера</button>
+        </div>
+        <label className="date-picker"><span>Выбрать дату</span><input type="date" value={day} max={localDay()} disabled={busy || managingHabit}
+          onChange={event => setDay(event.target.value)} /></label>
+        <p className="selected-date">{displayDay(day)}</p>
+      </div>
+      <div className="list-heading"><h3>{showArchived ? 'Архив привычек' : 'Активные привычки'}</h3>
+        <button ref={archiveToggle} className="button-quiet" type="button" disabled={busy || managingHabit} aria-controls="habit-list"
           onClick={() => { setShowArchived(current => !current); setError(''); setMessage(''); }}>
-          {showArchived ? 'Активные привычки' : 'Архив привычек'}</button></div>
-      {repository && !visibleHabits.length && <p>{showArchived ? 'В архиве пока нет привычек.' : 'Здесь будут ваши активные привычки. Можно добавить новую или восстановить привычку из архива.'}</p>}
-      <ul className="habits" id="habit-list">{visibleHabits.map(habit => {
+          {showArchived ? 'К активным привычкам' : 'Архив привычек'}<span aria-hidden="true">↗</span></button></div>
+      {!repository && !error && <p role="status">Открываем ваши привычки…</p>}
+      {repository && !visibleHabits.length && <div className="empty-state"><p>{showArchived ? 'В архиве пока тихо.' : 'Место для того, что вам близко.'}</p>
+        <span>{showArchived ? 'Здесь можно будет найти и восстановить привычки.' : 'Добавьте привычку или верните знакомую из архива.'}</span></div>}
+      <ul className="habit-grid" id="habit-list">{visibleHabits.map(habit => {
         const done = activities.some(entry => entry.habitId === habit.id && entry.occurredOn === day);
-        return <li key={habit.id}><div><strong>{habit.name}</strong>
-          <p className="sphere-tags">{habit.spheres.map(sphere => <span key={sphere}><SphereIcon sphere={sphere} />{spheres[sphere]}</span>)}</p></div>
-          <div className="habit-controls">{!showArchived && <button disabled={!repository || busy || managingHabit || done} onClick={() => log(habit)}
-            aria-label={`${done ? 'Отмечено' : 'Отметить'}: ${habit.name}`}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" />
-              {done ? <path d="m7 12 3 3 7-7" /> : <path d="M7 12h10M12 7v10" />}</svg>
-            {done ? 'Отмечено' : 'Отметить'}</button>}
+        return <li className={`habit-card${done && !showArchived ? ' is-complete' : ''}`} key={habit.id} data-habit-id={habit.id} data-sphere={habit.spheres[0]}>
+          <div className="habit-identity"><SphereMedallion sphere={habit.spheres[0]} ornamented={false} />
+            <div className="habit-copy"><h4>{habit.name}</h4><p>{sphereVisuals[habit.spheres[0]].invitation}</p></div>
             <HabitActions habit={habit} disabled={!repository || busy || managingHabit}
               onEdit={() => beginManagement(habit, 'edit')} onArchive={() => beginManagement(habit, 'archive')}
               onRestore={() => {
                 returnFocus.current = document.getElementById(`habit-actions-${habit.id}`);
                 void perform(store => store.restoreHabit(habit.id), 'Привычка возвращена в активный список.');
-              }} /></div></li>;
+              }} /></div>
+          <div className="habit-bottom"><p className="sphere-tags">{habit.spheres.map(sphere => <span key={sphere} data-sphere={sphere}><SphereIcon sphere={sphere} />{spheres[sphere]}</span>)}</p>
+            {!showArchived && <button className="completion-button" disabled={!repository || busy || managingHabit || done} onClick={() => log(habit)}
+              aria-label={`${done ? 'Отмечено' : 'Отметить'}: ${habit.name}`}>
+              <svg className="line-icon" viewBox="0 0 24 24" aria-hidden="true">
+                {done ? <path d="m5 12 4 4L19 6" /> : <path d="M5 12h14M12 5v14" />}</svg>
+              {done ? 'Отмечено' : 'Отметить'}</button>}
+          </div></li>;
       })}</ul>
-      <p role="status" aria-live="polite">{busy ? 'Сохраняем…' : message}</p>
+      <p className="save-status" role="status" aria-live="polite">{busy ? 'Сохраняем…' : message}</p>
       {error && !formOpen && <p role="alert">{error}</p>}
     </section>
-    <section aria-labelledby="journal-title"><h2 id="journal-title">Жизненный журнал</h2>
-      {!activities.length && <p>Здесь появятся ваши действия. Начните, когда будет удобно.</p>}
-      <ul>{activities.map(entry => <li className="entry" key={entry.id}>
-        <div><time dateTime={entry.occurredOn}>{entry.occurredOn}</time> · {entry.habitName}
-          <p>{entry.spheres.map(sphere => spheres[sphere]).join(' · ')}</p></div>
-        <button disabled={busy || managingHabit} onClick={() => void perform(store => store.remove(entry.id), 'Отметка отменена.')}
-          aria-label={`Отменить: ${entry.habitName}, ${entry.occurredOn}`}>Отменить</button>
-      </li>)}</ul>
+    <section className="journal-section" aria-labelledby="journal-title">
+      <details className="journal">
+        <summary><svg className="line-icon journal-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 0v18M9 7h6m-6 4h6m-6 4h4" /></svg>
+          <span><h2 id="journal-title">Жизненный журнал</h2><span className="journal-description">Каждая запись — часть вашей истории</span></span>
+          <span className="journal-count">{activities.length} записей</span><span className="journal-chevron" aria-hidden="true">⌄</span>
+        </summary>
+        {!activities.length && <p className="journal-empty">Здесь появятся ваши действия. Начните, когда будет удобно.</p>}
+        <ul>{activities.map(entry => <li className="entry" key={entry.id}>
+          <div><time dateTime={entry.occurredOn}>{entry.occurredOn}</time><h3>{entry.habitName}</h3>
+            <p className="sphere-tags">{entry.spheres.map(sphere => <span key={sphere} data-sphere={sphere}><SphereIcon sphere={sphere} />{spheres[sphere]}</span>)}</p></div>
+          <button className="button-quiet" disabled={busy || managingHabit} onClick={() => void perform(store => store.remove(entry.id), 'Отметка отменена.')}
+            aria-label={`Отменить: ${entry.habitName}, ${entry.occurredOn}`}>Отменить</button>
+        </li>)}</ul>
+      </details>
     </section>
-    <footer>Локальный журнал · Mastery, Resonance и открытия появятся в следующих срезах.</footer>
+    <footer><span className="tiny-diamond" aria-hidden="true" /><p>Путь складывается из того, что вам важно.</p><span>{native ? 'Sanctuary · локальная история' : 'Демонстрация · без сохранения'}</span></footer>
   </main>;
 }

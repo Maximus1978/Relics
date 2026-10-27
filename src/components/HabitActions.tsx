@@ -23,7 +23,9 @@ export default function HabitActions({ habit, disabled, onEdit, onArchive, onRes
       event.currentTarget.querySelector('summary')?.focus();
     }
   }}>
-    <summary id={`habit-actions-${habit.id}`} aria-label={`Действия: ${habit.name}`}>Действия</summary>
+    <summary id={`habit-actions-${habit.id}`} aria-label={`Действия: ${habit.name}`}>
+      <svg className="line-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /></svg>
+    </summary>
     <div className="habit-action-options">
       <button type="button" disabled={disabled} onClick={event => act(event, onEdit)}>Изменить</button>
       {habit.archivedAt === null
