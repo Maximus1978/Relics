@@ -1,0 +1,123 @@
+name: Windows build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install locked JavaScript dependencies
+        run: npm.cmd ci
+
+      - name: Run existing tests
+        run: npm.cmd test
+
+      - name: Check TypeScript
+        run: npx.cmd --no-install tsc --noEmit
+
+      - name: Build Vite frontend
+        run: npm.cmd run build
+
+      - name: Verify browser-only rendering
+        run: ./.github/scripts/check-browser-render.ps1
+
+      - name: Upload browser-only evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: relics-browser-preview-${{ github.sha }}
+          path: ${{ runner.temp }}/relics-browser-preview
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Set up pinned stable Rust MSVC
+        run: |
+          rustup toolchain install 1.99.1-x86_64-pc-windows-msvc --profile minimal --no-self-update
+          if ($LASTEXITCODE -ne 0) { throw 'Rust toolchain setup failed.' }
+          rustc --version
+          cargo --version
+
+      - name: Generate native lockfile when missing
+        run: |
+          if (-not (Test-Path src-tauri/Cargo.lock)) {
+            cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
+            if ($LASTEXITCODE -ne 0) { throw 'Cargo lockfile generation failed.' }
+          }
+          cargo fetch --manifest-path src-tauri/Cargo.toml --locked
+          if ($LASTEXITCODE -ne 0) { throw 'Locked Cargo dependency fetch failed.' }
+
+      - name: Preserve resolved native dependency lock
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: relics-native-lock-${{ github.sha }}
+          path: src-tauri/Cargo.lock
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Compile Tauri Windows executable
+        run: npm.cmd run tauri -- build --no-bundle -- --locked
+
+      - name: Prepare downloadable Windows build
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          $destination = Join-Path $env:RUNNER_TEMP 'relics-windows-build'
+          New-Item -ItemType Directory -Path $destination -Force | Out-Null
+          if (-not (Test-Path src-tauri/target/release/relics.exe)) { throw 'Native executable missing.' }
+          Copy-Item src-tauri/target/release/relics.exe $destination
+          Copy-Item src-tauri/Cargo.lock $destination
+          Copy-Item package-lock.json $destination
+          $info = [ordered]@{
+            sourceSha = $env:SOURCE_SHA
+            headSha = $env:HEAD_SHA
+            runner = $env:RUNNER_OS
+            node = (& node --version)
+            rust = (& rustc --version)
+            cargo = (& cargo --version)
+            nativeUiRuntimeVerified = $false
+            signed = $false
+          }
+          $info | ConvertTo-Json | Set-Content (Join-Path $destination 'build-info.json') -Encoding utf8
+          Get-FileHash (Join-Path $destination 'relics.exe') -Algorithm SHA256 |
+            Select-Object Hash | ConvertTo-Json |
+            Set-Content (Join-Path $destination 'executable-sha256.json') -Encoding utf8
+          'Unsigned Windows x64 application. Extract the ZIP and run relics.exe on Windows with WebView2 installed. Native UI runtime verification is pending.' |
+            Set-Content (Join-Path $destination 'LAUNCH.txt') -Encoding utf8
+
+      - name: Upload compiled Windows application
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: relics-windows-x64-${{ github.sha }}
+          path: ${{ runner.temp }}/relics-windows-build
+          if-no-files-found: error
+          retention-days: 14

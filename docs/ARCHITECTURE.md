@@ -4,7 +4,7 @@
 
 Use Tauri 2, React, strict TypeScript, Vite, SQLite, and SVG components. Share domain logic and reusable presentation primitives; provide platform-specific interactions/adapters. No first-iteration cloud backend. The journal is authoritative; counters and progression are rebuildable projections.
 
-Official documentation reviewed on 2026-10-26 lists Windows/Android support for the [SQL plugin](https://v2.tauri.app/plugin/sql/), describes migration transactions and explicit permissions, and specifies Windows/mobile [build prerequisites](https://v2.tauri.app/start/prerequisites/). This supports the proposed direction. Actual dependency resolution and builds in this workspace remain unverified; see [feasibility findings](TECHNOLOGY_FEASIBILITY.md).
+Official documentation reviewed on 2026-10-26 lists Windows/Android support for the [SQL plugin](https://v2.tauri.app/plugin/sql/), describes migration transactions and explicit permissions, and specifies Windows/mobile [build prerequisites](https://v2.tauri.app/start/prerequisites/). This supports the proposed direction. Local execution remained restricted, but [GitHub-hosted Windows CI](WINDOWS_CI.md) now verifies dependency resolution, tests, frontend rendering/build, and native Tauri release compilation. Native UI/SQLite runtime acceptance is still pending. See [historical feasibility findings](TECHNOLOGY_FEASIBILITY.md).
 
 ## Boundaries and data flow
 

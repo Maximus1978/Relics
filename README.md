@@ -15,11 +15,11 @@ A personal life-balance application with authored RPG exploration. Offline first
 
 Documentation has been reconciled with the supplied foundation brief. Source remains a small scaffold: three demo habits, date selection, idempotent daily logging, journal, and cancellation through a SQLite adapter. One habit covers two spheres. Browser preview explicitly does not persist records. Native Windows launch and visual rendering are still unverified.
 
-BUILD-WIN-001 is BLOCKED by execution-environment restrictions. npm installation succeeded initially and package-lock.json now locks JavaScript dependencies. The three existing tests and TypeScript check passed. Clean reinstall, Vite build, Cargo dependency resolution and native launch did not pass verification; Cargo.lock is still absent. The ignored dependency tree needs a clean npm ci outside this runner. See the [Windows build report and exact launch instructions](docs/BUILD_WINDOWS.md). Audit revisions, schedules, weights, backup/restore, progression, and gameplay remain future work.
+BUILD-WIN-001 CI recovery is **PASS**: the [successful Windows run](https://github.com/Maximus1978/Relics/actions/runs/40544697531) installed locked dependencies, passed all three tests/TypeScript/Vite/browser checks, and compiled the actual Tauri release executable. [Download the Windows application ZIP](https://github.com/Maximus1978/Relics/actions/runs/40544697531/artifacts/12753125929), extract it and run relics.exe; no Node/Rust/build tools are needed for the owner. The build is unsigned and requires Windows x64 with WebView2. Native UI runtime verification remains pending. [PR #1](https://github.com/Maximus1978/Relics/pull/1) contains the workflow and minimal compilation fixes; master remains unchanged until review/merge. [CI documentation](docs/WINDOWS_CI.md) records exact source SHAs, artifacts and limitations. Audit revisions, schedules, weights, backup/restore, progression and gameplay remain future work.
 
 ## Development commands
 
-Run in ordinary Windows PowerShell from this repository, after checking the prerequisites in the Windows build guide:
+The owner can obtain the application through Actions artifacts once CI succeeds; see [artifact retrieval](docs/WINDOWS_CI.md). The following commands are optional developer instructions for ordinary Windows PowerShell, not required user setup:
 
 ```sh
 npm.cmd ci
@@ -30,7 +30,7 @@ npm.cmd run tauri -- dev
 
 Windows requires Rust, MSVC Build Tools, and WebView2. Android setup is a separate task requiring JDK, Android SDK/NDK, Rust targets, and a device/emulator. Once configured: `npm run tauri android init`, then `npm run tauri android dev`. Consult [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) and [SQL plugin documentation](https://v2.tauri.app/plugin/sql/).
 
-For browser-only preview, run `npm.cmd run dev` and open http://localhost:1420; persistence is unavailable there. Stop that server before starting Tauri dev. One task at a time: finish the blocked BUILD-WIN-001 before starting WIN-LOG-001, Android setup or features. Read [HANDOFF](docs/HANDOFF.md) for the current boundary.
+For browser-only preview, run `npm.cmd run dev` and open http://localhost:1420; persistence is unavailable there. Stop that server before starting Tauri dev. One task at a time: inspect the downloaded native Windows UI before starting WIN-LOG-001, Android setup or features. Read [HANDOFF](docs/HANDOFF.md) for the current boundary.
 
 ## Data and content
 

@@ -12,11 +12,11 @@ Done when: required files exist, local document links resolve, sources and provi
 
 Status: completed. Documentation checks passed; see HANDOFF.md. No implementation task is active.
 
-## Blocked task: BUILD-WIN-001 — verify the Windows scaffold build
+## Completed CI recovery: BUILD-WIN-001 — Windows scaffold build in CI
 
 Outcome: a reproducibly built Windows scaffold or one concrete diagnosed environment blocker. Scope: resolve dependencies, obtain lockfiles, typecheck/build, and perform the minimum Windows Tauri build/start check. Fix only issues preventing that result. Do not add product features or configure Android in the same task. Record exact evidence and stop.
 
-2026-10-27 result: BLOCKED. JavaScript lockfile exists, three tests and TypeScript check passed. Clean npm install/build child processes are denied (EPERM), Cargo cannot establish Schannel TLS to crates.io, and Rust 1.87 is below the current SQL plugin documentation requirement. No native window, rendered preview or application screenshot is verified. See [actual results and recovery steps](BUILD_WINDOWS.md). Resume this same task outside the restricted runner before WIN-LOG-001; no later task has begun.
+The local attempt was BLOCKED by EPERM/TLS restrictions. GitHub-hosted recovery now passes: [run 40544697531](https://github.com/Maximus1978/Relics/actions/runs/40544697531) succeeded on tested head 24d5f5bb670e417bcaabfbe1d41fc6f12acfad66. Locked dependencies, all three tests, TypeScript, Vite, browser rendering and the actual Tauri release build passed; a downloadable Windows artifact exists. [PR #1](https://github.com/Maximus1978/Relics/pull/1) is open, without changing master. See [CI evidence and artifact retrieval](WINDOWS_CI.md). Native UI launch/inspection remains pending; the next recommended step is to inspect the downloaded executable before WIN-LOG-001. No later task has begun.
 
 ## Subsequent queue
 
