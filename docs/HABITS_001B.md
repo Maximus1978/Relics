@@ -23,7 +23,16 @@ Tests use temporary real SQLite files and production repository queries. The Nod
 
 Local npm test: 23/23 passed, including the existing 12 tests. New coverage: rename and sphere persistence; immutable old and refreshed future snapshots; active/archive lists and reopen; archived duplicate/backdated logging rejection; restore/re-enable; every sample stays archived across restarts; unchanged October 26–27 legacy records; invalid edits/missing IDs; populated v1 migration/restarts/integrity; archive immediately before the atomic insert.
 
-TypeScript, Vite, browser rendering and native release compilation will be verified by the existing Windows workflow. CI status and artifact evidence are pending and will be recorded after execution. Browser rendering alone cannot establish native database or interaction acceptance.
+The existing [Windows CI run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811) completed successfully. npm ci, all 23 tests, TypeScript, Vite, browser rendering, locked Cargo dependencies and native Tauri release compilation passed. Node v22.23.4 and Rust/Cargo 1.99.1 were used. Browser screenshot/DOM artifacts were produced; the screenshot was inspected and shows the current nonblank interface. Browser rendering does not establish native database or interaction acceptance.
+
+- [PR #3](https://github.com/Maximus1978/Relics/pull/3), feature/habits-001b → master, stays open for owner/product review; it was not merged.
+- Tested feature commit: fd97f6596dc400aebf37f28890a73e4bcc23df36. Tested PR merge source: 2dfe87302c238bcc8b7547d373d5ab33d0c36f90.
+- [Windows ZIP artifact](https://github.com/Maximus1978/Relics/actions/runs/40577256811/artifacts/12768437065): relics-windows-x64-2dfe87302c238bcc8b7547d373d5ab33d0c36f90, 4,281,632 bytes. GitHub retention ends 2026-11-10. The downloaded ZIP was also saved locally as outputs/Relics-HABITS-001B-windows-x64.zip outside the repository.
+- ZIP SHA256: b036352eac7d6f6aee93274585cae77da7f5e9c2d004e8a2f5796f150130c776.
+- relics.exe: 12,155,904 bytes; SHA256 26b747b7564c642004f71b1201336878050a41bb4faa0a2f1274250731e7cc23.
+- Downloaded ZIP digest matched GitHub's artifact digest; executable hash matched executable-sha256.json. build-info.json confirmed both exact SHAs above, unsigned output and nativeUiRuntimeVerified=false.
+
+A subsequent documentation-only evidence commit uses [skip ci]. No source, tests, migration or pipeline changes follow the tested commit. Its SHA is separate from the executable source; the successful run remains the code verification evidence.
 
 ## Owner acceptance, before merging
 

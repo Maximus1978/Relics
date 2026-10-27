@@ -1,6 +1,6 @@
 # Project handoff
 
-Updated 2026-10-27. Active task: HABITS-001B — edit/archive/restore habits without losing historical activities. Deliver a focused PR and Windows artifact; do not merge automatically or start another task.
+Updated 2026-10-27. HABITS-001B implementation/CI delivery is complete; owner/product acceptance is pending. [PR #3](https://github.com/Maximus1978/Relics/pull/3) stays open. Do not merge automatically or start another task.
 
 ## Verified baseline
 
@@ -21,11 +21,17 @@ Local npm test: 23/23 passed, including all existing tests plus rename/sphere pe
 
 Tests use temporary real SQLite files with production repository queries. Migration tests execute the real additive SQL with a test-only version marker, not the native SQL plugin's bookkeeping. Native plugin upgrade, UI interaction, keyboard behavior and offline lifecycle acceptance remain owner/reviewer checks. No personal database was opened or used for testing.
 
-Publication, TypeScript/Vite/browser checks, native Windows build and artifact evidence are pending the existing Windows workflow. Record actual CI URLs/SHAs and download hashes here after completion; do not claim a native UI runtime pass from compilation alone. The pipeline/dependencies remain unchanged.
+[Windows CI run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811): completed / success. npm ci, 23/23 tests, TypeScript, Vite, basic browser rendering, locked Cargo dependencies, actual native Tauri release compilation and artifact upload passed. The browser screenshot was inspected. The existing pipeline/dependencies remain unchanged.
+
+Tested feature head: fd97f6596dc400aebf37f28890a73e4bcc23df36. Tested PR merge source: 2dfe87302c238bcc8b7547d373d5ab33d0c36f90. A documentation-only evidence commit follows using [skip ci]; all executable source/tests/migrations/workflow remain identical to this tested head. Do not treat compilation as native UI runtime acceptance.
+
+[Download the new Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40577256811/artifacts/12768437065), 4,281,632 bytes, available until 2026-11-10. The local copy is outputs/Relics-HABITS-001B-windows-x64.zip outside the repository. It contains relics.exe, dependency locks, build-info.json, executable checksum and launch note. Metadata confirmed the exact tested SHAs; ZIP/executable hashes were checked after download. ZIP SHA256: b036352eac7d6f6aee93274585cae77da7f5e9c2d004e8a2f5796f150130c776. EXE SHA256: 26b747b7564c642004f71b1201336878050a41bb4faa0a2f1274250731e7cc23. The executable was not launched here.
+
+GitHub publication used the repository integration with expected-parent checks and no force-push/history rewrite. The local workspace tracks feature/habits-001b. The reviewed file list contains only feature source/tests, migration 2 and documentation; no private content, personal databases, credentials, logs or build artifacts were committed.
 
 ## Next step and boundaries
 
-Complete the current PR/CI delivery, then have the owner/product reviewer execute [HABITS-001B acceptance](HABITS_001B.md): rename Guitar to Гитара with Разум + Восстановление, archive Чтение, inspect archive/history, restart offline, restore and log an unused past date. Review before merging. Do not start WIN-LOG-001 or another feature automatically.
+Next queued step: the owner/product reviewer executes [HABITS-001B acceptance](HABITS_001B.md): rename Guitar to Гитара with Разум + Восстановление, archive Чтение, inspect archive/history, restart offline, restore and log an unused past date. Close the old application, extract the new ZIP separately and run relics.exe; no local compilation/toolchain setup is required. Review before merging. Do not start WIN-LOG-001 or another feature automatically.
 
 The current work does not launch the executable against owner data. Browser preview has no native SQLite bridge. The unsigned Windows x64 artifact requires WebView2. Older-executable downgrade compatibility after migration is unverified. [Task details](HABITS_001B.md) and [data model](DATA_MODEL.md) explain evidence limits.
 
