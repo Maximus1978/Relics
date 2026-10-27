@@ -1,49 +1,41 @@
 # Project handoff
 
-Updated 2026-10-27. Active task: HABITS-001A — create named habits with one or more canonical spheres, load habits from SQLite, retain sample habits and existing activity snapshots, and verify through tests plus the existing Windows CI pipeline. No editing, deletion, scheduling, weights, game systems or Android work is in scope. Stop after this task.
+Updated 2026-10-27. HABITS-001A: implementation, automated persistence tests and Windows build delivery verified. Native manual acceptance of the new form remains pending. No further task has started.
 
-Owner-reported baseline verification: the owner launched the Windows application, closed it, restarted offline, and confirmed activity records for October 26 and 27, 2026 remained. This is trusted owner feedback about the integrated foundation, not an automated verification of the new habit form. Work starts from master 688ce28a306e754eda0c9f1c8f6d7c012b0379cb. The existing habits table already supports this task, so migration 1 and all existing records must remain unchanged.
+## Current delivery
 
-## Verified delivery
+- [PR #2](https://github.com/Maximus1978/Relics/pull/2), feature/habits-001a, remains open for review; master is unchanged.
+- [Windows CI run 40565215658](https://github.com/Maximus1978/Relics/actions/runs/40565215658): completed / success.
+- Tested feature head: 97b97edb12c9d92752010a44a7f3a413fe4bbeac. Tested PR merge source: 7383e0815e65cc7858b338c6f04c8af0cd4eac08.
+- All 12 tests passed locally and in CI. npm ci, TypeScript, Vite, basic browser rendering, locked Cargo fetch, native Tauri release compilation and artifact upload all passed.
+- [HABITS-001A Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40565215658/artifacts/12762772475), 4,280,480 bytes; contains relics.exe, dependency locks, metadata, checksum and launch note.
+- ZIP/EXE hashes were verified after download. The new executable was not launched in this task.
+- [Task contract, checksums and manual acceptance](HABITS_001A.md).
 
-- [PR #1](https://github.com/Maximus1978/Relics/pull/1) was merged into master at ae7c71db54a12583fd9a0e995fb461ca6635846e on the owner's explicit instruction. The merge retains both parents and all original commits.
-- [Successful Actions run 40544697531](https://github.com/Maximus1978/Relics/actions/runs/40544697531), state completed / success.
-- Tested PR head 24d5f5bb670e417bcaabfbe1d41fc6f12acfad66; tested PR merge source cfdffaf4e91e84074af3361eb191fcdb90d8a4d5.
-- npm ci, all three existing tests, TypeScript, Vite, browser rendering, cargo fetch --locked, Tauri release compilation and Windows artifact upload passed.
-- [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40544697531/artifacts/12753125929), 4,278,056 bytes, contains relics.exe, both lockfiles, build/source metadata, checksum and launch note.
-- [Browser screenshot/evidence](https://github.com/Maximus1978/Relics/actions/runs/40544697531/artifacts/12752462096) verifies browser-only rendering, not native Tauri/SQLite.
-- The ZIP and extracted EXE hashes were checked. No executable was launched during this CI-only task.
+The previous BUILD-WIN executable does not contain this feature. The owner can close the old version, extract the new ZIP and run relics.exe without compilation/tool installation. Application identifier/database location are unchanged, so the existing local data stays in use. Windows x64/WebView2 and unsigned-build limitations remain.
 
-Read [WINDOWS_CI.md](WINDOWS_CI.md) for exact versions, triggers, download steps, source hashes and limits. The owner can extract the artifact and run relics.exe without Node, Rust, build tools, administrator compilation or local environment repair. Windows x64/WebView2 are runtime prerequisites. It is unsigned, not an installer.
+## What changed
 
-## Infrastructure and minimal fixes
+A visible + Добавить привычку action opens an inline form with a required name, the five canonical sphere checkboxes/line icons, Save and Cancel/Escape. Validation trims names and rejects empty names, empty selections and unknown spheres. Keyboard focus moves into the form, to invalid fields, and back to the add action. Saving is serialized with existing logging; a failed write retains form input and shows an error.
 
-The workflow runs on pushes to master, PRs targeting master, and workflow_dispatch on windows-latest. Official actions are SHA-pinned; token permission is contents:read, checkout credentials are not persisted, and no personal token/public site is involved.
+The repository now lists and creates habits. Native UI renders the actual SQLite list, not sampleHabits. UUIDs identify new habits; names remain non-unique display values. The original three sample IDs are seeded with INSERT OR IGNORE, without updates/duplicates. Browser-only preview can display the form but cannot load/save native habits or activities.
 
-.node-version pins Node 22.23.4. rust-toolchain.toml pins stable Rust 1.99.1 MSVC. Cargo.lock was recovered from the actual CI artifact, then its root package was updated for the required direct serde_json dependency while preserving all resolved crate versions/checksums. The successful run validated the graph with --locked.
+Existing schema/migration 1, database filename, native identifier, pipeline, dependency declarations/locks and native source are unchanged. Activity logging retains selected past dates, one completion per habit/day and immutable name/sphere snapshots. No editing/archive/delete of habits, weights, schedules, progression, crafting, Android or visual redesign was implemented.
 
-Run 1 exposed missing required Windows icons; transparent 32x32 build-only PNG/ICO resources fixed that defect. Run 2 exposed missing direct serde_json required by tauri::generate_context!; adding the already-transitive crate fixed compilation. No product source behavior, UI design, game system, Android code, schema or secret content changed.
+## Evidence boundary
 
-.github/scripts/check-browser-render.ps1 uses hosted Edge without extra npm dependencies. It checks rendered headings/sections/date input and saves a screenshot separately from native output.
+Nine new tests use the production repository/queries against temporary real SQLite through an injected database port, alongside three existing tests. Coverage includes one/multiple spheres, Гитара/Mind/Recovery, invalid input, habit plus backdated activity after reopening, unchanged October 26/27 legacy records, repeated startup seeding, preserved definitions/custom habits, duplicate completion protection and historical snapshots.
 
-## Git and documentation status
+No personal database was opened, altered or used by tests. Native Tauri bridge/form interaction and keyboard behavior were not automated. The owner explicitly reported successful baseline Windows launch, close/offline restart and persistence of October 26/27 records before this task. That feedback applies to the integrated foundation, not yet to this new form.
 
-All executable/workflow changes were published via the GitHub repository integration using forward-only commits with expected-parent checks. No restricted credential-helper retries, force pushes, resets or history rewrites were used.
+## Git and next step
 
-The local workspace now tracks master. The original master baseline is 3e93834babd6b4d1650be2cfe4c74d5b6f640542. Evidence-only documentation after the successful run may be committed with [skip ci] to avoid rebuilding an unchanged executable. That documentation commit is distinct from the tested build head above; it does not alter source, locks, toolchain pins, scripts or workflow.
+Work started from integrated master 688ce28a306e754eda0c9f1c8f6d7c012b0379cb, following merged BUILD-WIN PR #1. Changes were published through the GitHub integration with expected-parent checks and no force-push/history rewrite. Local workspace tracks feature/habits-001a.
 
-The owner subsequently authorized merging PR #1; it is merged and master/manual triggers are enabled. Existing successful PR artifacts remain usable. The new merge-push CI run is separate from the already-passed PR run; no new success is inferred merely from merging.
+A documentation-only evidence commit may follow the tested source using [skip ci]; executable source/tests/workflow/data behavior remain the tested head above. Consult PR/Git history for that report commit separately. No merge of PR #2 was performed.
 
-## Remaining verification and next step
+Next recommended step: review PR #2 and test Гитара with Разум + Восстановление, a previous-day completion, and offline restart using the new artifact. Check that old activities remain. Await the owner's next task; do not automatically begin habit editing, archiving, schedules, WIN-LOG or another milestone.
 
-CI compilation is accepted; native runtime is not. Next recommended task: launch the downloaded executable on Windows and inspect its native UI/database initialization, then capture its window. Do not claim browser rendering proves native persistence. Do not start WIN-LOG-001, Android, game mechanics or other implementation automatically.
+## Persistent context
 
-## Historical context
-
-The earlier local attempt was blocked by npm child-process EPERM, Cargo Schannel TLS and credential-helper invocation restrictions. [BUILD_WINDOWS.md](BUILD_WINDOWS.md) preserves those diagnostics and optional developer commands; they are no longer required owner steps for obtaining a build.
-
-The persistent vision and scope remain in PRODUCT_VISION.md, GAME_DESIGN.md and UX_PRINCIPLES.md. One task at a time; ask clarifying questions before uncertain decisions/dependent work. Communicate in Russian, keep technical documentation/identifiers English. private/ remains outside ordinary context and Git. No secret catalog was read.
-
-## Merge task completed
-
-The owner's only requested action was to merge into master and await the next task. This was performed using a normal GitHub merge with an expected-head check, without force-push, reset, squash or history rewriting. Local master was fast-forwarded to the merge. A documentation-only follow-up records publication status and does not change the executable/workflow. Merge-push CI: [run 40560242072](https://github.com/Maximus1978/Relics/actions/runs/40560242072), in_progress at this update; the prior PR run remains the verified PASS. No further verification or implementation task was started; await the owner's next instruction.
+AGENTS.md, PRODUCT_VISION.md, GAME_DESIGN.md, UX_PRINCIPLES.md, DATA_MODEL.md and DECISIONS.md remain the source of truth. One task at a time; ask clarifying questions before uncertain decisions/dependent work. Reports are Russian, technical documentation/identifiers English. private/ stays excluded and unread. Historical local EPERM/TLS/credential-helper restrictions are documented in BUILD_WINDOWS.md; the owner is not required to repair them to obtain CI artifacts.

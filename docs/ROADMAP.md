@@ -16,11 +16,11 @@ Status: completed. Documentation checks passed; see HANDOFF.md. No implementatio
 
 Outcome: a reproducibly built Windows scaffold or one concrete diagnosed environment blocker. Scope: resolve dependencies, obtain lockfiles, typecheck/build, and perform the minimum Windows Tauri build/start check. Fix only issues preventing that result. Do not add product features or configure Android in the same task. Record exact evidence and stop.
 
-The local attempt was BLOCKED by EPERM/TLS restrictions. GitHub-hosted recovery now passes: [run 40544697531](https://github.com/Maximus1978/Relics/actions/runs/40544697531) succeeded on tested head 24d5f5bb670e417bcaabfbe1d41fc6f12acfad66. Locked dependencies, all three tests, TypeScript, Vite, browser rendering and the actual Tauri release build passed; a downloadable Windows artifact exists. [PR #1](https://github.com/Maximus1978/Relics/pull/1) was merged into master at ae7c71db54a12583fd9a0e995fb461ca6635846e on the owner's instruction. See [CI evidence and artifact retrieval](WINDOWS_CI.md). Native UI launch/inspection remains pending; the next recommended step is to inspect the downloaded executable before WIN-LOG-001. No later task has begun.
+The local attempt was BLOCKED by EPERM/TLS restrictions. GitHub-hosted recovery now passes: [run 40544697531](https://github.com/Maximus1978/Relics/actions/runs/40544697531) succeeded on tested head 24d5f5bb670e417bcaabfbe1d41fc6f12acfad66. Locked dependencies, all three tests, TypeScript, Vite, browser rendering and the actual Tauri release build passed; a downloadable Windows artifact exists. [PR #1](https://github.com/Maximus1978/Relics/pull/1) was merged into master at ae7c71db54a12583fd9a0e995fb461ca6635846e on the owner's instruction. See [CI evidence and artifact retrieval](WINDOWS_CI.md). The owner subsequently confirmed native launch and offline persistence of October 26/27 activity records. HABITS-001A is a separately authorized feature task; this baseline feedback does not establish the new form's native acceptance.
 
 ## Subsequent queue
 
-HABITS-001A is now the single active owner-authorized task: create habits with one/multiple canonical spheres and load them from SQLite. Existing schema, sample IDs and activity snapshots remain intact. Local tests: 12 passed; Windows CI and delivery are pending. The owner has separately confirmed baseline native launch and offline persistence of October 26/27 records. This does not authorize the remaining HABITS-001 lifecycle features. See [task contract](HABITS_001A.md).
+HABITS-001A implementation and build delivery are complete in [PR #2](https://github.com/Maximus1978/Relics/pull/2): creation with one/multiple canonical spheres, SQLite-loaded lists, existing data/sample preservation. All 12 tests and TypeScript/Vite/native Windows builds passed in [run 40565215658](https://github.com/Maximus1978/Relics/actions/runs/40565215658), tested head 97b97edb12c9d92752010a44a7f3a413fe4bbeac. The [new Windows artifact](https://github.com/Maximus1978/Relics/actions/runs/40565215658/artifacts/12762772475) is available. Native manual acceptance of Гитара/Mind/Recovery plus backdating/offline restart remains to be confirmed. PR #2 stays open for review; no later task has begun. This does not authorize remaining HABITS-001 lifecycle work. See [task evidence and acceptance](HABITS_001A.md).
 
 | Order | Task | Acceptance focus |
 | --- | --- | --- |
@@ -29,7 +29,7 @@ HABITS-001A is now the single active owner-authorized task: create habits with o
 | 3 | ANDROID-LOG-001 | Same journal behavior, background/resume, touch/text on Android |
 | 4 | AUDIT-001 | Auditable activity edits/removal with migration and correction tests |
 | 5 | BACKUP-001 | JSON backup/restore, validation, atomicity, clean-database round trip |
-| 6 | HABITS-001 | Create/edit/archive/restore, stable IDs and historical snapshots |
+| 6 | HABITS-001 | Remaining edit/archive/restore lifecycle; creation delivered by HABITS-001A |
 | 7 | WEIGHTS-001 | Decide and implement configurable multisphere contribution weights |
 | 8 | SCHEDULE-001 | Daily/scheduled/flexible recurrence, rest, unknown versus confirmed inactivity |
 | 9 | PROGRESS-001 | Decide and test pure deterministic lifetime/epoch progression and recent Resonance |

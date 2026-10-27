@@ -37,4 +37,12 @@ Owner feedback already confirms native offline persistence for the preceding int
 
 ## Delivery state
 
-Local tests: 12 passed. TypeScript/Vite/native Windows CI verification and the new downloadable artifact are pending publication. Do not reuse the previous foundation artifact as evidence for HABITS-001A. The existing Windows workflow and dependency lockfiles remain unchanged.
+**Implementation/tests/build delivery verified.** [PR #2](https://github.com/Maximus1978/Relics/pull/2) remains open; master is unchanged. [Windows run 40565215658](https://github.com/Maximus1978/Relics/actions/runs/40565215658) completed successfully on tested head 97b97edb12c9d92752010a44a7f3a413fe4bbeac, PR merge source 7383e0815e65cc7858b338c6f04c8af0cd4eac08.
+
+All 12 tests passed locally and in CI. CI also passed npm ci, TypeScript, Vite, browser rendering, locked Rust dependency fetch and actual Tauri Windows release compilation. The Windows workflow, pins, lockfiles, migration 1 and native application identifier are unchanged.
+
+[Download the HABITS-001A Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40565215658/artifacts/12762772475), 4,280,480 bytes. It contains the newly built relics.exe, both dependency locks, build metadata and checksums. ZIP SHA-256: 35c88dd54840840cb60c09ea6ca9b72813b8e8beb6de36888c2f0b205eafd87f. EXE SHA-256: 53b14f3938c738a172109b4ebde9440f7ad2bb6be0cd295035a42b9c611be1c2. The downloaded archive/executable hashes were checked without launching it. Artifact expiry: 2026-11-10.
+
+Native interaction with the new form has not been exercised in this task. The automated reopen/legacy-record checks use the actual repository with real Node SQLite, not the Tauri bridge. The owner's baseline offline test does not replace the new form's manual acceptance above. Browser evidence checks basic rendering only; native persistence remains unavailable in browser preview. The executable remains unsigned and requires Windows x64/WebView2.
+
+Final evidence-only documentation may follow the tested code in a [skip ci] commit. It does not change the executable, tests, schema, workflow or dependencies. No later task was started.
