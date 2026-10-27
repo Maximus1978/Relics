@@ -12,9 +12,11 @@ Done when: required files exist, local document links resolve, sources and provi
 
 Status: completed. Documentation checks passed; see HANDOFF.md. No implementation task is active.
 
-## Next queued task: BUILD-WIN-001 — verify the Windows scaffold build
+## Blocked task: BUILD-WIN-001 — verify the Windows scaffold build
 
 Outcome: a reproducibly built Windows scaffold or one concrete diagnosed environment blocker. Scope: resolve dependencies, obtain lockfiles, typecheck/build, and perform the minimum Windows Tauri build/start check. Fix only issues preventing that result. Do not add product features or configure Android in the same task. Record exact evidence and stop.
+
+2026-10-27 result: BLOCKED. JavaScript lockfile exists, three tests and TypeScript check passed. Clean npm install/build child processes are denied (EPERM), Cargo cannot establish Schannel TLS to crates.io, and Rust 1.87 is below the current SQL plugin documentation requirement. No native window, rendered preview or application screenshot is verified. See [actual results and recovery steps](BUILD_WINDOWS.md). Resume this same task outside the restricted runner before WIN-LOG-001; no later task has begun.
 
 ## Subsequent queue
 

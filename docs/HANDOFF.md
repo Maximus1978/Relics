@@ -1,55 +1,48 @@
 # Project handoff
 
-Updated 2026-10-27. Task GIT-PUSH-001 is blocked on GitHub authentication. Scope: publish the existing local foundation to the owner's https://github.com/Maximus1978/Relics repository and verify the remote commit. No implementation or build task is active. Publication has not succeeded.
+Updated 2026-10-27. Last task: BUILD-WIN-001 — **BLOCKED**, not accepted as a successful Windows build. No later task has started.
 
-GIT-LOCAL-001 completed with commit 28a9291 on master. For GIT-PUSH-001, network permission was granted for this turn. A read-only remote check succeeded using Git's OpenSSL TLS backend and returned no refs. Preserve the existing local master branch; do not force-push or rewrite remote history.
+## Task scope and result
 
-origin is now configured as https://github.com/Maximus1978/Relics.git. The Windows Schannel TLS backend failed, while OpenSSL reached the remote. The configured credential helper encountered a Windows signal-pipe error. Direct Credential Manager access listed the saved Maximus1978 account, but an attempted push using its in-memory authentication header still requested authentication and failed with terminal prompts disabled. No credential value was printed or written to project files/config. Temporary authentication environment variables were cleared. The remote did not accept a push. Next prerequisite: refresh the owner's GitHub sign-in, then retry this same task with OpenSSL and verify the remote SHA. Do not move on to build work.
+The owner authorized dependency installation, existing tests/typecheck/frontend build, native Windows build/start, actual UI inspection/screenshot if possible, launch documentation, and non-force Git delivery. No feature, activity-rule, UI-design, Android, or secret-content change was authorized or made.
 
-## Local commit task
+Read [BUILD_WINDOWS.md](BUILD_WINDOWS.md) for the exact environment, command outcomes and ordinary Windows PowerShell recovery instructions.
 
-Include the existing foundation documents, source scaffold, migration, tests, public content metadata, and two supplied visual references. Verify the staged file list and ignore boundaries; exclude private content, local databases, dependency/build output, logs, and environment files. Preserve the existing local branch and Git author configuration. Record the resulting commit in the task report after creation. Do not start build verification or upload automatically.
+- Initial npm install succeeded and created package-lock.json. The JavaScript graph is locked; native Rust dependencies are not.
+- All three existing domain/real SQLite tests passed again.
+- TypeScript noEmit check passed after successful installation.
+- npm ci failed on esbuild postinstall child-process creation. A foreground retry after stopping the dev server failed with spawnSync node.exe EPERM.
+- Vite production build failed before module transformation in Windows realpath optimization: spawn EPERM. The Tauri build stopped in the same frontend hook; native compilation was not reached.
+- Cargo lockfile generation failed on crates.io TLS: Schannel SEC_E_NO_CREDENTIALS. No Cargo.lock was fabricated. CURL_SSL_BACKEND=openssl did not change Cargo's TLS backend.
+- Windows 11 build 22631, MSVC Build Tools 2022, WebView2 155.0.4283.62, Node 22.15.0/npm 10.9.2, Rust/Cargo 1.87 were detected. Current SQL plugin documentation requires Rust at least 1.90; no toolchain was upgraded or crate versions downgraded.
+- The Vite dev server reported ready, but browser navigation returned ERR_HTTP_RESPONSE_CODE_FAILURE. No rendered application UI or screenshot is verified. The temporary server was stopped.
+- A final dependency restore also failed on postinstall EPERM. Treat ignored node_modules as incomplete; run a fresh npm ci outside the restricted runner.
+- No native executable/window was produced. Overall result remains BLOCKED even though tests/typecheck passed.
 
-Verification on 2026-10-27: 38 staged files; staged whitespace check passed; excluded path checks and common credential-pattern scan passed. private/, databases, environment files, dependencies, and build output are not staged. All three existing Node/domain/SQLite tests passed again. No new application build claim is made. This snapshot remains on the existing master branch; the final task report identifies the commit and working-tree state.
+## Changes and verification boundary
 
-During the earlier local-only task, network access was restricted and no remote was configured. GIT-PUSH-001 subsequently configured origin and obtained network access, but authentication still blocks upload as described above.
+Changed deliverables: package-lock.json, README.md, docs/BUILD_WINDOWS.md, docs/HANDOFF.md, docs/ROADMAP.md. Product source, package.json dependency declarations, native source, database schema, artwork, and activity behavior are unchanged.
 
-Owner preference recorded after DOC-001: ask clarifying questions in advance whenever uncertainty affects the task, before deciding or performing dependent work. This rule is permanent in AGENTS.md. Recording this preference is complete; BUILD-WIN-001 has not started.
+Build logs/caches are workspace intermediates outside the repository. node_modules, dist, target, personal databases, logs, environment files and private/ are excluded from Git. No private catalog was read.
 
-## Completed foundation task: DOC-001
+## Git delivery
 
-Scope: reconcile product/architecture requirements, canonical documentation paths and language, record gaps, and enforce one task at a time. Runtime source, SQL, dependencies, and secret content are outside scope.
+The owner previously published 28a9291 and 9e7259e manually to master. At task start the tree was clean, master tracked origin/master, and a live remote check confirmed origin/master at 9e7259e2ab0ee763e73f1b6b2ea9b8be4ec8ab1e.
 
-Documentation now lives under docs/. DATA_MODEL.md, WORLD_PACKS.md, OPEN_QUESTIONS.md, TECHNOLOGY_FEASIBILITY.md and FOUNDATION_REVIEW.md were added. Resonance now means recent sphere energy and may fade without destroying earned achievements. Daily/Adventure modes, weighted contributions, schedules, habit restoration, unknown/rest/inactivity distinctions, auditable changes, JSON backup/restore, authored 2–3-element recipes and SVG/curated artwork are explicit requirements.
+The BUILD-WIN-001 report and npm lockfile are prepared for a descriptive local commit and safe non-force push to the existing origin. Push preflight failed with exit 128: Git's sh.exe could not create its signal pipe (Win32 error 5), so the configured credential helper could not supply authentication. A subsequent read-only remote check still returned 9e7259e2ab0ee763e73f1b6b2ea9b8be4ec8ab1e for master. Preserve the local commit; consult the final report/Git history for its SHA and final push result. The exact ordinary-PowerShell recovery command is in BUILD_WINDOWS.md. Never rewrite history or force-push.
 
-Verification passed: 14 required/index files present, 18 Markdown files checked, 24 local links resolve, both manifest reference targets exist, and no duplicate root specifications remain. Application source and migrations were not edited; behavioral tests/builds were not rerun for this documentation task. DOC-001 is closed. BUILD-WIN-001 remains queued and was not started.
+Documentation checks passed for 19 Markdown files and 28 local links. The npm lockfile format is v3 with 85 pinned version/integrity/resolved entries and root declarations matching package.json. No application dependency or product source declaration changed.
 
-## Preserved runtime state
+## Exactly one next action
 
-Local Git working directory; commit state is verifiable with git log/status. origin points to the owner's GitHub repository, but upload has not succeeded. Small React/TypeScript/Tauri 2 scaffold: three demo habits, one with two spheres; selected local day; idempotent habit/day insertion; SQLite journal; cancellation. Browser preview does not persist data.
+Resume BUILD-WIN-001 in ordinary Windows PowerShell with working child-process creation, crates.io TLS and a compatible Rust toolchain. Run clean npm install from the lock, tests/typecheck/frontend build, generate/review Cargo.lock, build/start Tauri, and inspect/capture the real Windows window. Further source/compiler issues may only become visible after these blockers are removed.
 
-Current gaps: unweighted arrays, no editable habit lifecycle/schedules, physical deletion without audit, no diary, day observations, backup/restore, progression, World Pack loader, recipe engine, or epoch transitions. Target models are documented, not implemented.
+WIN-LOG-001 is the next queued task only after Windows build/visual acceptance passes. Do not start activity acceptance, Android work, gameplay, backup, or another feature now.
 
-private/ remains an empty ignored slot. No actual secret catalog was available or imported. Both source concept images remain in visual-references/. Assistant replies in the old referenced conversation were inaccessible content references; no unknown content was reconstructed.
+## Persistent context
 
-## Previous verification evidence
+Read AGENTS.md, README.md and the relevant docs before changes. One task at a time. Ask clarifying questions before decisions/dependent work whenever uncertainty affects the task. Progress reports are Russian; technical documentation/identifiers are English.
 
-- Three Node tests passed for dates, local-day behavior, and real temporary SQLite with snapshots, deduplication, restart and cancellation. They do not exercise Tauri IPC.
-- Public manifest and image copies were checked; both copied images matched source SHA-256; private/ ignore rule was verified.
-- npm install failed with ENOTCACHED; expanded access was rejected by environment policy. No package-lock.json.
-- npm run build lacked TypeScript. No confirmed web or native build.
-- cargo fmt could not start cargo metadata: access denied. No Cargo.lock or Rust verification.
-- Node 22.15 single-process test isolation was used because the default runner could not spawn a child. SQLite/type stripping are experimental in that Node version.
-- No Windows or Android application smoke test was performed.
+DOC-001 consolidated the foundation under docs/, corrected recent Resonance semantics, and documented weights, schedules, audit history, World Packs, backup and optional game systems. These are requirements, not implemented features. Original concepts are unchanged visual references. Actual old assistant responses/secret recipes were unavailable and were not reconstructed.
 
-These are prior observations, not new build attempts during DOC-001. Official technology documentation was reviewed; platform runtime compatibility remains unproven.
-
-## Exactly one next queued task
-
-BUILD-WIN-001: verify a reproducible Windows scaffold build or identify one concrete blocker. Resolve dependencies/lockfiles, typecheck/build, then perform the minimum Windows Tauri build/start check if available. Fix only build-blocking issues. Record evidence and stop.
-
-Do not combine Android setup, logging acceptance, audit changes, backup, or game systems with this task. If blocked, record the blocker instead of switching to another feature. Android has its own later task.
-
-## Continue in another chat
-
-Open this repository as the workspace. Ask to read AGENTS.md, README.md, docs/HANDOFF.md and docs/ROADMAP.md, then perform only BUILD-WIN-001 with its acceptance boundary. Keep private/ closed and update the handoff afterward. Files, not chat history, are the persistent source of truth.
+The runtime remains three demo habits, including two spheres on one habit, dated idempotent logging, SQLite journal and physical cancellation. Browser preview has no persistence. Weights, editable habits/schedules, audit revisions, diary, day observations, backup, progression, world loader, discoveries and epoch switching remain unimplemented. private/ is an empty ignored authored-content slot; routine work must not access it.
