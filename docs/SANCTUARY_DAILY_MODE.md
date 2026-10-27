@@ -6,6 +6,14 @@ The owner accepted HABITS-001B; GitHub confirms PR #3 merged at 8fc41b39d433fd1c
 
 ## Visual language
 
+### Latest reference-driven SVG proposal (not final visual acceptance)
+
+The revision adds an original gothic landscape engraving, nine-slice engraved panel frames, fixed authored stone-grain/shrine artwork, more layered aged-metal settings, prongs, beveled facets and glass reflections. Assets under public/art are original authored SVG, not cropped prototype artwork, proprietary assets or secret content. The landscape is still vector illustration and does not establish parity with the painterly prototypes. Do not mark the visual task complete while the asset-format question is unanswered.
+
+[Windows run 40586705022](https://github.com/Maximus1978/Relics/actions/runs/40586705022) passed 25 tests, 35 browser checks including decorative image loading, TypeScript, Vite and native Tauri release compilation. Tested feature SHA: 857c9dcd5233c6ca17ee5e78354235dce0216553; PR merge source: 98e16b4d4fbbd11e79a61f62e038b747d53cd3eb. [SVG-proposal Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40586705022/artifacts/12772378768), 4,295,929 bytes, and [desktop/mobile/journal evidence](https://github.com/Maximus1978/Relics/actions/runs/40586705022/artifacts/12771686945) were downloaded/inspected. ZIP/EXE digests and source metadata were verified; no native launch against owner data occurred. ZIP SHA256: 367653de3d31d243daaf825dce7512be3d98ba2f5c3971ac90e5c1473e41a9a4. EXE SHA256: 25e36083851dbe299f759b788ba803aed87127bb500fea5d62ac4a264f875864. A subsequent documentation-only evidence commit leaves runtime source unchanged. Artifacts expire 2026-11-10.
+
+Local deliveries outside the repo: outputs/Relics-Sanctuary-reference-revision.png, Relics-Sanctuary-reference-revision-mobile.png and Relics-Sanctuary-UI-001-svg-revision-windows-x64.zip. This proposal is available for concrete comparison, not an assertion that the prototype quality has been reached. Original raster environment art remains an explicitly asked, unanswered format option; do not create it without that answer.
+
 Owner correction after the first visual delivery: the supplied desktop/mobile prototype screens are the quality bar for atmosphere and detail, not merely palette inspiration. The current flat cathedral, thin rings and gradient rectangles need revision. Judge actual rendered screens against layered gothic architecture, stone/aged-metal material, dimensional gemstone facets, engraved ornament, controlled cold ambient/warm candle lighting and integrated panel frames. Successful compilation does not establish this visual acceptance. Preserve usable Daily Mode and the unchanged data/gameplay scope; do not import prototype scores or inactive navigation. Asset-format clarification is pending because the original brief named CSS/authored SVG and painterly environmental detail may need original raster artwork.
 
 Original CSS/SVG artwork: charcoal stone, restrained antique metal, architectural Sanctuary illustration and faceted medallions. Georgia/system serif supplies display typography; Segoe UI/system sans supplies controls and Cyrillic UI. The design uses shipped CSS/SVG and installed system fonts, with no remote asset requests or new UI libraries/dependencies. No protected game assets are used.
@@ -39,7 +47,7 @@ Outside Tauri only, a dynamically imported in-memory fixture supplies explicitly
 
 The fixture implements the existing repository shape solely to exercise the same view/form callbacks. It reuses current validation, but is not a second persistent backend or a new domain service. Native methods and SQL remain unchanged.
 
-## Verification and delivery
+## Historical first delivery verification
 
 Local and Windows CI npm test: 25/25 passed, including all 23 existing SQLite/domain tests plus local-calendar Yesterday and isolated/resetting preview tests. [Windows CI run 40583750205](https://github.com/Maximus1978/Relics/actions/runs/40583750205) completed successfully: npm ci, tests, TypeScript, Vite, 34 browser checks, locked Cargo fetch, actual native Tauri release compilation and artifact upload. Node v22.23.4 and Rust/Cargo 1.99.1 were used.
 

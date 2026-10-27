@@ -21,6 +21,7 @@ Read README.md, docs/PRODUCT_VISION.md, docs/ROADMAP.md, docs/DECISIONS.md, and 
 - Distinguish implemented behavior from requirements and proposals. Never report an unverified build or an unimplemented feature as complete.
 - Maintain pure domain rules, deterministic calculations, versioned migrations/content, stable IDs, and minimal dependencies. Add tests with the relevant behavior; do not fabricate tests for absent systems.
 - Treat concept statistics, recipe examples, layouts, and feature promises as references. Do not reproduce proprietary Diablo artwork.
+- The owner's supplied prototype screens set the minimum visual target for atmosphere, material depth and authored detail. Compare actual renders with both references; a similar palette or a green build is not visual acceptance. Do not replace the intended rich environment with flat placeholders and call the design finished. Preserve quick, accessible Daily Mode while meeting that quality bar.
 
 ## Spoiler boundary
 
