@@ -1,6 +1,6 @@
 # Project handoff
 
-Updated 2026-10-27. SANCTUARY-UI-001 implementation/CI delivery is complete; owner/product visual acceptance is pending. [PR #4](https://github.com/Maximus1978/Relics/pull/4) remains open/unmerged. Do not merge automatically or start another task.
+Updated 2026-10-27. Active task: SANCTUARY-UI-001 visual revision in the existing [PR #4](https://github.com/Maximus1978/Relics/pull/4). The owner requests the atmosphere and detail of the supplied prototype screens or better. The first delivery's flat architecture, simple rings and panel gradients do not meet that visual target. Rework presentation only, compare actual screenshots with both references, rerun CI and supply a replacement executable. Prior verification/artifacts below describe the earlier presentation until replaced. Do not merge automatically or start another task.
 
 ## Verified baseline and scope
 

@@ -65,6 +65,7 @@ try {
   await viewport(1280, 1100);
   await send('Page.navigate', { url: 'http://127.0.0.1:1420' });
   await until('document.querySelectorAll(".habit-card").length === 6', 'Six explicitly synthetic preview habits render');
+  await until('[...document.images].every(image => image.complete && image.naturalWidth > 0)', 'Local decorative artwork loads successfully');
   await until('document.querySelector(".preview-notice").textContent.includes("не сохраняются")', 'Preview storage limitation is visible');
   assert.equal(await evaluate('document.querySelectorAll(".sphere-gallery .medallion").length'), 5);
   checks.push('Five distinct labeled sphere medallions render');

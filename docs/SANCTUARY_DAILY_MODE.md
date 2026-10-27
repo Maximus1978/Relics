@@ -6,6 +6,8 @@ The owner accepted HABITS-001B; GitHub confirms PR #3 merged at 8fc41b39d433fd1c
 
 ## Visual language
 
+Owner correction after the first visual delivery: the supplied desktop/mobile prototype screens are the quality bar for atmosphere and detail, not merely palette inspiration. The current flat cathedral, thin rings and gradient rectangles need revision. Judge actual rendered screens against layered gothic architecture, stone/aged-metal material, dimensional gemstone facets, engraved ornament, controlled cold ambient/warm candle lighting and integrated panel frames. Successful compilation does not establish this visual acceptance. Preserve usable Daily Mode and the unchanged data/gameplay scope; do not import prototype scores or inactive navigation. Asset-format clarification is pending because the original brief named CSS/authored SVG and painterly environmental detail may need original raster artwork.
+
 Original CSS/SVG artwork: charcoal stone, restrained antique metal, architectural Sanctuary illustration and faceted medallions. Georgia/system serif supplies display typography; Segoe UI/system sans supplies controls and Cyrillic UI. The design uses shipped CSS/SVG and installed system fonts, with no remote asset requests or new UI libraries/dependencies. No protected game assets are used.
 
 | Token / identity | Presentation |
