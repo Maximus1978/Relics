@@ -70,6 +70,12 @@ try {
   checks.push('Five distinct labeled sphere medallions render');
   await screenshot('sanctuary-desktop.png');
   await writeFile(join(output, 'rendered-dom.html'), await evaluate('document.documentElement.outerHTML'));
+  await viewport(1000, 800);
+  await evaluate('document.querySelector(".preview-notice").style.display = "none"');
+  assert.ok(await evaluate('document.querySelector(".habit-card").getBoundingClientRect().bottom <= 800'), 'First complete habit card fits the native-sized window without the demo-only banner');
+  checks.push('First habit card fits a 1000x800 window excluding demo-only banner');
+  await evaluate('document.querySelector(".preview-notice").style.display = ""');
+  await viewport(1280, 1100);
 
   await evaluate('document.activeElement.blur(); window.scrollTo(0, 0)');
   await press('Tab', 'Tab', 9);

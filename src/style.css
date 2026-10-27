@@ -34,7 +34,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 main { max-width: 1160px; margin: auto; padding: max(24px, env(safe-area-inset-top)) 32px max(32px, env(safe-area-inset-bottom)); }
 .skip-link { position: absolute; top: -100px; padding: 12px; z-index: 10; color: #171a17; background: var(--gold); border-radius: 4px; }
 .skip-link:focus { top: 12px; }
-.masthead { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 22px; margin-bottom: 26px; border-bottom: 1px solid #9c865d40; }
+.masthead { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid #9c865d40; }
 .brand { display: flex; gap: 13px; align-items: center; color: var(--gold); text-decoration: none; font-family: Georgia, serif; font-size: 1.7rem; text-transform: uppercase; letter-spacing: .18em; }
 .brand-mark { width: 34px; height: 42px; fill: none; stroke: #c9a76a; stroke-width: 1.2; }
 .brand-caption { display: block; margin-top: 5px; color: #b6ad99; font-family: "Segoe UI", system-ui, sans-serif; font-size: .56rem; letter-spacing: .2em; }
@@ -42,22 +42,22 @@ main { max-width: 1160px; margin: auto; padding: max(24px, env(safe-area-inset-t
 .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #9fb99c; }
 .preview-notice { display: flex; flex-wrap: wrap; gap: 5px 14px; margin: -8px 0 20px; padding: 10px 14px; border-left: 2px solid #a58c60; background: #b69a6010; color: #c6c2b5; font-size: .78rem; line-height: 1.6; }
 .preview-notice strong { color: var(--gold); font-weight: 500; }
-.hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1.05fr 1fr; min-height: 258px; overflow: hidden; border: 1px solid #a58c604d; border-radius: var(--radius); background: #101618; box-shadow: 0 16px 40px #0003, inset 0 0 0 4px #b69a6005; }
+.hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1.05fr 1fr; min-height: 175px; overflow: hidden; border: 1px solid #a58c604d; border-radius: var(--radius); background: #101618; box-shadow: 0 16px 40px #0003, inset 0 0 0 4px #b69a6005; }
 .hero::after { content: ""; position: absolute; inset: 7px; border: 1px solid #a58c601a; pointer-events: none; border-radius: 3px; }
-.hero-copy { padding: 35px 0 36px 35px; z-index: 1; }
+.hero-copy { padding: 22px 0 22px 28px; z-index: 1; }
 .eyebrow { display: flex; align-items: center; gap: 9px; font-size: .64rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
 .tiny-diamond { display: inline-block; width: 5px; height: 5px; border: 1px solid var(--gold-muted); transform: rotate(45deg); }
-h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.8rem, 5vw, 4.2rem); font-weight: 400; letter-spacing: -.025em; margin: 12px 0 10px; }
-.hero-copy p { font-size: 1.05rem; line-height: 1.5; color: #c9c7b9; margin-bottom: 17px; }
+h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.8rem, 5vw, 3.6rem); font-weight: 400; line-height: 1.05; letter-spacing: -.025em; margin: 8px 0; }
+.hero-copy p { font-size: .95rem; line-height: 1.5; color: #c9c7b9; margin-bottom: 12px; }
 .hero-copy em { font-style: normal; color: #e1d0ac; }
 .hero-note { font-size: .75rem; color: var(--muted); }
 .sanctuary-scene { position: absolute; right: -25px; bottom: 0; height: 100%; width: 64%; mask-image: linear-gradient(90deg, transparent, #000 21%, #000); }
 .hero-ornament { position: absolute; bottom: 0; left: calc(50% - 9px); color: var(--gold-muted); font-size: 18px; line-height: 15px; background: #101618; }
-.sphere-overview { margin: 27px 0 35px; }
+.sphere-overview { margin: 18px 0 24px; }
 .section-kicker { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
 .section-kicker h2 { font: 500 .69rem "Segoe UI", system-ui, sans-serif; text-transform: uppercase; letter-spacing: .17em; color: #c0b69d; margin-bottom: 10px; }
 .section-kicker > span { font-size: .73rem; color: var(--muted); }
-.sphere-gallery { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 12px 0 18px; border-bottom: 1px solid #9c865d40; }
+.sphere-gallery { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 4px 0 12px; border-bottom: 1px solid #9c865d40; }
 .sphere-gallery > li { display: flex; align-items: center; justify-content: center; gap: 3px; padding: 6px 3px; position: relative; min-width: 0; }
 .sphere-gallery > li + li { border-left: 1px solid #9c865d29; }
 .medallion { width: 76px; height: 76px; flex-shrink: 0; color: var(--sphere); }
@@ -69,7 +69,7 @@ h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.8rem, 5v
 [data-sphere="work"] { --sphere: #e2bd79; --sphere-dark: #493e27; }
 [data-sphere="recovery"] { --sphere: #93c9a8; --sphere-dark: #2a4337; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-.collection-heading { margin-bottom: 22px; }
+.collection-heading { margin-bottom: 14px; }
 .collection-heading .eyebrow { margin-bottom: 9px; }
 .collection-heading h2 { margin-bottom: 5px; }
 .collection-heading p { margin-bottom: 0; font-size: .8rem; }
@@ -77,14 +77,14 @@ h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.8rem, 5v
 .button-primary:hover:not(:disabled) { background: #e1c48c; border-color: #f7dda8; }
 .button-primary:disabled { background: #403e33; color: #c0baa9; border-color: #6e6550; }
 .button-primary > span { font-size: 1.25rem; line-height: 1; font-weight: 400; }
-.date-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 18px; padding: 14px 0; border-top: 1px solid #9c865d29; border-bottom: 1px solid #9c865d29; }
+.date-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 18px; padding: 10px 0; border-top: 1px solid #9c865d29; border-bottom: 1px solid #9c865d29; }
 .date-shortcuts { display: flex; padding: 3px; background: #0e1416; border: 1px solid #9c865d30; border-radius: 6px; }
 .date-shortcuts button { min-width: 84px; background: transparent; border-color: transparent; color: var(--muted); }
 .date-shortcuts button[aria-pressed="true"] { color: #edd7aa; background: #6f5f3d38; border-color: #9c865d60; }
 .date-picker { display: flex; align-items: center; gap: 10px; font-size: .78rem; color: var(--muted); }
 .date-picker input { max-width: 180px; border-color: #44473f; }
 .selected-date { margin: 0 0 0 auto; font-size: .75rem; text-transform: capitalize; }
-.list-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 12px 0 9px; }
+.list-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 6px 0 8px; }
 .list-heading h3 { margin: 0; color: #c8c5b7; font-size: .75rem; font-weight: 500; }
 .button-quiet { background: transparent; border-color: transparent; color: var(--muted); padding: 9px 6px; font-size: .75rem; }
 .button-quiet:hover:not(:disabled) { background: #9c865d14; border-color: transparent; color: var(--gold); }
@@ -150,8 +150,14 @@ footer { display: flex; align-items: center; justify-content: center; gap: 12px;
 footer p { margin: 0; color: #b2aa96; }
 footer > span:last-child { color: #a9ada2; margin-left: auto; }
 @media (max-width: 1000px) {
-  .sphere-gallery > li { flex-direction: column; text-align: center; gap: 1px; }
-  .selected-date { flex-basis: 100%; margin-left: 0; }
+  .hero { min-height: 160px; }
+  .hero-copy { padding-top: 16px; padding-bottom: 16px; }
+  .sphere-overview { margin: 14px 0 16px; }
+  .sphere-gallery > li { flex-direction: column; text-align: center; gap: 1px; padding-top: 2px; padding-bottom: 2px; }
+  .sphere-gallery .medallion { width: 48px; height: 48px; }
+  .sphere-gallery h3 { font-size: .9rem; }
+  .collection-heading p { display: none; }
+  .list-heading { margin: 4px 0; }
 }
 @media (max-width: 700px) {
   main { padding-left: 18px; padding-right: 18px; }
@@ -171,6 +177,7 @@ footer > span:last-child { color: #a9ada2; margin-left: auto; }
   .storage-note { max-width: 105px; font-size: .68rem; line-height: 1.5; }
   .collection-heading { align-items: flex-start; gap: 16px; }
   .date-toolbar { gap: 12px; }
+  .selected-date { flex-basis: 100%; margin-left: 0; }
   .date-picker { gap: 7px; flex-wrap: wrap; }
   .date-picker input { max-width: 172px; }
   .creation-form, .archive-confirmation { padding: 18px; }

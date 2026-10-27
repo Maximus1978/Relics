@@ -111,7 +111,7 @@ export default function App() {
     <section className="hero" aria-labelledby="sanctuary-title">
       <div className="hero-copy"><span className="eyebrow"><span className="tiny-diamond" />Первая эпоха · ваше убежище</span>
         <h1 id="sanctuary-title">Sanctuary</h1>
-        <p>Маленькие действия.<br /><em>Ваша большая история.</em></p>
+        <p>Маленькие действия. <em>Ваша большая история.</em></p>
         <span className="hero-note">Возвращайтесь в своём ритме. Здесь нет спешки.</span>
       </div>
       <SanctuaryScene />
@@ -125,7 +125,7 @@ export default function App() {
       </li>)}</ul>
     </section>
     <section className="daily-section" aria-labelledby="habits-title">
-      <div className="section-heading collection-heading"><div><span className="eyebrow">Ежедневный путь</span><h2 id="habits-title" tabIndex={-1}>Ваши привычки</h2>
+      <div className="section-heading collection-heading"><div><h2 id="habits-title" tabIndex={-1}>Ваши привычки</h2>
         <p>Выберите, чему хочется уделить внимание.</p></div>
         <button ref={addHabitButton} className="button-primary" type="button" disabled={busy || managingHabit || !repository}
           aria-expanded={creatingHabit} aria-controls="create-habit-panel"
