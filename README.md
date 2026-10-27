@@ -36,4 +36,4 @@ One task at a time: next queued task BUILD-WIN-001 verifies the Windows scaffold
 
 Each device has its own SQLite database; shared schema does not imply device synchronization. JSON backup/restore is required but not implemented. The scaffold is not ready for irreplaceable personal data.
 
-Images are preserved as art references, not runtime assets or final UX. private/ is an empty ignored slot for separately authorized content. No secret recipes have been invented or imported. This is a local Git working directory; see git history and [HANDOFF](docs/HANDOFF.md) for commit/publication status. The intended future remote is https://github.com/Maximus1978/Relics; no upload is implied.
+Images are preserved as art references, not runtime assets or final UX. private/ is an empty ignored slot for separately authorized content. No secret recipes have been invented or imported. This is a local Git working directory; see git history and [HANDOFF](docs/HANDOFF.md) for commit/publication status. origin is configured for https://github.com/Maximus1978/Relics, but upload is blocked on GitHub authentication.

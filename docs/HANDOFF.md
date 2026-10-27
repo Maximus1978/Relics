@@ -1,6 +1,10 @@
 # Project handoff
 
-Updated 2026-10-27. Task GIT-LOCAL-001: initial local snapshot prepared and verified for commit; consult Git history for its resulting commit ID. No network operation or GitHub upload is in scope for this task. No implementation task is active.
+Updated 2026-10-27. Task GIT-PUSH-001 is blocked on GitHub authentication. Scope: publish the existing local foundation to the owner's https://github.com/Maximus1978/Relics repository and verify the remote commit. No implementation or build task is active. Publication has not succeeded.
+
+GIT-LOCAL-001 completed with commit 28a9291 on master. For GIT-PUSH-001, network permission was granted for this turn. A read-only remote check succeeded using Git's OpenSSL TLS backend and returned no refs. Preserve the existing local master branch; do not force-push or rewrite remote history.
+
+origin is now configured as https://github.com/Maximus1978/Relics.git. The Windows Schannel TLS backend failed, while OpenSSL reached the remote. The configured credential helper encountered a Windows signal-pipe error. Direct Credential Manager access listed the saved Maximus1978 account, but an attempted push using its in-memory authentication header still requested authentication and failed with terminal prompts disabled. No credential value was printed or written to project files/config. Temporary authentication environment variables were cleared. The remote did not accept a push. Next prerequisite: refresh the owner's GitHub sign-in, then retry this same task with OpenSSL and verify the remote SHA. Do not move on to build work.
 
 ## Local commit task
 
@@ -8,7 +12,7 @@ Include the existing foundation documents, source scaffold, migration, tests, pu
 
 Verification on 2026-10-27: 38 staged files; staged whitespace check passed; excluded path checks and common credential-pattern scan passed. private/, databases, environment files, dependencies, and build output are not staged. All three existing Node/domain/SQLite tests passed again. No new application build claim is made. This snapshot remains on the existing master branch; the final task report identifies the commit and working-tree state.
 
-The owner supplied https://github.com/Maximus1978/Relics as the intended future remote. The previous read-only connection attempt failed due to restricted network access; expanded-access execution was rejected by environment policy. No upload occurred and no remote is configured locally. This local-only task does not retry that operation.
+During the earlier local-only task, network access was restricted and no remote was configured. GIT-PUSH-001 subsequently configured origin and obtained network access, but authentication still blocks upload as described above.
 
 Owner preference recorded after DOC-001: ask clarifying questions in advance whenever uncertainty affects the task, before deciding or performing dependent work. This rule is permanent in AGENTS.md. Recording this preference is complete; BUILD-WIN-001 has not started.
 
@@ -22,7 +26,7 @@ Verification passed: 14 required/index files present, 18 Markdown files checked,
 
 ## Preserved runtime state
 
-Local Git working directory; commit state is verifiable with git log/status. No remote is configured. Small React/TypeScript/Tauri 2 scaffold: three demo habits, one with two spheres; selected local day; idempotent habit/day insertion; SQLite journal; cancellation. Browser preview does not persist data.
+Local Git working directory; commit state is verifiable with git log/status. origin points to the owner's GitHub repository, but upload has not succeeded. Small React/TypeScript/Tauri 2 scaffold: three demo habits, one with two spheres; selected local day; idempotent habit/day insertion; SQLite journal; cancellation. Browser preview does not persist data.
 
 Current gaps: unweighted arrays, no editable habit lifecycle/schedules, physical deletion without audit, no diary, day observations, backup/restore, progression, World Pack loader, recipe engine, or epoch transitions. Target models are documented, not implemented.
 
