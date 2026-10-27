@@ -1,6 +1,6 @@
 # Windows CI build
 
-BUILD-WIN-001 recovery moves compilation to GitHub-hosted Windows. First run 40540560435 passed all frontend checks and browser rendering, then exposed the scaffold's missing required Windows icon. Transparent technical icon placeholders address only that compilation defect. The corrected workflow is being verified; no successful native result is claimed yet.
+BUILD-WIN-001 recovery moves compilation to GitHub-hosted Windows. First run 40540560435 exposed missing required Windows icons; run 40543659592 passed that stage and exposed a missing direct serde_json dependency required by tauri::generate_context!. Transparent technical icon placeholders and the required dependency address only these confirmed compilation defects. Both runs passed frontend checks and browser rendering. The corrected native build is being verified; no successful native result is claimed yet.
 
 ## Workflow and permissions
 
@@ -17,7 +17,7 @@ The workflow token has contents:read only; checkout does not persist credentials
 5. Actual Tauri release compilation with bundling disabled and Cargo --locked.
 6. Package/upload the executable, both dependency locks, build metadata, and executable SHA-256.
 
-If Cargo.lock is not yet committed, the run bootstraps it and includes the exact generated file in a separate native-lock artifact and the successful build artifact. Later reproducibility should use that reviewed lockfile. Node/Rust are pinned; the windows-latest runner image still evolves, and actual toolchain versions/source SHA are recorded in build-info.json. The workflow never writes locks back to the repository or gives itself repository-write access.
+Cargo.lock was recovered from run 40543659592's native-lock artifact, verified byte for byte, and then updated only to register the now-required direct serde_json dependency already present transitively in that generated graph. Existing crate versions/checksums were preserved. CI validates the committed graph with cargo fetch --locked and builds with --locked. If the lock is ever absent, the workflow bootstraps and preserves it as an artifact. Node/Rust are pinned; the windows-latest runner image still evolves. Actual versions/source SHA are recorded in build-info.json. The workflow never writes locks back to the repository or gives itself repository-write access.
 
 ## Obtain the application without local compilation
 
