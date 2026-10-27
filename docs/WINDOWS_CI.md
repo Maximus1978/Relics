@@ -47,6 +47,6 @@ CI recovery passes only after a real run reports successful tests/frontend/nativ
 
 Two earlier runs document confirmed scaffold defects: [run 1](https://github.com/Maximus1978/Relics/actions/runs/40540560435) failed for missing required icon.ico; [run 2](https://github.com/Maximus1978/Relics/actions/runs/40543659592) passed icons and failed for missing direct serde_json. Only transparent build resources and that required dependency were added; no app behavior or design changed.
 
-[PR #1](https://github.com/Maximus1978/Relics/pull/1) remains open for review; master has not been modified. Merge the PR to make master push/manual triggers available on the default branch. Final evidence-only documentation may be committed with [skip ci]; the tested executable/workflow source remains the exact head SHA above. Such a report commit does not imply a newly compiled binary.
+[PR #1](https://github.com/Maximus1978/Relics/pull/1) was merged into master at ae7c71db54a12583fd9a0e995fb461ca6635846e on the owner's explicit instruction. Master push/manual workflow triggers are now on the default branch. Final evidence-only documentation may be committed with [skip ci]; the tested executable/workflow source remains the exact head SHA above. Such a report commit does not imply a newly compiled binary.
 
 The next recommended verification is to download/extract the ZIP and launch relics.exe on Windows to inspect the native UI. No local compilation, product development, or further task was started.

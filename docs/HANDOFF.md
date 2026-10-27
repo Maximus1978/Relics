@@ -4,7 +4,7 @@ Updated 2026-10-27. BUILD-WIN-001 Recovery: **PASS for GitHub-hosted CI compilat
 
 ## Verified delivery
 
-- [PR #1](https://github.com/Maximus1978/Relics/pull/1), branch ci/windows-build. It remains open for review; master is unchanged.
+- [PR #1](https://github.com/Maximus1978/Relics/pull/1) was merged into master at ae7c71db54a12583fd9a0e995fb461ca6635846e on the owner's explicit instruction. The merge retains both parents and all original commits.
 - [Successful Actions run 40544697531](https://github.com/Maximus1978/Relics/actions/runs/40544697531), state completed / success.
 - Tested PR head 24d5f5bb670e417bcaabfbe1d41fc6f12acfad66; tested PR merge source cfdffaf4e91e84074af3361eb191fcdb90d8a4d5.
 - npm ci, all three existing tests, TypeScript, Vite, browser rendering, cargo fetch --locked, Tauri release compilation and Windows artifact upload passed.
@@ -28,9 +28,9 @@ Run 1 exposed missing required Windows icons; transparent 32x32 build-only PNG/I
 
 All executable/workflow changes were published via the GitHub repository integration using forward-only commits with expected-parent checks. No restricted credential-helper retries, force pushes, resets or history rewrites were used.
 
-The local workspace tracks ci/windows-build. The original master baseline is 3e93834babd6b4d1650be2cfe4c74d5b6f640542. Evidence-only documentation after the successful run may be committed with [skip ci] to avoid rebuilding an unchanged executable. That documentation commit is distinct from the tested build head above; it does not alter source, locks, toolchain pins, scripts or workflow.
+The local workspace now tracks master. The original master baseline is 3e93834babd6b4d1650be2cfe4c74d5b6f640542. Evidence-only documentation after the successful run may be committed with [skip ci] to avoid rebuilding an unchanged executable. That documentation commit is distinct from the tested build head above; it does not alter source, locks, toolchain pins, scripts or workflow.
 
-Review/merge PR #1 to enable master/manual triggers on the default branch. The PR's existing run/artifacts are already usable before merge. No automatic merge was performed.
+The owner subsequently authorized merging PR #1; it is merged and master/manual triggers are enabled. Existing successful PR artifacts remain usable. The new merge-push CI run is separate from the already-passed PR run; no new success is inferred merely from merging.
 
 ## Remaining verification and next step
 
@@ -41,3 +41,7 @@ CI compilation is accepted; native runtime is not. Next recommended task: launch
 The earlier local attempt was blocked by npm child-process EPERM, Cargo Schannel TLS and credential-helper invocation restrictions. [BUILD_WINDOWS.md](BUILD_WINDOWS.md) preserves those diagnostics and optional developer commands; they are no longer required owner steps for obtaining a build.
 
 The persistent vision and scope remain in PRODUCT_VISION.md, GAME_DESIGN.md and UX_PRINCIPLES.md. One task at a time; ask clarifying questions before uncertain decisions/dependent work. Communicate in Russian, keep technical documentation/identifiers English. private/ remains outside ordinary context and Git. No secret catalog was read.
+
+## Merge task completed
+
+The owner's only requested action was to merge into master and await the next task. This was performed using a normal GitHub merge with an expected-head check, without force-push, reset, squash or history rewriting. Local master was fast-forwarded to the merge. A documentation-only follow-up records publication status and does not change the executable/workflow. Merge-push CI: [run 40560242072](https://github.com/Maximus1978/Relics/actions/runs/40560242072), in_progress at this update; the prior PR run remains the verified PASS. No further verification or implementation task was started; await the owner's next instruction.
