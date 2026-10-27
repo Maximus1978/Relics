@@ -42,7 +42,7 @@ async function until(expression, description) {
   throw new Error(`Browser check failed: ${description}`);
 }
 async function press(key, code, virtualKey) {
-  await send('Input.dispatchKeyEvent', { type: 'keyDown', key, code, windowsVirtualKeyCode: virtualKey });
+  await send('Input.dispatchKeyEvent', { type: 'keyDown', key, code, windowsVirtualKeyCode: virtualKey, ...(key === 'Enter' ? { text: '\r', unmodifiedText: '\r' } : {}) });
   await send('Input.dispatchKeyEvent', { type: 'keyUp', key, code, windowsVirtualKeyCode: virtualKey });
 }
 async function click(selector) {
@@ -150,4 +150,10 @@ try {
   assert.deepEqual(runtimeErrors, []);
   await writeFile(join(output, 'result.json'), JSON.stringify({ browserRendering: 'passed', interactionChecks: checks, runtimeErrors, nativeUiRuntimeVerified: false, storage: 'Synthetic in-memory demonstration; resets on reload' }, null, 2));
   console.log(`Sanctuary browser verification passed: ${checks.length} checks. Native runtime remains unverified.`);
+} catch (failure) {
+  await screenshot('failure.png').catch(() => {});
+  await writeFile(join(output, 'failure-dom.html'), await evaluate('document.documentElement.outerHTML')).catch(() => {});
+  await writeFile(join(output, 'failure.json'), JSON.stringify({ message: failure.message, checks, runtimeErrors, focus: await evaluate('document.activeElement.outerHTML') }, null, 2)).catch(() => {});
+  throw failure;
 } finally { socket.close(); }
+
