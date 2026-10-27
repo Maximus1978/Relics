@@ -1,5 +1,11 @@
 # Windows build and visual preview
 
+## GitHub-hosted recovery
+
+The preferred build path is now [Windows CI](WINDOWS_CI.md), proposed in [PR #1](https://github.com/Maximus1978/Relics/pull/1). The owner does not need to repair the local Codex runner or compile the application manually. The first real [Actions run](https://github.com/Maximus1978/Relics/actions/runs/40540560435) has passed npm ci, all existing tests, TypeScript, Vite and browser rendering; native compilation is still in progress at this documentation update. Consult WINDOWS_CI.md/HANDOFF.md for the final verified status and artifact links.
+
+The sections below retain the previous local-runner failure evidence and optional developer commands. They are not a requirement for obtaining the CI artifact and do not describe CI failures.
+
 Task BUILD-WIN-001, checked 2026-10-27. Overall status: **BLOCKED**. The native Windows application has not been built, launched, or visually verified. A frontend typecheck is not native acceptance.
 
 ## Verified environment

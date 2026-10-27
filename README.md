@@ -15,11 +15,11 @@ A personal life-balance application with authored RPG exploration. Offline first
 
 Documentation has been reconciled with the supplied foundation brief. Source remains a small scaffold: three demo habits, date selection, idempotent daily logging, journal, and cancellation through a SQLite adapter. One habit covers two spheres. Browser preview explicitly does not persist records. Native Windows launch and visual rendering are still unverified.
 
-BUILD-WIN-001 is BLOCKED by execution-environment restrictions. npm installation succeeded initially and package-lock.json now locks JavaScript dependencies. The three existing tests and TypeScript check passed. Clean reinstall, Vite build, Cargo dependency resolution and native launch did not pass verification; Cargo.lock is still absent. The ignored dependency tree needs a clean npm ci outside this runner. See the [Windows build report and exact launch instructions](docs/BUILD_WINDOWS.md). Audit revisions, schedules, weights, backup/restore, progression, and gameplay remain future work.
+BUILD-WIN-001 recovery uses [GitHub-hosted Windows CI](docs/WINDOWS_CI.md), not manual local environment repair. [PR #1](https://github.com/Maximus1978/Relics/pull/1) adds the workflow. Its first run passed npm ci, all three tests, TypeScript, Vite and browser rendering; native compilation is still being verified. Downloadable application artifacts are claimed only after native success. The JavaScript graph is locked; CI generates the missing native lockfile and retains it with the build. Native UI runtime verification remains pending. Audit revisions, schedules, weights, backup/restore, progression, and gameplay remain future work.
 
 ## Development commands
 
-Run in ordinary Windows PowerShell from this repository, after checking the prerequisites in the Windows build guide:
+The owner can obtain the application through Actions artifacts once CI succeeds; see [artifact retrieval](docs/WINDOWS_CI.md). The following commands are optional developer instructions for ordinary Windows PowerShell, not required user setup:
 
 ```sh
 npm.cmd ci

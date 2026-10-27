@@ -2,7 +2,7 @@
 
 Updated 2026-10-27. Active task: BUILD-WIN-001 Recovery — establish and actually verify a GitHub-hosted Windows CI build, using the repository integration and PR workflow. Infrastructure only; no product/Android/private-content work. Do not retry the restricted local Git credential helper.
 
-Read [WINDOWS_CI.md](WINDOWS_CI.md) for the workflow plan and artifact retrieval. Current recovery status: workflow prepared locally; CI execution and artifacts not yet verified. The local master and remote master started this task at 3e93834babd6b4d1650be2cfe4c74d5b6f640542. Preserve that history. The previous local-runner blockers below remain historical evidence.
+Read [WINDOWS_CI.md](WINDOWS_CI.md) for the workflow and artifact retrieval. The integration published commit 744aa07c1afcfd34a5dfd810d308e430c835982a on ci/windows-build and opened [PR #1](https://github.com/Maximus1978/Relics/pull/1), without changing master. [Run 40540560435](https://github.com/Maximus1978/Relics/actions/runs/40540560435) passed npm ci, all three tests, TypeScript, Vite, and headless Edge rendering. Browser artifact 12750141800 exists; the inspected screenshot shows the existing Sanctuary tracker. The first native compilation failed because src-tauri/icons/icon.ico was missing. Transparent 32x32 build-only placeholders address that confirmed blocker; the corrected workflow still needs a successful rerun. The local/remote master started at 3e93834babd6b4d1650be2cfe4c74d5b6f640542; preserve that history. The previous local-runner blockers below are historical evidence.
 
 ## Task scope and result
 
