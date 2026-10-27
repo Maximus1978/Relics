@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main-local",
+  "description": "Local main window and SQLite activity journal",
+  "windows": ["main"],
+  "permissions": ["core:default", "sql:default", "sql:allow-execute"]
+}

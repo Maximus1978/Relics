@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "sanctuary",
+  "contentVersion": "0.1.0",
+  "status": "scaffold",
+  "title": "Sanctuary",
+  "locale": "ru",
+  "genre": "dark-fantasy",
+  "premise": "Святилище растёт вместе с реальными действиями и поддерживает жизненный баланс.",
+  "spheres": [
+    { "id": "body", "label": "Тело", "iconStyle": "line" },
+    { "id": "mind", "label": "Разум", "iconStyle": "line" },
+    { "id": "relationships", "label": "Отношения", "iconStyle": "line" },
+    { "id": "work", "label": "Дело", "iconStyle": "line" },
+    { "id": "recovery", "label": "Восстановление", "iconStyle": "line" }
+  ],
+  "progression": { "mastery": "design-pending", "resonance": "design-pending", "harmony": "design-pending" },
+  "epochTransition": "voluntary",
+  "preserve": ["museum", "lifetime-journal"],
+  "optionalFeatures": ["microquests", "diary", "alchemy"],
+  "catalog": { "kind": "finite-authored", "availability": "not-imported", "publicEntries": [] },
+  "visualReferences": [
+    "docs/visual-references/sanctuary-windows.png",
+    "docs/visual-references/sanctuary-android.png"
+  ],
+  "assets": [],
+  "notes": "Референсы не являются финальным UX. Условия открытия и секретные названия сюда не добавлять."
+}
