@@ -17,6 +17,12 @@ An index orders activities by day/time. Calendar validity and future-date reject
 
 One INSERT is atomic. Duplicate habit/day insertion does nothing. Demo habits use INSERT OR IGNORE. Snapshot fields preserve past meaning when habit definitions change. Cancellation currently deletes an activity; this is insufficient for audit and synchronization.
 
+## HABITS-001A additions
+
+The repository now creates habits with a UUID, trimmed nonempty name and one or more canonical sphere IDs, and lists persisted habits by SQLite rowid insertion order. The UI loads that list instead of rendering a hardcoded array. Sphere sets are unweighted and stored in the existing JSON column; no schema change or rewrite of migration 1 is needed. Names remain non-unique display values.
+
+Startup inserts only missing sample IDs and never updates definitions. Tests use the same repository methods/queries with a real Node SQLite adapter, including reopen compatibility with legacy activity rows. [HABITS_001A.md](HABITS_001A.md) records behavior, coverage and the native acceptance boundary.
+
 ## Required model evolution, not implemented
 
 | Entity / type | Responsibility |

@@ -20,6 +20,8 @@ The local attempt was BLOCKED by EPERM/TLS restrictions. GitHub-hosted recovery 
 
 ## Subsequent queue
 
+HABITS-001A is now the single active owner-authorized task: create habits with one/multiple canonical spheres and load them from SQLite. Existing schema, sample IDs and activity snapshots remain intact. Local tests: 12 passed; Windows CI and delivery are pending. The owner has separately confirmed baseline native launch and offline persistence of October 26/27 records. This does not authorize the remaining HABITS-001 lifecycle features. See [task contract](HABITS_001A.md).
+
 | Order | Task | Acceptance focus |
 | --- | --- | --- |
 | 1 | WIN-LOG-001 | Offline logging/backdating, duplicate protection, restart persistence and cancellation in Windows |

@@ -1,28 +1,42 @@
 import { useEffect, useRef, useState } from 'react';
 import { isTauri } from '@tauri-apps/api/core';
-import { localDay, sampleHabits, spheres, type Activity, type Habit } from './domain/activity';
+import { localDay, spheres, type Activity, type Habit } from './domain/activity';
 import { openActivityRepository } from './data/activityRepository';
+import AddHabitForm from './components/AddHabitForm';
+import SphereIcon from './components/SphereIcon';
+import type { HabitInput } from './domain/habit';
 
 type Repository = Awaited<ReturnType<typeof openActivityRepository>>;
 
 export default function App() {
   const [day, setDay] = useState(localDay);
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [habits, setHabits] = useState<Habit[]>([]);
+  const [creatingHabit, setCreatingHabit] = useState(false);
   const [repository, setRepository] = useState<Repository | null>(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const actionLock = useRef(false);
+  const addHabitButton = useRef<HTMLButtonElement>(null);
+  const returnFocus = useRef(false);
 
   useEffect(() => {
     if (!isTauri()) return;
     let active = true;
     openActivityRepository().then(async store => {
-      const entries = await store.list();
-      if (active) { setActivities(entries); setRepository(store); }
+      const [entries, savedHabits] = await Promise.all([store.list(), store.listHabits()]);
+      if (active) { setActivities(entries); setHabits(savedHabits); setRepository(store); }
     }).catch(() => { if (active) setError('Не удалось открыть локальную базу. Перезапустите приложение, чтобы повторить.'); });
     return () => { active = false; };
   }, []);
+
+  useEffect(() => {
+    if (!creatingHabit && !busy && returnFocus.current) {
+      addHabitButton.current?.focus();
+      returnFocus.current = false;
+    }
+  }, [creatingHabit, busy]);
 
   async function perform(action: (store: Repository) => Promise<void>, success: string) {
     if (!repository || actionLock.current) return;
@@ -46,18 +60,32 @@ export default function App() {
     void perform(store => store.log(habit, day), 'Отметка сохранена на выбранную дату.');
   }
 
+  async function createHabit(input: HabitInput) {
+    await perform(async store => {
+      const habit = await store.createHabit(input.name, input.spheres);
+      setHabits(current => [...current, habit]);
+      setCreatingHabit(false);
+    }, 'Привычка сохранена.');
+  }
+
   return <main>
     <header><span className="eyebrow">RELICS · первая эпоха</span><h1>Sanctuary</h1>
       <p>Небольшие действия оставляют след. Возвращайтесь в своём ритме.</p></header>
     {!isTauri() && <p role="status">Просмотр каркаса. Локальное сохранение доступно в приложении Windows или Android.</p>}
     <section aria-labelledby="habits-title">
-      <h2 id="habits-title">Отметить действие</h2>
+      <div className="section-heading"><h2 id="habits-title">Отметить действие</h2>
+        <button ref={addHabitButton} type="button" disabled={busy || creatingHabit || (isTauri() && !repository)}
+          aria-expanded={creatingHabit} aria-controls="create-habit-panel"
+          onClick={() => { setError(''); setMessage(''); returnFocus.current = true; setCreatingHabit(true); }}>+ Добавить привычку</button></div>
+      {creatingHabit && <div id="create-habit-panel"><AddHabitForm busy={busy} canSave={!!repository}
+        onSave={createHabit} onCancel={() => { setCreatingHabit(false); setError(''); }} /></div>}
       <label>Дата <input type="date" value={day} max={localDay()} disabled={busy}
         onChange={event => setDay(event.target.value)} /></label>
-      <ul className="habits">{sampleHabits.map(habit => {
+      {!isTauri() && <p>В браузерном просмотре привычки из SQLite не загружаются. Можно посмотреть форму создания; сохранение доступно в приложении.</p>}
+      <ul className="habits">{habits.map(habit => {
         const done = activities.some(entry => entry.habitId === habit.id && entry.occurredOn === day);
         return <li key={habit.id}><div><strong>{habit.name}</strong>
-          <p>{habit.spheres.map(sphere => spheres[sphere]).join(' · ')}</p></div>
+          <p className="sphere-tags">{habit.spheres.map(sphere => <span key={sphere}><SphereIcon sphere={sphere} />{spheres[sphere]}</span>)}</p></div>
           <button disabled={!repository || busy || done} onClick={() => log(habit)}
             aria-label={`${done ? 'Отмечено' : 'Отметить'}: ${habit.name}`}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" />

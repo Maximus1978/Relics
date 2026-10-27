@@ -31,5 +31,6 @@ Updated 2026-10-26. `accepted`: owner requirement; `provisional`: reversible sca
 | D025 | accepted | Communicate progress in Russian; English identifiers and technical documentation; Russian localized UI may remain. Canonical specification lives under docs/. |
 | D026 | accepted | One task at a time. No automatic next task, parallel feature work, or replacement work after a blocker. |
 | D027 | provisional | BUILD-WIN-001 recovery uses read-only GitHub-hosted Windows CI and a reviewable PR; Node 22.23.4/Rust 1.99.1 pin versions observed on the first run. Native build success does not imply native UI runtime acceptance. |
+| D028 | accepted | HABITS-001A creates habits with unweighted canonical sphere sets using the existing SQLite schema. Preserve migration 1, sample IDs, one completion per habit/day and activity snapshots; defer editing/archive/schedules/weights. |
 
 D020–D026 record the supplied “RELICS — Project Foundation & Architecture” brief and the owner's one-task instruction. Existing source and migration remain unchanged during DOC-001. Previously recorded platform/dependency blockers remain historical facts, not freshly verified failures.

@@ -1,5 +1,12 @@
-import Database from '@tauri-apps/plugin-sql';
-import { sampleHabits, validateDay, type Activity, type Habit, type SphereId } from '../domain/activity';
+import { sampleHabits, validateDay, type Activity, type Habit, type SphereId } from '../domain/activity.ts';
+import { validateHabitInput } from '../domain/habit.ts';
+
+export type SqlDatabase = {
+  execute(query: string, values?: unknown[]): Promise<{ rowsAffected: number }>;
+  select<Result>(query: string, values?: unknown[]): Promise<Result>;
+};
+
+type HabitRow = { id: string; name: string; spheres_json: string };
 
 type ActivityRow = {
   id: string;
@@ -11,8 +18,8 @@ type ActivityRow = {
   timezone: string;
 };
 
-export async function openActivityRepository() {
-  const database = await Database.load('sqlite:relics.db');
+export async function openActivityRepository(connection?: SqlDatabase) {
+  const database = connection ?? await (await import('@tauri-apps/plugin-sql')).default.load('sqlite:relics.db');
   for (const habit of sampleHabits) {
     await database.execute(
       'INSERT OR IGNORE INTO habits (id, name, spheres_json) VALUES ($1, $2, $3)',
@@ -20,6 +27,21 @@ export async function openActivityRepository() {
     );
   }
   return {
+    async listHabits(): Promise<Habit[]> {
+      const rows = await database.select<HabitRow[]>(
+        'SELECT id, name, spheres_json FROM habits ORDER BY rowid',
+      );
+      return rows.map(row => ({ id: row.id, name: row.name, spheres: JSON.parse(row.spheres_json) as SphereId[] }));
+    },
+    async createHabit(name: string, selectedSpheres: readonly string[]): Promise<Habit> {
+      const input = validateHabitInput(name, selectedSpheres);
+      const habit: Habit = { id: crypto.randomUUID(), ...input };
+      await database.execute(
+        'INSERT INTO habits (id, name, spheres_json) VALUES ($1, $2, $3)',
+        [habit.id, habit.name, JSON.stringify(habit.spheres)],
+      );
+      return habit;
+    },
     async list(): Promise<Activity[]> {
       const rows = await database.select<ActivityRow[]>(
         'SELECT * FROM activities ORDER BY occurred_on DESC, recorded_at DESC, id DESC',

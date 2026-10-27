@@ -1,6 +1,8 @@
 # Project handoff
 
-Updated 2026-10-27. BUILD-WIN-001 Recovery: **PASS for GitHub-hosted CI compilation/artifact delivery**. Native Windows UI runtime verification remains pending. No further task has started.
+Updated 2026-10-27. Active task: HABITS-001A — create named habits with one or more canonical spheres, load habits from SQLite, retain sample habits and existing activity snapshots, and verify through tests plus the existing Windows CI pipeline. No editing, deletion, scheduling, weights, game systems or Android work is in scope. Stop after this task.
+
+Owner-reported baseline verification: the owner launched the Windows application, closed it, restarted offline, and confirmed activity records for October 26 and 27, 2026 remained. This is trusted owner feedback about the integrated foundation, not an automated verification of the new habit form. Work starts from master 688ce28a306e754eda0c9f1c8f6d7c012b0379cb. The existing habits table already supports this task, so migration 1 and all existing records must remain unchanged.
 
 ## Verified delivery
 
