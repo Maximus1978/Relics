@@ -66,6 +66,7 @@ try {
   await send('Page.navigate', { url: 'http://127.0.0.1:1420' });
   await until('document.querySelectorAll(".habit-card").length === 6', 'Six explicitly synthetic preview habits render');
   await until('[...document.images].every(image => image.complete && image.naturalWidth > 0)', 'Local decorative artwork loads successfully');
+  await until('document.querySelectorAll(".sanctuary-scene").length === 1 && document.querySelector(".sanctuary-scene").naturalWidth >= 1500 && new URL(document.querySelector(".sanctuary-scene").src).origin === location.origin', 'One high-resolution environment is bundled locally without duplicated scenes');
   await until('document.querySelector(".preview-notice").textContent.includes("не сохраняются")', 'Preview storage limitation is visible');
   assert.equal(await evaluate('document.querySelectorAll(".sphere-gallery .medallion").length'), 5);
   checks.push('Five distinct labeled sphere medallions render');
@@ -76,6 +77,7 @@ try {
   assert.ok(await evaluate('document.querySelector(".habit-card").getBoundingClientRect().bottom <= 800'), 'First complete habit card fits the native-sized window without the demo-only banner');
   checks.push('First habit card fits a 1000x800 window excluding demo-only banner');
   await evaluate('document.querySelector(".preview-notice").style.display = ""');
+  await screenshot('sanctuary-desktop-1000.png');
   await viewport(1280, 1100);
 
   await evaluate('document.activeElement.blur(); window.scrollTo(0, 0)');

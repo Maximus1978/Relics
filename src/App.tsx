@@ -97,6 +97,7 @@ export default function App() {
   }
 
   return <main id="main-content">
+    <SanctuaryScene />
     <a className="skip-link" href="#habits-title">Перейти к привычкам</a>
     <header className="masthead">
       <a className="brand" href="#main-content" aria-label="Relics — начало страницы">
@@ -114,7 +115,6 @@ export default function App() {
         <p>Маленькие действия. <em>Ваша большая история.</em></p>
         <span className="hero-note">Возвращайтесь в своём ритме. Здесь нет спешки.</span>
       </div>
-      <SanctuaryScene />
       <span className="hero-ornament" aria-hidden="true">◇</span>
     </section>
     <section className="sphere-overview" aria-labelledby="spheres-title">

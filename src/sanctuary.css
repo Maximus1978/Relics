@@ -1,11 +1,11 @@
 body {
   background-color: #080d10;
-  background-image: linear-gradient(180deg, #080d1055, #080d10ee 660px, #080d10 1000px), url('/art/sanctuary-engraving.svg');
-  background-position: center top;
-  background-size: auto, max(1280px, 100vw) auto;
-  background-repeat: no-repeat;
+  background-image: url('/art/stone-grain.svg'), radial-gradient(ellipse at 50% 10%, #263139, #080d10 70%);
 }
-main { position: relative; }
+main { position: relative; isolation: isolate; }
+.sanctuary-environment { position: absolute; z-index: -1; pointer-events: none; top: 0; left: 0; width: 100%; height: 700px; overflow: hidden; mask-image: linear-gradient(#000 0%, #000 58%, transparent 100%); }
+.sanctuary-environment::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #050b10b8, #050b1040 54%, #050b1033), linear-gradient(#050b1033, #050b1000 42%, #050b10dd); }
+.sanctuary-environment .sanctuary-scene { display: block; position: static; width: 100%; height: 100%; object-fit: cover; object-position: 66% 32%; mask-image: none; opacity: 1; }
 .masthead { border-bottom-color: #aa8c545e; box-shadow: 0 1px 0 #000, 0 2px 0 #d1b0760c; }
 .brand { color: #eed3a2; text-shadow: 0 1px 0 #fff2, 0 3px 6px #000, 0 0 22px #c99a4c35; }
 .brand-mark { stroke: #d8b578; filter: drop-shadow(0 2px 1px #000); }
@@ -14,14 +14,13 @@ main { position: relative; }
   border-image: url('/art/panel-frame.svg') 24 / 13px / 0 stretch;
   border-radius: 0;
 }
-.hero { background: #0b1115bb; box-shadow: 0 12px 40px #0007, inset 0 0 35px #0006; }
-.sanctuary-scene { width: 100%; height: 100%; right: 0; object-fit: cover; object-position: 70% 49%; mask-image: linear-gradient(90deg, transparent 23%, #0009 48%, #000); opacity: 1; }
+.hero { background: linear-gradient(90deg, #070d11b8, #0b11153b 52%, #0b111508); box-shadow: 0 12px 40px #0004, inset 0 0 35px #0003; }
 .hero::after { inset: 9px; border-color: #bda16d35; border-radius: 0; }
 .hero-copy { text-shadow: 0 2px 3px #000, 0 0 20px #000; }
 .hero-copy h1 { color: #f0e3c9; text-shadow: 0 1px 0 #fff3, 0 3px 6px #000, 0 0 25px #cda36615; }
 .hero-copy .eyebrow { color: #e3c68e; }
 .hero-note { color: #c9c8bb; }
-.hero-ornament { background: #101517; color: #d2b178; }
+.hero-ornament { background: #101517aa; color: #d2b178; }
 .sphere-overview { position: relative; }
 .section-kicker h2 { color: #d4c3a0; }
 .sphere-gallery { gap: 12px; border-bottom: 0; padding-bottom: 0; }
@@ -84,7 +83,9 @@ input { border-radius: 3px; box-shadow: inset 0 2px 5px #0005; }
   .sphere-gallery > li { min-height: 0; padding: 2px 3px; }
 }
 @media (max-width: 700px) {
-  .sanctuary-scene { width: 100%; right: 0; object-position: 72% 50%; mask-image: linear-gradient(90deg, transparent, #0008 62%, #000); opacity: .8; }
+  .sanctuary-environment { height: 630px; }
+  .sanctuary-environment .sanctuary-scene { object-position: 69% 40%; }
+  .sanctuary-environment::after { background: linear-gradient(90deg, #050b10c0, #050b1050), linear-gradient(#050b1044, #050b1000 52%, #050b10dd); }
   .sphere-gallery > li { padding: 7px 3px 12px; }
   .sphere-gallery { gap: 8px; }
   .date-toolbar { padding-left: 0; padding-right: 0; }

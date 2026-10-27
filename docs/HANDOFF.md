@@ -1,6 +1,6 @@
 # Project handoff
 
-Updated 2026-10-27. Active task: SANCTUARY-UI-001 visual revision in [PR #4](https://github.com/Maximus1978/Relics/pull/4), open/unmerged. Do not merge automatically or start another task.
+Updated 2026-10-27. Active task: SANCTUARY-UI-001 raster-art integration in the existing [PR #4](https://github.com/Maximus1978/Relics/pull/4), open/unmerged. The owner explicitly approved original raster environment artwork plus CSS/SVG controls. Replace the vector environment, compare actual renders with both prototype references, verify CI and provide a new executable. Previous SVG evidence below is historical until this delivery is verified. No further asset-format confirmation is required. Do not merge automatically or start another task.
 
 ## Owner correction and visual bar
 
