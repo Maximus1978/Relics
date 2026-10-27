@@ -5,7 +5,7 @@ Updated 2026-10-27. `accepted`: owner requirement; `provisional`: reversible sca
 | ID | Status | Decision |
 | --- | --- | --- |
 | D001 | accepted | Offline first; local SQLite source of truth; no required account/server. |
-| D002 | accepted | Windows 11 + Android; Tauri 2, React, TypeScript, Vite, SQLite, SVG visual system. Runtime feasibility remains unverified. |
+| D002 | accepted | Windows 11 + Android; Tauri 2, React, TypeScript, Vite, SQLite, SVG visual system. Windows native/SQLite baseline is owner-accepted through HABITS-001B; Android verification remains separate. |
 | D003 | accepted | Body, Mind, Bonds, Work, Recovery; stable IDs remain body, mind, relationships, work, recovery. Configurable multisphere weights required. |
 | D004 | accepted | Today/backdating, editing/removal, optional notes/reflection; no punishment for absence. |
 | D005 | superseded | Earlier foundation described Resonance as cross-sphere coherence. The supplied brief clarifies this; use D020. |
@@ -16,7 +16,7 @@ Updated 2026-10-27. `accepted`: owner requirement; `provisional`: reversible sca
 | D010 | accepted | Secret names, conditions, and definitions separate from routine context; local source access cannot guarantee secrecy. |
 | D011 | provisional | Scaffold has one completion per habit/day; idempotent duplicate handling; no future completions. Repeated sessions remain open. |
 | D012 | provisional | Snapshots plus local day, UTC recording time, IANA timezone; later weights/revisions require migration. |
-| D013 | provisional | Tauri SQL plugin adapter; browser preview does not substitute localStorage. No native verification yet. |
+| D013 | provisional | Tauri SQL plugin adapter; owner accepted the Windows baseline through HABITS-001B. Browser preview is labeled fictional in-memory data, never a localStorage replacement for native persistence. New UI native acceptance remains separate. |
 | D014 | provisional | Existing cancellation physically deletes rows. This is an audit/sync gap to replace in AUDIT-001; no implied compliance. |
 | D015 | open | Formula units, time windows, weight normalization, thresholds, bonuses. |
 | D016 | open | Essence inventory, advanced crafting costs, correction effects on discoveries. |
@@ -38,3 +38,5 @@ Updated 2026-10-27. `accepted`: owner requirement; `provisional`: reversible sca
 D020–D026 record the supplied “RELICS — Project Foundation & Architecture” brief and the owner's one-task instruction. Existing source and migration remain unchanged during DOC-001. Previously recorded platform/dependency blockers remain historical facts, not freshly verified failures.
 
 D029 is implemented in [HABITS-001B PR #3](https://github.com/Maximus1978/Relics/pull/3). All 23 tests, TypeScript/Vite/browser checks and native Windows compilation passed in [run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811) on fd97f6596dc400aebf37f28890a73e4bcc23df36. [Evidence and manual acceptance](HABITS_001B.md) separate tested SQL/repository behavior from pending native migration/UI/offline review. This delivery does not authorize merging or starting another task.
+
+D030 is delivered for visual review in [PR #4](https://github.com/Maximus1978/Relics/pull/4). [Windows run 40583750205](https://github.com/Maximus1978/Relics/actions/runs/40583750205) passed 25 tests, 34 browser checks, TypeScript/Vite and native release compilation on cbd98965e851c6d30f20718a5ee5ea378cf978ee. [Screenshots, executable hashes and acceptance boundary](SANCTUARY_DAILY_MODE.md) are recorded. The PR remains unmerged; native visual/offline acceptance is the next step.

@@ -6,7 +6,7 @@ The owner accepted HABITS-001B; GitHub confirms PR #3 merged at 8fc41b39d433fd1c
 
 ## Visual language
 
-Original CSS/SVG artwork: charcoal stone, restrained antique metal, architectural Sanctuary illustration and faceted medallions. Georgia/system serif supplies display typography; Segoe UI/system sans supplies controls and Cyrillic UI. No fonts, artwork, remote resources, libraries or runtime dependencies are downloaded. No protected game assets are used.
+Original CSS/SVG artwork: charcoal stone, restrained antique metal, architectural Sanctuary illustration and faceted medallions. Georgia/system serif supplies display typography; Segoe UI/system sans supplies controls and Cyrillic UI. The design uses shipped CSS/SVG and installed system fonts, with no remote asset requests or new UI libraries/dependencies. No protected game assets are used.
 
 | Token / identity | Presentation |
 | --- | --- |
@@ -27,7 +27,9 @@ Brand/local status → Sanctuary header/art → five sphere categories → date 
 
 Today and Yesterday update the same selected local-day state as the calendar input. Yesterday uses local calendar arithmetic, including month/year/leap/DST boundaries. Arbitrary past dates and the existing future-date/domain validation remain. The journal is initially collapsed, available through a keyboard-accessible summary with its real record count; expanded rows use original snapshots and cancellation.
 
-Responsive columns become single cards on narrow screens; the sphere gallery wraps to three columns on small phones. Interactive targets retain 44px height. Focus outlines, skip link, native checkboxes/date input/disclosures and Russian accessible names remain. No required animation; reduced motion removes smooth scrolling/transitions. No fake counters, progression, quests or nonfunctional navigation.
+Responsive columns become single cards on narrow screens; the sphere gallery wraps to three columns on small phones. A compact header at 1000px keeps the first complete card within an 800px-tall browser content area when the demo-only banner is excluded; this is not native runtime evidence. Interactive targets retain 44px height. Focus outlines, skip link, native checkboxes/date input/disclosures and Russian accessible names remain. No required animation; reduced motion removes smooth scrolling/transitions. No fake counters, progression, quests or nonfunctional navigation.
+
+Token contrast spot checks: primary text on the base panel 13.70:1; muted text on the darkest red card tint 6.19:1; gold-button ink on the darker gradient endpoint 6.15:1. These checks do not replace native font/high-contrast or screen-reader review.
 
 ## Safe browser demonstration
 
@@ -37,7 +39,16 @@ The fixture implements the existing repository shape solely to exercise the same
 
 ## Verification and delivery
 
-Local npm test: 25/25 passed, including all 23 existing SQLite/domain tests plus local-calendar Yesterday and isolated/resetting preview tests. CI execution, screenshots, TypeScript/Vite and Windows executable evidence are pending; record actual results after running the existing pipeline.
+Local and Windows CI npm test: 25/25 passed, including all 23 existing SQLite/domain tests plus local-calendar Yesterday and isolated/resetting preview tests. [Windows CI run 40583750205](https://github.com/Maximus1978/Relics/actions/runs/40583750205) completed successfully: npm ci, tests, TypeScript, Vite, 34 browser checks, locked Cargo fetch, actual native Tauri release compilation and artifact upload. Node v22.23.4 and Rust/Cargo 1.99.1 were used.
+
+- [PR #4](https://github.com/Maximus1978/Relics/pull/4), feature/sanctuary-ui-001 → master, remains open/unmerged for visual review.
+- Tested feature source: cbd98965e851c6d30f20718a5ee5ea378cf978ee. Tested PR merge source: ac3a89594df9f4ea2c9a0e338f7bd84b98d51cdc.
+- [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40583750205/artifacts/12772035041): relics-windows-x64-ac3a89594df9f4ea2c9a0e338f7bd84b98d51cdc, 4,290,103 bytes. Local delivery: outputs/Relics-Sanctuary-UI-001-windows-x64.zip outside the repository. SHA256 c170731c4116d335d88353f37ad8049b20b411d814bd5f00b2d1287fc7ba66ad.
+- relics.exe: 12,163,072 bytes; SHA256 e4eaed849d443609a4c33cde4a09a179de65c24206052dbc34c1fb612a7339a0. Downloaded ZIP digest matched GitHub; executable digest matched its manifest; build-info.json confirmed both source SHAs and nativeUiRuntimeVerified=false.
+- [Browser screenshots/evidence](https://github.com/Maximus1978/Relics/actions/runs/40583750205/artifacts/12771015646): desktop, 390px mobile and expanded journal PNGs, rendered DOM and result.json with all 34 passing checks and zero reported runtime exceptions. All three screenshots were inspected. Browser ZIP SHA256 3c9a3b0d87d09ef543cddebe5e695d975ba97753af27b8f05d4d7bf34611c08d matched its downloaded digest. Copies are delivered outside the repo as outputs/Relics-Sanctuary-desktop.png, Relics-Sanctuary-mobile.png and Relics-Sanctuary-journal.png.
+- GitHub artifact retention ends 2026-11-10. Screenshots use explicitly fictional in-memory data, not the owner's database.
+
+A later documentation-only evidence commit uses [skip ci]. Source, tests, browser scripts, migrations and workflow remain identical to the tested feature commit. The executable was not launched here; native WebView2 appearance, accessibility and offline restart acceptance remain manual.
 
 The browser verifier uses the hosted runner's Edge and built-in Node WebSocket/DevTools protocol, with no added dependency. It checks rendering, preview labeling, keyboard/validation/focus, completion/date shortcuts, edits, archive confirmation/cancellation/restore, journal snapshots/cancellation, reload reset, responsive overflow/44px controls, text enlargement and reduced motion. It captures desktop, narrow-screen and expanded-journal PNGs. [Protocol reference](https://chromedevtools.github.io/devtools-protocol/) documents the automation interface. This is browser-only evidence.
 

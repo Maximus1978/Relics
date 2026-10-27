@@ -27,7 +27,7 @@ Recent Resonance may naturally fade as a descriptive signal. That must not erase
 
 Sanctuary is an original dark gothic fantasy world with restrained magical effects, gemstones, illustrated medallions, aged metal, and dark stone. Supplied concepts establish art direction, not final screen layouts. Proprietary Diablo assets must not be reproduced.
 
-The foundation precedes full feature development. The current runtime is an unverified scaffold for local logging. Scheduling, weighted contributions, progression, backups, world switching, and alchemy are requirements for later individual tasks, not implemented features.
+The foundation precedes full game development. The owner has accepted native Windows habit creation/edit/archive/restore, multisphere logging, backdating and offline SQLite persistence through HABITS-001B. SANCTUARY-UI-001 gives that tracker its first original visual Daily Mode, with separate visual/native acceptance. Scheduling, weighted contributions, progression, backups, world switching, and alchemy remain requirements for later individual tasks.
 
 ## Source and precedence
 
