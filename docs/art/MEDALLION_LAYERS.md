@@ -1,6 +1,6 @@
 # Sanctuary independent technical layers, v2
 
-The owner rejected the complete-render crop because it retained an unwanted backdrop and was too small on wide desktops. This revision reconstructs the supplied medallion as independently reusable transparent assets, not four state illustrations. It remains in unmerged PR #6.
+The owner rejected the complete-render crop because it retained an unwanted backdrop and was too small on wide desktops. This revision reconstructs the supplied medallion as independently reusable transparent assets, not four state illustrations. The owner accepted the Windows implementation/current visual direction; DOC-GAME-002 releases PR #6 without changing these assets.
 
 ## Assets and provenance
 
@@ -22,7 +22,7 @@ CI reads raw alpha, tests four transparent corners and frame/rune holes, and ras
 
 Developer-only evidence includes layer-gallery.png / .html with each asset on white, checkerboard and magenta, plus composition-neutral.png and separate signs-layer.png. reference-overlay.png / reference-comparison.html compare the original first medallion, actual neutral assembly and registered overlay. They are diagnostic artifacts, not new product screens.
 
-The five actual sign centers align within 4.35/500 units of manually measured reference centers. This is an anchor registration check, not a whole-contour or pixel identity claim. The reconstruction follows the reference construction and pointed rune direction; detailed ornament, facets and lighting differ. Owner visual acceptance remains pending. Do not describe generated reconstruction as an exact extraction of original pixels.
+The five actual sign centers align within 4.35/500 units of manually measured reference centers. This is an anchor registration check, not a whole-contour or pixel identity claim. The reconstruction follows the reference construction and pointed rune direction; detailed ornament, facets and lighting differ. The owner accepted current visuals after Windows testing in DOC-GAME-002. These differences are non-blocking future polish. Do not describe generated reconstruction as an exact extraction of original pixels.
 
 Four actual state screenshots retain distinct light. Four normalized SVG exports are byte-identical after removing lighting metadata. See medallion-geometry-proof.json for asset hashes and geometry proof; layer-alpha-audit.json for actual alpha and registration measurements.
 

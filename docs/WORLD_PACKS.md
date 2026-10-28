@@ -21,9 +21,9 @@ These four worlds remain the product roster, not merely substitute suggestions. 
 
 Habit icon selection comes from a small curated gallery independent of sphere contributions. The future explicit primary sphere and optional weighted secondaries belong to domain data, not arbitrary pack logic. Activity intensity is a separate per-event attribute. Packs can style approved identities but cannot change historical snapshots, contribution semantics or grant rules through art.
 
-Ordinary relics share a reusable base frame. Rare/legendary artifacts reserve unique silhouettes and individually authored artwork; finite curated content provides meaningful discovery. Exact material/gem polish is presentation, not proof of earned rarity. Raster layers may supply dimensional decoration; labels, rings, forms and accessibility remain real HTML/SVG. Record licensing/original-art provenance; do not copy proprietary game assets.
+User-defined Habit Sigils share a reusable ordinary base frame and are not unique reward artifacts. Rare/legendary artifacts reserve unique silhouettes and individually authored artwork; finite curated content provides meaningful discovery. Exact material/gem polish is presentation, not proof of earned rarity. Raster layers may supply dimensional decoration; labels, rings, forms and accessibility remain real HTML/SVG. Record licensing/original-art provenance; do not copy proprietary game assets.
 
-Separate selected-day illumination, gradual recent Resonance and permanent Mastery evolution. A subdued daily/recent state must not erase earned art/evolution. Sanctuary's center is planned to receive an original runic monogram instead of the current generic compass. Packs select registered application components and validated parameters, never injected scripts.
+Separate selected-day illumination, gradual recent Resonance and permanent Mastery evolution. A subdued daily/recent state must not erase earned art/evolution. Sanctuary's accepted STATE-001 center already uses its original fixed rune with four descriptive light states and independent selected-day gemstones. Preserve it; it is not Mastery, Resonance or numeric Balance. Packs select registered application components and validated parameters, never injected scripts.
 
 ## Discovery and Adventure content — future
 
@@ -44,3 +44,13 @@ Persist stable IDs plus content/rules versions with discoveries. Validate duplic
 WORLD-SELECT-001 exposes installed compatible worlds honestly. EPOCH-001 makes transition voluntary and explains lifetime preservation. MUSEUM-001 retains and browses previous-world journeys alongside a common life journal. No automatic season expiry, forced reset or deletion of lifetime achievements.
 
 Resource transfer, backdated edits across closed epochs, museum snapshot format and historical asset retention/version compatibility remain open implementation decisions. Preserve stable record identities and the ability to read historical packs. Do not infer these choices from concept illustrations.
+
+## DOC-GAME-002 — accepted future pack boundaries
+
+Packs may theme Habit Sigils without turning them into Unique Artifacts. Earned artifacts need stable authored identities and designs; Collection browses them. Museum retains earned artifacts, discovery stories and completed epochs, while Chronicle remains the common real-activity/reflection history. Museum replaces neither Collection nor Chronicle.
+
+BLESSINGS-001 must approve constrained temporary optional effect definitions before pack support: origin, duration/expiry, stacking/chance safeguards and supported cosmetic/hint/optional-experience identifiers. Never fabricate records, modify measured Balance or erase achievements. No arbitrary reward multipliers.
+
+AUDIO-001 must specify local offline licensed/original assets, event mappings, distinct themes, mute/volume/accessibility and restraint before World Pack audio is implemented. Shared application preferences override pack presentation; packs cannot force playback.
+
+A future Vacation Mode may use an approved restful aura and brief cosmetic afterglow. It cannot rewrite actual gemstone/weekly rune observations, create Recovery/Mastery or autonomously change mode. Pack schema/asset validation for these features remains WORLD-001 follow-up work after respective contracts, not an existing manifest capability.

@@ -2,7 +2,7 @@
 
 ## Status and approved core loop
 
-Sanctuary Gate A is owner-approved and the implemented functionality has been manually verified by the owner in Windows. This acceptance covers the present UI/tracker milestone, not absent game systems. The latest owner decision authorizes finalizing and merging PR #4; remaining artistic differences are future improvements.
+Sanctuary Gate A is owner-approved and the implemented functionality has been manually verified by the owner in Windows. This acceptance covers the present UI/tracker milestone, not absent game systems. DOC-GAME-002 additionally records owner acceptance of STATE-001's functionality and visual direction after Windows testing and authorizes releasing PR #6. Remaining artistic differences are non-blocking future improvements; no feature changes occur in this release.
 
 Approved intended loop, not yet implemented end to end:
 
@@ -26,7 +26,7 @@ Approved future habit identity: a small curated icon gallery, with icon choice i
 
 Weights describe how a habit contributes across spheres. Optional intensity describes one activity occurrence. They are different concepts and fields. Weight ranges, defaults, normalization, primary-sphere semantics and intensity effects require explicit decisions before coding. Do not retroactively reinterpret old snapshots.
 
-Use a shared base frame for ordinary relics. Reserve unique silhouettes and individually authored art for rare/legendary artifacts. The current common frame is an accepted foundation, not a release defect or evidence of earned rarity.
+Use a shared base frame for ordinary Habit Sigils. Reserve unique silhouettes and individually authored art for rare/legendary artifacts. The current common frame is an accepted foundation, not a release defect or evidence of earned rarity.
 
 ## Implemented journal versus future activity details
 
@@ -42,13 +42,13 @@ Daily/scheduled/flexible recurrence, explicit planned rest and confirmed inactiv
 
 | State | Meaning | Approved behavior | Current implementation |
 | --- | --- | --- | --- |
-| Selected-day activity | Is this habit recorded on the selected local date? | Illuminated or subdued; missing is unrecorded, not confirmed failure | Explicit completion/check state; richer illumination is future work |
+| Selected-day activity | Is this habit recorded on the selected local date? | Illuminated or subdued; missing is unrecorded, not confirmed failure | Implemented selected-day gemstones and habit illumination, owner-accepted in STATE-001 |
 | Recent Resonance | Recent participation/current energy | Gradual visual energy may fade gently, never a punishment | Actual Resonance calculation is not implemented |
 | Permanent Mastery | Earned practice and artifact evolution | Does not decay with inactivity; survives dimmed daily/recent states | Actual Mastery progression/evolution is not implemented |
 
-These states must not overwrite or impersonate each other. A subdued relic can retain all permanent evolution. A backdated selection does not imply resetting Mastery or reanchoring current Resonance. Current seven-day rings are read-only counts of distinct recorded dates per historical sphere snapshot; the center counts represented spheres. They are neither Resonance nor a health/balance grade.
+These states must not overwrite or impersonate each other. A subdued relic can retain all permanent evolution. A backdated selection does not imply resetting Mastery or reanchoring current Resonance. Current seven-day rings count distinct recorded dates per historical sphere snapshot. The center uses the accepted descriptive four-state rune in [SANCTUARY_STATES](SANCTUARY_STATES.md): DORMANT / AWAKENING / HARMONY / RADIANCE. Selected-day stones remain independent of current-window coverage. These observations are neither Mastery/Resonance progression nor a health/Balance grade.
 
-The Sanctuary center should eventually use a unique original runic monogram instead of the present generic compass rose. This is an approved future art/UI task, not a change in this documentation release.
+STATE-001 delivered the accepted unique pointed Sanctuary rune and fixed transparent technical layers. Keep its geometry, illumination precedence and temporal rules unchanged; do not reopen that accepted milestone for later polish.
 
 ## Progression, resources and discovery rules
 
@@ -71,3 +71,43 @@ Epoch change is voluntary, with a common lifetime journal and preserved previous
 Before their respective tasks: progression math/anti-grind policy; primary/secondary weight semantics; intensity scale/effect; repeated/quantified events; renewable resource costs; historical corrections and discovery grants; epoch transfer and museum retention. [Open questions](OPEN_QUESTIONS.md) tracks these. Approved principles constrain the eventual answers; they do not silently choose formulas.
 
 Private discovery names, actual recipes, unlock conditions and undiscovered art remain separate. Use synthetic fixtures for public rules tests. Do not access or invent a secret catalog during routine development.
+
+## Habit Sigils, artifacts and destinations — accepted distinction
+
+| Concept | Responsibility | Implementation status |
+| --- | --- | --- |
+| Habit Sigil | User-defined habit, reusable ordinary medallion frame; future Mastery evolution | Existing habit cards implement tracking, not unique rewards. «Печати привычек» is a queued label change from «Ваши реликвии» |
+| Unique Artifact | Earned/discovered stable identity and authored design; optional bounded unlocks | Future ARTIFACT-001 / discovery / Collection work |
+| Chronicle | Real activities and optional reflections; historical names/contributions | Activities/snapshots are implemented. Full destination separation and reflections are future |
+| Collection | Browse earned artifacts and discovered collection content | Future COLLECTION-001; not a synonym for habit cards |
+| Museum | Preserve earned artifacts, discovery stories and completed epochs | Future MUSEUM-001; does not replace Chronicle or Collection |
+
+NAV-CHRONICLE-001 will place full activity history at the existing left-navigation destination and remove the expanded dashboard Chronicle. Backdating/cancellation/snapshots remain; compact recent activity may be retained if useful. This is the next functional task, not an implemented refactor.
+
+## Balance boundary — accepted principle, mechanics open
+
+Balance means context-sensitive diversity of attention, not perfect completion. BALANCE-001 is a specification gate before any numeric Balance KPI. A habit contributing to all five spheres, logged on each of seven days, legitimately produces 35 distinct sphere-days for the present rune. It is not proof of healthy life balance and cannot automatically justify disproportionate rewards.
+
+Future progression must consider contribution weights, anti-grinding and life context, with missing-data uncertainty. No percentage, score, threshold for health or new reward formula is approved here. The descriptive rune remains independent from actual Mastery and Resonance.
+
+## Blessings — accepted future scope, exact mechanics open
+
+BLESSINGS-001 first specifies temporary, optional effects originating from approved discoveries/progression or meaningful experience patterns. Possible bounded effects are special artifact/world illumination, extra authored alchemy hints, optional encounters/micro-adventures and cosmetic discovery opportunities. They cannot fabricate activity history, artificially raise measured Balance or erase permanent achievements.
+
+No automatic sphere completion, +5% XP effect, unchecked random reward multiplier or mandatory task is approved. Duration/expiry, stacking, chance, source validation and safeguards require separate approval before implementation. Permanent earned identities survive temporary-effect expiry.
+
+## Life rhythm — accepted future scope
+
+LIFE-RHYTHM-001 specifies a manually enabled vacation/day-off mode lasting one day, a defined interval or until manually ended. Tracking is optional during it. A distinctive restful Sanctuary aura can carry a brief cosmetic afterglow afterward. The five gemstones still show actual selected-day records; the seven-day rune continues showing real history. Do not add Recovery records, Mastery or sphere completion automatically. Vacation is freedom from ordinary obligations, not guaranteed physiological recovery.
+
+Optional permanent memories or authored vacation discoveries may be considered later; none are granted now. Time boundaries, persistence and afterglow duration are open. Implement the eventual mode through separately reviewed small tasks, preserving records and the accepted rune.
+
+RHYTHM-INSIGHTS-001 is separate: opt-in, non-punitive suggestions about sustained patterns, not a single missing day. Respect schedules, vacations and unknown unrecorded activity. Users may dismiss, snooze and disable suggestions; no autonomous mode change. No Work Sprint Mode design is authorized.
+
+## Sound — accepted future scope
+
+AUDIO-001 specifies restrained local offline sound, accessible alternatives and mute/volume preferences. Cover gentle interactions, habit completion/gem activation, rune transitions, authored discoveries/alchemy and distinct World Pack themes. Avoid pressure, repetitive attention-grabbing loops and excessive simultaneous playback. Exact assets, defaults, event priorities and persistence are open; smaller implementation tasks follow the specification.
+
+## Accepted artwork backlog
+
+Non-blocking future tasks: larger readable shrine gemstones/icons; a curated manual sigil icon gallery; icon identity separate from primary/secondary contributions; consistent ordinary frame; unique authored silhouettes only for real earned artifacts; refined gemstone optics, lighting and ornament. They do not reopen STATE-001 or authorize new artwork now.

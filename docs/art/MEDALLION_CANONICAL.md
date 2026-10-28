@@ -8,4 +8,4 @@ Runtime v2 uses three independently authored transparent RGBA masters, separate 
 
 The previous v1 fixed-viewport/circular-mask implementation is superseded and owner-rejected. Its successful historical build proves neither genuine layer separation nor acceptance. Do not restore the source-board crop or its opaque backdrop.
 
-The accepted temporal conflict resolution remains authoritative: selected-day gemstones and current-seven-day central lighting are independent. See [SANCTUARY_STATES](../SANCTUARY_STATES.md). CI evidence and owner visual/native acceptance are separate.
+The accepted temporal conflict resolution remains authoritative: selected-day gemstones and current-seven-day central lighting are independent. See [SANCTUARY_STATES](../SANCTUARY_STATES.md). CI evidence and owner visual/native acceptance are separate. DOC-GAME-002 records the owner's subsequent Windows/current-art acceptance and PR #6 release; remaining imperfections are non-blocking backlog.
