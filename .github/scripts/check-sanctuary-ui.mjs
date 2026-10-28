@@ -72,7 +72,8 @@ try {
     await viewport(width,height);
     await until('document.documentElement.scrollWidth <= innerWidth', `No horizontal overflow at ${width}x${height}`);
     if (width >= 1000) {
-      assert.ok(await evaluate('document.querySelector(".chronicle > summary").getBoundingClientRect().bottom <= innerHeight'), `Chronicle entry visible at ${width}x${height}`);
+      if (width === 1440) assert.ok(await evaluate('document.querySelector(".chronicle > summary").getBoundingClientRect().bottom <= innerHeight'), 'Complete Chronicle summary visible at 1440x900');
+      assert.ok(await evaluate('document.querySelector(".relic-item").getBoundingClientRect().bottom <= innerHeight'), `Complete first inventory row visible at ${width}x${height}`);
       assert.ok(await evaluate('document.querySelector(".balance-wheel").getBoundingClientRect().width >= 210'), 'Prominent central wheel');
       const arrangement = await evaluate('(() => { const center = document.querySelector(".balance-center").getBoundingClientRect(); const shrines = [...document.querySelectorAll(".sphere-shrine")].map(element=>element.getBoundingClientRect()); return {left:shrines.filter(bounds=>bounds.right<=center.left+2).length,right:shrines.filter(bounds=>bounds.left>=center.right-2).length}; })()');
       assert.deepEqual(arrangement, {left:2,right:3});
@@ -172,6 +173,6 @@ try {
 } catch (failure) {
   await screenshot('failure.png').catch(() => {});
   await writeFile(join(output, 'failure-dom.html'), await evaluate('document.documentElement.outerHTML')).catch(() => {});
-  await writeFile(join(output, 'failure.json'), JSON.stringify({ message: failure.message, checks, runtimeErrors, focus: await evaluate('document.activeElement.outerHTML') }, null, 2)).catch(() => {});
+  await writeFile(join(output, 'failure.json'), JSON.stringify({ message: failure.message, checks, runtimeErrors, focus: await evaluate('document.activeElement.outerHTML'), layout: await evaluate('Object.fromEntries([".world-installation", ".balance-center", ".relic-inventory", ".relic-item", ".chronicle > summary"].map(selector => [selector, document.querySelector(selector)?.getBoundingClientRect().toJSON()]))') }, null, 2)).catch(() => {});
   throw failure;
 } finally { socket.close(); }

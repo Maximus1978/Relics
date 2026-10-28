@@ -7,6 +7,7 @@ export default function WorldDialog({ labelledBy, busy, onClose, children }: { l
   useEffect(() => {
     const dialog = reference.current;
     dialog?.showModal();
+    dialog?.querySelector<HTMLElement>('input:not([type=checkbox]), .archive-confirmation .form-actions button')?.focus();
     return () => { dialog?.close(); };
   }, []);
   return <dialog className="world-dialog" ref={reference} aria-labelledby={labelledBy} onCancel={event => { event.preventDefault(); if (!busy) onClose(); }}>
