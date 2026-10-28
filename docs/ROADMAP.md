@@ -2,7 +2,7 @@
 
 ## Execution rule and current release
 
-Current authorized task is SANCTUARY-STATE-001 on feature/sanctuary-state-001 from verified master 234c35a7be4306ba1fee082f01409122715e2846. BACKUP-001 is owner-accepted and PR #5 is merged. Selected-day gemstones and a current-seven-day Sanctuary monogram are delivered for owner review; see [state contract](SANCTUARY_STATES.md) and [handoff](HANDOFF.md). No automatic merge or next task.
+Current authorized task is SANCTUARY-STATE-001 on feature/sanctuary-state-001 from verified master 234c35a7be4306ba1fee082f01409122715e2846. BACKUP-001 is owner-accepted and PR #5 is merged. The correction to central medallion logic/art is delivered for owner review in the same PR; see [state contract](SANCTUARY_STATES.md) and [handoff](HANDOFF.md). No automatic merge or next task.
 
 One task at a time. Every later row is a queue, not authorization. Preserve existing data, native backups and Windows CI. Stop for owner visual/native acceptance after this delivery.
 
@@ -31,7 +31,7 @@ The owner's priority order is authoritative. The early Android checkpoint is cro
 | Priority | Small task | Acceptance boundary / dependency |
 | --- | --- | --- |
 | Accepted | BACKUP-001 | Owner-accepted local export/full replacement/safety recovery; PR #5 merge 234c35a7be4306ba1fee082f01409122715e2846 |
-| Delivered; owner review pending | SANCTUARY-STATE-001 | [PR #6](https://github.com/Maximus1978/Relics/pull/6), [Windows run 40743447439](https://github.com/Maximus1978/Relics/actions/runs/40743447439) PASS on b272011d39a97f3d6b73aaf3261391464649eddf: 38 Node / 92 browser / 16 native tests, TypeScript/Vite and Windows EXE. Selected-day gems, original recent-period monogram, no schema/gameplay expansion; do not merge automatically |
+| Corrected delivery; owner review pending | SANCTUARY-STATE-001 | [PR #6](https://github.com/Maximus1978/Relics/pull/6), [run 40752865133](https://github.com/Maximus1978/Relics/actions/runs/40752865133) PASS on ed08e3e8ea49b64be5dc0693fc0631ef52c0cf51: 48 Node / 142 browser / 16 native tests, TypeScript/Vite and EXE. One canonical owner-supplied medallion, corrected light states, independent daily stones and identical SVG proof; no schema/gameplay expansion or automatic merge |
 | 2 | SANCTUARY-STATE-002 | Specify and review independent daily / gradual Resonance / permanent Mastery visual layers; synthetic developer fixtures only until real projections exist; no invented runtime energy |
 | Early platform gate | ANDROID-001 | Android toolchain/CI shell build and device launch with existing SQLite/UI; no new gameplay |
 | Early platform gate | ANDROID-LOG-001 | Existing logging/backdating, management, migration/reopen and lifecycle compatibility on Android; after ANDROID-001 and before the complete game loop |
