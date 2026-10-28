@@ -3,7 +3,7 @@ import { localDay } from './domain/activity';
 import { recentActivity } from './domain/recentActivity';
 import { useRelicsModel } from './application/useRelicsModel';
 import HabitForm from './components/HabitForm';
-import { displayDay } from './ui/dates';
+import { yesterday } from './ui/dates';
 import SphereInstallation from './ui/sanctuary/SphereInstallation';
 import RelicInventory from './ui/sanctuary/RelicInventory';
 import Chronicle from './ui/sanctuary/Chronicle';
@@ -42,7 +42,12 @@ export default function App() {
       <p className={model.native ? 'rail-status' : 'preview-notice'}>{model.native ? 'Локально · офлайн' : 'Демонстрация. Вымышленные данные; изменения не сохраняются.'}</p>
     </aside>
     <main className="sanctuary-main" id="main-content">
-      <header className="world-heading"><div><h1>Sanctuary</h1><p>Ваше убежище · первая эпоха</p></div><div className="world-heading__date"><span className="world-heading__sun" aria-hidden="true">☼</span><span>{displayDay(model.day)}<small>{model.native ? 'Локально · в своём ритме' : 'Демонстрация · без сохранения'}</small></span></div></header>
+      <header className="world-heading"><div><h1>Sanctuary</h1><p>Ваше убежище · первая эпоха</p></div>
+        <div className="world-heading__date"><span className="world-heading__sun" aria-hidden="true">☼</span><div className="date-shortcuts" role="group" aria-label="Быстрый выбор даты">
+          <button aria-pressed={model.day === localDay()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(localDay())}>Сегодня</button>
+          <button aria-pressed={model.day === yesterday()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(yesterday())}>Вчера</button></div>
+          <label>Дата отметки<input type="date" value={model.day} max={localDay()} disabled={model.busy || model.managingHabit} onChange={event => model.setDay(event.target.value)} /></label></div>
+      </header>
       <SphereInstallation observation={observation} />
       <RelicInventory model={model} />
       <Chronicle model={model} open={journalOpen} onToggle={setJournalOpen} reference={journal} />

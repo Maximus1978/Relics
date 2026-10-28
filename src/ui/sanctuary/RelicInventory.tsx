@@ -1,7 +1,5 @@
 import { spheres } from '../../domain/activity';
 import type { RelicsModel } from '../../application/useRelicsModel';
-import { localDay } from '../../domain/activity';
-import { yesterday } from '../dates';
 import HabitActions from '../../components/HabitActions';
 import SphereIcon from '../../components/SphereIcon';
 import RelicArt from './RelicArt';
@@ -15,11 +13,6 @@ export default function RelicInventory({ model }: { model: RelicsModel }) {
       <div className="inventory-heading__actions"><button className="button-quiet" ref={model.archiveToggle} onClick={model.toggleArchive} disabled={model.busy || model.managingHabit}>
         {model.showArchived ? 'Активные' : 'Архив привычек'}</button>
         <button className="button-primary" ref={model.addHabitButton} onClick={model.beginCreate} disabled={!model.canSave || model.busy || model.managingHabit} aria-haspopup="dialog"><ShellIcon kind="plus" />Добавить привычку</button></div>
-    </div>
-    <div className="inventory-date"><div className="date-shortcuts" role="group" aria-label="Быстрый выбор даты">
-      <button aria-pressed={model.day === localDay()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(localDay())}>Сегодня</button>
-      <button aria-pressed={model.day === yesterday()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(yesterday())}>Вчера</button></div>
-      <label>Выбрать дату<input type="date" value={model.day} max={localDay()} disabled={model.busy || model.managingHabit} onChange={event => model.setDay(event.target.value)} /></label>
     </div>
     {!model.visibleHabits.length && <p className="inventory-empty">{model.showArchived ? 'В архиве пока нет привычек.' : 'Добавьте привычку, когда будет удобно.'}</p>}
     <ul className="relic-grid" id="habit-list">{model.visibleHabits.map(habit => {

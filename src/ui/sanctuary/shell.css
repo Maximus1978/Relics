@@ -19,8 +19,9 @@
 .world-heading { height: 84px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 .world-heading h1 { font-size: 38px; line-height: 1.2; text-transform: uppercase; letter-spacing: .055em; text-shadow: 0 3px 4px #000; }
 .world-heading p { margin-top: 4px; font-size: 15px; color: #d2cfc2; text-shadow: 0 2px 3px #000; }
-.world-heading__date { display: flex; align-items: center; gap: 12px; min-height: 62px; max-width: 320px; padding: 10px 16px; background: #081018dc; border: 1px solid #a58c5a; border-image: var(--panel-art) 24 / 9px / 0 stretch; font-size: 13px; text-transform: capitalize; }
-.world-heading__date small { display: block; color: #c0bba9; font-size: 11px; margin-top: 6px; text-transform: none; }
+.world-heading__date { display: flex; align-items: center; gap: 8px; min-height: 64px; padding: 7px 12px; background: #081018e8; border: 1px solid #a58c5a; border-image: var(--panel-art) 24 / 9px / 0 stretch; font-size: 12px; }
+.world-heading__date label { display: flex; flex-direction: column; gap: 3px; font-size: 10px; color: #c8b994; }
+.world-heading__date input { width: 143px; min-height: 44px; font-size: 12px; padding: 5px 7px; }
 .world-heading__sun { font-size: 32px; color: #d8b578; }
 .mobile-navigation { display: none; }
 @media (max-width: 1300px) { .sanctuary-main { padding: 18px 18px 14px; } .world-heading { height: 76px; } .world-heading h1 { font-size: 32px; } .world-heading p { font-size: 13px; } }
@@ -28,7 +29,7 @@
 @media (max-width: 760px) { :root { --rail-width: 0px; } .app-rail { position: relative; height: 64px; width: auto; border: 0; border-bottom: 1px solid #9c805a70; flex-direction: row; align-items: center; justify-content: space-between; margin: 0 14px; background: transparent; box-shadow: none; }
   .app-brand { justify-content: flex-start; min-height: 64px; padding: 4px 0; border: 0; font-size: 22px; } .app-brand > span { display: block; } .app-brand small { display: none; } .app-brand > svg { height: 34px; }
   .app-rail nav, .rail-reflection { display: none; } .rail-status, .preview-notice { max-width: 155px; margin: 0; text-align: right; font-size: 10px; } .world-backdrop { height: 540px; } .world-backdrop img { object-position: 69% 10%; }
-  .sanctuary-main { margin: 0; padding: 16px 14px 80px; } .world-heading { height: 75px; } .world-heading h1 { font-size: 28px; } .world-heading p { font-size: 12px; } .world-heading__date { display: none; }
+  .sanctuary-main { margin: 0; padding: 16px 14px 80px; } .world-heading { height: auto; display: block; margin-bottom: 12px; } .world-heading h1 { font-size: 28px; } .world-heading p { font-size: 12px; } .world-heading__date { margin-top: 12px; padding: 6px; justify-content: space-between; gap: 3px; } .world-heading__sun { display: none; } .world-heading__date input { width: 132px; } .world-heading__date .date-shortcuts { gap: 0; } .world-heading__date .date-shortcuts button { padding: 5px 6px; }
   .mobile-navigation { position: fixed; z-index: 12; left: 0; right: 0; bottom: 0; height: 62px; display: flex; background: #070e12f5; border-top: 1px solid #9d8055; padding-bottom: env(safe-area-inset-bottom); }
   .mobile-navigation button { flex: 1; flex-direction: column; gap: 2px; border: 0; border-radius: 0; background: transparent; font-size: 10px; color: #d2bc93; } .mobile-navigation .line-icon { width: 22px; height: 22px; }
 }
