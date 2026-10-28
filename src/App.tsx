@@ -8,6 +8,7 @@ import SphereInstallation from './ui/sanctuary/SphereInstallation';
 import RelicInventory from './ui/sanctuary/RelicInventory';
 import Chronicle from './ui/sanctuary/Chronicle';
 import WorldDialog from './ui/sanctuary/WorldDialog';
+import BackupDialog from './ui/sanctuary/BackupDialog';
 import RelicArt from './ui/sanctuary/RelicArt';
 import ShellIcon from './ui/sanctuary/ShellIcon';
 import { sanctuaryArt } from './ui/sanctuary/art';
@@ -37,7 +38,8 @@ export default function App() {
       <a className="app-brand" href="#main-content" aria-label="Relics — Sanctuary"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M20 2 37 24 20 46 3 24ZM20 9v30M10 24h20m-15-8 5 8-5 8m10-16-5 8 5 8" /></svg><span>Relics<small>Жизнь как приключение</small></span></a>
       <nav aria-label="Разделы Relics"><button aria-current={!model.showArchived ? 'page' : undefined} onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button>
         <button onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button>
-        <button aria-current={model.showArchived ? 'page' : undefined} onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button></nav>
+        <button aria-current={model.showArchived ? 'page' : undefined} onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button>
+        <button data-backup ref={model.backupButton} disabled={model.busy || model.managingHabit} onClick={model.openBackup}><ShellIcon kind="backup" /><span>Резервная копия</span></button></nav>
       <div className="rail-reflection"><span aria-hidden="true">◇</span><p>«Маленькие действия оставляют большую историю».</p><span aria-hidden="true">◇</span></div>
       <p className={model.native ? 'rail-status' : 'preview-notice'}>{model.native ? 'Локально · офлайн' : 'Демонстрация. Вымышленные данные; изменения не сохраняются.'}</p>
     </aside>
@@ -52,7 +54,8 @@ export default function App() {
       <RelicInventory model={model} />
       <Chronicle model={model} open={journalOpen} onToggle={setJournalOpen} reference={journal} />
     </main>
-    <nav className="mobile-navigation" aria-label="Разделы на узком экране"><button onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button><button onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button><button onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button></nav>
+    <nav className="mobile-navigation" aria-label="Разделы на узком экране"><button onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button><button onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button><button onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button><button aria-label="Резервная копия" disabled={model.busy || model.managingHabit} onClick={model.openBackup}><ShellIcon kind="backup" /><span>Копия</span></button></nav>
+    {model.backupOpen && <BackupDialog model={model} />}
     {model.formOpen && <WorldDialog labelledBy="create-habit-title" busy={model.busy} onClose={model.cancelManagement}>
       <div className="habit-editor"><div className="habit-editor__art"><RelicArt sphere={model.editingHabit?.spheres[0] ?? 'recovery'} /><p>Одна привычка может объединять несколько граней жизни.</p></div>
         <HabitForm key={model.editingHabit?.id ?? 'new'} busy={model.busy} canSave={model.canSave} habit={model.editingHabit ?? undefined} saveError={model.error} onSave={model.saveHabit} onCancel={model.cancelManagement} /></div>

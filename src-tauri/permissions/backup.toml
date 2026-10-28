@@ -1,0 +1,4 @@
+[[permission]]
+identifier = "local-backup"
+description = "Main-window backup utilities: native user-selected files, validated preview and token-confirmed atomic replacement. No arbitrary path or filesystem API."
+commands.allow = ["export_backup", "preview_backup", "cancel_backup", "restore_backup"]

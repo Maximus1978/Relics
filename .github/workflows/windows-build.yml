@@ -86,6 +86,9 @@ jobs:
       - name: Compile Tauri Windows executable
         run: npm.cmd run tauri -- build --no-bundle -- --locked
 
+      - name: Test native backup safety
+        run: cargo test --release --manifest-path src-tauri/Cargo.toml --locked --lib -- --test-threads=1
+
       - name: Prepare downloadable Windows build
         env:
           SOURCE_SHA: ${{ github.sha }}

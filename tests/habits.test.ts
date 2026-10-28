@@ -36,7 +36,7 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
   database.exec(readFileSync(new URL('../src-tauri/migrations/001_initial.sql', import.meta.url), 'utf8'));
   database.exec('PRAGMA user_version = 1');
   function migrate() {
-    if (database.prepare('PRAGMA user_version').get()?.user_version === 2) return;
+    if (Number(database.prepare('PRAGMA user_version').get()?.user_version) >= 2) return;
     database.exec('BEGIN');
     try {
       database.exec(readFileSync(new URL('../src-tauri/migrations/002_archive_habits.sql', import.meta.url), 'utf8'));
@@ -44,7 +44,12 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
       database.exec('COMMIT');
     } catch (error) { database.exec('ROLLBACK'); throw error; }
   }
-  if (initialVersion === 2) migrate();
+  function seedOnce() {
+    if (database.prepare('PRAGMA user_version').get()?.user_version === 3) return;
+    database.exec(readFileSync(new URL('../src-tauri/migrations/003_seed_once.sql', import.meta.url), 'utf8'));
+    database.exec('PRAGMA user_version = 3');
+  }
+  if (initialVersion === 2) { migrate(); seedOnce(); }
   context.after(() => {
     database.close();
     if (dirname(folder) !== temporaryRoot) throw new Error('Unexpected test cleanup directory.');
@@ -53,12 +58,13 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
   return {
     get database() { return database; },
     migrate,
-    open() { return openActivityRepository(sqliteAdapter(database)); },
+    open() { seedOnce(); return openActivityRepository(sqliteAdapter(database)); },
     reopen() {
       database.close();
       database = new DatabaseSync(path);
       database.exec('PRAGMA foreign_keys = ON');
       migrate();
+      seedOnce();
       return openActivityRepository(sqliteAdapter(database));
     },
   };

@@ -1,4 +1,4 @@
-type Kind = 'sanctuary' | 'chronicle' | 'archive' | 'plus' | 'check' | 'close';
+type Kind = 'sanctuary' | 'chronicle' | 'archive' | 'plus' | 'check' | 'close' | 'backup';
 
 const paths: Record<Kind, string> = {
   sanctuary: 'M3 21V10l3-5 3 5v11M15 21V10l3-5 3 5v11M9 21V8l3-5 3 5v13M1 21h22M11 21v-6h2v6',
@@ -7,6 +7,7 @@ const paths: Record<Kind, string> = {
   plus: 'M5 12h14M12 5v14',
   check: 'm5 12 4 4L19 6',
   close: 'm6 6 12 12M18 6 6 18',
+  backup: 'M5 3h12l4 4v14H3V3Zm2 0v6h10V3M7 21v-8h10v8M14 5v2',
 };
 
 export default function ShellIcon({ kind }: { kind: Kind }) {

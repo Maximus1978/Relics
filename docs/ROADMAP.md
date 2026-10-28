@@ -2,9 +2,15 @@
 
 ## Execution rule and current release
 
+Current authorized task is BACKUP-001, active in feature/backup-001 / PR #5 from accepted master 5fdc02dc1777c6b5793bababda918beac195856b. Full replacement, native dialogs, protective recovery JSON and strict validation are explicitly approved. [Contract/manual acceptance](BACKUP.md). Native CI/test/runtime results are recorded in HANDOFF; no automatic merge or subsequent task.
+
 One task at a time. This roadmap is a queue, not authorization to implement it. Break work into a small independent PR with explicit acceptance and preserve existing data/CI. Stop after delivery; never start the next task automatically.
 
-Sanctuary Gate A is APPROVED. The owner visually accepted the revised RPG interface and manually verified implemented functionality in Windows. Remaining artistic differences are accepted for this milestone; optional polish is not a release gate. The current task only records this acceptance/new design decisions and merges PR #4 after final-head Windows CI. No new product feature is implemented.
+Sanctuary Gate A is APPROVED. The owner accepted the revised interface and implemented Windows functionality; PR #4 was merged at 5fdc02dc1777c6b5793bababda918beac195856b. Remaining artistic differences are optional improvements. The current BACKUP-001 task adds only the authorized data-safety utility; no gameplay expansion.
+
+BACKUP-001 is delivered for native acceptance in unmerged PR #5. [Windows run 40717100257](https://github.com/Maximus1978/Relics/actions/runs/40717100257) passed on 7f76aea1da3b8daecc808e921c5797f09314e657: 31 Node/SQLite tests, TypeScript/Vite, 42 browser checks, Tauri Windows release compilation and 16 native tests. The crash helper is run as a child, intentionally ignored standalone. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40717100257/artifacts/12829521933). Native manual acceptance remains pending; later documentation-only evidence leaves source/tests/locks unchanged.
+
+Do not start the next queued SANCTUARY-STATE-001 without separate authorization after backup acceptance.
 
 ## Accepted foundation
 
@@ -22,7 +28,7 @@ Earlier rejected visual iterations are historical, not outstanding blockers. Fin
 
 Deliver one bounded Windows vertical slice: explicit local export and restore of a versioned backup containing current habit definitions, sphere sets, archive state, activities and historical snapshots/metadata. Preserve IDs and dates. Validate format/version/relationships before any write; use atomic restore with safe rollback. Invalid, unsupported or interrupted restore must leave the original data intact. Verify a clean-database round trip and reopening with temporary databases, plus compatibility with existing records.
 
-Resolve backup envelope/version, native file handling and replace-versus-merge/confirmation semantics at the start of BACKUP-001, before dependent code. Do not silently choose destructive replacement or add cloud sync. Scope remains existing persisted data; no progression or secret catalog is invented for backup. Further formats, scheduling or encryption can be separately scoped later. This task is queued, NOT started.
+The owner has now authorized full replacement only, with validated summary and explicit confirmation, plus recoverable safety JSON before mutation. Format v1/migration level 3 and native dialog/transaction design are documented in BACKUP.md (D041–D043). Scope remains existing persisted data; no progression or secret catalog is invented for backup. Further formats, scheduling or encryption need separate tasks. BACKUP-001 is active; do not begin later work.
 
 ## Ordered implementation priorities
 
