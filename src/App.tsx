@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
-import { recentActivity } from './domain/recentActivity';
-import { selectedDayActivity } from './domain/selectedDayActivity';
+import { medallionIllumination } from './domain/medallionIllumination';
 import { useLocalDay } from './application/useLocalDay';
 import { useRelicsModel } from './application/useRelicsModel';
 import HabitForm from './components/HabitForm';
@@ -20,8 +19,8 @@ export default function App() {
   const [journalOpen, setJournalOpen] = useState(false);
   const journal = useRef<HTMLDetailsElement>(null);
   const today = useLocalDay();
-  const observation = recentActivity(model.activities, today);
-  const selected = selectedDayActivity(model.activities, model.day);
+  const illumination = medallionIllumination(model.activities, model.day, today);
+  const selected = illumination.selected;
 
   function navigate(destination: 'sanctuary' | 'chronicle' | 'archive') {
     if (model.busy || model.managingHabit) return;
