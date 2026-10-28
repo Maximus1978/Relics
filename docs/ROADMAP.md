@@ -1,49 +1,72 @@
 # Roadmap
 
-## Execution rule
+## Execution rule and current release
 
-One task at a time. A milestone is a queue, not permission to implement its contents in one turn. Each task names one outcome, allowed changes, exclusions, and acceptance evidence. Complete or explicitly record a blocker, then hand off. Do not automatically start the next task, including after a blocker.
+One task at a time. This roadmap is a queue, not authorization to implement it. Break work into a small independent PR with explicit acceptance and preserve existing data/CI. Stop after delivery; never start the next task automatically.
 
-## Completed task: DOC-001 — align the foundation with the supplied brief
+Sanctuary Gate A is APPROVED. The owner visually accepted the revised RPG interface and manually verified implemented functionality in Windows. Remaining artistic differences are accepted for this milestone; optional polish is not a release gate. The current task only records this acceptance/new design decisions and merges PR #4 after final-head Windows CI. No new product feature is implemented.
 
-Scope: review requirements, consolidate canonical English documentation under `docs/`, record model/world requirements and implementation gaps, correct Resonance semantics, and preserve useful existing work.
+## Accepted foundation
 
-Done when: required files exist, local document links resolve, sources and provisional choices are explicit, one-task rules are permanent, and the handoff states actual verification limits. No application code, migrations, dependency installation, gameplay implementation, or secret-catalog access belongs to this task.
+| Milestone | Evidence |
+| --- | --- |
+| DOC-001 | Persistent specification and one-task process established |
+| BUILD-WIN-001 | Windows CI, reproducible locks and native launch; PR #1 merge ae7c71db54a12583fd9a0e995fb461ca6635846e; owner verified offline activity persistence |
+| HABITS-001A | Custom multisphere habits; PR #2 merge 544d813f26f5b6a4be39d36a81bc4bb7c1feba3e; owner accepted |
+| HABITS-001B | Edit/archive/restore with preserved history; PR #3 merge 8fc41b39d433fd1c9d26c71757580ae3a3567e77; owner accepted |
+| SANCTUARY-UI-001 | Owner-approved five-shrine/central-circle shell, pendant inventory and modal management; [PR #4](https://github.com/Maximus1978/Relics/pull/4); [runtime run 40619945699](https://github.com/Maximus1978/Relics/actions/runs/40619945699) passed 31 tests, TypeScript/Vite, 40 browser checks and native Tauri build |
 
-Status: completed. Documentation checks passed; see HANDOFF.md for the current task.
+Earlier rejected visual iterations are historical, not outstanding blockers. Final release-head CI and actual merge result are recorded in PR #4 checks/timeline. [HANDOFF](HANDOFF.md) distinguishes accepted implementation from the queue below.
 
-## Completed CI recovery: BUILD-WIN-001 — Windows scaffold build in CI
+## Next single task: BACKUP-001 — reliable local backup and restore
 
-Outcome: a reproducibly built Windows scaffold or one concrete diagnosed environment blocker. Scope: resolve dependencies, obtain lockfiles, typecheck/build, and perform the minimum Windows Tauri build/start check. Fix only issues preventing that result. Do not add product features or configure Android in the same task. Record exact evidence and stop.
+Deliver one bounded Windows vertical slice: explicit local export and restore of a versioned backup containing current habit definitions, sphere sets, archive state, activities and historical snapshots/metadata. Preserve IDs and dates. Validate format/version/relationships before any write; use atomic restore with safe rollback. Invalid, unsupported or interrupted restore must leave the original data intact. Verify a clean-database round trip and reopening with temporary databases, plus compatibility with existing records.
 
-The local attempt was BLOCKED by EPERM/TLS restrictions. GitHub-hosted recovery now passes: [run 40544697531](https://github.com/Maximus1978/Relics/actions/runs/40544697531) succeeded on tested head 24d5f5bb670e417bcaabfbe1d41fc6f12acfad66. Locked dependencies, all three tests, TypeScript, Vite, browser rendering and the actual Tauri release build passed; a downloadable Windows artifact exists. [PR #1](https://github.com/Maximus1978/Relics/pull/1) was merged into master at ae7c71db54a12583fd9a0e995fb461ca6635846e on the owner's instruction. See [CI evidence and artifact retrieval](WINDOWS_CI.md). The owner subsequently confirmed native launch and offline persistence of October 26/27 activity records. HABITS-001A is a separately authorized feature task; this baseline feedback does not establish the new form's native acceptance.
+Resolve backup envelope/version, native file handling and replace-versus-merge/confirmation semantics at the start of BACKUP-001, before dependent code. Do not silently choose destructive replacement or add cloud sync. Scope remains existing persisted data; no progression or secret catalog is invented for backup. Further formats, scheduling or encryption can be separately scoped later. This task is queued, NOT started.
 
-## Subsequent queue
+## Ordered implementation priorities
 
-HABITS-001A is accepted and merged in [PR #2](https://github.com/Maximus1978/Relics/pull/2) at 544d813f26f5b6a4be39d36a81bc4bb7c1feba3e. The owner verified native custom creation, multiple spheres, backdated activities and offline SQLite persistence. Historical build evidence: [run 40565215658](https://github.com/Maximus1978/Relics/actions/runs/40565215658), 12 tests and TypeScript/Vite/native Windows build passed.
+The owner's priority order is authoritative. The early Android checkpoint is cross-platform risk reduction, inserted before complex migrations/game systems become large. Every row below is a separately authorized future task, not work to begin now.
 
-## Delivered for acceptance: HABITS-001B
-
-Edit name/spheres; archive with confirmation; archived management and restore; preserve all historical snapshots. Add migration 2 without changing migration 1, sample IDs, database/app identity or cancellation semantics. Enforce active-only logging atomically in the repository. Local/CI SQLite tests: 23/23 passed. [PR #3](https://github.com/Maximus1978/Relics/pull/3) and [Windows run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811) deliver successful TypeScript/Vite/browser/native builds on fd97f6596dc400aebf37f28890a73e4bcc23df36. The [new executable ZIP](https://github.com/Maximus1978/Relics/actions/runs/40577256811/artifacts/12768437065) was downloaded and verified. A later documentation-only evidence commit leaves that source unchanged. See [task evidence and acceptance](HABITS_001B.md). Do not merge automatically. Next step: owner/product review using the new executable, then await instructions. Native management/migration/offline interaction remains manual acceptance. Do not begin another queued task.
-
-| Order | Task | Acceptance focus |
+| Priority | Small task | Acceptance boundary / dependency |
 | --- | --- | --- |
-| 1 | WIN-LOG-001 | Offline logging/backdating, duplicate protection, restart persistence and cancellation in Windows |
-| 2 | ANDROID-001 | Android toolchain and shell build/start, without feature expansion |
-| 3 | ANDROID-LOG-001 | Same journal behavior, background/resume, touch/text on Android |
-| 4 | AUDIT-001 | Auditable activity edits/removal with migration and correction tests |
-| 5 | BACKUP-001 | JSON backup/restore, validation, atomicity, clean-database round trip |
-| 6 | HABITS-001 | Creation accepted in HABITS-001A; edit/archive/restore isolated in HABITS-001B; further changes require authorization |
-| 7 | WEIGHTS-001 | Decide and implement configurable multisphere contribution weights |
-| 8 | SCHEDULE-001 | Daily/scheduled/flexible recurrence, rest, unknown versus confirmed inactivity |
-| 9 | PROGRESS-001 | Decide and test pure deterministic lifetime/epoch progression and recent Resonance |
-| 10 | WORLD-001 | Validated versioned World Pack and SVG component foundation |
-| 11 | DISCOVERY-001 | Constrained 2–3-element recipe evaluation and idempotent discovery persistence using synthetic content |
-| 12 | SANCTUARY-001 | Separately authorized curated content and spoiler-aware integration |
-| 13 | EPOCH-001 | Voluntary transition, museum, retained lifetime journal and non-destructive tests |
+| 1 | BACKUP-001 | Reliable current-data export/restore as above; first and only next task |
+| 2 | SANCTUARY-STATE-001 | Selected-day illuminated/subdued state using real completion data and an original Sanctuary runic monogram replacing the compass; no schema/gameplay expansion |
+| 2 | SANCTUARY-STATE-002 | Specify and review independent daily / gradual Resonance / permanent Mastery visual layers; synthetic developer fixtures only until real projections exist; no invented runtime energy |
+| Early platform gate | ANDROID-001 | Android toolchain/CI shell build and device launch with existing SQLite/UI; no new gameplay |
+| Early platform gate | ANDROID-LOG-001 | Existing logging/backdating, management, migration/reopen and lifecycle compatibility on Android; after ANDROID-001 and before the complete game loop |
+| 3 | HABIT-ICONS-001 | Small curated icon picker and independent persisted habit icon identity; safe migration/defaults and existing history intact |
+| 3 | WEIGHTS-001A | Decide primary-sphere semantics, optional secondary weights, defaults/normalization and snapshot/version compatibility; review contract before storage changes |
+| 3 | WEIGHTS-001B | Persist/edit the approved contribution model through additive migration; preserve historical meaning, separate from icon and activity intensity; after WEIGHTS-001A |
+| 4 | ACTIVITY-DETAILS-001A | Optional per-activity note with additive migration and legacy compatibility; not a habit field |
+| 4 | ACTIVITY-DETAILS-001B | Optional per-activity intensity after scale/effect agreement; distinct from contribution weights; no forced entry |
+| 4 | ACTIVITY-MODEL-001 | Small design/compatibility task for repeated sessions and quantities/units/identity; do not remove current uniqueness until a separately approved implementation |
+| 5 | PROGRESS-001 | Agree/version pure Mastery, Resonance and thematic essence contracts, evaluation time, no-absence-loss and anti-grind/correction policies; use synthetic examples |
+| 5 | PROGRESS-002 | Implement tested Mastery/Resonance projections and durable evolution semantics without losing history; integrate real visual layers from STATE-002 |
+| 6 prerequisite | AUDIT-001 | Auditable corrections and explicit consequences for resource/discovery grants before permanent rewards depend on mutable history |
+| 6 prerequisite | WORLD-001 | Validate versioned declarative pack schema/loader, compatibility, safe component/effect vocabulary and public/closed boundary |
+| 6 | ESSENCE-001 | Minimal thematic essence/material inventory and idempotent activity-derived accounting; approved yields/correction policy, no permanent-progress spending |
+| 6 | DISCOVERY-001 | Bounded authored 2–3-element rule evaluation, stable versioned discovery grants and duplicate/correction tests using synthetic fixtures |
+| 6 | ALCHEMY-UI-001 | Small working ingredient-selection/experiment/result UI after ESSENCE-001 and DISCOVERY-001; backed by real inventory/rules, never a fake screen |
+| 6 | SANCTUARY-001 | Separately authorized spoiler-safe catalog integration; close one minimal real activity → essence → experiment → authored discovery → optional experience loop |
+| 7 | COLLECTION-001 | Browse/filter earned collection content with honest empty/locked states and no undiscovered spoilers |
+| 7 | RUNE-001 | Authored rune discovery/collection and approved effects; bounded rules, not random infinite loot |
+| 7 | CRAFT-001 | Minimal crafting UI/service with approved renewable-resource costs and non-destructive transactions |
+| 7 | CUSTOMIZE-001 | Artifact customization separate from habit identity/contributions, with persisted reversible cosmetic choices |
+| 7 | ARTIFACT-001 | Small individually authored rare/legendary artifact set, unique shapes/art and versioned effect/content validation |
+| 7 | AWAKEN-001 | Artifact awakening / optional new experiences; no compulsory quest or daily requirement |
+| 7 | REFLECTION-001 | Optional reflection capture independent of required logging, safely persisted |
+| 7 | MICROQUEST-001 | Optional authored microquests/experiences that can be ignored without penalty |
+| 8 | WORLD-SELECT-001 | Honest world selection for Sanctuary, Clockwork, Wasteland and Verdant; only installed/compatible worlds selectable |
+| 8 | EPOCH-001 | Voluntary transition, explicit lifetime preservation, museum snapshot and safe backdate/transfer policy |
+| 8 | MUSEUM-001 | Browse previous-world journeys while retaining the common lifetime journal and compatible historical assets |
 
-Each queued item must be narrowed if it cannot fit one reviewable task. Optional diary, microquests, detailed Adventure Mode, advanced crafting, new worlds, notifications, widgets, sync, and ChatGPT integration need separate task cards. There is no required cloud backend in the foundation.
+Dependencies may require a smaller split within the same priority. No formula, cost, real secret recipe or release date is approved merely by this table. Minimum loop work in priority 6 is distinct from the expanded collection/crafting/awakening scope in priority 7.
 
-## Vertical slice acceptance boundary
+## Deferred independent work and accepted art backlog
 
-The initial three-habit demo defines “log, close, return”: today/past date, multiple spheres, no duplicate, journal, restart without network, cancellation. The owner accepted native Windows HABITS-001A behavior; Android and the new HABITS-001B management acceptance are separate. See [acceptance scenarios](ACCEPTANCE.md). Scheduling, weights, corrections audit, derived progression, and backups are explicitly missing.
+SCHEDULE-001 covers flexible recurrence, planned rest and explicit inactivity, separately from repeated-event modeling. Further backup formats, notifications, widgets, cloud sync or optional AI integration need separate task cards and are not in the next-task queue.
+
+Future art polish: optional alternate shrine silhouettes, refined gem optics, auxiliary/compact typography and fuller state/mobile visual capture. Shared base frames are appropriate for ordinary relics; reserve unique silhouettes/art for authored rare/legendary discoveries. The unique runic monogram is queued in STATE-001. None blocks the accepted Sanctuary release.
+
+The current seven-day observations are not implemented Resonance/Mastery. Notes, intensity, weights, repeated events, real progression, inventory, alchemy, rune/crafting/collection systems, optional experiences and world transitions are all unimplemented unless an accepted task above explicitly says otherwise. Preserve the versioned declarative World Pack architecture and finite authored discoveries.

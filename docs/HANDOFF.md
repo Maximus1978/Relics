@@ -1,40 +1,56 @@
 # Project handoff
 
-Updated 2026-10-27. HABITS-001B implementation/CI delivery is complete; owner/product acceptance is pending. [PR #3](https://github.com/Maximus1978/Relics/pull/3) stays open. Do not merge automatically or start another task.
+## Current task and owner acceptance
 
-## Verified baseline
+Task: accept/finalize SANCTUARY-UI-001, record the latest game decisions/roadmap, and merge [PR #4](https://github.com/Maximus1978/Relics/pull/4) using a normal merge commit after successful final-head Windows CI. Work stays on feature/sanctuary-ui-001 until that merge. No new feature implementation is authorized.
 
-GitHub PR #2 is merged; preparation verified master equals 544d813f26f5b6a4be39d36a81bc4bb7c1feba3e. The owner accepted HABITS-001A native Windows creation, multiple spheres, backdating and offline persistence, including October 26–27 records. Work starts from that exact integrated baseline on feature/habits-001b.
+**Gate A is APPROVED.** The owner visually accepted the revised Sanctuary RPG interface and manually verified the implemented functionality in Windows. Remaining artistic differences are accepted for this milestone and are future improvements, not release blockers. Earlier pending-review/no-merge instructions are superseded by this explicit owner decision (D034). This is not a claim that absent game systems or every specialist accessibility scenario have been implemented/tested.
 
-## Current implementation
+The next single task after merge is **BACKUP-001**, queued and NOT started. Stop after merge verification; do not automatically begin backup, Gate B polish, Android or gameplay work.
 
-- Shared creation/edit form with required name and one or more canonical sphere checkboxes/line icons, Save/Cancel/Escape, validation and focus handling.
-- Small Действия disclosure per row; edit, archive with explicit preserved-history confirmation, separate Архив привычек view and restore. Archived definitions can also be edited.
-- Additive migration 2 adds nullable archived_at/index. Migration 1, IDs, database sqlite:relics.db, application identifier and journal schema stay unchanged.
-- Edits update only the definition. Archive/restore updates only status. Startup INSERT OR IGNORE never reactivates archived samples.
-- New logging atomically selects the active persisted definition, including its current snapshots; archived/missing IDs are rejected even with stale caller state. Existing activity snapshots/metadata remain untouched.
-- One completion per habit/day and existing physical activity cancellation are preserved. Audit improvements remain AUDIT-001.
+## Verified baseline and release procedure
 
-## Verification and publication
+At release-task start, PR #4 was open/unmerged, head 67bc34db5fb84b24e0220a4ef01b103135589a56; master was 8fc41b39d433fd1c9d26c71757580ae3a3567e77. That head differs from tested runtime 1ab9c34f8ac7f657af2b6de8b37bc53556ccc9e1 only in documentation. Remote state was read from GitHub; local working tree was clean.
 
-Local npm test: 23/23 passed, including all existing tests plus rename/sphere persistence, unchanged history, archive/restore, archived logging guards, repeated sample seeding, October 26–27 compatibility, invalid edits and v1 migration/restarts/integrity.
+[Runtime Windows run 40619945699](https://github.com/Maximus1978/Relics/actions/runs/40619945699), PR merge source afef95ec0928b717c3ad5afd566c9f00ca9f7bc8, completed successfully: npm ci, 31/31 tests, TypeScript, Vite, 40 browser checks, pinned Rust MSVC, locked Cargo fetch and actual Tauri Windows release compilation. Node 22.23.4 / Rust 1.99.1. Zero browser runtime exceptions. Actual viewport renders at 1440×900, 1280×800, 1000×800, 390×844 and 320×844 were inspected. Browser data are fictional/in-memory; the owner's subsequent Windows verification is separate native evidence.
 
-Tests use temporary real SQLite files with production repository queries. Migration tests execute the real additive SQL with a test-only version marker, not the native SQL plugin's bookkeeping. Native plugin upgrade, UI interaction, keyboard behavior and offline lifecycle acceptance remain owner/reviewer checks. No personal database was opened or used for testing.
+This release task changes documentation only. Publish the new documentation commit on the existing PR branch WITHOUT skipping CI. Require Windows CI success on that exact final head before merging with expected-head protection, merge_method=merge and no force/history rewrite. Verify PR merged=true, the returned commit's parents/tree, master ref and local fast-forward state. Final-head CI URL and actual merge SHA are recorded in PR #4 checks/merge timeline and the task report; do not substitute an old run or predict a merge SHA in advance. A push-triggered master build may run after merge; it is distinct from the verified pre-merge run.
 
-[Windows CI run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811): completed / success. npm ci, 23/23 tests, TypeScript, Vite, basic browser rendering, locked Cargo dependencies, actual native Tauri release compilation and artifact upload passed. The browser screenshot was inspected. The existing pipeline/dependencies remain unchanged.
+## Accepted implementation
 
-Tested feature head: fd97f6596dc400aebf37f28890a73e4bcc23df36. Tested PR merge source: 2dfe87302c238bcc8b7547d373d5ab33d0c36f90. A documentation-only evidence commit follows using [skip ci]; all executable source/tests/migrations/workflow remain identical to this tested head. Do not treat compilation as native UI runtime acceptance.
+The revised shell includes a desktop rail, local cathedral panorama, five dimensional shrines around a central wheel (2+3), pendant inventory, compact Chronicle and modal/full-screen habit management. Reusable presentation/tokens are separate from the application hook. Original local decorative WebP assets total 810,188 bytes, with [exact generation prompts/provenance](art/VISUAL_RECOVERY.md).
 
-[Download the new Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40577256811/artifacts/12768437065), 4,281,632 bytes, available until 2026-11-10. The local copy is outputs/Relics-HABITS-001B-windows-x64.zip outside the repository. It contains relics.exe, dependency locks, build-info.json, executable checksum and launch note. Metadata confirmed the exact tested SHAs; ZIP/executable hashes were checked after download. ZIP SHA256: b036352eac7d6f6aee93274585cae77da7f5e9c2d004e8a2f5796f150130c776. EXE SHA256: 26b747b7564c642004f71b1201336878050a41bb4faa0a2f1274250731e7cc23. The executable was not launched here.
+The read-only projection counts distinct recorded dates per historical sphere snapshot across the current local day and preceding six days. It includes archived history and does not depend on current habit definitions or the selected logging date. Center = represented spheres; rings = observed dates. These are not actual Mastery/Resonance or health scores.
 
-GitHub publication used the repository integration with expected-parent checks and no force-push/history rewrite. The local workspace tracks feature/habits-001b. The reviewed file list contains only feature source/tests, migration 2 and documentation; no private content, personal databases, credentials, logs or build artifacts were committed.
+SQLite repository/schema/migrations, canonical IDs, app/database identities, habit/activity rules, dependencies/locks and Windows workflow are unchanged in this documentation task. No private content or owner database was accessed. Existing one-completion-per-habit/day, create/edit/archive/restore, backdating, historical snapshots and cancellation remain intact.
 
-## Next step and boundaries
+## Preserved artifacts and technical limits
 
-Next queued step: the owner/product reviewer executes [HABITS-001B acceptance](HABITS_001B.md): rename Guitar to Гитара with Разум + Восстановление, archive Чтение, inspect archive/history, restart offline, restore and log an unused past date. Close the old application, extract the new ZIP separately and run relics.exe; no local compilation/toolchain setup is required. Review before merging. Do not start WIN-LOG-001 or another feature automatically.
+[Runtime browser ZIP](https://github.com/Maximus1978/Relics/actions/runs/40619945699/artifacts/12787540029): 9,818,388 bytes; SHA256 7cce4b539d91c4b56b5e3bf25bb63d667c1d9b837f7a8dfb6850fdc9f3e43834.
+[Runtime Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40619945699/artifacts/12786548417): 8,116,888 bytes; SHA256 607bb573c0d1a277deb2589ea4e29d5c1ffd4f6af55bd8630f174dabc4b4feb1.
+relics.exe: 15,989,760 bytes; SHA256 5a3f046ddcf4bbd3ce409332bd8fb76441b4424de0b028c55b6061fe7e004779.
+Downloads/checksums and build-info source SHAs were verified in the UI task. Retention ends 2026-11-11; newer release-head artifacts appear in the final PR check.
 
-The current work does not launch the executable against owner data. Browser preview has no native SQLite bridge. The unsigned Windows x64 artifact requires WebView2. Older-executable downgrade compatibility after migration is unverified. [Task details](HABITS_001B.md) and [data model](DATA_MODEL.md) explain evidence limits.
+Outside Git: outputs/Relics-Visual-Recovery-Gate-A/ screenshots/result/DOM, comparison and state contact sheet, and Windows ZIP. The CI artifact's nativeUiRuntimeVerified=false reflects its producer's limits; the owner subsequently supplied manual Windows acceptance in this task. The agent did not operate on the owner's database. Unsigned Windows x64/WebView2 requirements remain.
 
-## Persistent context
+Browser checks are regression evidence, not complete accessibility certification. Full expanded-journal/mobile-form capture and typography/gem polish are optional future work, not blockers reopening Gate A.
 
-AGENTS.md and docs/ remain the source of truth. Calm offline-first life balance, five canonical spheres, immutable historical snapshots and no penalties for absence. One task at a time; ask early about consequential uncertainty. Russian reports, English technical documentation. private/ stays excluded and unread. Historical local EPERM/TLS/credential restrictions remain; use the GitHub integration and existing CI without requiring owner toolchain repair.
+## Newly approved product direction
+
+- Three independent states: selected-day activity illumination/subdued; gradual recent Resonance without punishment; permanent Mastery/artifact evolution that never decays through inactivity. Unknown days are not confirmed failure. Future Sanctuary center uses an original runic monogram.
+- Curated habit icons independent of contributions. Plan primary sphere and optional weighted secondaries; contribution weights differ from per-activity intensity. Shared ordinary frames are intentional; unique rare/legendary silhouettes/art are authored.
+- Optional activity intensity/note through additive migrations, retaining old records. Future repeated/quantified modeling is separate; current uniqueness stays.
+- Real activities → Mastery/thematic essences → player experiments → authored discoveries → optional experiences. No permanent-progress spending for basic experiments, infinite random loot, compulsory tasks/logins or optimal XP grinding.
+- Explicit future Adventure tasks, versioned declarative World Packs and Sanctuary/Clockwork/Wasteland/Verdant are preserved. No actual secret recipes/names/conditions are exposed or invented.
+
+[Game design](GAME_DESIGN.md), [UX](UX_PRINCIPLES.md), [decisions D034–D040](DECISIONS.md), [World Packs](WORLD_PACKS.md) and [ordered small tasks](ROADMAP.md) are authoritative. All new mechanics remain unimplemented.
+
+## Next single task and unresolved choices
+
+BACKUP-001: a reliable bounded local export/restore slice for existing SQLite data, with versioned validation, preserved snapshots/IDs, atomic safety and temporary-database reopen/round-trip tests. Resolve backup format/adapters and replacement-versus-merge confirmation before dependent work. Do not begin now.
+
+Subsequent priorities: activity/Resonance visual-state contract; icon/contribution identity; optional activity details; actual progression; minimal alchemy/discovery loop; collection/artifact experiences; world transitions/museum. Early Android build/lifecycle compatibility is explicitly queued before the game loop grows large.
+
+Open before their implementation: backup replacement/merge policy, weight defaults/normalization and primary semantics, intensity scale/effects, progression windows/thresholds/yields and anti-grind rules, reward corrections, repeated-event identity/units, renewable crafting costs, epoch transfer/backdating and museum compatibility. These do not block documentation acceptance or this UI release. See OPEN_QUESTIONS.md.
+
+Russian reports; English technical docs. One task at a time. Keep secrets/databases/logs/build outputs out of Git; no private/ access or force push. Future merges require their own applicable owner authorization.

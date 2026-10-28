@@ -1,0 +1,6 @@
+:root { --font-ui: "Segoe UI", system-ui, sans-serif; --font-display: Georgia, "Times New Roman", serif; --ink: #eee1c9; --muted: #c3beaf; --gold: #c9a66b; --line: #8d744c; --night: #070d11; --rail-width: 180px; --panel-art: url('/art/panel-frame.svg'); }
+[data-sphere="body"] { --sphere: #eb756d; --sphere-dark: #612323; }
+[data-sphere="mind"] { --sphere: #79b4f4; --sphere-dark: #153c68; }
+[data-sphere="relationships"] { --sphere: #e882a5; --sphere-dark: #57273d; }
+[data-sphere="work"] { --sphere: #e5b866; --sphere-dark: #5e451c; }
+[data-sphere="recovery"] { --sphere: #80d2a0; --sphere-dark: #1c5438; }

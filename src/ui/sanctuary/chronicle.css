@@ -1,0 +1,16 @@
+.chronicle-panel { margin-top: 12px; padding: 0 15px; background: #080f14eb; border: 1px solid #9a8056; border-image: var(--panel-art) 24 / 10px / 0 stretch; }
+.chronicle > summary { min-height: 57px; display: flex; align-items: center; gap: 13px; cursor: pointer; list-style: none; color: #c6ad80; }
+.chronicle > summary::-webkit-details-marker { display: none; }
+.chronicle h2 { font-size: 21px; color: #e4cfaa; }
+.chronicle > summary > span:not(.chronicle-chevron) { font-size: 12px; margin-left: auto; color: #bab6a9; }
+.chronicle-chevron { font-size: 24px; }
+.chronicle[open] .chronicle-chevron { transform: rotate(180deg); }
+.chronicle > ul { list-style: none; padding: 0 0 12px; margin: 0; }
+.entry { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-top: 1px solid #a48b583a; }
+.entry__symbol { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; color: var(--sphere); background: radial-gradient(ellipse, var(--sphere-dark), transparent); border: 1px solid #8e75484f; border-radius: 50%; }
+.entry time { font-size: 11px; color: #bbb5a6; }
+.entry h3 { font-size: 17px; margin: 3px 0; }
+.entry p { font-size: 12px; }
+.entry button { margin-left: auto; font-size: 12px; }
+.chronicle > p { padding: 5px 0 16px; font-size: 13px; }
+@media (max-width: 760px) { .chronicle-panel { padding: 0 10px; } .chronicle h2 { font-size: 18px; } .chronicle > summary { gap: 7px; } .chronicle > summary > span:not(.chronicle-chevron) { font-size: 10px; } .entry { gap: 8px; } .entry__symbol { display: none; } .entry h3 { overflow-wrap: anywhere; } .entry button { padding: 5px 8px; } }

@@ -25,9 +25,9 @@ Recent Resonance may naturally fade as a descriptive signal. That must not erase
 
 ## First world and scope
 
-Sanctuary is an original dark gothic fantasy world with restrained magical effects, gemstones, illustrated medallions, aged metal, and dark stone. Supplied concepts establish art direction, not final screen layouts. Proprietary Diablo assets must not be reproduced.
+Sanctuary is an original dark gothic fantasy world with restrained magical effects, gemstones, illustrated medallions, aged metal, and dark stone. VISUAL_CONTRACT v0.2 and the desktop TARGET guided its composition/materials. The owner has approved Gate A and manually verified implemented functionality in Windows; remaining artistic differences are future improvements, not release blockers. Invented concept scores, recipes and future controls are not behavior specifications. Proprietary game assets must not be reproduced. Planned worlds remain Sanctuary, Clockwork, Wasteland and Verdant with shared versioned declarative packs.
 
-The foundation precedes full feature development. The current runtime is an unverified scaffold for local logging. Scheduling, weighted contributions, progression, backups, world switching, and alchemy are requirements for later individual tasks, not implemented features.
+The foundation precedes full game development. The owner accepted native habit management, multisphere logging, backdating and SQLite persistence through HABITS-001B and has now accepted Sanctuary's revised UI/implemented Windows functionality. The intended game loop is real activity → Mastery/thematic essences → player experiments → authored discoveries → optional experiences. Backups, independent visual states, habit icon/contribution identity, activity details, progression and Adventure systems remain future individual tasks. BACKUP-001 is next; see ROADMAP.md. No automatic continuation.
 
 ## Source and precedence
 

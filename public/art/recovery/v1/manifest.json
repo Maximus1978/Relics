@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "purpose": "Decorative art only; real labels, rings and controls are HTML/SVG",
+  "assets": {
+    "shrine": {
+      "file": "shrine.webp",
+      "width": 512,
+      "height": 1024,
+      "bytes": 181352,
+      "sha256": "a1937c791e43cb634e2638f978598a6a7a7e3edb8e687bc16f3303b445cb0f52",
+      "masterSha256": "8b6b8ed2de00161c37f78184898169ebb44468cad8421af72eb283b6ad0f9dbd"
+    },
+    "wheel": {
+      "file": "wheel.webp",
+      "width": 640,
+      "height": 640,
+      "bytes": 132350,
+      "sha256": "8d7429dc61b92ebd473a871b5b665853c3717fec852e69ff7cf76391b05dcfe2",
+      "masterSha256": "684b6c7f7eb867fdf29dc8e4be936e81a0d0197e55d08eaac9dd1fe0fb088906"
+    },
+    "relic": {
+      "file": "relic.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 43476,
+      "sha256": "a732d9ee6231262f144b7ab40f4e1dd3bbc8244d8a125f42fc8fdec6bbfb96ad",
+      "masterSha256": "1c073ff852490a257bf64110aa9d995d6781d32bff1a75764d47c506fb7d4f9d"
+    },
+    "environment": {
+      "file": "environment.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 453010,
+      "sha256": "bc9eac8c695efba9851b86176907b9bca6c853527573c8fc45e152bd6793808c",
+      "masterSha256": "e3a600959a5ae893ef5f952cd1e9944f78856fed109a9ab55a70f4b68c2f8700"
+    }
+  }
+}

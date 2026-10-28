@@ -4,7 +4,7 @@
 
 Use Tauri 2, React, strict TypeScript, Vite, SQLite, and SVG components. Share domain logic and reusable presentation primitives; provide platform-specific interactions/adapters. No first-iteration cloud backend. The journal is authoritative; counters and progression are rebuildable projections.
 
-Official documentation reviewed on 2026-10-26 lists Windows/Android support for the [SQL plugin](https://v2.tauri.app/plugin/sql/), describes migration transactions and explicit permissions, and specifies Windows/mobile [build prerequisites](https://v2.tauri.app/start/prerequisites/). This supports the proposed direction. Local execution remained restricted, but [GitHub-hosted Windows CI](WINDOWS_CI.md) now verifies dependency resolution, tests, frontend rendering/build, and native Tauri release compilation. Native UI/SQLite runtime acceptance is still pending. See [historical feasibility findings](TECHNOLOGY_FEASIBILITY.md).
+Official documentation reviewed on 2026-10-26 lists Windows/Android support for the [SQL plugin](https://v2.tauri.app/plugin/sql/), describes migration transactions and explicit permissions, and specifies Windows/mobile [build prerequisites](https://v2.tauri.app/start/prerequisites/). Local execution remained restricted, but [GitHub-hosted Windows CI](WINDOWS_CI.md) verifies dependency resolution, tests, frontend rendering/build and native Tauri release compilation. The owner accepted native Windows/SQLite behavior through HABITS-001B, merged at 8fc41b39d433fd1c9d26c71757580ae3a3567e77. The new Sanctuary presentation and Android runtime acceptance are separate. See [historical feasibility findings](TECHNOLOGY_FEASIBILITY.md).
 
 ## Boundaries and data flow
 
@@ -27,12 +27,16 @@ Domain rules cannot depend on React, Tauri, SQL, or theme artwork. Application u
 
 - `src/domain/activity.ts`: typed habits/activities, sphere IDs, date validation, local-day helper.
 - `src/data/activityRepository.ts`: SQL plugin adapter and snapshot mapping.
-- `src/App.tsx`: demonstration logging, date selection, journal, cancellation.
-- `src-tauri/migrations/001_initial.sql`: initial tables; `src-tauri/src/lib.rs` registers the migration.
+- `src/App.tsx`: small Sanctuary composition/navigation root. `src/application/useRelicsModel.ts` reuses existing habit/logging state and repository callbacks separately from presentation.
+- `src/components/`, `src/ui/sanctuary/`: shared validated habit controls, local-calendar helpers, shrine installation/wheel, relic inventory, Chronicle and native modal; scoped component styles and reusable design tokens.
+- `src/domain/recentActivity.ts`: pure, read-only seven-local-calendar-day snapshot projection; no progression, schema or persistence change.
+- `src/preview/sanctuaryPreview.ts`: browser-only fictional in-memory fixture; dynamically selected outside Tauri, explicitly labeled and reset on reload, with no persistent storage or SQLite access.
+- `public/art/recovery/v1/`: versioned local WebP environment, transparent shrine/wheel/pendant bases and hash manifest; approximately 810KB total. Original environment PNG retained as source; other masters outside Git. Real labels/controls remain HTML/SVG. [Prompts/provenance](art/VISUAL_RECOVERY.md).
+- `src-tauri/migrations/001_initial.sql` and `002_archive_habits.sql`: tables and additive habit archive field; `src-tauri/src/lib.rs` registers both migrations.
 - `content/sanctuary/manifest.json`: public epoch metadata, not a complete validated World Pack.
 - `tests/activity.test.ts`: date tests and real SQLite integrity scenarios via Node.
 
-The current screen still coordinates use cases directly with the concrete adapter. A repository port and pure application service should be extracted in a dedicated task when expanding behavior. Schedules, weighted contributions, projections, audit events, backup/restore, and World Pack validation are not implemented.
+The current application hook still coordinates use cases directly with the concrete adapter. A repository port and pure application service should be extracted in a dedicated task when expanding behavior. Schedules, weighted contributions, game progression projections, audit events, backup/restore, and World Pack validation are not implemented; the small read-only recorded-day projection above is present.
 
 ## Intended directory structure
 

@@ -1,151 +1,65 @@
-import { useEffect, useRef, useState } from 'react';
-import { isTauri } from '@tauri-apps/api/core';
-import { localDay, spheres, type Activity, type Habit } from './domain/activity';
-import { openActivityRepository } from './data/activityRepository';
+import { useRef, useState } from 'react';
+import { localDay } from './domain/activity';
+import { recentActivity } from './domain/recentActivity';
+import { useRelicsModel } from './application/useRelicsModel';
 import HabitForm from './components/HabitForm';
-import HabitActions from './components/HabitActions';
-import SphereIcon from './components/SphereIcon';
-import { HabitStateError, HabitValidationError, type HabitInput } from './domain/habit';
-
-type Repository = Awaited<ReturnType<typeof openActivityRepository>>;
+import { yesterday } from './ui/dates';
+import SphereInstallation from './ui/sanctuary/SphereInstallation';
+import RelicInventory from './ui/sanctuary/RelicInventory';
+import Chronicle from './ui/sanctuary/Chronicle';
+import WorldDialog from './ui/sanctuary/WorldDialog';
+import RelicArt from './ui/sanctuary/RelicArt';
+import ShellIcon from './ui/sanctuary/ShellIcon';
+import { sanctuaryArt } from './ui/sanctuary/art';
+import './ui/sanctuary/shell.css';
 
 export default function App() {
-  const [day, setDay] = useState(localDay);
-  const [activities, setActivities] = useState<Activity[]>([]);
-  const [habits, setHabits] = useState<Habit[]>([]);
-  const [creatingHabit, setCreatingHabit] = useState(false);
-  const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
-  const [archivingHabit, setArchivingHabit] = useState<Habit | null>(null);
-  const [showArchived, setShowArchived] = useState(false);
-  const [repository, setRepository] = useState<Repository | null>(null);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const [busy, setBusy] = useState(false);
-  const actionLock = useRef(false);
-  const addHabitButton = useRef<HTMLButtonElement>(null);
-  const archiveToggle = useRef<HTMLButtonElement>(null);
-  const returnFocus = useRef<HTMLElement | null>(null);
-  const formOpen = creatingHabit || editingHabit !== null;
-  const managingHabit = formOpen || archivingHabit !== null;
-  const visibleHabits = habits.filter(habit => (habit.archivedAt !== null) === showArchived);
+  const model = useRelicsModel();
+  const [journalOpen, setJournalOpen] = useState(false);
+  const journal = useRef<HTMLDetailsElement>(null);
+  const observation = recentActivity(model.activities, localDay());
 
-  useEffect(() => {
-    if (!isTauri()) return;
-    let active = true;
-    openActivityRepository().then(async store => {
-      const [entries, savedHabits] = await Promise.all([store.list(), store.listHabits('all')]);
-      if (active) { setActivities(entries); setHabits(savedHabits); setRepository(store); }
-    }).catch(() => { if (active) setError('Не удалось открыть локальную базу. Перезапустите приложение, чтобы повторить.'); });
-    return () => { active = false; };
-  }, []);
-
-  useEffect(() => {
-    if (!managingHabit && !busy && returnFocus.current) {
-      const target = returnFocus.current.isConnected ? returnFocus.current : archiveToggle.current;
-      target?.focus();
-      returnFocus.current = null;
+  function navigate(destination: 'sanctuary' | 'chronicle' | 'archive') {
+    if (model.busy || model.managingHabit) return;
+    if (destination === 'chronicle') {
+      setJournalOpen(true);
+      requestAnimationFrame(() => { journal.current?.scrollIntoView({ block: 'nearest' }); journal.current?.querySelector('summary')?.focus(); });
+    } else {
+      model.setShowArchived(destination === 'archive');
+      document.getElementById(destination === 'archive' ? 'inventory' : 'main-content')?.scrollIntoView({ block: 'start' });
     }
-  }, [managingHabit, busy]);
-
-  async function perform(action: (store: Repository) => Promise<void>, success: string) {
-    if (!repository || actionLock.current) return;
-    actionLock.current = true;
-    setBusy(true); setError(''); setMessage('');
-    let saved = false;
-    try {
-      await action(repository);
-      saved = true;
-      const [entries, savedHabits] = await Promise.all([repository.list(), repository.listHabits('all')]);
-      setActivities(entries); setHabits(savedHabits);
-      setMessage(success);
-    } catch (failure) {
-      setError(saved ? 'Изменение сохранено, но список не обновился. Перезапустите приложение.'
-        : failure instanceof HabitStateError || failure instanceof HabitValidationError ? failure.message
-        : failure instanceof Error && failure.message.startsWith('Выберите') ? failure.message
-        : failure instanceof Error && /дат/.test(failure.message) ? failure.message
-        : 'Не удалось сохранить изменение. Повторите попытку.');
-    } finally { actionLock.current = false; setBusy(false); }
   }
 
-  function log(habit: Habit) {
-    void perform(store => store.log(habit, day), 'Отметка сохранена на выбранную дату.');
-  }
-
-  async function saveHabit(input: HabitInput) {
-    await perform(async store => {
-      if (editingHabit) await store.updateHabit(editingHabit.id, input.name, input.spheres);
-      else { await store.createHabit(input.name, input.spheres); setShowArchived(false); }
-      setCreatingHabit(false); setEditingHabit(null);
-    }, 'Привычка сохранена.');
-  }
-
-  function beginManagement(habit: Habit, action: 'edit' | 'archive') {
-    setError(''); setMessage('');
-    returnFocus.current = document.getElementById(`habit-actions-${habit.id}`);
-    if (action === 'edit') setEditingHabit(habit);
-    else setArchivingHabit(habit);
-  }
-
-  function cancelManagement() {
-    setCreatingHabit(false); setEditingHabit(null); setArchivingHabit(null); setError('');
-  }
-
-  return <main>
-    <header><span className="eyebrow">RELICS · первая эпоха</span><h1>Sanctuary</h1>
-      <p>Небольшие действия оставляют след. Возвращайтесь в своём ритме.</p></header>
-    {!isTauri() && <p role="status">Просмотр каркаса. Локальное сохранение доступно в приложении Windows или Android.</p>}
-    <section aria-labelledby="habits-title">
-      <div className="section-heading"><h2 id="habits-title">Отметить действие</h2>
-        <button ref={addHabitButton} type="button" disabled={busy || managingHabit || (isTauri() && !repository)}
-          aria-expanded={creatingHabit} aria-controls="create-habit-panel"
-          onClick={() => { setError(''); setMessage(''); returnFocus.current = addHabitButton.current; setCreatingHabit(true); }}>+ Добавить привычку</button></div>
-      {formOpen && <div id="create-habit-panel"><HabitForm key={editingHabit?.id ?? 'new'} busy={busy} canSave={!!repository}
-        habit={editingHabit ?? undefined} saveError={error} onSave={saveHabit} onCancel={cancelManagement} /></div>}
-      {archivingHabit && <div className="archive-confirmation" role="group" aria-labelledby="archive-confirm-title"
-        onKeyDown={event => { if (event.key === 'Escape' && !busy) { event.preventDefault(); cancelManagement(); } }}>
-        <h3 id="archive-confirm-title">В архив: {archivingHabit.name}?</h3>
-        <p>Привычка исчезнет из активного списка. Все записи в журнале сохранятся. Вы сможете восстановить её из архива.</p>
-        <div className="form-actions"><button type="button" disabled={busy} onClick={() => void perform(async store => {
-          await store.archiveHabit(archivingHabit.id); setArchivingHabit(null);
-        }, 'Привычка перемещена в архив. История сохранена.')}>В архив</button>
-          <button type="button" autoFocus disabled={busy} onClick={cancelManagement}>Отмена</button></div>
-      </div>}
-      <label>Дата <input type="date" value={day} max={localDay()} disabled={busy || managingHabit}
-        onChange={event => setDay(event.target.value)} /></label>
-      {!isTauri() && <p>В браузерном просмотре привычки из SQLite не загружаются. Можно посмотреть форму создания; сохранение доступно в приложении.</p>}
-      <div className="section-heading"><h3>{showArchived ? 'Архив привычек' : 'Активные привычки'}</h3>
-        <button ref={archiveToggle} type="button" disabled={busy || managingHabit} aria-controls="habit-list"
-          onClick={() => { setShowArchived(current => !current); setError(''); setMessage(''); }}>
-          {showArchived ? 'Активные привычки' : 'Архив привычек'}</button></div>
-      {repository && !visibleHabits.length && <p>{showArchived ? 'В архиве пока нет привычек.' : 'Здесь будут ваши активные привычки. Можно добавить новую или восстановить привычку из архива.'}</p>}
-      <ul className="habits" id="habit-list">{visibleHabits.map(habit => {
-        const done = activities.some(entry => entry.habitId === habit.id && entry.occurredOn === day);
-        return <li key={habit.id}><div><strong>{habit.name}</strong>
-          <p className="sphere-tags">{habit.spheres.map(sphere => <span key={sphere}><SphereIcon sphere={sphere} />{spheres[sphere]}</span>)}</p></div>
-          <div className="habit-controls">{!showArchived && <button disabled={!repository || busy || managingHabit || done} onClick={() => log(habit)}
-            aria-label={`${done ? 'Отмечено' : 'Отметить'}: ${habit.name}`}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" />
-              {done ? <path d="m7 12 3 3 7-7" /> : <path d="M7 12h10M12 7v10" />}</svg>
-            {done ? 'Отмечено' : 'Отметить'}</button>}
-            <HabitActions habit={habit} disabled={!repository || busy || managingHabit}
-              onEdit={() => beginManagement(habit, 'edit')} onArchive={() => beginManagement(habit, 'archive')}
-              onRestore={() => {
-                returnFocus.current = document.getElementById(`habit-actions-${habit.id}`);
-                void perform(store => store.restoreHabit(habit.id), 'Привычка возвращена в активный список.');
-              }} /></div></li>;
-      })}</ul>
-      <p role="status" aria-live="polite">{busy ? 'Сохраняем…' : message}</p>
-      {error && !formOpen && <p role="alert">{error}</p>}
-    </section>
-    <section aria-labelledby="journal-title"><h2 id="journal-title">Жизненный журнал</h2>
-      {!activities.length && <p>Здесь появятся ваши действия. Начните, когда будет удобно.</p>}
-      <ul>{activities.map(entry => <li className="entry" key={entry.id}>
-        <div><time dateTime={entry.occurredOn}>{entry.occurredOn}</time> · {entry.habitName}
-          <p>{entry.spheres.map(sphere => spheres[sphere]).join(' · ')}</p></div>
-        <button disabled={busy || managingHabit} onClick={() => void perform(store => store.remove(entry.id), 'Отметка отменена.')}
-          aria-label={`Отменить: ${entry.habitName}, ${entry.occurredOn}`}>Отменить</button>
-      </li>)}</ul>
-    </section>
-    <footer>Локальный журнал · Mastery, Resonance и открытия появятся в следующих срезах.</footer>
-  </main>;
+  return <div className="sanctuary-app">
+    <div className="world-backdrop" aria-hidden="true"><img src={sanctuaryArt.environment} className="sanctuary-scene" width="1672" height="941" alt="" fetchPriority="high" /></div>
+    <a className="skip-link" href="#habits-title">Перейти к реликвиям</a>
+    <aside className="app-rail">
+      <a className="app-brand" href="#main-content" aria-label="Relics — Sanctuary"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M20 2 37 24 20 46 3 24ZM20 9v30M10 24h20m-15-8 5 8-5 8m10-16-5 8 5 8" /></svg><span>Relics<small>Жизнь как приключение</small></span></a>
+      <nav aria-label="Разделы Relics"><button aria-current={!model.showArchived ? 'page' : undefined} onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button>
+        <button onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button>
+        <button aria-current={model.showArchived ? 'page' : undefined} onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button></nav>
+      <div className="rail-reflection"><span aria-hidden="true">◇</span><p>«Маленькие действия оставляют большую историю».</p><span aria-hidden="true">◇</span></div>
+      <p className={model.native ? 'rail-status' : 'preview-notice'}>{model.native ? 'Локально · офлайн' : 'Демонстрация. Вымышленные данные; изменения не сохраняются.'}</p>
+    </aside>
+    <main className="sanctuary-main" id="main-content">
+      <header className="world-heading"><div><h1>Sanctuary</h1><p>Ваше убежище · первая эпоха</p></div>
+        <div className="world-heading__date"><span className="world-heading__sun" aria-hidden="true">☼</span><div className="date-shortcuts" role="group" aria-label="Быстрый выбор даты">
+          <button aria-pressed={model.day === localDay()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(localDay())}>Сегодня</button>
+          <button aria-pressed={model.day === yesterday()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(yesterday())}>Вчера</button></div>
+          <label>Дата отметки<input type="date" value={model.day} max={localDay()} disabled={model.busy || model.managingHabit} onChange={event => model.setDay(event.target.value)} /></label></div>
+      </header>
+      <SphereInstallation observation={observation} />
+      <RelicInventory model={model} />
+      <Chronicle model={model} open={journalOpen} onToggle={setJournalOpen} reference={journal} />
+    </main>
+    <nav className="mobile-navigation" aria-label="Разделы на узком экране"><button onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button><button onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button><button onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button></nav>
+    {model.formOpen && <WorldDialog labelledBy="create-habit-title" busy={model.busy} onClose={model.cancelManagement}>
+      <div className="habit-editor"><div className="habit-editor__art"><RelicArt sphere={model.editingHabit?.spheres[0] ?? 'recovery'} /><p>Одна привычка может объединять несколько граней жизни.</p></div>
+        <HabitForm key={model.editingHabit?.id ?? 'new'} busy={model.busy} canSave={model.canSave} habit={model.editingHabit ?? undefined} saveError={model.error} onSave={model.saveHabit} onCancel={model.cancelManagement} /></div>
+    </WorldDialog>}
+    {model.archivingHabit && <WorldDialog labelledBy="archive-confirm-title" busy={model.busy} onClose={model.cancelManagement}>
+      <div className="archive-confirmation"><ShellIcon kind="archive" /><h3 id="archive-confirm-title">В архив: {model.archivingHabit.name}?</h3><p>Привычка исчезнет из активного списка. Все записи в хронике сохранятся. Вы сможете восстановить её из архива.</p>
+        <div className="form-actions"><button autoFocus onClick={model.cancelManagement} disabled={model.busy}>Отмена</button><button className="button-primary" onClick={model.archiveHabit} disabled={model.busy}>В архив</button></div></div>
+    </WorldDialog>}
+  </div>;
 }
