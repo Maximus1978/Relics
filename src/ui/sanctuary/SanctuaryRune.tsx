@@ -39,7 +39,7 @@ export default function SanctuaryRune({ illumination }: { illumination: Medallio
         <feComponentTransfer><feFuncR type="gamma" amplitude="1.65" exponent=".65" offset="0" /><feFuncG type="gamma" amplitude="1.65" exponent=".65" offset="0" /><feFuncB type="gamma" amplitude="1.65" exponent=".65" offset="0" /><feFuncA type="gamma" amplitude="2.6" exponent=".7" offset="0" /></feComponentTransfer>
         <feComponentTransfer><feFuncR type="table" tableValues="0 .4 .85 1 1" /><feFuncG type="table" tableValues="0 .2 .5 .83 1" /><feFuncB type="table" tableValues="0 .04 .12 .35 .78" /></feComponentTransfer>
       </filter>
-      <radialGradient id={`${id}-halo`}><stop offset=".86" stopColor="#efad47" stopOpacity="0" /><stop offset=".95" stopColor="#efa63b" stopOpacity=".55" /><stop offset="1" stopColor="#efa63b" stopOpacity="0" /></radialGradient>
+      <radialGradient id={`${id}-halo`}><stop offset=".82" stopColor="#efad47" stopOpacity="0" /><stop offset=".94" stopColor="#efa63b" stopOpacity=".16" /><stop offset="1" stopColor="#efa63b" stopOpacity="0" /></radialGradient>
       {order.map(sphere=>{
         const gem = gems[sphere];
         return <g key={sphere}>
