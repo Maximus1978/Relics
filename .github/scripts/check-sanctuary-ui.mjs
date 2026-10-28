@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { checkSanctuaryStates } from './check-sanctuary-states.mjs';
 
 const output = process.argv[2];
 if (!output) throw new Error('Browser evidence output directory is required.');
@@ -174,6 +175,7 @@ try {
   await screenshot('sanctuary-backup-unavailable.png');
   await press('Escape', 'Escape', 27);
   await until('!document.querySelector(".backup-dialog") && document.activeElement.matches(".app-rail button[data-backup]")', 'Backup dialog closes and restores keyboard focus');
+  await checkSanctuaryStates({ output, send, evaluate, until, click, viewport, screenshot });
   assert.deepEqual(runtimeErrors, []);
   await writeFile(join(output, 'result.json'), JSON.stringify({ browserRendering: 'passed', interactionChecks: checks, runtimeErrors, nativeUiRuntimeVerified: false, storage: 'Synthetic in-memory demonstration; resets on reload' }, null, 2));
   console.log(`Sanctuary browser verification passed: ${checks.length} checks. Native runtime remains unverified.`);

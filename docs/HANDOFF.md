@@ -1,5 +1,13 @@
 # Project handoff
 
+## SANCTUARY-STATE-001 — active task
+
+The owner accepted BACKUP-001 and merged PR #5 at 234c35a7be4306ba1fee082f01409122715e2846. This is the verified latest master and the baseline for feature/sanctuary-state-001. Preserve native backup/restore and all existing habit/history behavior.
+
+Implement selected-local-day illuminated/subdued gemstones in shrines, the five wheel sockets and ordinary habit relics, using saved activity snapshots. Replace the generic center with an original Sanctuary gothic monogram whose light describes current-date-anchored seven-day sphere coverage. Keep those timeframes independent. No schema, new habit fields, rewards, Mastery/Resonance mechanics or Android-native changes.
+
+The owner's Dark Fantasy Rune UI Style Guide.png is the authoritative state/material reference: recognizable dormant gems, faceted colored light, detailed shared metallic frames and engraved rune. Preserve the accepted composition. Verify zero/partial/all-sphere days, multisphere/history/archive/cancellation/backdating, narrow layout and rune close-ups through actual renders; run existing Node/Rust/browser/Windows checks. Deliver an unmerged focused PR, exact CI source and Windows ZIP; stop for owner visual/native acceptance. Earlier BACKUP-001 pending-review statements below are historical and superseded by this acceptance.
+
 ## Active task and delivery boundary
 
 BACKUP-001 is implemented and delivered for native Windows acceptance; automated verification PASS. [PR #5](https://github.com/Maximus1978/Relics/pull/5), branch feature/backup-001, baseline master 5fdc02dc1777c6b5793bababda918beac195856b. Sanctuary Gate A and prior Windows tracker behavior were accepted by the owner; PR #4 is merged.

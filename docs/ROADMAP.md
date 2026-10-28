@@ -2,15 +2,9 @@
 
 ## Execution rule and current release
 
-Current authorized task is BACKUP-001, active in feature/backup-001 / PR #5 from accepted master 5fdc02dc1777c6b5793bababda918beac195856b. Full replacement, native dialogs, protective recovery JSON and strict validation are explicitly approved. [Contract/manual acceptance](BACKUP.md). Native CI/test/runtime results are recorded in HANDOFF; no automatic merge or subsequent task.
+Current authorized task is SANCTUARY-STATE-001 on feature/sanctuary-state-001 from verified master 234c35a7be4306ba1fee082f01409122715e2846. BACKUP-001 is owner-accepted and PR #5 is merged. Implement only selected-day gemstones and a current-seven-day Sanctuary monogram; see [state contract](SANCTUARY_STATES.md) and [handoff](HANDOFF.md). No automatic merge or next task.
 
-One task at a time. This roadmap is a queue, not authorization to implement it. Break work into a small independent PR with explicit acceptance and preserve existing data/CI. Stop after delivery; never start the next task automatically.
-
-Sanctuary Gate A is APPROVED. The owner accepted the revised interface and implemented Windows functionality; PR #4 was merged at 5fdc02dc1777c6b5793bababda918beac195856b. Remaining artistic differences are optional improvements. The current BACKUP-001 task adds only the authorized data-safety utility; no gameplay expansion.
-
-BACKUP-001 is delivered for native acceptance in unmerged PR #5. [Windows run 40717100257](https://github.com/Maximus1978/Relics/actions/runs/40717100257) passed on 7f76aea1da3b8daecc808e921c5797f09314e657: 31 Node/SQLite tests, TypeScript/Vite, 42 browser checks, Tauri Windows release compilation and 16 native tests. The crash helper is run as a child, intentionally ignored standalone. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40717100257/artifacts/12829521933). Native manual acceptance remains pending; later documentation-only evidence leaves source/tests/locks unchanged.
-
-Do not start the next queued SANCTUARY-STATE-001 without separate authorization after backup acceptance.
+One task at a time. Every later row is a queue, not authorization. Preserve existing data, native backups and Windows CI. Stop for owner visual/native acceptance after this delivery.
 
 ## Accepted foundation
 
@@ -24,11 +18,11 @@ Do not start the next queued SANCTUARY-STATE-001 without separate authorization 
 
 Earlier rejected visual iterations are historical, not outstanding blockers. Final release-head CI and actual merge result are recorded in PR #4 checks/timeline. [HANDOFF](HANDOFF.md) distinguishes accepted implementation from the queue below.
 
-## Next single task: BACKUP-001 — reliable local backup and restore
+## Accepted data safety: BACKUP-001
 
 Deliver one bounded Windows vertical slice: explicit local export and restore of a versioned backup containing current habit definitions, sphere sets, archive state, activities and historical snapshots/metadata. Preserve IDs and dates. Validate format/version/relationships before any write; use atomic restore with safe rollback. Invalid, unsupported or interrupted restore must leave the original data intact. Verify a clean-database round trip and reopening with temporary databases, plus compatibility with existing records.
 
-The owner has now authorized full replacement only, with validated summary and explicit confirmation, plus recoverable safety JSON before mutation. Format v1/migration level 3 and native dialog/transaction design are documented in BACKUP.md (D041–D043). Scope remains existing persisted data; no progression or secret catalog is invented for backup. Further formats, scheduling or encryption need separate tasks. BACKUP-001 is active; do not begin later work.
+The owner has now authorized full replacement only, with validated summary and explicit confirmation, plus recoverable safety JSON before mutation. Format v1/migration level 3 and native dialog/transaction design are documented in BACKUP.md (D041–D043). Scope remains existing persisted data; no progression or secret catalog is invented for backup. Further formats, scheduling or encryption need separate tasks. BACKUP-001 was accepted and merged; its native service and format are unchanged by STATE-001.
 
 ## Ordered implementation priorities
 
@@ -36,8 +30,8 @@ The owner's priority order is authoritative. The early Android checkpoint is cro
 
 | Priority | Small task | Acceptance boundary / dependency |
 | --- | --- | --- |
-| 1 | BACKUP-001 | Reliable current-data export/restore as above; first and only next task |
-| 2 | SANCTUARY-STATE-001 | Selected-day illuminated/subdued state using real completion data and an original Sanctuary runic monogram replacing the compass; no schema/gameplay expansion |
+| Accepted | BACKUP-001 | Owner-accepted local export/full replacement/safety recovery; PR #5 merge 234c35a7be4306ba1fee082f01409122715e2846 |
+| Active | SANCTUARY-STATE-001 | Selected-day illuminated/subdued state using real completion data and an original Sanctuary runic monogram replacing the compass; no schema/gameplay expansion |
 | 2 | SANCTUARY-STATE-002 | Specify and review independent daily / gradual Resonance / permanent Mastery visual layers; synthetic developer fixtures only until real projections exist; no invented runtime energy |
 | Early platform gate | ANDROID-001 | Android toolchain/CI shell build and device launch with existing SQLite/UI; no new gameplay |
 | Early platform gate | ANDROID-LOG-001 | Existing logging/backdating, management, migration/reopen and lifecycle compatibility on Android; after ANDROID-001 and before the complete game loop |
