@@ -65,6 +65,13 @@ fn require_main(window: &WebviewWindow) -> BackupResult<()> {
     Ok(())
 }
 
+fn file_dialog(window: &WebviewWindow) -> tauri_plugin_dialog::FileDialogBuilder<tauri::Wry> {
+    let dialog = window.dialog().file();
+    #[cfg(desktop)]
+    let dialog = dialog.set_parent(window);
+    dialog
+}
+
 #[tauri::command]
 pub async fn export_backup(
     window: WebviewWindow,
@@ -83,10 +90,7 @@ pub async fn export_backup(
         };
         storage::export(pool).await?
     };
-    let selected = window
-        .dialog()
-        .file()
-        .set_parent(&window)
+    let selected = file_dialog(&window)
         .set_title("Создать резервную копию Relics")
         .add_filter("JSON — резервная копия Relics", &["json"])
         .set_file_name(format!(
@@ -122,10 +126,7 @@ pub async fn preview_backup(
         .try_lock()
         .map_err(|_| "Другая операция с копией ещё выполняется.")?;
     state.clear_pending().await;
-    let selected = window
-        .dialog()
-        .file()
-        .set_parent(&window)
+    let selected = file_dialog(&window)
         .set_title("Выбрать резервную копию Relics")
         .add_filter("JSON — резервная копия Relics", &["json"])
         .blocking_pick_file();

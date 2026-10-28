@@ -11,6 +11,7 @@ function Summary({ value }: { value: BackupSummary }) {
 }
 
 export default function BackupDialog({ model }: { model: RelicsModel }) {
+  const available = model.native && navigator.userAgent.includes('Windows');
   const [preview, setPreview] = useState<BackupPreview | null>(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -29,7 +30,7 @@ export default function BackupDialog({ model }: { model: RelicsModel }) {
 
   async function close() {
     if (model.busy) return;
-    if (model.native) {
+    if (available) {
       try { await model.backupOperation(nativeBackup.cancel); }
       catch { setError('Не удалось отменить предпросмотр. Повторите закрытие.'); return; }
     }
@@ -40,7 +41,7 @@ export default function BackupDialog({ model }: { model: RelicsModel }) {
     <div className="backup-dialog"><h2 id="backup-title">Резервная копия</h2>
       <p>Копия хранит привычки, архив и журнал с исходными датами и снимками. Работает без интернета.</p>
       <p className="backup-privacy">JSON не зашифрован. Храните копии в личной папке и не публикуйте их.</p>
-      {!model.native ? <p className="backup-unavailable" role="status">Доступно только в приложении Relics для Windows. Браузерная демонстрация не создаёт и не восстанавливает файлы.</p>
+      {!available ? <p className="backup-unavailable" role="status">Доступно только в приложении Relics для Windows. Здесь создание и восстановление файлов недоступны.</p>
         : <>
           {!preview && <div className="form-actions"><button className="button-primary" disabled={model.busy || !model.canSave} onClick={() => void execute(async () => {
             const saved = await model.backupOperation(nativeBackup.export);
