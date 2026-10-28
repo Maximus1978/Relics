@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 /** Compare actual mounted SVG construction, ignoring lighting/state/unique IDs.
@@ -24,9 +25,9 @@ export function medallionGeometryProof({ evaluate, output }) {
         for (const node of [clone,...clone.querySelectorAll('*')]) {
           for (const name of ['data-state','data-sphere-days','data-represented']) node.removeAttribute(name);
         }
-        clone.querySelector('image').setAttribute('href','canonical-source.png');
+        for (const image of clone.querySelectorAll('image')) image.setAttribute('href',image.getAttribute('href').split('/').pop());
         const style=document.createElementNS('http://www.w3.org/2000/svg','style');
-        style.textContent='.medallion-halo,.medallion-frame-light,.medallion-core-light,.medallion-gem-light{opacity:0}';
+        style.textContent='svg{color:#c7bfad}.medallion-tracery{opacity:.3}.medallion-halo,.medallion-frame-light,.medallion-core-light,.medallion-gem-light,.medallion-engraved-light{opacity:0}';
         clone.prepend(style);
         return new XMLSerializer().serializeToString(clone);
       })()`);
@@ -40,11 +41,13 @@ export function medallionGeometryProof({ evaluate, output }) {
     async finish() {
       assert.deepEqual(captures.map(item => item.state), ['dormant','awakening','harmony','radiance']);
       assert.equal(new Set(captures.map(item => item.sha256)).size,1);
-      const source=Buffer.from(await (await fetch('http://127.0.0.1:1420/art/medallion/v1/reference-source.png')).arrayBuffer());
-      const sourceSha256=createHash('sha256').update(source).digest('hex');
-      assert.equal(sourceSha256,'6168a44f2e36eae80dabdeedec1f1bea6a19bd009be4c7569b43d6e2a330a4e1');
-      await writeFile(join(output,'canonical-source.png'),source);
-      await writeFile(join(output,'medallion-geometry-proof.json'),JSON.stringify({result:'identical',sourceSha256,method:'Actual SVG geometry plus four byte-identical normalized SVG exports; only light-state attributes removed. Source is the unchanged owner image, first medallion only.',states:captures.map(({state,sha256,stableSvgSha256})=>({state,sha256,stableSvgSha256})),canonicalGeometry:captures[0].geometry},null,2));
+      const manifest=JSON.parse(await readFile('public/art/medallion/v2/manifest.json','utf8'));
+      for (const asset of manifest.assets) {
+        const bytes=Buffer.from(await (await fetch(`http://127.0.0.1:1420/art/medallion/v2/${asset.file}`)).arrayBuffer());
+        assert.equal(createHash('sha256').update(bytes).digest('hex'),asset.sha256);
+        await writeFile(join(output,asset.file),bytes);
+      }
+      await writeFile(join(output,'medallion-geometry-proof.json'),JSON.stringify({result:'identical',referenceRuntime:false,assets:manifest.assets,method:'Actual independent asset/SVG geometry and four byte-identical normalized SVG exports. Lighting metadata excluded; no reference-board pixels in runtime.',states:captures.map(({state,sha256,stableSvgSha256})=>({state,sha256,stableSvgSha256})),canonicalGeometry:captures[0].geometry},null,2));
     },
   };
 }

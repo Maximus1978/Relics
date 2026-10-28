@@ -1,5 +1,11 @@
 # Project handoff
 
+## Active owner correction: genuine technical layers and large-screen scaling
+
+The owner rejected the cropped-render solution: its source backdrop remains visible and a medallion capped at 270px is undersized on a 2560px desktop. Continue the same unmerged PR #6 from d8d3116befa85dd4f4c97535429cf5d43c3fa0c1. Build independent clean art layers (frame/settings, rune, gemstone material, SVG signs and separate light layers), with true transparency outside metal/stone and through interior gaps. Do not use the reference board or a cropped complete medallion in runtime. Reconstruct the supplied design rather than inventing a new silhouette. Inspect each asset over light/contrast backdrops, then compare the assembled object with the original through a registered overlay. Preserve the existing temporal state rules, history and backup behavior.
+
+Make the medallion use its central grid track on large desktops, with proportional installation sizing; verify actual layouts at 1920 and 2560 in addition to existing compact/narrow sizes. Deliver asset/provenance/alpha and reference-comparison evidence plus the existing Windows CI/EXE in PR #6. Do not merge or begin another task. Previous rendering/geometry hashes below describe a rejected complete-render crop and are not proof that the requested independent layers exist.
+
 ## Current correction and boundary
 
 SANCTUARY-STATE-001 continues in existing PR #6 / feature/sanctuary-state-001. The owner rejected the S-shaped rune and represented-sphere bands. Use the supplied canonical medallion and approved Temporal State Resolution. Do not merge or start another task. Baseline master remains 234c35a7be4306ba1fee082f01409122715e2846; history is preserved.

@@ -15,7 +15,6 @@
 .recorded-ring strong { color: #f8e8d0; font: 22px var(--font-display); } .recorded-ring small { font-size: 15px; } .recorded-ring em { width: 64px; color: #ddd8cc; font: normal 9.5px/1.2 var(--font-ui); }
 .balance-center { grid-column: 3; grid-row: 1; align-self: center; position: relative; z-index: 2; min-width: 0; display: flex; flex-direction: column; align-items: center; }
 .balance-wheel { width: min(100%, 270px); aspect-ratio: 1; position: relative; isolation: isolate; margin-bottom: -17px; filter: drop-shadow(0 5px 8px #000); }
-.balance-wheel::before { content: ''; position: absolute; inset: 7%; background: radial-gradient(ellipse, #b0874540, #07131ade 58%, #03090ddb); border-radius: 50%; z-index: -1; }
 .balance-caption { position: relative; width: 100%; padding: 11px 9px 10px; text-align: center; background: #071017f5; border: 1px solid #aa8b55; border-image: var(--panel-art) 24 / 10px / 0 stretch; box-shadow: 0 3px 8px #0008; }
 .balance-caption h2 { color: #e1c48f; font-size: 17px; margin-bottom: 4px; } .balance-caption p { font-size: 12px; } .balance-caption p strong { font-weight: 500; color: #f0dfbd; } .balance-caption > span { display: block; font-size: 10px; color: #b7b6aa; margin-top: 3px; }
 .observation-period > span { display: block; }
@@ -36,4 +35,9 @@
   .sphere-shrine h2 { text-align: left; font-size: 11px; align-self: end; }
   .recorded-ring { grid-column: 2; margin: 0; justify-self: start; align-self: start; }
   .recorded-ring strong { font-size: 11px; }
+}
+@media (min-width: 1500px) {
+  .world-installation { height: auto; min-height: 370px; align-items: center; padding-bottom: 44px; }
+  .sphere-shrine { height: auto; aspect-ratio: 1 / 1.9; align-self: center; }
+  .balance-wheel { width: 100%; max-width: none; }
 }

@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "format": "independent-transparent-technical-layers",
+  "canvas": {
+    "width": 500,
+    "height": 500
+  },
+  "assets": [
+    {
+      "id": "frame",
+      "file": "frame.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1372043,
+      "sha256": "9af39a92043b9dc91cc7b1f906f74012998a0cd494683b562d57c27d093e3c02"
+    },
+    {
+      "id": "rune",
+      "file": "rune.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 646740,
+      "sha256": "c6731f04edd94c74439c4b42afb35582f83462d730046c926696dc8e8476fbf9"
+    },
+    {
+      "id": "gem",
+      "file": "gem.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1511000,
+      "sha256": "e1d32fd8ee7103dfc0762293584b71f6ee87de1c7c0931f90633245c99bd243f"
+    }
+  ],
+  "provenance": "docs/art/MEDALLION_LAYERS.md",
+  "referenceRuntime": false
+}

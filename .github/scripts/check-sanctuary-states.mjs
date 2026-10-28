@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { medallionGeometryProof } from './medallion-geometry.mjs';
+import { checkMedallionLayers } from './check-medallion-layers.mjs';
 
 /** Exercise actual controls against the explicitly fictional, nonpersistent demo.
  * No test hooks, DOM-forced visual states or owner data are used.
@@ -84,6 +85,7 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await screenshot('state-subdued-desktop.png');
   await closeup('medallion-dormant.png');
   await geometry.capture('dormant');
+  await checkMedallionLayers({output,evaluate,send,viewport,screenshot});
   await closeup('habit-gem-subdued.png', '[data-habit-id="demo-walk"] .relic-art');
   await viewport(390, 844);
   await screenshot('state-subdued-narrow.png');
@@ -158,6 +160,11 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await geometry.finish();
   await viewport(390,844);
   await screenshot('state-radiance-narrow.png');
+  for (const [width,height] of [[1920,1080],[2560,1440]]) {
+    await viewport(width,height);
+    await until('document.documentElement.scrollWidth <= innerWidth', `Radiant layered medallion fits ${width}px`);
+    await screenshot(`state-radiance-${width}x${height}.png`);
+  }
   await viewport(1440,900);
   await selectDay('2000-01-01');
   await expectSpheres([],'RADIANCE never activates gemstones on an empty historical selected date');

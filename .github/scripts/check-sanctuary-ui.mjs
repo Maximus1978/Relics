@@ -69,7 +69,8 @@ try {
   await until('document.querySelectorAll(".sanctuary-scene").length === 1 && document.querySelector(".sanctuary-scene").naturalWidth >= 1500 && new URL(document.querySelector(".sanctuary-scene").src).origin === location.origin', 'One high-resolution environment is bundled locally');
   await until('document.querySelector(".preview-notice").textContent.includes("не сохраняются")', 'Preview storage limitation is visible');
   assert.equal(await evaluate('document.querySelectorAll(".sphere-shrine").length'), 5);
-  for (const [width, height] of [[1440,900],[1280,800],[1000,800],[390,844],[320,844]]) {
+  const wideMedallions=[];
+  for (const [width, height] of [[1440,900],[1280,800],[1000,800],[1920,1080],[2560,1440],[390,844],[320,844]]) {
     await viewport(width,height);
     await until('document.documentElement.scrollWidth <= innerWidth', `No horizontal overflow at ${width}x${height}`);
     await until('document.querySelector(".observation-period").getBoundingClientRect().top >= document.querySelector(".balance-caption").getBoundingClientRect().bottom', `Timeframe labels remain below the central panel at ${width}px`);
@@ -78,6 +79,12 @@ try {
       if (width === 1440) assert.ok(await evaluate('document.querySelector(".chronicle > summary").getBoundingClientRect().bottom <= innerHeight'), 'Complete Chronicle summary visible at 1440x900');
       assert.ok(await evaluate('document.querySelector(".relic-item").getBoundingClientRect().bottom <= innerHeight'), `Complete first inventory row visible at ${width}x${height}`);
       assert.ok(await evaluate('document.querySelector(".balance-wheel").getBoundingClientRect().width >= 210'), 'Prominent central wheel');
+      if (width>=1920) {
+        const size=await evaluate('(()=>{const wheel=document.querySelector(".balance-wheel").getBoundingClientRect();const track=document.querySelector(".balance-center").getBoundingClientRect();return {wheel:wheel.width,track:track.width};})()');
+        assert.ok(size.wheel>=size.track*.95,'Medallion fills the available central track on wide desktop');
+        assert.ok(size.wheel>=(width===1920?400:560),'Wide-screen medallion grows beyond the old 270px cap');
+        wideMedallions.push({viewport:width,...size});
+      }
       const arrangement = await evaluate('(() => { const center = document.querySelector(".balance-center").getBoundingClientRect(); const shrines = [...document.querySelectorAll(".sphere-shrine")].map(element=>element.getBoundingClientRect()); return {left:shrines.filter(bounds=>bounds.right<=center.left+2).length,right:shrines.filter(bounds=>bounds.left>=center.right-2).length}; })()');
       assert.deepEqual(arrangement, {left:2,right:3});
       if (width >= 1280) assert.equal(await evaluate('document.querySelector(".app-rail").getBoundingClientRect().width'),180);
@@ -86,6 +93,8 @@ try {
     if (width < 760) assert.equal(await evaluate('document.querySelector(".world-backdrop").getBoundingClientRect().left'),0);
     await screenshot(`sanctuary-${width}x${height}.png`);
   }
+  assert.ok(wideMedallions[1].wheel>wideMedallions[0].wheel,'Medallion continues growing from 1920 to 2560');
+  await writeFile(join(output,'wide-medallion-layout.json'),JSON.stringify(wideMedallions,null,2));
   checks.push('Five shrine installation, central circle, rail and inventory composition verified at target viewports');
   await writeFile(join(output, 'rendered-dom.html'), await evaluate('document.documentElement.outerHTML'));
   await viewport(1440, 900);
