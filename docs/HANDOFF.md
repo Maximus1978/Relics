@@ -1,8 +1,8 @@
 # Project handoff
 
-## Active delivery: WEIGHTS-001A — documentation PR for owner review
+## Delivered for owner review: WEIGHTS-001A
 
-Verified latest origin/master: c2375e7543649ce80e25151bf79c0376c985ad9d (DOC-GAME-002 complete, PR #6 regular merge be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9). Branch docs-weights-001a. Only Markdown changes; no migrations, application/native code, tests, artwork, dependencies or owner data changes.
+Verified latest origin/master: c2375e7543649ce80e25151bf79c0376c985ad9d (DOC-GAME-002 complete, PR #6 regular merge be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9). Branch docs-weights-001a; [documentation PR #7](https://github.com/Maximus1978/Relics/pull/7) is open and unmerged. Only Markdown changes; no migrations, application/native code, tests, artwork, dependencies or owner data changes.
 
 Owner-approved: independent subjective contribution 1–10 per selected sphere, default 5, unselected 0, no normalization, one-to-five spheres, no extra completion input, immutable recording-time activity profiles and unchanged binary rune. Owner clarification: old definitions get marked 5 defaults for future logs; those future entries are included in numeric trends with origin/count disclosure. Old activities remain unknown, never fabricated zeros or fives. See D058–D063.
 
@@ -22,7 +22,7 @@ Android is deferred until core mechanics are validated on Windows. All earlier a
 
 ## Documentation checks and publication
 
-Required docs plus linked full contract, consistency notes in README/AGENTS/product vision/World Packs and backup-evolution note are updated. Preserve previous decision IDs; append D058–D063. Review completed: 13 Markdown files only; relative links/anchors valid; all previous decision rows and roadmap task IDs retained; D001–D063/Q01–Q22 unique; 26 WEIGHTS-001B and5 future trend cases documented, not run. No runtime tests/build/EXE are claimed for documentation-only WEIGHTS-001A. The last accepted Windows build remains run 40764405205 on 81cc6e7897f03eafbaccd0f178eff992727a7a28 (50 Node/150 browser/16 native tests), not execution of the new planned weight cases.
+Required docs plus linked full contract, consistency notes in README/AGENTS/product vision/World Packs and backup-evolution note are updated. Preserve previous decision IDs; append D058–D063. Review completed: 13 Markdown files only; relative links/anchors valid; all previous decision rows and roadmap task IDs retained; D001–D063/Q01–Q22 unique; 26 WEIGHTS-001B and 5 future trend cases documented, not run. No runtime tests/build/EXE are claimed for documentation-only WEIGHTS-001A. The last accepted Windows build remains run 40764405205 on 81cc6e7897f03eafbaccd0f178eff992727a7a28 (50 Node/150 browser/16 native tests), not execution of the new planned weight cases.
 
 ## Historical DOC-GAME-002 release receipt
 
