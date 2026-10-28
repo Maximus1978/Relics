@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { localDay } from './domain/activity';
-import { recentActivity } from './domain/recentActivity';
+import { medallionIllumination } from './domain/medallionIllumination';
+import { useLocalDay } from './application/useLocalDay';
 import { useRelicsModel } from './application/useRelicsModel';
 import HabitForm from './components/HabitForm';
 import { yesterday } from './ui/dates';
@@ -18,7 +18,9 @@ export default function App() {
   const model = useRelicsModel();
   const [journalOpen, setJournalOpen] = useState(false);
   const journal = useRef<HTMLDetailsElement>(null);
-  const observation = recentActivity(model.activities, localDay());
+  const today = useLocalDay();
+  const illumination = medallionIllumination(model.activities, model.day, today);
+  const selected = illumination.selected;
 
   function navigate(destination: 'sanctuary' | 'chronicle' | 'archive') {
     if (model.busy || model.managingHabit) return;
@@ -46,12 +48,12 @@ export default function App() {
     <main className="sanctuary-main" id="main-content">
       <header className="world-heading"><div><h1>Sanctuary</h1><p>Ваше убежище · первая эпоха</p></div>
         <div className="world-heading__date"><span className="world-heading__sun" aria-hidden="true">☼</span><div className="date-shortcuts" role="group" aria-label="Быстрый выбор даты">
-          <button aria-pressed={model.day === localDay()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(localDay())}>Сегодня</button>
+          <button aria-pressed={model.day === today} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(today)}>Сегодня</button>
           <button aria-pressed={model.day === yesterday()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(yesterday())}>Вчера</button></div>
-          <label>Дата отметки<input type="date" value={model.day} max={localDay()} disabled={model.busy || model.managingHabit} onChange={event => model.setDay(event.target.value)} /></label></div>
+          <label>Дата отметки<input type="date" value={model.day} max={today} disabled={model.busy || model.managingHabit} onChange={event => model.setDay(event.target.value)} /></label></div>
       </header>
-      <SphereInstallation observation={observation} />
-      <RelicInventory model={model} />
+      <SphereInstallation illumination={illumination} />
+      <RelicInventory model={model} selected={selected} />
       <Chronicle model={model} open={journalOpen} onToggle={setJournalOpen} reference={journal} />
     </main>
     <nav className="mobile-navigation" aria-label="Разделы на узком экране"><button onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button><button onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button><button onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button><button aria-label="Резервная копия" disabled={model.busy || model.managingHabit} onClick={model.openBackup}><ShellIcon kind="backup" /><span>Копия</span></button></nav>

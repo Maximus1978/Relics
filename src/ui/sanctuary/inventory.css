@@ -8,7 +8,8 @@
 .date-shortcuts button { min-height: 44px; padding: 5px 12px; background: transparent; border-color: transparent; color: #ccc1ac; font-size: 11px; }
 .date-shortcuts button[aria-pressed=true] { color: #f5d89b; border-bottom-color: #b3935f; background: #c19c5014; }
 .relic-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; padding: 0; margin: 10px 0 0; list-style: none; }
-.relic-item { position: relative; min-width: 0; display: flex; flex-direction: column; align-items: center; padding: 9px 7px 8px; background: radial-gradient(ellipse at 50% 40%, var(--sphere-dark), #080d12 63%); border: 1px solid #806947; border-image: var(--panel-art) 24 / 7px / 0 stretch; box-shadow: inset 0 0 25px #000a; }
+.relic-item { position: relative; min-width: 0; display: flex; flex-direction: column; align-items: center; padding: 9px 7px 8px; background: radial-gradient(ellipse at 50% 40%, #172023, #080d12 63%); border: 1px solid #806947; border-image: var(--panel-art) 24 / 7px / 0 stretch; box-shadow: inset 0 0 25px #000a; }
+.relic-item.is-complete { background: radial-gradient(ellipse at 50% 40%, var(--sphere-dark), #080d12 68%); box-shadow: inset 0 0 25px #0006, inset 0 0 0 1px #b6965b30; }
 .relic-item .relic-art { width: 108px; height: 108px; filter: drop-shadow(0 3px 5px #000); }
 .relic-item__definition { text-align: center; width: 100%; min-width: 0; }
 .relic-item h4 { font: 16px/1.2 var(--font-display); color: #f1e2c7; margin: 0 0 5px; overflow-wrap: anywhere; }
@@ -31,7 +32,7 @@
 @media (max-width: 1300px) { .relic-grid { gap: 7px; } .relic-item .relic-art { width: 92px; height: 92px; } .relic-item h4 { font-size: 15px; } .inventory-heading h2 { font-size: 23px; } }
 @media (max-width: 1100px) { .inventory-heading p { display: none; } .relic-item .sphere-tags { font-size: 9px; } .relic-grid { gap: 5px; } .relic-item { padding-left: 5px; padding-right: 5px; } }
 @media (max-width: 760px) { .relic-inventory { padding: 13px 10px 0; margin-top: 10px; } .inventory-heading { align-items: stretch; flex-direction: column; gap: 7px; } .inventory-heading h2 { font-size: 23px; } .inventory-heading__actions { justify-content: space-between; gap: 6px; } .inventory-heading__actions button { padding: 6px 8px; font-size: 11px; } .inventory-heading__actions .line-icon { width: 17px; height: 17px; }
-  .relic-grid { display: flex; flex-direction: column; gap: 8px; } .relic-item { display: grid; grid-template-columns: 68px minmax(0, 1fr) 44px; gap: 6px; padding: 7px 8px; min-height: 100px; background: radial-gradient(ellipse at 0% 50%, var(--sphere-dark), #080d12 65%); }
+  .relic-grid { display: flex; flex-direction: column; gap: 8px; } .relic-item { display: grid; grid-template-columns: 68px minmax(0, 1fr) 44px; gap: 6px; padding: 7px 8px; min-height: 100px; background: radial-gradient(ellipse at 0% 50%, #172023, #080d12 65%); }
   .relic-item .relic-art { width: 68px; height: 68px; } .relic-item__definition { text-align: left; padding-right: 9px; } .relic-item h4 { font-size: 16px; } .relic-item .sphere-tags { justify-content: flex-start; font-size: 10px; }
   .completion-button { width: 44px; height: 44px; padding: 7px; margin: 20px 0 0; } .completion-button > span { display: none; } .completion-button .line-icon { width: 22px; height: 22px; } .restore-button { grid-column: 2 / -1; width: auto; margin: 0; } .habit-actions { top: -5px; right: 2px; }
 }

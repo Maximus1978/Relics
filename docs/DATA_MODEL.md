@@ -59,3 +59,17 @@ The current UUID activity IDs are useful but not sufficient. Plan revision IDs, 
 Use monotonic migration versions and preserve existing records. After an applied migration, evolve the schema using a new migration rather than rewriting the old one. Confirm actual deployment status before treating an unbuilt scaffold schema as deployed.
 
 Test migration from an earlier database, weighted snapshots, scheduling boundaries, correction audit, rollback, uniqueness, and effective foreign-key enforcement when these behaviors are introduced. Export/import must preserve IDs, corrections, discoveries, and epoch boundaries; reject invalid input before replacing data. Schema design alone does not count as a tested restore feature.
+
+## DOC-GAME-002 — accepted semantic boundaries, no schema changes
+
+Habit Sigil is the user-facing identity of the existing Habit, not a new earned-artifact record or a schema rename. The current name/sphere/archive fields and historical activity snapshots remain unchanged. Future icon identity is independent of contributions; primary/secondary weights and per-activity intensity require separate contracts/additive migrations.
+
+Unique Artifacts require stable authored definition identities and earned/discovered instance/grant references with provenance/versioning; they are not inferred from ordinary habit IDs or art. This is future ARTIFACT-001/discovery work. Collection is an earned-content view, Chronicle is real activity/reflection history, and Museum is retained artifact/story/epoch context. Navigation separation must preserve existing IDs/dates/snapshots/cancellation behavior.
+
+The descriptive rune is a rebuildable projection, not stored progression. One all-five-sphere habit logged for seven days legitimately produces 35 distinct sphere-days; no automatic Balance diagnosis or large reward follows. BALANCE-001 must approve evaluation/context/weight/anti-grinding policy before numeric projections or Balance-linked grants.
+
+Future vacation storage must support explicitly manual one-day/interval/until-ended intent, reopening and timezone/end semantics without synthetic activity rows or Mastery. Exact representation is open under LIFE-RHYTHM-001. Vacation is neither automatic Recovery nor evidence of physiological rest. Afterglow is cosmetic. Optional insights require explicit opt-in/preferences and dismissal/snooze/disable semantics; no autonomous mode mutation.
+
+Future temporary Blessings need approved origin/identity/lifecycle/correction/version rules before persistence. Expiry must not erase permanent earned artifacts or mutate activities/Balance. Audio preferences require a reviewed mute/volume/default/persistence contract; no pack may override user choice.
+
+These are modeling requirements, not implemented entities/columns/tables. Future additions require versioned additive migrations and explicit backup-format adapters preserving old records and IDs; no migration, backup format or one-completion-per-day change is made in DOC-GAME-002.

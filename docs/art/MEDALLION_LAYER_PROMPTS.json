@@ -1,0 +1,27 @@
+{
+  "mode": "built-in",
+  "purpose": "independent transparent technical layers, not full-screen/state illustrations",
+  "prompts": [
+    {
+      "asset": "frame",
+      "prompt": "Use case: precise-object-edit. Create ONE production game-UI technical art layer, a square 1024x1024 transparent PNG, not a mockup, not a complete medallion. The attached image is the owner's exact design reference, use ONLY the FIRST / DORMANT medallion. Faithfully reconstruct its METAL OUTER RING AND ALL FIVE EMPTY GEMSTONE SETTINGS as a clean separate layer. Keep the specific thin aged bronze/gunmetal gothic circular frame, tapering pointed flourishes, delicate angular engraved runes, five octagonal metal bezels and their positions, proportions and original ornamental details. No new design. Remove the central rune COMPLETELY. Remove all five stone faces and all five glyphs COMPLETELY: leave genuine transparent holes in the five settings. ALL center space between metal ribs, ALL negative spaces inside the ring, ALL outside space must be real alpha transparency, not black, not smoky, not a checkerboard drawn in pixels, no stone texture, no shadow disc. No background, halo, glow, sparks, label, panel, border, scene or writing. Metal itself remains opaque with finely rendered engraved surface, bevels and physical depth, in neutral subdued studio light, without baked bloom. Registration: square canvas center (512,512); outer shape spans about x=45..979,y=45..979. Empty bezel centers at approximately Body=(512,205), Mind=(819,418), Bonds=(748,790), Work=(274,790), Recovery=(184,418); inner stone openings diameter roughly175px. Preserve the first medallion's construction exactly. This layer will have a separate rune and stones installed programmatically later. Transparent background REQUIRED including all interior cutouts. High fidelity, detailed crisp metal, no canvas-filling disc.",
+      "tool": "built-in image_gen",
+      "transparent_background": true,
+      "output": "public/art/medallion/v2/frame.png"
+    },
+    {
+      "asset": "rune",
+      "prompt": "Use case: precise-object-edit. Produce ONE separate production technical layer: ONLY the exact central metal rune from the FIRST / DORMANT medallion in the attached owner's reference. Faithfully reproduce that existing slender, vertically symmetric gothic rune silhouette and internal paths: long spear-like top and bottom, two angular enclosing ribs, restrained pointed left/right arms, small diamond/star-shaped central core and inner cutouts. Do NOT invent an S-shaped symbol, a new monogram, compass or alternative silhouette. No outer ring, no gemstones, no settings, no glyphs, no lines belonging to the outer ring. Render the rune as finely bevelled aged gunmetal and bronze, subtle engraved edges, same material depth/detail as reference, neutral subdued unlit material, no baked glow or bloom. Output a square 1024x1024 TRANSPARENT PNG on a shared registration canvas. Central rune axis x=512, bounding box approximately x=270..762, y=283..799 (same placement relative to a 1024 medallion canvas, not expanded to fill the full canvas). EVERYTHING outside rune metal, including the enclosed interior holes between the ribs and shaft, must be actual zero-alpha transparency. No black filling, no smoky disc, no rock texture, no background, no floor shadow, no text, no labels, no panel. This is a clean isolated technical layer assembled with a separate ring and gems. Match reference shape closely; no redesign.",
+      "tool": "built-in image_gen",
+      "transparent_background": true,
+      "output": "public/art/medallion/v2/rune.png"
+    },
+    {
+      "asset": "gem",
+      "prompt": "Use case: stylized-concept. Produce ONE reusable neutral gemstone material for a production dark-fantasy UI layer, strictly matching the faceted stone construction of the FIRST / DORMANT medallion in the attached design reference. A single octagonal dark neutral smoky-quartz stone FACE only, no metal bezel, no frame, no sphere glyph or symbol, no surrounding medallion, no outer shadow disc. Rich glassy translucent-looking internal facets, realistic depth and fine refraction, crisp bevelled facet perimeter, subtly silver-grey so it can be tinted ruby, sapphire, garnet, topaz or emerald by a shader later. Neutral studio light with small restrained highlights, NO glow, NO bloom, no bright white hotspot obliterating facets. Square 512x512 transparent PNG with face centered(256,256), octagon fitting about x=34..478,y=34..478. Outside the solid stone is TRUE ALPHA TRANSPARENCY, never a black tile or checkerboard pixels. Opaque visible stone material inside the octagon is fine. No other object, no background, no text. Faithful material and proportions from the reference, not a jewel redesign.",
+      "tool": "built-in image_gen",
+      "transparent_background": true,
+      "output": "public/art/medallion/v2/gem.png"
+    }
+  ]
+}

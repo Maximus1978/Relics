@@ -1,0 +1,20 @@
+.sphere-gem[data-sphere="body"] { --gem-live: #ed3444; --gem-depth: #630b19; }
+.sphere-gem[data-sphere="mind"] { --gem-live: #2199ed; --gem-depth: #06365c; }
+.sphere-gem[data-sphere="relationships"] { --gem-live: #d84aab; --gem-depth: #5b113f; }
+.sphere-gem[data-sphere="work"] { --gem-live: #edb33f; --gem-depth: #69430a; }
+.sphere-gem[data-sphere="recovery"] { --gem-live: #25c185; --gem-depth: #07523b; }
+.sphere-gem { --gem-color: var(--gem-live); --gem-deep: var(--gem-depth); --gem-ink: #f1ffff; position: relative; display: inline-block; width: 100%; height: 100%; aspect-ratio: 1; flex-shrink: 0; isolation: isolate; pointer-events: none; }
+.sphere-gem > svg, .sphere-gem > img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sphere-gem::before { content: ''; position: absolute; inset: 9%; border-radius: 50%; background: radial-gradient(ellipse, var(--sphere) 0%, var(--sphere-dark) 28%, transparent 68%); opacity: 0; }
+.sphere-gem .gem-highlight { stop-color: #ecffff; stop-opacity: .9; }
+.sphere-gem__stone { filter: drop-shadow(0 0 2px var(--gem-deep)); }
+.sphere-gem__frame { filter: drop-shadow(0 2px 2px #000); }
+.sphere-gem__sign { color: var(--gem-ink); filter: drop-shadow(0 0 2px var(--gem-color)); }
+.sphere-gem[data-state="illuminated"]::before { opacity: .7; }
+.sphere-gem[data-state="illuminated"] .sphere-gem__stone { filter: drop-shadow(0 0 4px var(--sphere)); }
+.sphere-gem[data-state="illuminated"] .sphere-gem__frame { filter: drop-shadow(0 2px 2px #000) drop-shadow(0 0 1px var(--sphere-dark)); }
+.sphere-gem[data-state="subdued"] { --gem-color: #475154; --gem-deep: #131b20; --gem-ink: color-mix(in srgb, var(--sphere) 38%, #c2c5bd); }
+.sphere-gem[data-state="subdued"] .gem-highlight { stop-color: #a1b2b5; stop-opacity: .45; }
+.sphere-gem[data-state="subdued"] .sphere-gem__facets { opacity: .6; }
+.sphere-gem[data-state="subdued"] .sphere-gem__frame { filter: saturate(.55) brightness(.8) drop-shadow(0 2px 2px #000); }
+.sphere-gem[data-state="subdued"] .sphere-gem__sign { filter: none; }

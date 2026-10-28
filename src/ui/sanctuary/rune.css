@@ -1,0 +1,17 @@
+.sanctuary-medallion { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; isolation: isolate; }
+.medallion-metal-base { filter: saturate(.75) brightness(.88); }
+.medallion-tracery { opacity: .3; }
+.medallion-sign { color: color-mix(in srgb, var(--sphere) 38%, #c2c5bd); }
+.medallion-sign[data-state="illuminated"] { color: #f0fff9; filter: drop-shadow(0 0 2px var(--sphere)); }
+.medallion-halo { opacity: 0; filter: drop-shadow(0 0 3px #eaaa43); }
+.medallion-core-light { opacity: var(--core-light); filter: drop-shadow(0 0 3px #ffba50); }
+.medallion-frame-light { opacity: 0; filter: drop-shadow(0 0 2px #ffc45e); }
+.medallion-engraved-light { opacity: 0; filter: drop-shadow(0 0 1px #ffe1a0); }
+.medallion-gem-light { opacity: 0; filter: drop-shadow(0 0 4px var(--gem-glow)); }
+.wheel-gem[data-state="illuminated"] .medallion-gem-light { opacity: 1; }
+.sanctuary-medallion[data-state="awakening"] .medallion-core-light { filter: drop-shadow(0 0 2px #ffba50); }
+.sanctuary-medallion[data-state="harmony"] .medallion-halo { opacity: .35; }
+.sanctuary-medallion[data-state="radiance"] .medallion-halo { opacity: 1; }
+.sanctuary-medallion[data-state="radiance"] .medallion-frame-light { opacity: .95; }
+.sanctuary-medallion[data-state="radiance"] .medallion-engraved-light { opacity: .75; }
+.sanctuary-medallion[data-state="radiance"] .medallion-core-light { filter: drop-shadow(0 0 5px #ffd16c); }
