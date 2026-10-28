@@ -18,9 +18,9 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
     await evaluate(`(() => { const input = document.querySelector('input[type=date]'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, ${JSON.stringify(day)}); input.dispatchEvent(new Event('input', {bubbles:true})); input.dispatchEvent(new Event('change', {bubbles:true})); })()`);
     await until(`document.querySelector('.observation-period').textContent.includes(${JSON.stringify(day)})`, `Selected-date state acknowledges ${day}`);
   }
-  async function closeup(name) {
+  async function closeup(name, selector = '.balance-wheel') {
     await evaluate('window.scrollTo(0,0)');
-    const bounds = await evaluate('document.querySelector(".balance-wheel").getBoundingClientRect().toJSON()');
+    const bounds = await evaluate(`document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect().toJSON()`);
     const captured = await send('Page.captureScreenshot', { format: 'png', clip: { x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height, scale: 3 }, captureBeyondViewport: true });
     await writeFile(join(output, name), Buffer.from(captured.data, 'base64'));
   }
@@ -81,6 +81,7 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await click('.chronicle > summary');
   await screenshot('state-subdued-desktop.png');
   await closeup('rune-subdued.png');
+  await closeup('habit-gem-subdued.png', '[data-habit-id="demo-walk"] .relic-art');
   await viewport(390, 844);
   await screenshot('state-subdued-narrow.png');
   await viewport(1440, 900);
@@ -99,10 +100,16 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await until('document.querySelector(".sanctuary-rune").dataset.state === "full"', 'All-sphere seven-day coverage illuminates the authored seal without rewards');
   await screenshot('state-all-five-desktop.png');
   await closeup('rune-all-five.png');
+  await closeup('habit-gem-illuminated.png', '[data-habit-id="demo-walk"] .relic-art');
   for (const [width, height] of [[1280,800],[1000,800],[390,844],[320,844]]) {
     await viewport(width,height);
     await until('document.documentElement.scrollWidth <= innerWidth', `All-sphere state fits ${width}px`);
     await screenshot(`state-all-five-${width}x${height}.png`);
+    if (width === 390) {
+      await evaluate('document.querySelector(".relic-inventory").scrollIntoView({block:"start",behavior:"instant"})');
+      const captured = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+      await writeFile(join(output, 'state-all-five-inventory-390x844.png'), Buffer.from(captured.data, 'base64'));
+    }
   }
   await viewport(1440,900);
   await click('[data-habit-id="demo-connect"] .habit-actions summary');

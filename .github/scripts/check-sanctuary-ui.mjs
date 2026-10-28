@@ -72,6 +72,7 @@ try {
   for (const [width, height] of [[1440,900],[1280,800],[1000,800],[390,844],[320,844]]) {
     await viewport(width,height);
     await until('document.documentElement.scrollWidth <= innerWidth', `No horizontal overflow at ${width}x${height}`);
+    await until('document.querySelector(".observation-period").getBoundingClientRect().top >= document.querySelector(".balance-caption").getBoundingClientRect().bottom', `Timeframe labels remain below the central panel at ${width}px`);
     if (width >= 1000) {
       if (width === 1440) assert.ok(await evaluate('document.querySelector(".chronicle > summary").getBoundingClientRect().bottom <= innerHeight'), 'Complete Chronicle summary visible at 1440x900');
       assert.ok(await evaluate('document.querySelector(".relic-item").getBoundingClientRect().bottom <= innerHeight'), `Complete first inventory row visible at ${width}x${height}`);

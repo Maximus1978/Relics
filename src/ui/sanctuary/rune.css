@@ -11,8 +11,8 @@
 .sanctuary-rune[data-state="partial"] { --rune-light: .75; --rune-halo: .45; }
 .sanctuary-rune[data-state="partial"] .sanctuary-rune__metal { filter: drop-shadow(0 0 .55px #e4ad58); }
 .sanctuary-rune[data-state="diverse"] { --rune-light: .9; --rune-halo: .7; }
-.sanctuary-rune[data-state="diverse"] .sanctuary-rune__metal { filter: brightness(1.13) drop-shadow(0 0 .7px #e4ad58); }
+.sanctuary-rune[data-state="diverse"] .sanctuary-rune__metal { filter: brightness(1.05) drop-shadow(0 0 .7px #e4ad58); }
 .sanctuary-rune[data-state="full"] { --rune-light: 1; --rune-halo: 1; }
-.sanctuary-rune[data-state="full"] .sanctuary-rune__metal { filter: brightness(1.22) drop-shadow(0 0 1px #efb14a); }
+.sanctuary-rune[data-state="full"] .sanctuary-rune__metal { filter: brightness(1.12) drop-shadow(0 0 .75px #efb14a); }
 .sanctuary-rune[data-state="full"] .sanctuary-rune__engraving { opacity: 1; }
 .sanctuary-rune[data-state="full"] .sanctuary-rune__embers { opacity: .65; }
