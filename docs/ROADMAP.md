@@ -8,6 +8,10 @@ One task at a time. This roadmap is a queue, not authorization to implement it. 
 
 Sanctuary Gate A is APPROVED. The owner accepted the revised interface and implemented Windows functionality; PR #4 was merged at 5fdc02dc1777c6b5793bababda918beac195856b. Remaining artistic differences are optional improvements. The current BACKUP-001 task adds only the authorized data-safety utility; no gameplay expansion.
 
+BACKUP-001 is delivered for native acceptance in unmerged PR #5. [Windows run 40717100257](https://github.com/Maximus1978/Relics/actions/runs/40717100257) passed on 7f76aea1da3b8daecc808e921c5797f09314e657: 31 Node/SQLite tests, TypeScript/Vite, 42 browser checks, Tauri Windows release compilation and 16 native tests. The crash helper is run as a child, intentionally ignored standalone. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40717100257/artifacts/12829521933). Native manual acceptance remains pending; later documentation-only evidence leaves source/tests/locks unchanged.
+
+Do not start the next queued SANCTUARY-STATE-001 without separate authorization after backup acceptance.
+
 ## Accepted foundation
 
 | Milestone | Evidence |

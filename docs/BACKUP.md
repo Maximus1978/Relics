@@ -6,9 +6,24 @@ Native Windows utility, offline and user-controlled. Export/restore use real nat
 
 The current implementation is under review in [PR #5](https://github.com/Maximus1978/Relics/pull/5), based on master 5fdc02dc1777c6b5793bababda918beac195856b. Native automated test/build evidence and owner manual acceptance are distinct; see HANDOFF for exact tested commit/run/results. Do not merge automatically.
 
+[Windows run 40717100257](https://github.com/Maximus1978/Relics/actions/runs/40717100257) passed on 7f76aea1da3b8daecc808e921c5797f09314e657: 31 Node/SQLite tests, TypeScript/Vite, 42 browser checks, Tauri Windows release compilation and 16 native tests. The crash helper is run as a child, intentionally ignored standalone. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40717100257/artifacts/12829521933). Native manual acceptance remains pending; later documentation-only evidence leaves source/tests/locks unchanged.
+
 ## Format and compatibility
 
 UTF-8 human-readable JSON, format identifier relics-backup, formatVersion 1, databaseSchemaVersion 3, exportedAt RFC 3339 with offset, appVersion nonempty version string. All envelope/data/record properties are required, including archivedAt as null or a timestamp. Unknown fields/versions are rejected, not discarded. This is the first delivered backup format; the earlier schema-2 envelope was a proposal, never a supported export.
+
+Minimal valid synthetic example (intentionally empty data):
+
+```json
+{
+  "format": "relics-backup",
+  "formatVersion": 1,
+  "exportedAt": "2026-10-28T00:00:00Z",
+  "appVersion": "0.1.0",
+  "databaseSchemaVersion": 3,
+  "data": { "habits": [], "activities": [] }
+}
+```
 
 Schema level 3 is the additive one-time seeding migration; habit/activity columns stay unchanged from level 2. Applied migrations 1/2 are untouched. The native SQL plugin's own migration ledger is administrative state and is not copied from a backup; the destination keeps its correctly migrated ledger.
 

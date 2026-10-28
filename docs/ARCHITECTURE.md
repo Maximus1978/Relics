@@ -36,7 +36,7 @@ Domain rules cannot depend on React, Tauri, SQL, or theme artwork. Application u
 - `content/sanctuary/manifest.json`: public epoch metadata, not a complete validated World Pack.
 - `tests/activity.test.ts`: date tests and real SQLite integrity scenarios via Node.
 
-The current application hook still coordinates use cases directly with the concrete adapter. A repository port and pure application service should be extracted in a dedicated task when expanding behavior. Schedules, weighted contributions, game progression projections, audit events, backup/restore, and World Pack validation are not implemented; the small read-only recorded-day projection above is present.
+The current application hook still coordinates use cases directly with the concrete adapter. A repository port and pure application service should be extracted in a dedicated task when expanding behavior. Schedules, weighted contributions, game progression projections, audit events and World Pack validation are not implemented. The read-only recorded-day projection is present; native Windows backup/restore is implemented in PR #5 with automated verification passed and owner native acceptance pending.
 
 ## Intended directory structure
 
