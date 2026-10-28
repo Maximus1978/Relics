@@ -73,6 +73,7 @@ try {
     await viewport(width,height);
     await until('document.documentElement.scrollWidth <= innerWidth', `No horizontal overflow at ${width}x${height}`);
     await until('document.querySelector(".observation-period").getBoundingClientRect().top >= document.querySelector(".balance-caption").getBoundingClientRect().bottom', `Timeframe labels remain below the central panel at ${width}px`);
+    await until('[...document.querySelectorAll(".sphere-shrine")].every(shrine => { const name = shrine.querySelector("h2").getBoundingClientRect(); const count = shrine.querySelector(".recorded-ring").getBoundingClientRect(); return name.bottom <= count.top + 1 || name.right <= count.left + 1 || count.right <= name.left + 1; })', `Sphere names and recorded-day counts remain separate at ${width}px`);
     if (width >= 1000) {
       if (width === 1440) assert.ok(await evaluate('document.querySelector(".chronicle > summary").getBoundingClientRect().bottom <= innerHeight'), 'Complete Chronicle summary visible at 1440x900');
       assert.ok(await evaluate('document.querySelector(".relic-item").getBoundingClientRect().bottom <= innerHeight'), `Complete first inventory row visible at ${width}x${height}`);

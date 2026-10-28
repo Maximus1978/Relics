@@ -32,3 +32,11 @@
   .sphere-shrine__symbol { width: 38px; height: 38px; margin: -3px 0; } .sphere-shrine h2 { font-size: 12px; } .recorded-ring { width: auto; height: auto; margin-left: auto; } .recorded-ring svg, .recorded-ring em { display: none; } .recorded-ring > span { position: static; } .recorded-ring strong { font: 13px var(--font-ui); white-space: nowrap; } .recorded-ring small { font-size: inherit; }
   .observation-period { font-size: 9px; line-height: 1.3; }
 }
+@media (max-width: 360px) {
+  .sphere-shrine { height: 52px; }
+  .sphere-shrine__content { display: grid; grid-template-columns: 30px minmax(0, 1fr); grid-template-rows: 1fr 1fr; gap: 0 4px; padding: 4px; }
+  .sphere-shrine__symbol { grid-row: 1 / -1; width: 30px; height: 30px; margin: 0; }
+  .sphere-shrine h2 { text-align: left; font-size: 11px; align-self: end; }
+  .recorded-ring { grid-column: 2; margin: 0; justify-self: start; align-self: start; }
+  .recorded-ring strong { font-size: 11px; }
+}
