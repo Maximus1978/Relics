@@ -22,9 +22,9 @@ Daily logging remains useful without Adventure Mode. Discoveries are curated and
 
 Keep canonical IDs. Current sphere symbols/gems are category identities; they are not earned ranks.
 
-Approved future habit identity: a small curated icon gallery, with icon choice independent of sphere contributions. Plan a primary sphere plus optional weighted secondary contributions. An icon must not determine contributions or silently change them. Current implementation stores an unweighted sphere set and derives decorative color from the first sphere; it has no independently stored icon or explicit primary-sphere field.
+Approved future habit identity: a small curated icon gallery, with icon choice independent of sphere contributions. WEIGHTS-001A supersedes primary/secondary allocation math with equal-status independent subjective 1–10 sphere values; primary visual identity remains a separate deferred choice. An icon must not determine contributions or silently change them. Current implementation stores an unweighted sphere set and derives decorative color from the first sphere; it has no independently stored icon or explicit primary-sphere field.
 
-Weights describe how a habit contributes across spheres. Optional intensity describes one activity occurrence. They are different concepts and fields. Weight ranges, defaults, normalization, primary-sphere semantics and intensity effects require explicit decisions before coding. Do not retroactively reinterpret old snapshots.
+Weights describe how a habit contributes across spheres. Optional intensity describes one activity occurrence. They are different concepts and fields. Owner-approved contribution ranges/defaults/no-normalization and legacy semantics are now specified in [WEIGHTS_001A](WEIGHTS_001A.md); primary visual identity and per-activity intensity effects remain separate future decisions. Do not retroactively reinterpret old snapshots.
 
 Use a shared base frame for ordinary Habit Sigils. Reserve unique silhouettes and individually authored art for rare/legendary artifacts. The current common frame is an accepted foundation, not a release defect or evidence of earned rarity.
 
@@ -54,7 +54,7 @@ STATE-001 delivered the accepted unique pointed Sanctuary rune and fixed transpa
 
 Lifetime history, discoveries and milestones survive epochs; a world's presentation/development journey can differ and later live in the museum. Mastery is accumulated practice; Resonance is recent participation; harmony describes diversity rather than personal worth.
 
-Keep formulas pure, deterministic and versioned, with an explicit evaluation time. Exact units, thresholds, windows/fading, weight normalization, essence yields/caps and safeguards against repetitive grinding remain provisional. Decide correction/backdate behavior and idempotent grant accounting before tying permanent discoveries to editable activity history.
+Keep formulas pure, deterministic and versioned, with an explicit evaluation time. Exact units, thresholds, windows/fading, future reward interpretation of subjective contributions, essence yields/caps and safeguards against repetitive grinding remain provisional. Decide correction/backdate behavior and idempotent grant accounting before tying permanent discoveries to editable activity history.
 
 Initial recipe evaluation remains a bounded vocabulary of authored two- or three-element conditions/effects. No arbitrary scripts in content. Stable discovery IDs and content/rules versions prevent duplicate grants. Artifacts may unlock cosmetics, additional recipes, optional experiences and collection content; effects cannot create obligations or destroy earned practice.
 
@@ -68,7 +68,7 @@ Epoch change is voluntary, with a common lifetime journal and preserved previous
 
 ## Decisions still required
 
-Before their respective tasks: progression math/anti-grind policy; primary/secondary weight semantics; intensity scale/effect; repeated/quantified events; renewable resource costs; historical corrections and discovery grants; epoch transfer and museum retention. [Open questions](OPEN_QUESTIONS.md) tracks these. Approved principles constrain the eventual answers; they do not silently choose formulas.
+Before their respective tasks: progression math/anti-grind policy; independent contribution implementation review; primary visual identity and intensity scale/effect; repeated/quantified events; renewable resource costs; historical corrections and discovery grants; epoch transfer and museum retention. [Open questions](OPEN_QUESTIONS.md) tracks these. Approved principles constrain the eventual answers; they do not silently choose formulas.
 
 Private discovery names, actual recipes, unlock conditions and undiscovered art remain separate. Use synthetic fixtures for public rules tests. Do not access or invent a secret catalog during routine development.
 
@@ -82,7 +82,7 @@ Private discovery names, actual recipes, unlock conditions and undiscovered art 
 | Collection | Browse earned artifacts and discovered collection content | Future COLLECTION-001; not a synonym for habit cards |
 | Museum | Preserve earned artifacts, discovery stories and completed epochs | Future MUSEUM-001; does not replace Chronicle or Collection |
 
-NAV-CHRONICLE-001 will place full activity history at the existing left-navigation destination and remove the expanded dashboard Chronicle. Backdating/cancellation/snapshots remain; compact recent activity may be retained if useful. This is the next functional task, not an implemented refactor.
+NAV-CHRONICLE-001 will place full activity history at the existing left-navigation destination and remove the expanded dashboard Chronicle. Backdating/cancellation/snapshots remain; compact recent activity may be retained if useful. This remains queued after WEIGHTS-001B and SPHERE-TRENDS-001 under the later priority override, not an implemented refactor.
 
 ## Balance boundary — accepted principle, mechanics open
 
@@ -110,4 +110,14 @@ AUDIO-001 specifies restrained local offline sound, accessible alternatives and 
 
 ## Accepted artwork backlog
 
-Non-blocking future tasks: larger readable shrine gemstones/icons; a curated manual sigil icon gallery; icon identity separate from primary/secondary contributions; consistent ordinary frame; unique authored silhouettes only for real earned artifacts; refined gemstone optics, lighting and ornament. They do not reopen STATE-001 or authorize new artwork now.
+Non-blocking future tasks: larger readable shrine gemstones/icons; a curated manual sigil icon gallery; icon identity separate from independent contributions and deferred primary visual identity; consistent ordinary frame; unique authored silhouettes only for real earned artifacts; refined gemstone optics, lighting and ornament. They do not reopen STATE-001 or authorize new artwork now.
+
+## WEIGHTS-001A — accepted subjective model; implementation proposed
+
+[Full contract, WEIGHTS-001B plan and test matrix](WEIGHTS_001A.md). A contribution is the user's subjective assessment of benefit/meaning to a life sphere, not exertion, time, intensity, scientific health or Balance quality. Select 1–5 canonical spheres; selected values are independent integers 1–10, newly selected default 5, unselected 0. No normalization, percentage budget or total-of 10/100 requirement; maximum event total 50.
+
+Habit profiles are definition data, with immutable activity snapshots created at logging time (also for backdated entries). Editing never rebases prior values. Existing binary 7-day rune ignores magnitudes, keeps actual-day stones/current-week window and all current states unchanged. No contribution → Mastery/essence/rarity/probability coupling is approved; rewards need separate gameplay approval.
+
+Owner clarification: existing unweighted definitions receive marked 5 defaults for future logs, including archived definitions. Old activities remain numerically unknown. Future default-origin events ARE included in numeric trends with separate counts, not labeled explicitly calibrated. Explicit form Save confirms the future definition; it cannot relabel history. Known0 in a valid snapshot is not the same as absent legacy data.
+
+No new input on normal completion, new medallion/icon art, intensity/duration/quantity/repeated-session controls, AI estimation, recommendations, Balance grade or rewards. WEIGHTS-001A changes documentation only. The storage/backup/projection proposal awaits review; WEIGHTS-001B and SPHERE-TRENDS-001 do not start automatically.

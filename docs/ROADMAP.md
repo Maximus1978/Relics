@@ -4,7 +4,7 @@
 
 DOC-GAME-002 is complete: approved product decisions consolidated, owner-accepted STATE-001 released by regular merge of PR #6 at be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9, with only Markdown changes after the tested implementation. The owner tested STATE-001 on Windows and accepted its functionality/current visual direction, four-state rune, independent daily stones and responsive technical layers. Preserve this implementation; art imperfections are non-blocking. HANDOFF records actual merge/evidence.
 
-One task at a time. Every later row is a queue, not authorization. Preserve existing data, native backups and Windows CI. The next single functional task is NAV-CHRONICLE-001, then an early Android compatibility checkpoint. Begin neither automatically; all other rows remain a queue.
+One task at a time. Active task: WEIGHTS-001A, documentation-only specification and unmerged PR for owner review. The owner's later priority override is WEIGHTS-001A → WEIGHTS-001B → SPHERE-TRENDS-001 → NAV-CHRONICLE-001. Android is deferred until core mechanics are validated on Windows. Preserve all approved scope, history, backups and CI; no automatic next task.
 
 ## Accepted foundation
 
@@ -26,19 +26,20 @@ The owner has now authorized full replacement only, with validated summary and e
 
 ## Ordered implementation priorities
 
-The owner's priority order is authoritative. The early Android checkpoint is cross-platform risk reduction, inserted before complex migrations/game systems become large. Every row below is a separately authorized future task, not work to begin now.
+The owner's latest priority override is authoritative; it supersedes DOC-GAME-002's earlier NAV → early Android order. Android remains an approved compatibility milestone after Windows core-mechanics validation. Every row below is a separately authorized future task, not work to begin now.
 
 | Priority | Small task | Acceptance boundary / dependency |
 | --- | --- | --- |
 | Accepted | BACKUP-001 | Owner-accepted local export/full replacement/safety recovery; PR #5 merge 234c35a7be4306ba1fee082f01409122715e2846 |
 | Accepted and merged; DOC-GAME-002 complete | SANCTUARY-STATE-001 | [PR #6](https://github.com/Maximus1978/Relics/pull/6). Clean independent RGBA frame/rune/stone, separate SVG signs and lighting, reference-only source board, alpha/overlay/stable-geometry proof and central-track scaling at 1920/2560. Temporal rules, schema, history and backups unchanged. Owner Windows functionality/current visuals accepted; exact CI/artifacts and actual authorized release state in HANDOFF |
-| Next | NAV-CHRONICLE-001 | Move full history to existing left Chronicle destination; remove expanded dashboard Chronicle; preserve snapshots, backdating and cancellation. Optional compact activity hint. Verify history equality, date/cancellation flows and keyboard navigation; no new game systems |
-| Then, early platform checkpoint | ANDROID-001 | Build/launch existing shell and SQLite/UI on Android after NAV-CHRONICLE-001; before complex progression/content grows. No gameplay expansion |
-| Then, early compatibility checks | ANDROID-LOG-001 | After ANDROID-001: existing create/edit/archive, logging/backdating, migration/reopen and lifecycle persistence; preserve history, report device evidence |
+| Active documentation; owner review pending | WEIGHTS-001A | Define independent subjective 1–10 profile, legacy defaults/provenance, immutable event snapshots, additive storage and v1→v2 backup contract, reference UX and pure projection; no code. [Plan/test matrix](WEIGHTS_001A.md) |
+| Next after specification review | WEIGHTS-001B | Separate PR: persistence/migration, shared Create/Edit controls and atomic logging snapshots, native backup v1/v2 compatibility/safety/rollback; Windows CI/EXE/offline acceptance. No graph/gameplay |
+| Then | SPHERE-TRENDS-001 | After accepted WEIGHTS-001B: implement deterministic absolute/relative contribution projection, 4–8-week trends and accessible graph with default/excluded counts; no objective Balance/rewards. T01–T05 in contract |
+| Then | NAV-CHRONICLE-001 | Move full history to existing left Chronicle destination; remove expanded dashboard Chronicle; preserve snapshots, backdating and cancellation. Optional compact activity hint. Verify history equality, date/cancellation flows and keyboard navigation; no new game systems |
+| Deferred until Windows core mechanics validated | ANDROID-001 | Approved shell/toolchain/device compatibility milestone retained; after contributions/trends Windows acceptance and owner scheduling, not an immediate prerequisite. No gameplay expansion |
+| Deferred; after ANDROID-001 | ANDROID-LOG-001 | After ANDROID-001: existing create/edit/archive, logging/backdating, migration/reopen and lifecycle persistence; preserve history, report device evidence |
 | 2 | SANCTUARY-STATE-002 | Specify and review independent daily / gradual Resonance / permanent Mastery visual layers; synthetic developer fixtures only until real projections exist; no invented runtime energy |
 | 3 | HABIT-ICONS-001 | Small curated icon picker and independent persisted habit icon identity; safe migration/defaults and existing history intact |
-| 3 | WEIGHTS-001A | Decide primary-sphere semantics, optional secondary weights, defaults/normalization and snapshot/version compatibility; review contract before storage changes |
-| 3 | WEIGHTS-001B | Persist/edit the approved contribution model through additive migration; preserve historical meaning, separate from icon and activity intensity; after WEIGHTS-001A |
 | 4 | ACTIVITY-DETAILS-001A | Optional per-activity note with additive migration and legacy compatibility; not a habit field |
 | 4 | ACTIVITY-DETAILS-001B | Optional per-activity intensity after scale/effect agreement; distinct from contribution weights; no forced entry |
 | 4 | ACTIVITY-MODEL-001 | Small design/compatibility task for repeated sessions and quantities/units/identity; do not remove current uniqueness until a separately approved implementation |
@@ -77,7 +78,7 @@ The current seven-day observations are not implemented Resonance/Mastery. Notes,
 
 ## Accepted additional scope — future, independently testable tasks
 
-These are approved directions, not implemented functionality or permission to begin. Only the immediate NAV → Android ordering is mandated; later scheduling depends on prerequisites and a new owner task.
+These are approved directions, not implemented functionality or permission to begin. The immediate sequence is WEIGHTS-001A → WEIGHTS-001B → SPHERE-TRENDS-001 → NAV-CHRONICLE-001; Android waits for validated Windows mechanics; later scheduling depends on prerequisites and a new owner task.
 
 | Task | Small acceptance boundary | Dependency / open contract |
 | --- | --- | --- |
@@ -91,7 +92,7 @@ These are approved directions, not implemented functionality or permission to be
 | AUDIO-002 | Small sound service/preferences and approved gentle UI/completion/gem/rune sounds; verify mute/volume/offline/restrained concurrency | AUDIO-001 and licensed/original local assets; safe persistence decision |
 | AUDIO-003 | Add approved alchemy/discovery cues and distinct thematic World Pack sound mappings | AUDIO-002, actual discovery/alchemy features and validated World Pack audio contract |
 
-HABIT-ICONS-001 remains the curated manual gallery/independent identity task. WEIGHTS-001A/B remain distinct primary/secondary contribution tasks, separate from per-activity intensity. They are not absorbed into a large Vacation/Adventure bundle.
+HABIT-ICONS-001 remains the curated manual gallery/independent identity task. WEIGHTS-001A/B now use independent subjective 1–10 values, not primary/secondary normalized allocation; primary visual identity is a separate deferred choice, and per-activity intensity stays out of scope. They are not absorbed into a large Vacation/Adventure bundle.
 
 ## Non-blocking artwork backlog — accepted scope, not release criteria
 
@@ -103,7 +104,7 @@ HABIT-ICONS-001 remains the curated manual gallery/independent identity task. WE
 | LIGHT-POLISH-001 | One bounded lighting/ornament refinement, preserve accepted four-state object and temporal behavior |
 | ARTIFACT-001 (existing) | Unique authored silhouettes belong only to real earned/discovered artifacts, after content/rule identity exists |
 
-Icon gallery/primary contributions are tracked above rather than duplicated. Existing optional shrine-silhouette, compact-typography and fuller mobile art capture remain non-blocking refinements. Do not restart accepted Sanctuary Gate A or STATE-001.
+Icon gallery/contribution identity are tracked above rather than duplicated. Existing optional shrine-silhouette, compact-typography and fuller mobile art capture remain non-blocking refinements. Do not restart accepted Sanctuary Gate A or STATE-001.
 
 ## Unimplemented scope and decision status
 

@@ -37,7 +37,7 @@ BACKUP-001 introduces format v1 / migration level 3 with strict native validatio
 
 | Entity / type | Responsibility |
 | --- | --- |
-| SphereContribution | Stable sphereId and configurable weight; normalization policy still open |
+| SphereContribution | Stable sphereId, independent selected integer 1–10/unselected 0; default 5, no normalization. Owner contract approved; storage proposal in WEIGHTS_001A.md |
 | HabitSchedule | Daily/scheduled/flexible recurrence; schedule versions; definition editing/archive/restore delivered separately in HABITS-001B |
 | Activity + ActivityRevision / JournalEvent | Stable identity, local day, optional instant, recordedAt, timezone, historical contribution snapshot, correction/deletion audit |
 | DayObservation | Explicit unknown, confirmed inactivity, or planned rest; missing data never implies failure |
@@ -62,7 +62,7 @@ Test migration from an earlier database, weighted snapshots, scheduling boundari
 
 ## DOC-GAME-002 — accepted semantic boundaries, no schema changes
 
-Habit Sigil is the user-facing identity of the existing Habit, not a new earned-artifact record or a schema rename. The current name/sphere/archive fields and historical activity snapshots remain unchanged. Future icon identity is independent of contributions; primary/secondary weights and per-activity intensity require separate contracts/additive migrations.
+Habit Sigil is the user-facing identity of the existing Habit, not a new earned-artifact record or a schema rename. The current name/sphere/archive fields and historical activity snapshots remain unchanged. Future icon identity remains independent. WEIGHTS-001A defines independent1–10 values without primary/secondary normalization; primary visual identity/per-activity intensity are separate. Contribution storage requires additive migration and backup-version changes.
 
 Unique Artifacts require stable authored definition identities and earned/discovered instance/grant references with provenance/versioning; they are not inferred from ordinary habit IDs or art. This is future ARTIFACT-001/discovery work. Collection is an earned-content view, Chronicle is real activity/reflection history, and Museum is retained artifact/story/epoch context. Navigation separation must preserve existing IDs/dates/snapshots/cancellation behavior.
 
@@ -73,3 +73,17 @@ Future vacation storage must support explicitly manual one-day/interval/until-en
 Future temporary Blessings need approved origin/identity/lifecycle/correction/version rules before persistence. Expiry must not erase permanent earned artifacts or mutate activities/Balance. Audio preferences require a reviewed mute/volume/default/persistence contract; no pack may override user choice.
 
 These are modeling requirements, not implemented entities/columns/tables. Future additions require versioned additive migrations and explicit backup-format adapters preserving old records and IDs; no migration, backup format or one-completion-per-day change is made in DOC-GAME-002.
+
+## WEIGHTS-001A — concrete proposal, no migration applied
+
+See [WEIGHTS_001A](WEIGHTS_001A.md) sections2–5 for complete schemas/validation/transaction/compatibility details. Proposed next migration 004 adds habits.contribution_profile_json and activities.contribution_snapshot_json as nullable JSON-object TEXT columns; preserve 001–003, IDs, archive flags, existing name/sphere snapshots, DB/app identity and habit/day uniqueness.
+
+ContributionProfileV1 has version=1, origin=user|legacy-default and all five canonical values; selected 1–10, unselected 0, positive-key set equals that row's existing spheres. Unknown/duplicate/missing keys, bad ranges/types/origin/version and malformed non-null profiles are errors. SQL JSON checks are coarse; TS and native Rust semantic validation must agree.
+
+In a transactional upgrade, materialize5/default-origin profiles for existing active/archived definitions only; every old event keeps SQL NULL. A valid zero is known unselected; NULL snapshot is unknown history, never a fabricated zero/5 profile. A NULL habit after completed upgrade is an integrity error. On future form Save use user-origin for the definition; old event origins remain unchanged. New default-origin events are included numerically and separately counted per the owner's answer.
+
+Create/edit writes the name/sphere/profile atomically with bound SQL; existing one-statement INSERT...SELECT copies all event snapshots from the same active persisted habit row. Backdated entries snapshot the current definition at recording time; duplicate retries preserve the first snapshot. Archive/restore affects only archived_at.
+
+Proposed backup v2/schema 4 requires non-null habit contributionProfile and required nullable activity contributionSnapshot, retaining every current field. Strict v1/schema 3 imports use a typed adapter: imported habit defaults from their own spheres, imported events null. New exports/protective safety copies must be v2, never lossy v1. Validate before full replacement; synced/read-verified v2 safety copy and one pinned SQLx transaction preserve all weights/origins/null on rollback/undo. Older binaries cannot consume v2 or write schema 4 safely; do not claim downgrade compatibility. [BACKUP](BACKUP.md) keeps the implemented v1 versus proposed v2 boundary.
+
+Future deterministic analytics consume event snapshots, not today's habit profiles: sum known units by occurredOn/day/week, derive relative shares with no-data=null, and report included/default/user/excluded-legacy counts. Default-origin events are included; null legacy excluded, not interpreted as no activity. Calendar buckets, explicit boundaries/as-of date and 4–8 complete weeks are proposed in the contract. No derived numeric state or graph is stored/implemented here.

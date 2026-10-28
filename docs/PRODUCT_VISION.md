@@ -8,7 +8,7 @@ The application serves life. Success means a person can record meaningful experi
 
 - Offline operation without a required account, cloud service, or ChatGPT connection.
 - Windows 11 and Android, with shared domain logic and platform-specific interactions.
-- Five spheres: Body, Mind, Bonds, Work, Recovery. A habit may have configurable weighted contributions to several spheres.
+- Five spheres: Body, Mind, Bonds, Work, Recovery. A habit may select one to five spheres with independent subjective contribution units 1–10 (default 5), 0 when unselected; no normalization, intensity or objective health measurement. Persistence is future WEIGHTS-001B.
 - Instant and backdated logging; correction and removal; optional notes and emotional reflection.
 - Habit creation, editing, archiving, restoration, and daily, scheduled, or flexible recurrence.
 - Unrecorded days remain unknown. Confirmed inactivity and planned rest are explicit states, not inferred from missing entries.
@@ -47,4 +47,4 @@ Blessings are approved future optional temporary effects from approved discoveri
 
 Vacation Mode is approved future manual freedom from ordinary obligations: one day, an interval or until manually ended, with a restful Sanctuary aura and possible brief cosmetic afterglow. Actual daily gemstones and current-seven-day history remain truthful; no automatic Recovery records or Mastery. Vacation is not a physiological recovery claim. Optional memories/discoveries are later possibilities. Opt-in rhythm suggestions are a separate task: sustained contextual patterns, uncertain missing data, dismiss/snooze/disable, no autonomous mode switches.
 
-Restrained offline sound with mute/volume controls and accessible alternatives is planned, not implemented. Accepted Adventure scope and the four World Packs remain intact. [GAME_DESIGN](GAME_DESIGN.md) distinguishes approved principles from open mechanics; [ROADMAP](ROADMAP.md) keeps tasks small. Next: NAV-CHRONICLE-001, then the early Android compatibility checkpoint.
+Restrained offline sound with mute/volume controls and accessible alternatives is planned, not implemented. Accepted Adventure scope and the four World Packs remain intact. [GAME_DESIGN](GAME_DESIGN.md) distinguishes approved principles from open mechanics; [ROADMAP](ROADMAP.md) keeps tasks small. The later owner priority override is WEIGHTS-001A → WEIGHTS-001B → SPHERE-TRENDS-001 → NAV-CHRONICLE-001; Android is deferred until Windows core mechanics are validated. All earlier roadmap scope is retained.

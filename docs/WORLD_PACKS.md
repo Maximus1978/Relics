@@ -19,7 +19,7 @@ These four worlds remain the product roster, not merely substitute suggestions. 
 
 ## Independent identity, appearance and effects
 
-Habit icon selection comes from a small curated gallery independent of sphere contributions. The future explicit primary sphere and optional weighted secondaries belong to domain data, not arbitrary pack logic. Activity intensity is a separate per-event attribute. Packs can style approved identities but cannot change historical snapshots, contribution semantics or grant rules through art.
+Habit icon selection comes from a small curated gallery independent of sphere contributions. WEIGHTS-001A defines independent subjective 1–10 contribution values (unselected 0, default 5, no normalization), belonging to domain data, not pack logic. Primary visual identity remains deferred and independent. Activity intensity is a separate per-event attribute. Packs can style approved identities but cannot change historical snapshots, contribution semantics or grant rules through art.
 
 User-defined Habit Sigils share a reusable ordinary base frame and are not unique reward artifacts. Rare/legendary artifacts reserve unique silhouettes and individually authored artwork; finite curated content provides meaningful discovery. Exact material/gem polish is presentation, not proof of earned rarity. Raster layers may supply dimensional decoration; labels, rings, forms and accessibility remain real HTML/SVG. Record licensing/original-art provenance; do not copy proprietary game assets.
 
@@ -54,3 +54,5 @@ BLESSINGS-001 must approve constrained temporary optional effect definitions bef
 AUDIO-001 must specify local offline licensed/original assets, event mappings, distinct themes, mute/volume/accessibility and restraint before World Pack audio is implemented. Shared application preferences override pack presentation; packs cannot force playback.
 
 A future Vacation Mode may use an approved restful aura and brief cosmetic afterglow. It cannot rewrite actual gemstone/weekly rune observations, create Recovery/Mastery or autonomously change mode. Pack schema/asset validation for these features remains WORLD-001 follow-up work after respective contracts, not an existing manifest capability.
+
+WEIGHTS-001A does not implement pack changes. Subjective contribution magnitudes must not directly affect rarity/reward probabilities before separate gameplay approval. Keep the accepted binary rune unchanged and use saved event profiles for future numeric history, not pack-derived weights. Android remains approved future scope but deferred until Windows core mechanics validation under the owner's later priority update.
