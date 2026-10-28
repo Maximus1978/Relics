@@ -21,21 +21,19 @@ Gemstones always describe saved activity snapshots on the selected local logging
 
 The selected-date HARMONY condition is the explicit correction requirement; RADIANCE takes precedence regardless of selection. Clearing/invalid input cannot fabricate HARMONY. The existing local-day hook refreshes midnight/focus/visibility without changing the deliberately selected logging day.
 
-## One canonical object, no redesign
+## One immutable layered object
 
-The owner has no separate art layers and explicitly requested transfer from the supplied image. The **first dormant medallion** of that exact PNG is the sole canonical object in every state. It is bundled unchanged under public/art/medallion/v1/reference-source.png, SHA256 6168a44f2e36eae80dabdeedec1f1bea6a19bd009be4c7569b43d6e2a330a4e1. The rejected S artwork and prior central pendant frames are no longer used for the central object.
+The owner rejected the former source-board crop and its retained backdrop. Runtime now builds one medallion from independently generated transparent frame/settings, pointed rune and neutral gemstone masters, separate SVG signs, core/frame/engraved-line lighting and halo. The original board is reference-only under docs/visual-references/, never a runtime texture. State changes only illumination/color/opacity; transforms, paths and sources stay fixed.
 
-One fixed SVG image viewport selects that first object. Other panels and captions never render. The frame, texture, engravings, rune silhouette/internal paths and five signs are the same source pixels. Static masks select rune/engraving/frame regions and five independent stone faces. State modifies only opacity, gamma/saturation, colored emission and halo; image href/coordinates, geometry, mask paths, gemstone positions and proportions never change. No new rune illustration, new screen, generated variant, canvas, font, library or remote art request. Shrine/habit frames retain their existing approved design and selected-day rules.
-
-[Exact source, masks and provenance](art/MEDALLION_CANONICAL.md). Filters preserve the source's metallic tonal detail. The outer halo excludes inactive gemstone faces. All light is static with small bounded shadows; no animated particles, pulsing, spinning or heavy animated filters. One local PNG is decoded/cached, not four runtime illustrations. The 2,736,506-byte source is intentionally unmodified for identity verification; the browser proof verifies its actual served bytes.
+See [MEDALLION_LAYERS](art/MEDALLION_LAYERS.md) for exact prompts, provenance, source registration and limitations. This is a reconstruction, not pixel-identical ornament extraction. No opaque CSS disc remains. Wide desktops fill the central track: 446px at 1920 and 623px at 2560; existing compact/narrow layouts remain verified.
 
 ## Verification and delivery
 
-48 Node/temporary-SQLite tests include all previous 38 tests, eight corrected state scenarios and both owner-resolved temporal conflicts. Browser scenarios use actual controls in the explicitly fictional in-memory demo: no forced visual classes or owner records. They fill the current week, cancel/re-add backdated records, verify archived/edited snapshots and capture DORMANT/AWAKENING/HARMONY/RADIANCE plus the two conflicting-date cases, desktop and narrow views.
+50 Node/temporary-SQLite tests preserve all 48 previous cases and add asset identity/registration checks. Actual browser controls exercise all four states, multisphere and duplicate coverage, backdated additions/cancellations and both owner-resolved date conflicts, without forced visual classes or owner records.
 
-`medallion-geometry.mjs` compares the actual mounted SVG structure and all geometric attributes across the four states. It also exports four normalized SVGs after removing only light-state metadata; they must be byte-identical. Source artwork is copied to the evidence ZIP for standalone SVG inspection and its checksum must match the owner's PNG. Actual screenshots retain different lighting; normalized geometry SVGs intentionally show the common unlit construction. Neither proves native Tauri runtime acceptance.
+Technical evidence includes independent layers on white/checker/magenta, raw/composed alpha audit, original/assembly/registered overlay, actual state screenshots and four byte-identical normalized SVG geometry exports. Anchor errors stay below 4.35/500 units; this does not imply identical ornament/material. Browser runtimeErrors is empty. Windows compilation and 16 native backup safety tests run in the existing pipeline. Native owner launch/visual acceptance is separate.
 
-Run the unchanged Windows pipeline: locked install, Node tests, TypeScript, Vite, browser checks/proof, actual Tauri EXE build and all 16 native backup safety tests. [HANDOFF](HANDOFF.md) records the exact latest tested source/run, artifacts and limitations. Final [run 40752865133](https://github.com/Maximus1978/Relics/actions/runs/40752865133) SUCCESS on ed08e3e8ea49b64be5dc0693fc0631ef52c0cf51: 48 Node tests, TypeScript/Vite, 142 browser checks, actual Tauri Windows build and 16 native safety tests. Downloaded screenshots/SVG proof and EXE ZIP hashes were verified. Historical green builds of the rejected design are not correction acceptance. The updated PR stays unmerged; stop for owner visual/native review.
+See [HANDOFF](HANDOFF.md) for the exact latest source/run/artifacts. Previous green builds of the rejected crop remain historical and do not establish acceptance. PR #6 remains unmerged.
 
 ## UX boundary
 

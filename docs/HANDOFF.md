@@ -1,41 +1,43 @@
 # Project handoff
 
-## Active owner correction: genuine technical layers and large-screen scaling
+## Current task: SANCTUARY-STATE-001 technical-layer correction
 
-The owner rejected the cropped-render solution: its source backdrop remains visible and a medallion capped at 270px is undersized on a 2560px desktop. Continue the same unmerged PR #6 from d8d3116befa85dd4f4c97535429cf5d43c3fa0c1. Build independent clean art layers (frame/settings, rune, gemstone material, SVG signs and separate light layers), with true transparency outside metal/stone and through interior gaps. Do not use the reference board or a cropped complete medallion in runtime. Reconstruct the supplied design rather than inventing a new silhouette. Inspect each asset over light/contrast backdrops, then compare the assembled object with the original through a registered overlay. Preserve the existing temporal state rules, history and backup behavior.
+The owner rejected the complete-render crop because it retained a backdrop and was undersized on wide displays. The only active task is this correction in [PR #6](https://github.com/Maximus1978/Relics/pull/6), feature/sanctuary-state-001. Do not merge or start another task. Master remains accepted BACKUP-001 merge 234c35a7be4306ba1fee082f01409122715e2846.
 
-Make the medallion use its central grid track on large desktops, with proportional installation sizing; verify actual layouts at 1920 and 2560 in addition to existing compact/narrow sizes. Deliver asset/provenance/alpha and reference-comparison evidence plus the existing Windows CI/EXE in PR #6. Do not merge or begin another task. Previous rendering/geometry hashes below describe a rejected complete-render crop and are not proof that the requested independent layers exist.
+## Implemented correction
 
-## Current correction and boundary
+One immutable medallion is assembled from independent transparent RGBA frame/settings, rune and neutral stone masters, separate actual SVG sphere signs and core/engraved/frame/halo lighting. The original owner board moved to docs/visual-references/ and is never a runtime texture. There is no opaque CSS backdrop disc or four-image state swap. [Layer provenance and exact generation prompts](art/MEDALLION_LAYERS.md), [state contract](SANCTUARY_STATES.md), decision D048.
 
-SANCTUARY-STATE-001 continues in existing PR #6 / feature/sanctuary-state-001. The owner rejected the S-shaped rune and represented-sphere bands. Use the supplied canonical medallion and approved Temporal State Resolution. Do not merge or start another task. Baseline master remains 234c35a7be4306ba1fee082f01409122715e2846; history is preserved.
+At >=1500px, the wheel fills its central track and installation height grows proportionally. Actual 1920 x 1080 wheel/track width 446.15625px; 2560 x 1440 width 623.0625px, replacing the former 270px cap. Compact/narrow layouts remain checked.
 
-## Corrected implementation
+Temporal behavior is unchanged: selectedDate exclusively controls gemstones. Rune priority is 35 distinct current-window sphere/days RADIANCE; otherwise all five selected-day spheres within that window HARMONY; otherwise positive current coverage AWAKENING, zero DORMANT. The current window remains today plus six prior local dates. DORMANT/RADIANCE never override selected-date stones. Both date periods remain labeled.
 
-See [state contract](SANCTUARY_STATES.md), [canonical art](art/MEDALLION_CANONICAL.md), decisions D046–D047. Priority: 35 distinct current-window sphere/days = RADIANCE; otherwise all five selected-day spheres inside that window = HARMONY; otherwise positive coverage = AWAKENING, zero = DORMANT. The window remains anchored to actual local today and six preceding dates. Duplicates cannot inflate coverage; backdating/cancellation recompute saved historical snapshots.
+No SQLite/migrations/repository/native backup/capability/identifier/lock/workflow changes. No owner database/private content accessed. No gameplay, new habit fields or Android work.
 
-Gemstones exclusively follow selectedDate. DORMANT never suppresses recorded historical stones; RADIANCE never activates stones on an empty historical date. Settings may glow around a dark face. Visible/accessibility labels distinguish both periods. No missing-day failure, target, reward, game score or persisted visual state.
+## Verified source and evidence
 
-The first dormant medallion of the exact supplied PNG is the sole canonical object. One fixed image viewport/masks preserve its rune silhouette/internal detail, frame/engravings, gemstone placement and proportions. Other panels/captions never render. Only opacity, gamma/color, emission and halo vary. The rejected S artwork is removed from the center; no new illustration or screen is invented. The served source checksum must match the owner attachment.
+Tested source: 81cc6e7897f03eafbaccd0f178eff992727a7a28. Synthetic PR merge source: 75a82e33452d24a62dca71e6d5c8c65f327de18f.
+[Windows run 40764405205](https://github.com/Maximus1978/Relics/actions/runs/40764405205): SUCCESS. Actual locked Tauri Windows release compilation PASS; all 16 native backup safety tests PASS, zero failed, one standalone crash helper intentionally ignored because its passing parent executes it as a child..
+Locked npm ci, all 50 Node/temporary-SQLite tests, TypeScript and Vite PASS. 150 actual browser checks PASS with runtimeErrors=[]; separate technical alpha/registration audit PASS. Hosted CI is authoritative because local build child-process restrictions remain. No local environment repair required.
 
-No changes to SQLite/migrations/repository, native backup code/capabilities, identifiers, dependency locks or Windows workflow. No owner database/private content accessed. No new fields, progression or Android-native work.
+[Browser evidence ZIP](https://github.com/Maximus1978/Relics/actions/runs/40764405205/artifacts/12848009882): 47,733,270 bytes, downloaded SHA256 dd515873d71b44a2af1324260ca0255266df7e7a3e4089b3455f5e8feb9ab389 matches GitHub. Expires 2026-11-11.
 
-## Final verified correction
+- layer-gallery.png / .html: independent frame/rune/stone/signs over white/checker/magenta.
+- reference-overlay.png / reference-comparison.html: reference, actual neutral assembly, registered overlay.
+- layer-alpha-audit.json: actual raw alpha and four exactly-zero composed interior probes. All corners transparent; no opaque CSS disc; 3 independent sources.
+- Sign center maximum registration error 4.35/500 units. This checks anchors, not pixel-identical ornament. Independent reconstruction has material/facet/ornament differences from the owner reference; owner visual acceptance remains pending.
+- medallion-{dormant,awakening,harmony,radiance}.png and both historical-date conflict screenshots: actual controls and fictional in-memory fixtures, no forced visual classes.
+- medallion-geometry-proof.json / geometry-{state}.svg: actual geometry hash a3a7b6d33feb9caaa1ba09f5aab6c3c4ee02321f72e8e2dce272584479aab7a8 matches in all four states. Four normalized SVG files are byte-identical, SHA256 9c6011f7cb6c8bb12ea03ca9aaea41f76e8452acc16ee36145fbdc4c0938985f; verified after download along with the three PNG checksums.
+- wide-medallion-layout.json and actual 1920/2560/narrow views: no overflow/overlap; wheel fills track.
 
-Runtime/test source: ed08e3e8ea49b64be5dc0693fc0631ef52c0cf51; synthetic PR merge source 5e29740589e8d6a8eb5be7466737bb6f82830b2d. [Windows run 40752865133](https://github.com/Maximus1978/Relics/actions/runs/40752865133) completed SUCCESS: locked npm ci, all 48 Node/temporary-SQLite tests, TypeScript, Vite, 142 actual browser checks with zero reported runtime errors, actual locked Tauri Windows release compilation and all 16 native backup safety tests. One standalone crash helper is intentionally ignored because a passing parent test executes it as a child. Node 22.23.4 / Rust 1.99.1. Documentation-only receipt commits use [skip ci]; runtime/tests/locks/workflow remain identical to this source.
+Local ZIP/extracted evidence: outputs/Relics-technical-layers-browser[.zip], outside Git. Original generated masters were copied unchanged to public/art/medallion/v2/.
 
-The 48 Node tests preserve all previous 38 and add eight corrected-state cases plus both owner-resolved date conflicts. Browser scenarios use actual controls to fill all seven days, verify historical snapshots/archives, cancel/re-add a backdated entry and test both conflicts. No injected visual classes or real owner data. The four final captures were compared with the supplied design; the first canonical medallion is preserved and only lighting changes.
+[New Windows x64 EXE ZIP](https://github.com/Maximus1978/Relics/actions/runs/40764405205/artifacts/12849154157): 11,806,625 bytes; downloaded SHA256 78ea47ee7fbb2fc3edd5daba619a60df459b61ba92b14bd0a25b1575a083ba07 matches GitHub. EXE 20,387,328 bytes; SHA256 4f9a6970aa0036c13650f64b62f4a56d70078226dd64bd7c40458a9c98385585 matches executable-sha256.json. build-info confirms exact tested head and synthetic merge above, Node22.23.4/Rust1.99.1, signed=false and nativeUiRuntimeVerified=false. Artifact expires 2026-11-11. Local ZIP/extracted files: outputs/Relics-technical-layers-windows-x64[.zip], outside Git.
 
-[Final browser evidence](https://github.com/Maximus1978/Relics/actions/runs/40752865133/artifacts/12844711840): 30,738,344 bytes, downloaded SHA256 44ec9dedd2415f88b8dfa527986d558fcf67b4353bf957af8f87848a57ed98c9 matched GitHub. Four actual SVG attribute hashes match bc6b52ac1df144ebae3cea7599f086f2eb5b996fa319ec0eeb813ab92da016f3. Four normalized SVG exports are byte-identical: 1bb4e689cfca0a4f9154eee35ec5b5784cb5c158efecce0a645b485fedfa8959. Each exported SVG hash was checked after download, and the actual served PNG matches the exact owner attachment. Actual lighting screenshots remain distinct. Native runtime inspection is separate.
+## Delivery and acceptance boundary
 
-[Corrected Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40752865133/artifacts/12844312769): 11,186,696 bytes, downloaded SHA256 99af051204265985059684f05f80cda78c6fa09ebe51f7a55ba8d8da96f7df1d matched GitHub. EXE 19,767,296 bytes, SHA256 7a3d369f6ac2cfa7808a30560141e7a73c75881eec31d7c8c1739c2e9ec99b61 matched the manifest. build-info confirms both source SHAs, signed=false and nativeUiRuntimeVerified=false. Local ZIP and extracted files: outputs/Relics-STATE-corrected-windows-x64[.zip], outside Git. Artifacts expire 2026-11-11.
+Documentation-only receipt commits use [skip ci]; they do not change the tested runtime/scripts/assets/locks/workflow. PR #6 remains open and unmerged. Green build and geometric stability do not substitute for owner visual/native acceptance. The previous run 40752865133 verified a now-rejected complete-render crop; its EXE must not be used to review this correction. Initial layered run 40763788453 failed only in the new diagnostic script's escaping; fixed in the exact tested head above.
 
-Local evidence outside Git: outputs/Relics-STATE-correction-browser.zip and extracted folder. Actual captures: medallion-dormant.png, medallion-awakening.png, medallion-harmony.png, medallion-radiance.png; conflict captures medallion-dormant-historical-gems.png / medallion-radiance-historical-empty.png; desktop and narrow screenshots. Proof: medallion-geometry-proof.json, geometry-{state}.svg/.json, canonical-source.png. Normalized SVG exports deliberately remove lighting metadata; actual screenshots retain distinct illumination.
+For native review: close the older app, download the new Windows x64 ZIP linked above, extract separately and run relics.exe on Windows with WebView2. It is unsigned. No executable was launched against owner data here. Native SQLite/offline/visual acceptance remains pending. Browser evidence uses fictional nonpersistent demo data.
 
-Hosted CI verifies full builds because local child-process execution is restricted. No manual environment repair is required from the owner. Native compilation and actual native UI inspection are separate; no executable is launched against the owner's data here.
-
-## Delivery and owner acceptance
-
-The corrected PR, exact successful source/run, four actual state screenshots, SVG proof and Windows EXE ZIP are delivered for review. Close the previous app and extract/run the new unsigned Windows x64 executable with WebView2 for owner visual/functional review. Use synthetic test entries for logging/cancellation; verify historical date selection. Backups remain available; do not replace personal data merely for visual inspection. Browser evidence does not establish native SQLite/Android acceptance.
-
-Stop for owner acceptance. SANCTUARY-STATE-002 and all following tasks remain unstarted.
+Stop for owner acceptance of this task. SANCTUARY-STATE-002 and all following tasks remain unstarted.

@@ -31,7 +31,7 @@ The owner's priority order is authoritative. The early Android checkpoint is cro
 | Priority | Small task | Acceptance boundary / dependency |
 | --- | --- | --- |
 | Accepted | BACKUP-001 | Owner-accepted local export/full replacement/safety recovery; PR #5 merge 234c35a7be4306ba1fee082f01409122715e2846 |
-| Corrected delivery; owner review pending | SANCTUARY-STATE-001 | [PR #6](https://github.com/Maximus1978/Relics/pull/6), [run 40752865133](https://github.com/Maximus1978/Relics/actions/runs/40752865133) PASS on ed08e3e8ea49b64be5dc0693fc0631ef52c0cf51: 48 Node / 142 browser / 16 native tests, TypeScript/Vite and EXE. One canonical owner-supplied medallion, corrected light states, independent daily stones and identical SVG proof; no schema/gameplay expansion or automatic merge |
+| Corrected technical-layer delivery; owner review pending | SANCTUARY-STATE-001 | [PR #6](https://github.com/Maximus1978/Relics/pull/6). Clean independent RGBA frame/rune/stone, separate SVG signs and lighting, reference-only source board, alpha/overlay/stable-geometry proof and central-track scaling at 1920/2560. Temporal rules, schema, history and backups unchanged. Exact source, Windows CI and artifacts in HANDOFF; no automatic merge |
 | 2 | SANCTUARY-STATE-002 | Specify and review independent daily / gradual Resonance / permanent Mastery visual layers; synthetic developer fixtures only until real projections exist; no invented runtime energy |
 | Early platform gate | ANDROID-001 | Android toolchain/CI shell build and device launch with existing SQLite/UI; no new gameplay |
 | Early platform gate | ANDROID-LOG-001 | Existing logging/backdating, management, migration/reopen and lifecycle compatibility on Android; after ANDROID-001 and before the complete game loop |
