@@ -301,6 +301,9 @@ async fn snapshot_stays_consistent_across_concurrent_commit() {
 #[tokio::test]
 async fn rollback_after_delete_and_mid_insert_keeps_original_database() {
     let (temporary, _, pool) = fixture().await;
+    storage::restore(&pool, &example(), &temporary.path().join("setup-recovery"))
+        .await
+        .unwrap();
     let before = storage::export(&pool).await.unwrap().data;
     let safety = temporary.path().join("safety.json");
     let failed = storage::replace(
@@ -313,7 +316,7 @@ async fn rollback_after_delete_and_mid_insert_keeps_original_database() {
         || Err("injected interruption after delete".into()),
     )
     .await;
-    assert!(failed.is_err());
+    assert_eq!(failed.unwrap_err(), "injected interruption after delete");
     assert_eq!(storage::export(&pool).await.unwrap().data, before);
     assert_eq!(storage::read_backup(&safety).unwrap().data, before);
     sqlx::query("CREATE TRIGGER synthetic_fail BEFORE INSERT ON habits WHEN NEW.id = 'read' BEGIN SELECT RAISE(ABORT, 'synthetic failure'); END")
@@ -330,6 +333,9 @@ async fn rollback_after_delete_and_mid_insert_keeps_original_database() {
 #[tokio::test]
 async fn failed_safety_snapshot_and_invalid_import_never_start_replacement() {
     let (temporary, _, pool) = fixture().await;
+    storage::restore(&pool, &example(), &temporary.path().join("setup-recovery"))
+        .await
+        .unwrap();
     let before = storage::export(&pool).await.unwrap().data;
     assert!(storage::replace(
         &pool,
@@ -364,6 +370,9 @@ async fn failed_safety_snapshot_and_invalid_import_never_start_replacement() {
 #[tokio::test]
 async fn preview_read_and_cancel_make_no_database_changes() {
     let (temporary, _, pool) = fixture().await;
+    storage::restore(&pool, &example(), &temporary.path().join("setup-recovery"))
+        .await
+        .unwrap();
     let before = storage::export(&pool).await.unwrap().data;
     let path = temporary.path().join("selection.json");
     storage::write_backup(&path, &example()).unwrap();
@@ -470,6 +479,9 @@ async fn migration_from_v1_and_archived_v2_preserves_history_and_does_not_reseed
 #[tokio::test]
 async fn dropping_process_mid_transaction_recovers_original_data() {
     let (temporary, path, pool) = fixture().await;
+    storage::restore(&pool, &example(), &temporary.path().join("setup-recovery"))
+        .await
+        .unwrap();
     let before = storage::export(&pool).await.unwrap().data;
     pool.close().await;
     let status = Command::new(std::env::current_exe().unwrap())
