@@ -28,6 +28,6 @@ Browser-only preview uses clearly labeled fictional in-memory data, resets on re
 
 ## Reference policy
 
-The desktop panorama and Android collage are art-direction references. Screen composition, navigation, sample statistics, recipe examples, gemstone assignments, and textual feature promises are not approved specifications. See [reference inventory](visual-references/README.md). Sphere names in some concepts differ from the canonical model.
+The owner-supplied VISUAL_CONTRACT v0.2 makes the original desktop panorama authoritative for SANCTUARY-UI-001 recovery composition, hierarchy, object proportions, materials and density (~90% perceptual fidelity). The Android collage governs future mobile aesthetics; no Android build is authorized here. Sample statistics, recipes and unsupported controls are not behavior specifications. See [reference inventory](visual-references/README.md). Sphere names in some concepts differ from the canonical model.
 
 The owner's visual correction makes the references a minimum quality target for atmosphere and material/detail richness. Do not reduce them to a color palette or substitute flat geometric scaffolding for the intended environment. Keep Daily Mode fast and readable while increasing authored depth; distinguish actual owner visual acceptance from build/render checks.

@@ -78,7 +78,9 @@ try {
       const arrangement = await evaluate('(() => { const center = document.querySelector(".balance-center").getBoundingClientRect(); const shrines = [...document.querySelectorAll(".sphere-shrine")].map(element=>element.getBoundingClientRect()); return {left:shrines.filter(bounds=>bounds.right<=center.left+2).length,right:shrines.filter(bounds=>bounds.left>=center.right-2).length}; })()');
       assert.deepEqual(arrangement, {left:2,right:3});
       if (width >= 1280) assert.equal(await evaluate('document.querySelector(".app-rail").getBoundingClientRect().width'),180);
+      else assert.equal(await evaluate('document.querySelector(".app-rail").getBoundingClientRect().width'),76);
     }
+    if (width < 760) assert.equal(await evaluate('document.querySelector(".world-backdrop").getBoundingClientRect().left'),0);
     await screenshot(`sanctuary-${width}x${height}.png`);
   }
   checks.push('Five shrine installation, central circle, rail and inventory composition verified at target viewports');

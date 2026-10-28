@@ -25,7 +25,7 @@ Recent Resonance may naturally fade as a descriptive signal. That must not erase
 
 ## First world and scope
 
-Sanctuary is an original dark gothic fantasy world with restrained magical effects, gemstones, illustrated medallions, aged metal, and dark stone. Supplied concepts establish art direction, not final screen layouts. Proprietary Diablo assets must not be reproduced.
+Sanctuary is an original dark gothic fantasy world with restrained magical effects, gemstones, illustrated medallions, aged metal, and dark stone. For SANCTUARY-UI-001 visual recovery, the owner-supplied VISUAL_CONTRACT v0.2 and original desktop TARGET explicitly govern composition, hierarchy and materials (~90% perceptual fidelity). Invented concept scores, recipes and future controls are not approved behavior. Proprietary Diablo assets must not be reproduced. Gate A screenshots require owner review before extensive Gate B polish.
 
 The foundation precedes full game development. The owner has accepted native Windows habit creation/edit/archive/restore, multisphere logging, backdating and offline SQLite persistence through HABITS-001B. SANCTUARY-UI-001 gives that tracker its first original visual Daily Mode, with separate visual/native acceptance. Scheduling, weighted contributions, progression, backups, world switching, and alchemy remain requirements for later individual tasks.
 

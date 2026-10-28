@@ -27,10 +27,11 @@ Domain rules cannot depend on React, Tauri, SQL, or theme artwork. Application u
 
 - `src/domain/activity.ts`: typed habits/activities, sphere IDs, date validation, local-day helper.
 - `src/data/activityRepository.ts`: SQL plugin adapter and snapshot mapping.
-- `src/App.tsx`: Daily Mode composition, habit management, logging, date selection and expandable journal/cancellation.
-- `src/components/`, `src/ui/`: original CSS/SVG presentation, reusable symbols/medallions and local-calendar display helpers.
+- `src/App.tsx`: small Sanctuary composition/navigation root. `src/application/useRelicsModel.ts` reuses existing habit/logging state and repository callbacks separately from presentation.
+- `src/components/`, `src/ui/sanctuary/`: shared validated habit controls, local-calendar helpers, shrine installation/wheel, relic inventory, Chronicle and native modal; scoped component styles and reusable design tokens.
+- `src/domain/recentActivity.ts`: pure, read-only seven-local-calendar-day snapshot projection; no progression, schema or persistence change.
 - `src/preview/sanctuaryPreview.ts`: browser-only fictional in-memory fixture; dynamically selected outside Tauri, explicitly labeled and reset on reload, with no persistent storage or SQLite access.
-- `public/art/sanctuary-environment-v1.png`: original owner-approved bundled raster decoration; one image behind the existing CSS/SVG view, no remote dependency or runtime image-generation service. [Provenance and exact prompt](art/SANCTUARY_ENVIRONMENT.md).
+- `public/art/recovery/v1/`: versioned local WebP environment, transparent shrine/wheel/pendant bases and hash manifest; approximately 810KB total. Original environment PNG retained as source; other masters outside Git. Real labels/controls remain HTML/SVG. [Prompts/provenance](art/VISUAL_RECOVERY.md).
 - `src-tauri/migrations/001_initial.sql` and `002_archive_habits.sql`: tables and additive habit archive field; `src-tauri/src/lib.rs` registers both migrations.
 - `content/sanctuary/manifest.json`: public epoch metadata, not a complete validated World Pack.
 - `tests/activity.test.ts`: date tests and real SQLite integrity scenarios via Node.
