@@ -1,5 +1,9 @@
 # Project handoff
 
+## Active task: BACKUP-001
+
+The owner explicitly authorized reliable native Windows JSON export and full-replacement restore. Baseline master verified at 5fdc02dc1777c6b5793bababda918beac195856b; feature/backup-001 is dedicated to this task. Validate before mutation, preview and explicit confirmation, durable recoverable safety JSON before replacement, one native SQLite transaction using the SQL plugin's existing pool, refresh after commit. Preserve IDs/history/identity, move sample seeding to one-time additive migration, and test only synthetic temporary databases. Native dialogs/file access stay inside narrow Rust commands; browser demo must not simulate persistent backup. No private/ or owner database access. Deliver an unmerged PR, green Windows CI/native tests/build, executable and manual acceptance steps; do not merge or begin another task. Earlier release notes below are historical.
+
 ## Current task and owner acceptance
 
 Task: accept/finalize SANCTUARY-UI-001, record the latest game decisions/roadmap, and merge [PR #4](https://github.com/Maximus1978/Relics/pull/4) using a normal merge commit after successful final-head Windows CI. Work stays on feature/sanctuary-ui-001 until that merge. No new feature implementation is authorized.

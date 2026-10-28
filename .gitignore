@@ -7,5 +7,7 @@ private/
 *.db-*
 *.sqlite*
 *.log
+Relics-backup-*.json
+Relics-before-restore-*.json
 .env*
 !.env.example

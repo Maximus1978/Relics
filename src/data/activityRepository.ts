@@ -1,4 +1,4 @@
-import { sampleHabits, validateDay, type Activity, type Habit, type SphereId } from '../domain/activity.ts';
+import { validateDay, type Activity, type Habit, type SphereId } from '../domain/activity.ts';
 import { HabitStateError, validateHabitInput } from '../domain/habit.ts';
 
 export type SqlDatabase = {
@@ -20,12 +20,6 @@ type ActivityRow = {
 
 export async function openActivityRepository(connection?: SqlDatabase) {
   const database = connection ?? await (await import('@tauri-apps/plugin-sql')).default.load('sqlite:relics.db');
-  for (const habit of sampleHabits) {
-    await database.execute(
-      'INSERT OR IGNORE INTO habits (id, name, spheres_json) VALUES ($1, $2, $3)',
-      [habit.id, habit.name, JSON.stringify(habit.spheres)],
-    );
-  }
   return {
     async listHabits(status: 'active' | 'archived' | 'all' = 'active'): Promise<Habit[]> {
       const filter = status === 'active' ? ' WHERE archived_at IS NULL'

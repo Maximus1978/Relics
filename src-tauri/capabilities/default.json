@@ -3,5 +3,5 @@
   "identifier": "main-local",
   "description": "Local main window and SQLite activity journal",
   "windows": ["main"],
-  "permissions": ["core:default", "sql:default", "sql:allow-execute"]
+  "permissions": ["core:default", "sql:default", "sql:allow-execute", "local-backup"]
 }

@@ -1,0 +1,11 @@
+.backup-dialog h2 { font-size: 28px; margin: 0 30px 18px 0; color: #ead2a3; }
+.backup-dialog h3 { font-size: 21px; margin: 22px 0 12px; }
+.backup-dialog > p { margin: 12px 0; font-size: 14px; line-height: 1.6; }
+.backup-privacy, .backup-replacement { border-left: 2px solid #c9a66b; padding: 8px 12px; background: #c9a66b0c; }
+.backup-dialog .form-actions { flex-wrap: wrap; }
+.backup-dialog .form-actions button { min-width: 140px; }
+.backup-summary { display: grid; grid-template-columns: minmax(90px, 1fr) minmax(0, 2fr); gap: 9px 14px; font-size: 14px; }
+.backup-summary dt { color: #c3beaf; } .backup-summary dd { margin: 0; overflow-wrap: anywhere; }
+.backup-dialog .backup-recovery, .backup-dialog .backup-file { font-size: 12px; overflow-wrap: anywhere; }
+.backup-unavailable { padding: 14px; border: 1px solid #796c52; }
+@media (max-width: 760px) { .backup-summary { grid-template-columns: 1fr; gap: 4px; } .backup-summary dd { margin-bottom: 8px; } }

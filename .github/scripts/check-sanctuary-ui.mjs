@@ -169,6 +169,11 @@ try {
   assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'auto');
   checks.push('Reduced motion removes smooth scrolling');
   await viewport(1280, 1100);
+  await click('.app-rail button[data-backup]');
+  await until('document.querySelector(".backup-unavailable")?.textContent.includes("Windows") && ![...document.querySelectorAll(".backup-dialog button")].some(button => button.textContent === "Создать копию")', 'Browser backup utility clearly unavailable; no fake file actions');
+  await screenshot('sanctuary-backup-unavailable.png');
+  await press('Escape', 'Escape', 27);
+  await until('!document.querySelector(".backup-dialog") && document.activeElement.matches(".app-rail button[data-backup]")', 'Backup dialog closes and restores keyboard focus');
   assert.deepEqual(runtimeErrors, []);
   await writeFile(join(output, 'result.json'), JSON.stringify({ browserRendering: 'passed', interactionChecks: checks, runtimeErrors, nativeUiRuntimeVerified: false, storage: 'Synthetic in-memory demonstration; resets on reload' }, null, 2));
   console.log(`Sanctuary browser verification passed: ${checks.length} checks. Native runtime remains unverified.`);

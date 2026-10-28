@@ -15,6 +15,7 @@ export function useRelicsModel() {
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
   const [archivingHabit, setArchivingHabit] = useState<Habit | null>(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [backupOpen, setBackupOpen] = useState(false);
   const [repository, setRepository] = useState<Repository | null>(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -22,9 +23,10 @@ export function useRelicsModel() {
   const actionLock = useRef(false);
   const addHabitButton = useRef<HTMLButtonElement>(null);
   const archiveToggle = useRef<HTMLButtonElement>(null);
+  const backupButton = useRef<HTMLButtonElement>(null);
   const returnFocus = useRef<HTMLElement | null>(null);
   const formOpen = creatingHabit || editingHabit !== null;
-  const managingHabit = formOpen || archivingHabit !== null;
+  const managingHabit = formOpen || archivingHabit !== null || backupOpen;
   const visibleHabits = habits.filter(habit => (habit.archivedAt !== null) === showArchived);
 
   useEffect(() => {
@@ -115,10 +117,38 @@ export function useRelicsModel() {
     void perform(store => store.remove(id), 'Отметка отменена.');
   }
 
+  function openBackup() {
+    if (busy || managingHabit) return;
+    returnFocus.current = document.activeElement instanceof HTMLButtonElement ? document.activeElement : backupButton.current;
+    setBackupOpen(true);
+  }
+
+  function closeBackup() { if (!busy) setBackupOpen(false); }
+
+  async function backupOperation<Result>(action: () => Promise<Result>, refresh = false): Promise<Result> {
+    if (actionLock.current || (refresh && !repository)) throw new Error('Дождитесь завершения текущей операции.');
+    actionLock.current = true;
+    setBusy(true);
+    try {
+      const result = await action();
+      if (refresh && repository) {
+        try {
+          const [entries, savedHabits] = await Promise.all([repository.list(), repository.listHabits('all')]);
+          setActivities(entries); setHabits(savedHabits); setShowArchived(false);
+          setError(''); setMessage('Данные восстановлены из резервной копии.');
+        } catch {
+          throw new Error('Данные восстановлены, но экран не обновился. Закройте и откройте приложение. Защитная копия сохранена в папке recovery.');
+        }
+      }
+      return result;
+    } finally { actionLock.current = false; setBusy(false); }
+  }
+
   return { native, day, setDay, activities, habits, visibleHabits, showArchived, setShowArchived, toggleArchive,
     creatingHabit, editingHabit, archivingHabit, formOpen, managingHabit, canSave: !!repository,
     message, error, busy, addHabitButton, archiveToggle, beginCreate, beginManagement, cancelManagement,
-    saveHabit, archiveHabit, restoreHabit, log, cancelActivity };
+    saveHabit, archiveHabit, restoreHabit, log, cancelActivity,
+    backupOpen, backupButton, openBackup, closeBackup, backupOperation };
 }
 
 export type RelicsModel = ReturnType<typeof useRelicsModel>;

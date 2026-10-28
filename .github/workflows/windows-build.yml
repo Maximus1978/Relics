@@ -68,6 +68,8 @@ jobs:
 
       - name: Generate native lockfile when missing
         run: |
+          cargo update --manifest-path src-tauri/Cargo.toml --workspace
+          if ($LASTEXITCODE -ne 0) { throw 'Resolve backup native dependencies failed.' }
           if (-not (Test-Path src-tauri/Cargo.lock)) {
             cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
             if ($LASTEXITCODE -ne 0) { throw 'Cargo lockfile generation failed.' }
@@ -85,6 +87,13 @@ jobs:
 
       - name: Compile Tauri Windows executable
         run: npm.cmd run tauri -- build --no-bundle -- --locked
+
+      - name: Test native backup safety
+        run: cargo test --release --manifest-path src-tauri/Cargo.toml --locked --lib -- --test-threads=1
+
+      - name: Confirm native executable
+        run: |
+          if (-not (Test-Path src-tauri/target/release/relics.exe)) { throw 'Native executable missing after build/tests.' }
 
       - name: Prepare downloadable Windows build
         env:
