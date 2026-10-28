@@ -1,5 +1,33 @@
 # Project handoff
 
+## Delivered for owner review: WEIGHTS-001A
+
+Verified latest origin/master: c2375e7543649ce80e25151bf79c0376c985ad9d (DOC-GAME-002 complete, PR #6 regular merge be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9). Branch docs-weights-001a; [documentation PR #7](https://github.com/Maximus1978/Relics/pull/7) is open and unmerged. Only Markdown changes; no migrations, application/native code, tests, artwork, dependencies or owner data changes.
+
+Owner-approved: independent subjective contribution 1–10 per selected sphere, default 5, unselected 0, no normalization, one-to-five spheres, no extra completion input, immutable recording-time activity profiles and unchanged binary rune. Owner clarification: old definitions get marked 5 defaults for future logs; those future entries are included in numeric trends with origin/count disclosure. Old activities remain unknown, never fabricated zeros or fives. See D058–D063.
+
+[WEIGHTS_001A](WEIGHTS_001A.md) is the implementation-ready REVIEW PROPOSAL: versioned profile/origin, next additive 004 migration, atomic habit writes/event snapshot, strict backup v2/schema 4 with v1/schema 3 import and weighted safety/rollback, reference-based Create/Edit accessibility, pure future day/week/share/4–8-week projection, explicit WEIGHTS-001B task and W01–W26/T01–T05 matrix. Engineering proposal approval is pending; no proposed functionality is implemented here.
+
+Reference 2026-10-28_14-44-28.jpg supplies Sanctuary rows/controls/visual language. Show units, not percentages; inactive rows0, no active editor. Existing medallion art stays. Pictured description/icon picker/counters and effort fields are not scope. No graphs, intensity/duration/repeated sessions/AI/Balance grades/Mastery/essences/rarity/probabilities.
+
+## Priority override and next single task — do not start
+
+Owner explicitly overrides the prior NAV → early Android sequence:
+1. WEIGHTS-001A: specification/UX review, this documentation PR; do not auto-merge.
+2. WEIGHTS-001B: separate persistence/editor/backup PR and native Windows acceptance after specification approval.
+3. SPHERE-TRENDS-001: real snapshot-based absolute/relative trends after WEIGHTS-001B acceptance.
+4. NAV-CHRONICLE-001: dedicated Chronicle view.
+
+Android is deferred until core mechanics are validated on Windows. All earlier approved roadmap features remain. Review concrete storage/projection details (Q21/Q22); primary visual identity/rewards/actual progression stay separate. Next single implementation task: WEIGHTS-001B, NOT started. Stop for owner review.
+
+## Documentation checks and publication
+
+Required docs plus linked full contract, consistency notes in README/AGENTS/product vision/World Packs and backup-evolution note are updated. Preserve previous decision IDs; append D058–D063. Review completed: 13 Markdown files only; relative links/anchors valid; all previous decision rows and roadmap task IDs retained; D001–D063/Q01–Q22 unique; 26 WEIGHTS-001B and 5 future trend cases documented, not run. No runtime tests/build/EXE are claimed for documentation-only WEIGHTS-001A. The last accepted Windows build remains run 40764405205 on 81cc6e7897f03eafbaccd0f178eff992727a7a28 (50 Node/150 browser/16 native tests), not execution of the new planned weight cases.
+
+## Historical DOC-GAME-002 release receipt
+
+The following receipt is retained as history. Its former immediate NAV/Android queue is superseded above by D062; it cannot authorize another task.
+
 ## Completed: DOC-GAME-002 — approved decisions and STATE-001 release
 
 Owner instruction dated 2026-10-28: STATE-001 functionality/current visual direction were tested and accepted on Windows, including the central rune, four illumination states, independent selected-day stones and responsive transparent technical layers. Remaining art defects are non-blocking future work. This explicit instruction supersedes prior PR #6 no-merge/review holds.
@@ -16,7 +44,7 @@ Accepted principles, future implementation: focused Sanctuary/full Chronicle des
 
 No numeric Balance/progression formula, Blessing chance/stacking/expiry, vacation afterglow duration or audio defaults are chosen. See OPEN_QUESTIONS and small roadmap contracts. No secret names/recipes are accessed, invented or exposed. Adventure Mode and versioned World Packs remain future scope: Sanctuary, Clockwork, Wasteland, Verdant.
 
-## Next single task — queued, not started
+## Historical next-task order — superseded by D062
 
 NAV-CHRONICLE-001: move full history to existing left Chronicle destination, remove expanded dashboard history, preserve historical snapshots/backdating/cancellation; optional compact recent-activity hint. Then ANDROID-001 / ANDROID-LOG-001 early compatibility checkpoint before complex gameplay grows. Do not automatically start any of them.
 
@@ -58,4 +86,4 @@ Documentation-only receipt commits use [skip ci]; they do not change the tested 
 
 Existing download instructions: close the older app, download the new Windows x64 ZIP linked above, extract separately and run relics.exe on Windows with WebView2. It is unsigned. No executable was launched against owner data here. The owner reports Windows functionality/current visuals accepted; CI's nativeUiRuntimeVerified=false is an unchanged build-time manifest flag, not a claim that the later manual test did not occur. Browser evidence uses fictional nonpersistent demo data.
 
-Stop after DOC-GAME-002 release. NAV-CHRONICLE-001 is the next single functional task, then early Android compatibility. Neither is started.
+DOC-GAME-002 stopped after release. Its previous NAV/Android order is superseded by the active WEIGHTS-001A owner override above.

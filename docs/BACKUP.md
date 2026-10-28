@@ -96,3 +96,11 @@ Automated rollback/crash/disk-failure tests use synthetic temporary files only; 
 - [SQLx 0.8.6 pool/transactions](https://docs.rs/sqlx/0.8.6/sqlx/struct.Pool.html).
 - [Tauri native dialogs](https://v2.tauri.app/plugin/dialog/) and [application command permissions](https://docs.rs/tauri-build/latest/tauri_build/struct.AppManifest.html).
 - [tempfile atomic persist API](https://docs.rs/tempfile/latest/tempfile/struct.NamedTempFile.html).
+
+## WEIGHTS-001A — future v2 proposal; current v1 is unchanged
+
+The current deployed contract remains format v1/schema 3. WEIGHTS-001A applies no migration/parser/export change. [Full proposed compatibility matrix and safety plan](WEIGHTS_001A.md#5-proposed-backup-v2-and-compatibility-matrix) is a WEIGHTS-001B review prerequisite.
+
+Weighted storage would require format v2/schema 4, version-dispatched strict Rust DTOs, required habit contributionProfile and required nullable event contributionSnapshot. Preserve all existing fields/order/metadata/limits. Retain strict v1 input: adapt imported habit sphere sets to marked 5 defaults for future logs; keep old event numeric snapshots null. Never add/drop unknown fields in v1 parsing or borrow destination weights. Unknown versions/malformed profiles fail before mutation.
+
+New export and protective pre-restore safety copies must include every weight/origin/null in v2. No lossy v1 export/downgrade. Preview explains v1 conversion and full replacement, with numeric/default/legacy counts. Validating/syncing/read-verifying the weighted pre-state safety copy precedes any DELETE; native pinned-transaction rollback/crash/undo tests must preserve new fields too. Include profile bytes in size preflight. Existing native dialogs, tokens, archive behavior, migration ledger and no-reseed guarantees remain. The old executable is v1-only, not a v2 reader; Windows round-trip/offline acceptance is required separately.
