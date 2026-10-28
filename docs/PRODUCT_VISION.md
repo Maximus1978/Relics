@@ -25,9 +25,9 @@ Recent Resonance may naturally fade as a descriptive signal. That must not erase
 
 ## First world and scope
 
-Sanctuary is an original dark gothic fantasy world with restrained magical effects, gemstones, illustrated medallions, aged metal, and dark stone. For SANCTUARY-UI-001 visual recovery, the owner-supplied VISUAL_CONTRACT v0.2 and original desktop TARGET explicitly govern composition, hierarchy and materials (~90% perceptual fidelity). Invented concept scores, recipes and future controls are not approved behavior. Proprietary Diablo assets must not be reproduced. Gate A screenshots require owner review before extensive Gate B polish.
+Sanctuary is an original dark gothic fantasy world with restrained magical effects, gemstones, illustrated medallions, aged metal, and dark stone. VISUAL_CONTRACT v0.2 and the desktop TARGET guided its composition/materials. The owner has approved Gate A and manually verified implemented functionality in Windows; remaining artistic differences are future improvements, not release blockers. Invented concept scores, recipes and future controls are not behavior specifications. Proprietary game assets must not be reproduced. Planned worlds remain Sanctuary, Clockwork, Wasteland and Verdant with shared versioned declarative packs.
 
-The foundation precedes full game development. The owner has accepted native Windows habit creation/edit/archive/restore, multisphere logging, backdating and offline SQLite persistence through HABITS-001B. SANCTUARY-UI-001 gives that tracker its first original visual Daily Mode, with separate visual/native acceptance. Scheduling, weighted contributions, progression, backups, world switching, and alchemy remain requirements for later individual tasks.
+The foundation precedes full game development. The owner accepted native habit management, multisphere logging, backdating and SQLite persistence through HABITS-001B and has now accepted Sanctuary's revised UI/implemented Windows functionality. The intended game loop is real activity → Mastery/thematic essences → player experiments → authored discoveries → optional experiences. Backups, independent visual states, habit icon/contribution identity, activity details, progression and Adventure systems remain future individual tasks. BACKUP-001 is next; see ROADMAP.md. No automatic continuation.
 
 ## Source and precedence
 

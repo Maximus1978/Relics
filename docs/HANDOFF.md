@@ -1,41 +1,56 @@
 # Project handoff
 
-Updated 2026-10-27. Exactly one active task: SANCTUARY-UI-001 VISUAL RECOVERY, Gate A (composition/artwork), same [PR #4](https://github.com/Maximus1978/Relics/pull/4), branch feature/sanctuary-ui-001.
+## Current task and owner acceptance
 
-## Current authority and gate
+Task: accept/finalize SANCTUARY-UI-001, record the latest game decisions/roadmap, and merge [PR #4](https://github.com/Maximus1978/Relics/pull/4) using a normal merge commit after successful final-head Windows CI. Work stays on feature/sanctuary-ui-001 until that merge. No new feature implementation is authorized.
 
-The owner rejected the previous presentation, including the painterly backdrop iteration. The supplied Relics_Sanctuary_Visual_Handoff/Relics_Visual_Handoff packet and VISUAL_CONTRACT v0.2 supersede its composition. All 17 supplied reference/board/state PNGs were inspected. The original desktop TARGET sets the approximately 90% perceptual fidelity target; conceptual fake scores/future fields must not be copied.
+**Gate A is APPROVED.** The owner visually accepted the revised Sanctuary RPG interface and manually verified the implemented functionality in Windows. Remaining artistic differences are accepted for this milestone and are future improvements, not release blockers. Earlier pending-review/no-merge instructions are superseded by this explicit owner decision (D034). This is not a claim that absent game systems or every specialist accessibility scenario have been implemented/tested.
 
-Develop and show Gate A actual composition/artwork with viewport screenshots and side-by-side comparison, then stop for owner review before extensive Gate B polish. Green CI is not visual acceptance. Do not merge PR #4 or push to master. No next feature is authorized.
+The next single task after merge is **BACKUP-001**, queued and NOT started. Stop after merge verification; do not automatically begin backup, Gate B polish, Android or gameplay work.
 
-## Baseline and implementation
+## Verified baseline and release procedure
 
-Master is accepted HABITS-001B 8fc41b39d433fd1c9d26c71757580ae3a3567e77. Remote PR #4 was verified open/unmerged at recovery start, head 55e2cffa7c415eef0a41cab91cab60298f1b5c35.
+At release-task start, PR #4 was open/unmerged, head 67bc34db5fb84b24e0220a4ef01b103135589a56; master was 8fc41b39d433fd1c9d26c71757580ae3a3567e77. That head differs from tested runtime 1ab9c34f8ac7f657af2b6de8b37bc53556ccc9e1 only in documentation. Remote state was read from GitHub; local working tree was clean.
 
-The revised shell has a desktop rail, local cathedral scenery, five dimensional architectural shrines surrounding a central wheel, collectible pendant inventory and compact Chronicle entry. Mobile uses circle/compact sphere observations, vertical inventory and functional navigation. Real React text/actions/forms are separate from decorative raster artwork. Create/edit uses a native modal/full-screen sheet. Application state, reusable presentation components and CSS tokens are separated; the old global override layer is removed.
+[Runtime Windows run 40619945699](https://github.com/Maximus1978/Relics/actions/runs/40619945699), PR merge source afef95ec0928b717c3ad5afd566c9f00ca9f7bc8, completed successfully: npm ci, 31/31 tests, TypeScript, Vite, 40 browser checks, pinned Rust MSVC, locked Cargo fetch and actual Tauri Windows release compilation. Node 22.23.4 / Rust 1.99.1. Zero browser runtime exceptions. Actual viewport renders at 1440×900, 1280×800, 1000×800, 390×844 and 320×844 were inspected. Browser data are fictional/in-memory; the owner's subsequent Windows verification is separate native evidence.
 
-A small pure observation projection counts distinct dates per snapshot sphere during the latest seven local calendar days, plus number of represented spheres. It is descriptive, has no persistence, and does not score unknown dates. [Design](SANCTUARY_DAILY_MODE.md) and [asset provenance](art/VISUAL_RECOVERY.md) contain the details.
+This release task changes documentation only. Publish the new documentation commit on the existing PR branch WITHOUT skipping CI. Require Windows CI success on that exact final head before merging with expected-head protection, merge_method=merge and no force/history rewrite. Verify PR merged=true, the returned commit's parents/tree, master ref and local fast-forward state. Final-head CI URL and actual merge SHA are recorded in PR #4 checks/merge timeline and the task report; do not substitute an old run or predict a merge SHA in advance. A push-triggered master build may run after merge; it is distinct from the verified pre-merge run.
 
-## Preserved data and scope
+## Accepted implementation
 
-SQLite repository/schema/migrations, stable IDs, native identity/database, habit/activity rules, dependencies/locks and Windows workflow remain unchanged. No private content or owner database was accessed. All existing habit management, backdating, historical snapshots and cancellation use the same repository. Browser demo is fictional/in-memory and resets on reload.
+The revised shell includes a desktop rail, local cathedral panorama, five dimensional shrines around a central wheel (2+3), pendant inventory, compact Chronicle and modal/full-screen habit management. Reusable presentation/tokens are separate from the application hook. Original local decorative WebP assets total 810,188 bytes, with [exact generation prompts/provenance](art/VISUAL_RECOVERY.md).
 
-## Verified technical result; Gate A visual decision pending
+The read-only projection counts distinct recorded dates per historical sphere snapshot across the current local day and preceding six days. It includes archived history and does not depend on current habit definitions or the selected logging date. Center = represented spheres; rings = observed dates. These are not actual Mastery/Resonance or health scores.
 
-Tested feature source: 1ab9c34f8ac7f657af2b6de8b37bc53556ccc9e1. Tested PR merge source: afef95ec0928b717c3ad5afd566c9f00ca9f7bc8. [Windows run 40619945699](https://github.com/Maximus1978/Relics/actions/runs/40619945699) completed successfully: npm ci, 31/31 tests (25 existing plus six observation tests), TypeScript, Vite, 40 browser checks, pinned stable Rust MSVC, locked Cargo fetch and actual Tauri release compilation. Node 22.23.4 / Rust 1.99.1. Later documentation-only evidence uses [skip ci]; runtime code/art/tests are identical to this tested feature source. Local 31 tests, script syntax, whitespace and four art manifest byte/hash checks also passed.
+SQLite repository/schema/migrations, canonical IDs, app/database identities, habit/activity rules, dependencies/locks and Windows workflow are unchanged in this documentation task. No private content or owner database was accessed. Existing one-completion-per-habit/day, create/edit/archive/restore, backdating, historical snapshots and cancellation remain intact.
 
-Actual browser screenshots at 1440×900, 1280×800, 1000×800, 390×844 and 320×844 were opened and inspected. This caught CSS import-order/responsive issues missed by the first assertions; fixed in the tested source, with explicit compact rail/mobile background assertions. Full Chronicle summary is required at 1440×900; complete first inventory row at 1280/1000 follows the written contract. The final screenshots also show the Chronicle summary at both smaller desktop sizes. Tests cover keyboard/validation/focus return, completion/yesterday/backdating, edit/archive/cancel/restore, historical snapshots/cancellation, preview reload, overflow, 44px actions and reduced motion. Runtime exceptions: zero. Root text enlargement check establishes overflow only, not complete native text-scaling acceptance.
+## Preserved artifacts and technical limits
 
-[Browser evidence ZIP](https://github.com/Maximus1978/Relics/actions/runs/40619945699/artifacts/12787540029): 9,818,388 bytes; downloaded SHA256 7cce4b539d91c4b56b5e3bf25bb63d667c1d9b837f7a8dfb6850fdc9f3e43834 matched GitHub. Outside Git: outputs/Relics-Visual-Recovery-Gate-A/ contains the screenshots/result/DOM; outputs/Relics-Visual-Recovery-Gate-A-comparison.png compares original target, supplied rejected screenshot and actual revised browser at preserved proportions. outputs/Relics-Visual-Recovery-Gate-A-states.png is a contact sheet of existing state captures. These are fictional browser data, not native screenshots. The journal viewport capture shows the expanded entry/header; complete expanded-journal and mobile-form visual evidence remain Gate B.
+[Runtime browser ZIP](https://github.com/Maximus1978/Relics/actions/runs/40619945699/artifacts/12787540029): 9,818,388 bytes; SHA256 7cce4b539d91c4b56b5e3bf25bb63d667c1d9b837f7a8dfb6850fdc9f3e43834.
+[Runtime Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40619945699/artifacts/12786548417): 8,116,888 bytes; SHA256 607bb573c0d1a277deb2589ea4e29d5c1ffd4f6af55bd8630f174dabc4b4feb1.
+relics.exe: 15,989,760 bytes; SHA256 5a3f046ddcf4bbd3ce409332bd8fb76441b4424de0b028c55b6061fe7e004779.
+Downloads/checksums and build-info source SHAs were verified in the UI task. Retention ends 2026-11-11; newer release-head artifacts appear in the final PR check.
 
-[Windows executable ZIP](https://github.com/Maximus1978/Relics/actions/runs/40619945699/artifacts/12786548417): 8,116,888 bytes; local outputs/Relics-Visual-Recovery-Gate-A-windows-x64.zip. ZIP SHA256 607bb573c0d1a277deb2589ea4e29d5c1ffd4f6af55bd8630f174dabc4b4feb1 matched GitHub. relics.exe: 15,989,760 bytes, SHA256 5a3f046ddcf4bbd3ce409332bd8fb76441b4424de0b028c55b6061fe7e004779 matched its manifest. build-info.json confirmed both exact SHAs, Windows, nativeUiRuntimeVerified=false and signed=false. Artifact expiry: 2026-11-11. Close the old Relics, extract this ZIP separately and run relics.exe on Windows x64 with WebView2; no compiler installation is needed. This executable was not launched against owner data here.
+Outside Git: outputs/Relics-Visual-Recovery-Gate-A/ screenshots/result/DOM, comparison and state contact sheet, and Windows ZIP. The CI artifact's nativeUiRuntimeVerified=false reflects its producer's limits; the owner subsequently supplied manual Windows acceptance in this task. The agent did not operate on the owner's database. Unsigned Windows x64/WebView2 requirements remain.
 
-The previous painterly build run 40603575817 on source 59481e388c37d665ef4eb1c5f595215788ec5d01 passed technically but was visually rejected. Its executable/screenshots are historical.
+Browser checks are regression evidence, not complete accessibility certification. Full expanded-journal/mobile-form capture and typography/gem polish are optional future work, not blockers reopening Gate A.
 
-## Next queued step
+## Newly approved product direction
 
-Owner Gate A visual review is next; stop here. Do not start extensive Gate B polish or another task automatically. Remaining perceptual differences: one reusable arch and pendant base rather than diverse authored silhouettes; the central star/gem optics are simpler than the target; auxiliary ring labels and compact typography need owner/native readability review. The panorama is original art with different architecture/crop. Real-data labels and functional navigation replace fictional game scores and future controls. Do not claim a numerical fidelity score or owner visual acceptance.
+- Three independent states: selected-day activity illumination/subdued; gradual recent Resonance without punishment; permanent Mastery/artifact evolution that never decays through inactivity. Unknown days are not confirmed failure. Future Sanctuary center uses an original runic monogram.
+- Curated habit icons independent of contributions. Plan primary sphere and optional weighted secondaries; contribution weights differ from per-activity intensity. Shared ordinary frames are intentional; unique rare/legendary silhouettes/art are authored.
+- Optional activity intensity/note through additive migrations, retaining old records. Future repeated/quantified modeling is separate; current uniqueness stays.
+- Real activities → Mastery/thematic essences → player experiments → authored discoveries → optional experiences. No permanent-progress spending for basic experiments, infinite random loot, compulsory tasks/logins or optimal XP grinding.
+- Explicit future Adventure tasks, versioned declarative World Packs and Sanctuary/Clockwork/Wasteland/Verdant are preserved. No actual secret recipes/names/conditions are exposed or invented.
 
-After owner Gate A feedback, Gate B may refine state materials/typography and capture complete expanded-journal/mobile forms, followed by native visual/accessibility/offline-restart acceptance. Native runtime is unverified for this revision. Unsigned Windows x64/WebView2 constraints remain. Master stays 8fc41b39d433fd1c9d26c71757580ae3a3567e77 and PR #4 remains open/unmerged.
+[Game design](GAME_DESIGN.md), [UX](UX_PRINCIPLES.md), [decisions D034–D040](DECISIONS.md), [World Packs](WORLD_PACKS.md) and [ordered small tasks](ROADMAP.md) are authoritative. All new mechanics remain unimplemented.
 
-Russian reports; English technical documentation. One task at a time. Publish only to the existing feature branch/PR through GitHub integration, expected-parent checks and non-force updates. Keep databases/secrets/logs/build outputs and screenshot evidence outside Git.
+## Next single task and unresolved choices
+
+BACKUP-001: a reliable bounded local export/restore slice for existing SQLite data, with versioned validation, preserved snapshots/IDs, atomic safety and temporary-database reopen/round-trip tests. Resolve backup format/adapters and replacement-versus-merge confirmation before dependent work. Do not begin now.
+
+Subsequent priorities: activity/Resonance visual-state contract; icon/contribution identity; optional activity details; actual progression; minimal alchemy/discovery loop; collection/artifact experiences; world transitions/museum. Early Android build/lifecycle compatibility is explicitly queued before the game loop grows large.
+
+Open before their implementation: backup replacement/merge policy, weight defaults/normalization and primary semantics, intensity scale/effects, progression windows/thresholds/yields and anti-grind rules, reward corrections, repeated-event identity/units, renewable crafting costs, epoch transfer/backdating and museum compatibility. These do not block documentation acceptance or this UI release. See OPEN_QUESTIONS.md.
+
+Russian reports; English technical docs. One task at a time. Keep secrets/databases/logs/build outputs out of Git; no private/ access or force push. Future merges require their own applicable owner authorization.
