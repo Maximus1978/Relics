@@ -1,64 +1,28 @@
-# SANCTUARY-UI-001 — painterly Daily Mode
+# SANCTUARY-UI-001 — visual recovery
 
-## Scope and owner direction
+## Authority and review gates
 
-Started from accepted HABITS-001B master 8fc41b39d433fd1c9d26c71757580ae3a3567e77. The original desktop/mobile prototype screens set the minimum target for atmosphere, material depth and authored detail, not just color. The first flat/vector proposals were not visually accepted.
+The owner rejected both preceding stacked/vector and painterly-backdrop presentations. Their green builds are historical technical evidence, not visual acceptance. The original desktop TARGET in the owner-supplied Relics_Visual_Handoff packet is authoritative for composition, density, object proportions and artistic quality. VISUAL_CONTRACT v0.2 defines approximately 90% perceptual fidelity; fictional concept labels and game scores are not behavior requirements. All 17 reference/board/state PNGs were inspected.
 
-On 2026-10-27 the owner explicitly approved original raster environment artwork plus CSS/SVG controls. That asset-format question is resolved; do not ask again. This remains the same task and PR #4. No gameplay, progression, statistics, museum, secret content, Android build or data-rule expansion.
+Gate A: actual React composition/art, screenshots at 1440×900, 1280×800, 1000×800, 390×844 and 320px, with target/rejected/revised comparison. Stop for owner visual review before extensive Gate B polish.
+Gate B, only after Gate A review: further integration/state polish and native visual/functional acceptance. CI compilation may already run during Gate A; this does not approve either gate. Keep PR #4 open. Never merge master without owner instruction.
 
-## Implemented presentation
+## Composition and assets
 
-One original painted environment sits behind the layout: layered gothic cathedral architecture, carved/aged stone, bridge and terraces, vegetation, distant mountains/mist and restrained warm windows against cool ambient light. It is bundled at public/art/sanctuary-environment-v1.png, 1672×941 and 3,049,722 bytes. No external image request or runtime image generation is required. The selected built-in imagegen output was copied byte-for-byte into the repo, with no resize/conversion/crop/repaint of the file. [Full final prompt, method, hash and provenance](art/SANCTUARY_ENVIRONMENT.md).
+A 180px desktop game rail frames one local cathedral panorama. Five substantial dimensional shrine arches flank a central magical wheel (two left, three right). Labels, dynamic rings and wheel geometry remain real HTML/SVG. The inventory directly below presents pendant-like relics; a compact Chronicle summary remains accessible in the desktop viewport. At narrower desktop widths the rail contracts; mobile uses a central circle, compact labeled sphere observations, vertical inventory and functional bottom navigation.
 
-The screen uses a single image, with CSS crop/fade/glazing for desktop and narrow widths. It does not repeat the cathedral in a separate hero image. The raster contains no interface labels, scores or controls. All actual text, input, icons, state, medallions and management remain React/CSS/SVG.
+Habit creation/editing uses the existing validation in a native modal dialog, full-screen on mobile. The shared actions menu, reversible archive confirmation, archived view/restore and historical journal remain functional. No intensity/note fields are added. Navigation exposes only Sanctuary, Chronicle and Archive.
 
-Authored SVG metal settings add bands, engraving, prongs, faceted glass/reflections and symbol inlays. Panel frames use fixed 120×120 source dimensions for stable nine-slicing; authored stone grain tiles at 256px. No new libraries, fonts or dependencies were added. Georgia/system serif supplies headings; Segoe UI/system sans supplies controls/Cyrillic. The earlier vector engraving is retained as historical authored source but is not loaded by the current screen.
+Components and styles are separated under src/ui/sanctuary, with application state extracted to src/application/useRelicsModel.ts. Tokens and focused styles replace the previous large sanctuary.css override layer. Original detailed architecture, engraved brass wheel and pendant base were generated with the built-in imagegen tool. Local WebP derivatives total 810,188 bytes, with true alpha for the three foreground objects. No remote asset request, runtime generation, new library/font or dependency is required. [Exact prompts and provenance](art/VISUAL_RECOVERY.md). public/art/recovery/v1/manifest.json records dimensions, bytes and SHA256. Masters are retained outside Git.
 
-| Sphere / gemstone | Symbol and color |
-| --- | --- |
-| Body / Ruby | Dumbbell; muted red |
-| Mind / Sapphire | Brain; blue |
-| Bonds / Garnet | Heart; rose; stable domain ID relationships |
-| Work / Topaz | Briefcase; amber |
-| Recovery / Emerald | Leaf; green |
+## Honest observations
 
-These identities and ornamental frame options are decorative categories, never earned tiers or unlocks. Names and shapes accompany color in the overview, cards, form and journal.
+src/domain/recentActivity.ts is a pure read-only projection: inclusive current local day and preceding six local calendar days, independent of the date selected for logging. Each activity snapshot contributes its recorded date once to each of its spheres. Multiple activities on one date count once per sphere; archived/deleted definitions are irrelevant because historical snapshots are authoritative. Old/future/impossible dates are excluded.
 
-## Daily Mode remains functional
+Each ring labels observed days as count/7, not a daily goal. The circle reports number of spheres represented, not a health/balance score. Quiet/unknown dates are not failures. No XP, Mastery, Resonance, bonuses, rarity or achievements are invented.
 
-Brand/local status → Sanctuary → five categories → selected date/active habits → expandable journal. Active habit cards keep one-click completion and explicit check/Отмечено state. The existing shared validated form, edit/archive/restore disclosure, archive confirmation, errors and focus return remain. Historical activity snapshots and cancellation use the unchanged repository.
+## Preserved boundary
 
-Today/Yesterday/calendar share the same selected local-day state and existing domain validation. Yesterday uses local calendar arithmetic. The journal starts collapsed; its count is real, and expanded rows retain historical name/sphere snapshots and cancellation.
+SQL/repository, schema/migrations, original IDs, application/database identities, activity rules, dependencies/locks and Windows build workflow remain unchanged. No private content or owner database was accessed. Existing creation/edit/archive/restore/logging/backdating/snapshots/cancellation behavior is reused.
 
-Responsive cards become one column and the category gallery wraps on narrow screens. Visible actions retain 44px target height. Tab/Enter/Escape, skip link, native inputs/disclosures, screen-reader names, focus outlines, reduced-motion handling and text enlargement remain. A browser check verifies the first card fits a 1000×800 content area when demo-only banner height is excluded. This does not assert native runtime acceptance.
-
-## Data and preview safety
-
-Domain, SQLite adapter, migrations/schema, IDs, database/app identity, dependency locks and Windows workflow remain unchanged. No personal database or private/ content was read. Browser preview is explicitly fictional, interactive only in memory, resets on reload and never opens SQLite or persistent browser storage.
-
-Windows compilation and browser interaction evidence must not be described as native UI/persistence verification. The owner accepted the previous native tracker baseline; this redesigned presentation still needs its own native visual/offline review. Visual quality is an owner acceptance decision and cannot be inferred from green CI alone.
-
-## Verification and delivery
-
-Local and Windows CI tests passed 25/25, including all 23 unchanged SQLite/domain tests. [Windows run 40603575817](https://github.com/Maximus1978/Relics/actions/runs/40603575817) completed successfully: npm ci, TypeScript, Vite, 36 browser checks, locked Cargo fetch, actual native Tauri release compilation and artifact uploads. Node v22.23.4 and Rust/Cargo 1.99.1 were used.
-
-- [PR #4](https://github.com/Maximus1978/Relics/pull/4) remains open/unmerged for owner visual/native review.
-- Tested feature source: 59481e388c37d665ef4eb1c5f595215788ec5d01. Tested PR merge source: e304fb2677b6aaf3495b9d2c3002e8ab00409c65. A subsequent documentation-only evidence commit uses [skip ci]; runtime source/art/tests/browser scripts stay identical to this tested source.
-- [Painterly Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12780441428), 7,305,764 bytes. Local copy: outputs/Relics-Sanctuary-UI-001-painterly-windows-x64.zip outside the repo. ZIP SHA256 db7905d43b22ba25c6ede8e5184919ff05b22b21e39ca8fc0f61bf582728d0ea.
-- relics.exe: 15,178,240 bytes; SHA256 5a202681dbd94b58a2be85ed33f209e8d16a70af57a93109bb6ae40cf728e2b8. Downloaded ZIP digest matched GitHub, EXE matched its manifest, and build-info.json confirmed both exact source SHAs above. nativeUiRuntimeVerified=false and signed=false.
-- [Browser evidence](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12778999481), 5,627,253 bytes. Downloaded digest verified: a2829c1f7c0b74e585df1bc3505d407d45aa61bc83ef21dc7af37fc5d6410fbd. All four screenshots were inspected against the references. Local copies: outputs/Relics-Sanctuary-painterly-desktop.png, Relics-Sanctuary-painterly-1000.png, Relics-Sanctuary-painterly-mobile.png and Relics-Sanctuary-painterly-journal.png.
-- GitHub artifact retention ends 2026-11-10. No native executable was launched against owner data by this task; native appearance/accessibility/offline restart acceptance remains manual.
-
-Browser evidence includes desktop 1280px, desktop 1000px, 390px narrow layout and expanded journal PNGs, rendered DOM and result.json. Checks include the single local high-resolution environment, five sphere emblems, keyboard/forms/validation/focus, completion/date shortcuts/backdating, edit/archive/cancel/restore, old journal snapshots/cancellation, preview reset, 320–1280px overflow, 44px actions, enlarged text and reduced motion.
-
-## Historical iterations
-
-- First flat presentation: run 40583750205, source cbd98965e851c6d30f20718a5ee5ea378cf978ee.
-- More detailed SVG proposal: run 40586705022, source 857c9dcd5233c6ca17ee5e78354235dce0216553.
-- Those earlier executables/screenshots do not contain the current painted environment.
-
-## Owner visual/native review, before merging
-
-Close the previous Relics instance, extract the new Windows ZIP separately and run relics.exe; no compiler/toolchain installation is needed. Review the standard window, resized widths and text scaling. Check architecture/material richness against both prototype references, readable text/focus and quick logging. Log today/yesterday/another past date; create/edit/archive/cancel/restore a habit; expand/cancel journal; close/reopen offline and confirm existing history.
-
-No automatic merge or next task. Unsigned Windows x64/WebView2 limitations remain. Await owner/product visual acceptance after delivery.
+Browser preview uses explicitly fictional in-memory data and resets on reload. Browser screenshots are actual rendered UI, never generated mockups, and never establish native SQLite/offline acceptance. [Handoff](HANDOFF.md) records exact current verification; owner review decides visual acceptance. Historical painterly build: run 40603575817 on source 59481e388c37d665ef4eb1c5f595215788ec5d01.

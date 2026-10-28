@@ -26,7 +26,11 @@ HABITS-001A is accepted and merged in [PR #2](https://github.com/Maximus1978/Rel
 
 The owner accepted habit editing/archive/restore and merged [PR #3](https://github.com/Maximus1978/Relics/pull/3) at 8fc41b39d433fd1c9d26c71757580ae3a3567e77. Its 23 tests and TypeScript/Vite/native Windows build passed in [run 40577256811](https://github.com/Maximus1978/Relics/actions/runs/40577256811). [Historical delivery evidence](HABITS_001B.md) remains available.
 
-## Delivered for visual/native review: SANCTUARY-UI-001
+## Active: SANCTUARY-UI-001 Visual Recovery — Gate A
+
+The owner rejected the previous visual presentation, including the painterly backdrop iteration. Continue the same PR #4 without merging. The supplied VISUAL_CONTRACT v0.2 and original desktop TARGET now govern composition/art quality (~90% perceptual fidelity, with honest data/accessibility adaptations). Build actual five-shrine/central-circle RPG shell and inventory, provide 1440×900 / 1280×800 / 1000×800 / 390×844 / 320px screenshots and target/rejected/revised comparison, then stop for owner Gate A review before extensive Gate B polish. See [current handoff](HANDOFF.md). No later task is started.
+
+## Historical technical delivery: SANCTUARY-UI-001 (visual acceptance rejected)
 
 The owner requires the spirit/detail of the supplied prototypes or better and explicitly approved original raster environment art plus CSS/SVG controls. [PR #4](https://github.com/Maximus1978/Relics/pull/4) now delivers a bundled painterly Sanctuary, engraved materials and gemstone optics with preserved data behavior. [Windows run 40603575817](https://github.com/Maximus1978/Relics/actions/runs/40603575817) passed on 59481e388c37d665ef4eb1c5f595215788ec5d01: 25 tests, 36 browser checks, TypeScript/Vite and native release compilation. The [new Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12780441428) and [four screenshot/evidence views](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12778999481) were downloaded/verified and screenshots inspected. Later documentation-only evidence leaves runtime code unchanged. [Design, prompt/provenance, hashes and acceptance](SANCTUARY_DAILY_MODE.md). The SVG-only iterations are historical. Next queued step: owner/product visual and native offline review; no automatic merge or next feature. Green CI alone does not establish owner visual acceptance.
 

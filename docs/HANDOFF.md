@@ -1,52 +1,33 @@
 # Project handoff
 
-Updated 2026-10-27. SANCTUARY-UI-001 painterly integration/CI delivery is complete; owner visual/native acceptance is pending. [PR #4](https://github.com/Maximus1978/Relics/pull/4) remains open/unmerged. Do not merge automatically or begin another task.
+Updated 2026-10-27. Exactly one active task: SANCTUARY-UI-001 VISUAL RECOVERY, Gate A (composition/artwork), same [PR #4](https://github.com/Maximus1978/Relics/pull/4), branch feature/sanctuary-ui-001.
 
-## Resolved owner direction
+## Current authority and gate
 
-The owner requires the atmosphere/material/detail of both supplied prototype screens or better. A shared palette or green CI is not visual acceptance. Both reference images were reopened and the actual renders compared against them.
+The owner rejected the previous presentation, including the painterly backdrop iteration. The supplied Relics_Sanctuary_Visual_Handoff/Relics_Visual_Handoff packet and VISUAL_CONTRACT v0.2 supersede its composition. All 17 supplied reference/board/state PNGs were inspected. The original desktop TARGET sets the approximately 90% perceptual fidelity target; conceptual fake scores/future fields must not be copied.
 
-The owner explicitly selected “Да: оригинальный растровый арт + CSS/SVG” on 2026-10-27. Original raster environment artwork is authorized; do not ask the asset-format question again. The earlier flat/vector-only proposals are superseded. Owner acceptance of this new visual candidate is still pending.
+Develop and show Gate A actual composition/artwork with viewport screenshots and side-by-side comparison, then stop for owner review before extensive Gate B polish. Green CI is not visual acceptance. Do not merge PR #4 or push to master. No next feature is authorized.
 
-## Baseline and preserved scope
+## Baseline and implementation
 
-Accepted HABITS-001B master is 8fc41b39d433fd1c9d26c71757580ae3a3567e77. Work continues on feature/sanctuary-ui-001 / PR #4.
+Master is accepted HABITS-001B 8fc41b39d433fd1c9d26c71757580ae3a3567e77. Remote PR #4 was verified open/unmerged at recovery start, head 55e2cffa7c415eef0a41cab91cab60298f1b5c35.
 
-Habit creation/edit/archive/restore, multisphere definitions, today/backdating, snapshots, cancellation and SQLite persistence use unchanged rules/repository. Domain, SQL adapter, migrations/schema, original IDs, native identity/database, dependencies/locks and Windows workflow were compared to the baseline and remain unchanged. No private/ content or owner database was accessed. Browser demonstration is explicitly fictional/in-memory, not a native persistence test.
+The revised shell has a desktop rail, local cathedral scenery, five dimensional architectural shrines surrounding a central wheel, collectible pendant inventory and compact Chronicle entry. Mobile uses circle/compact sphere observations, vertical inventory and functional navigation. Real React text/actions/forms are separate from decorative raster artwork. Create/edit uses a native modal/full-screen sheet. Application state, reusable presentation components and CSS tokens are separated; the old global override layer is removed.
 
-## Implemented presentation
+A small pure observation projection counts distinct dates per snapshot sphere during the latest seven local calendar days, plus number of represented spheres. It is descriptive, has no persistence, and does not score unknown dates. [Design](SANCTUARY_DAILY_MODE.md) and [asset provenance](art/VISUAL_RECOVERY.md) contain the details.
 
-- One original painted environment with detailed gothic architecture, worn stone, bridge/terraces, vegetation, mountains/mist and warm windows. CSS crop/glaze/fade protects UI readability; the cathedral is not duplicated in a separate hero.
-- Interactive controls/text/state remain React/CSS/SVG. Five canonical sphere labels/icons/gemstones, dimensional metal/gem settings, engraved panel frames, stone grain at 256px and beveled controls.
-- Frame source has fixed 120×120 dimensions to preserve ornament at different panel heights. No new library/font/dependency.
-- Existing fast completion, date shortcuts/calendar, validated forms, contextual management, explicit archive confirmation and expandable historical journal remain. No fake progress, unsupported navigation or gameplay.
+## Preserved data and scope
 
-## Asset provenance
+SQLite repository/schema/migrations, stable IDs, native identity/database, habit/activity rules, dependencies/locks and Windows workflow remain unchanged. No private content or owner database was accessed. All existing habit management, backdating, historical snapshots and cancellation use the same repository. Browser demo is fictional/in-memory and resets on reload.
 
-The built-in imagegen tool generated a new environment; no CLI/API fallback, external asset download or prototype crop was used. The selected original PNG was copied byte-for-byte into public/art/sanctuary-environment-v1.png (1672×941; 3,049,722 bytes). SHA256 e3a600959a5ae893ef5f952cd1e9944f78856fed109a9ab55a70f4b68c2f8700. Runtime uses a bundled local URL and no generation/network service.
+## Verification in progress
 
-[Exact final prompt, method and provenance](art/SANCTUARY_ENVIRONMENT.md). The preceding SVG engraving is retained as historical authored source but is no longer loaded by the screen. No secret artifact content was invented or imported.
+Local npm test: 31/31 passed (25 existing plus six observation tests). Browser script syntax and git diff whitespace checks passed. Windows CI and actual rendered screenshots for this revision are pending; previous runs must not be cited as proof of this revision.
 
-## Current verification
+The previous painterly build run 40603575817 on source 59481e388c37d665ef4eb1c5f595215788ec5d01 passed technically but was visually rejected. Its executable/screenshots are historical.
 
-Tested feature source: 59481e388c37d665ef4eb1c5f595215788ec5d01. PR merge source: e304fb2677b6aaf3495b9d2c3002e8ab00409c65. [Windows run 40603575817](https://github.com/Maximus1978/Relics/actions/runs/40603575817) completed / success: npm ci, 25/25 tests (including all 23 unchanged SQLite/domain tests), TypeScript, Vite, 36 browser checks, locked Cargo fetch, actual native Tauri release compilation and uploads. A subsequent documentation-only evidence commit uses [skip ci]; runtime source/art/tests/browser scripts remain identical to this tested head.
+## Next queued step
 
-[Browser evidence](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12778999481), 5,627,253 bytes. Downloaded ZIP digest matched GitHub: a2829c1f7c0b74e585df1bc3505d407d45aa61bc83ef21dc7af37fc5d6410fbd. Desktop 1280, desktop 1000, 390px narrow screen and expanded journal were inspected. Checks include local high-resolution asset/single-scene loading, keyboard/focus/validation, completion/date shortcuts/backdating, management/journal actions, original snapshots, preview reset, 320–1280px overflow, 44px actions, enlarged text and reduced motion. Reported runtime exceptions: zero.
+Obtain and inspect actual Gate A screenshots, document remaining perceptual differences, then stop for owner Gate A visual review. Do not start extensive Gate B polish or another task automatically. Native runtime appearance and offline restart remain unverified for this revision until the executable is actually launched/inspected. Unsigned Windows x64/WebView2 constraints remain.
 
-Local screenshots outside the repo: outputs/Relics-Sanctuary-painterly-desktop.png, Relics-Sanctuary-painterly-1000.png, Relics-Sanctuary-painterly-mobile.png and Relics-Sanctuary-painterly-journal.png. These show fictional browser data and do not establish native runtime correctness.
-
-## Executable delivery
-
-[Download the new Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40603575817/artifacts/12780441428), 7,305,764 bytes. Local copy: outputs/Relics-Sanctuary-UI-001-painterly-windows-x64.zip outside Git. It contains relics.exe, locks, build metadata, checksum and launch note. ZIP SHA256 db7905d43b22ba25c6ede8e5184919ff05b22b21e39ca8fc0f61bf582728d0ea; EXE SHA256 5a202681dbd94b58a2be85ed33f209e8d16a70af57a93109bb6ae40cf728e2b8. Downloaded ZIP matched GitHub's digest, EXE matched its manifest and build-info.json confirmed the exact feature/merge SHAs, unsigned output and nativeUiRuntimeVerified=false. Artifact retention ends 2026-11-10.
-
-Git publication uses expected-parent checks and no force push/history rewrite. The local workspace tracks feature/sanctuary-ui-001. The approved runtime PNG is intentionally versioned; owner databases, private content, credentials, logs, EXE/ZIP/build outputs and screenshots are excluded from commits.
-
-## Next queued step and limits
-
-Owner/product visual and native review is next. Close the old Relics, extract the new ZIP separately and run relics.exe without compiler installation. Compare the atmosphere/detail with both original references and check native WebView2 appearance, keyboard/readability, today/yesterday/past-date logging, create/edit/archive/cancel/restore, journal cancellation and offline restart with old history. Await instructions after that review; do not start another development task.
-
-The new executable has not been launched here. Unsigned Windows x64/WebView2 limitations remain. Do not deploy publicly, work on Android/gameplay, access secret content, merge automatically or begin another task.
-
-## Persistent context
-
-AGENTS.md and docs/ are authoritative. Russian reports; English technical documentation. One task at a time. Preserve calm offline-first life balance, canonical five spheres, immutable historical snapshots and no punishment for absence. GitHub integration/CI avoids the restricted local credential helper; no force-push/history rewrite. Store databases/secrets/build outputs outside Git.
+Russian reports; English technical documentation. One task at a time. Publish only to the existing feature branch/PR through GitHub integration, expected-parent checks and non-force updates. Keep databases/secrets/logs/build outputs and screenshot evidence outside Git.

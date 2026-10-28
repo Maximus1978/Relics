@@ -55,30 +55,34 @@ async function viewport(width, height = 1000) {
 }
 async function screenshot(name) {
   await evaluate('window.scrollTo(0, 0)');
-  const { cssContentSize } = await send('Page.getLayoutMetrics');
-  const captured = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip: { x: 0, y: 0, width: cssContentSize.width, height: cssContentSize.height, scale: 1 } });
+  const captured = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
   await writeFile(join(output, name), Buffer.from(captured.data, 'base64'));
 }
 const card = '[data-habit-id="demo-guitar"]';
 try {
   await send('Page.enable'); await send('Runtime.enable');
-  await viewport(1280, 1100);
+  await viewport(1440, 900);
   await send('Page.navigate', { url: 'http://127.0.0.1:1420' });
-  await until('document.querySelectorAll(".habit-card").length === 6', 'Six explicitly synthetic preview habits render');
+  await until('document.querySelectorAll(".relic-item").length === 6', 'Six explicitly synthetic preview habits render');
   await until('[...document.images].every(image => image.complete && image.naturalWidth > 0)', 'Local decorative artwork loads successfully');
-  await until('document.querySelectorAll(".sanctuary-scene").length === 1 && document.querySelector(".sanctuary-scene").naturalWidth >= 1500 && new URL(document.querySelector(".sanctuary-scene").src).origin === location.origin', 'One high-resolution environment is bundled locally without duplicated scenes');
+  await until('document.querySelectorAll(".sanctuary-scene").length === 1 && document.querySelector(".sanctuary-scene").naturalWidth >= 1500 && new URL(document.querySelector(".sanctuary-scene").src).origin === location.origin', 'One high-resolution environment is bundled locally');
   await until('document.querySelector(".preview-notice").textContent.includes("не сохраняются")', 'Preview storage limitation is visible');
-  assert.equal(await evaluate('document.querySelectorAll(".sphere-gallery .medallion").length'), 5);
-  checks.push('Five distinct labeled sphere medallions render');
-  await screenshot('sanctuary-desktop.png');
+  assert.equal(await evaluate('document.querySelectorAll(".sphere-shrine").length'), 5);
+  for (const [width, height] of [[1440,900],[1280,800],[1000,800],[390,844],[320,844]]) {
+    await viewport(width,height);
+    await until('document.documentElement.scrollWidth <= innerWidth', `No horizontal overflow at ${width}x${height}`);
+    if (width >= 1000) {
+      assert.ok(await evaluate('document.querySelector(".chronicle > summary").getBoundingClientRect().bottom <= innerHeight'), `Chronicle entry visible at ${width}x${height}`);
+      assert.ok(await evaluate('document.querySelector(".balance-wheel").getBoundingClientRect().width >= 210'), 'Prominent central wheel');
+      const arrangement = await evaluate('(() => { const center = document.querySelector(".balance-center").getBoundingClientRect(); const shrines = [...document.querySelectorAll(".sphere-shrine")].map(element=>element.getBoundingClientRect()); return {left:shrines.filter(bounds=>bounds.right<=center.left+2).length,right:shrines.filter(bounds=>bounds.left>=center.right-2).length}; })()');
+      assert.deepEqual(arrangement, {left:2,right:3});
+      if (width >= 1280) assert.equal(await evaluate('document.querySelector(".app-rail").getBoundingClientRect().width'),180);
+    }
+    await screenshot(`sanctuary-${width}x${height}.png`);
+  }
+  checks.push('Five shrine installation, central circle, rail and inventory composition verified at target viewports');
   await writeFile(join(output, 'rendered-dom.html'), await evaluate('document.documentElement.outerHTML'));
-  await viewport(1000, 800);
-  await evaluate('document.querySelector(".preview-notice").style.display = "none"');
-  assert.ok(await evaluate('document.querySelector(".habit-card").getBoundingClientRect().bottom <= 800'), 'First complete habit card fits the native-sized window without the demo-only banner');
-  checks.push('First habit card fits a 1000x800 window excluding demo-only banner');
-  await evaluate('document.querySelector(".preview-notice").style.display = ""');
-  await screenshot('sanctuary-desktop-1000.png');
-  await viewport(1280, 1100);
+  await viewport(1440, 900);
 
   await evaluate('document.activeElement.blur(); window.scrollTo(0, 0)');
   await press('Tab', 'Tab', 9);
@@ -86,15 +90,17 @@ try {
   await press('Enter', 'Enter', 13);
   await until('document.activeElement.id === "habits-title"', 'Keyboard skip link reaches habits');
 
-  await click('.collection-heading button');
+  await click('.inventory-heading .button-primary');
   await until('document.activeElement.id === "habit-name"', 'Creation form receives keyboard focus');
+  await screenshot('sanctuary-create.png');
   await click('.creation-form button[type="submit"]');
   await until('document.querySelector("#habit-validation-error") && document.activeElement.id === "habit-name"', 'Empty-name validation retains focus');
   await send('Input.insertText', { text: 'Проверка интерфейса' });
   await click('.creation-form button[type="submit"]');
   await until('document.querySelector("#habit-validation-error") && document.activeElement.type === "checkbox"', 'Empty-sphere validation focuses selection');
+  await screenshot('sanctuary-validation.png');
   await press('Escape', 'Escape', 27);
-  await until('!document.querySelector(".creation-form") && document.activeElement.matches(".collection-heading button")', 'Escape cancels and returns focus');
+  await until('!document.querySelector(".creation-form") && document.activeElement.matches(".inventory-heading .button-primary")', 'Escape cancels and returns focus');
 
   await click(`${card} .completion-button`);
   await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled && document.querySelector("[data-habit-id=demo-guitar] .completion-button").textContent.includes("Отмечено")', 'One-click completion has unambiguous disabled saved state');
@@ -106,16 +112,18 @@ try {
   await until('document.querySelector(".date-shortcuts button:first-child").getAttribute("aria-pressed") === "true"', 'Today shortcut restores selected day');
 
   await click(`${card} .habit-actions summary`);
+  await screenshot('sanctuary-actions.png');
   await press('Tab', 'Tab', 9);
   await until('document.activeElement.textContent === "Изменить"', 'Context actions are reachable by keyboard');
   await press('Enter', 'Enter', 13);
   await until('document.querySelector("#habit-name")?.value === "Гитара"', 'Editing reuses the existing definition');
+  await screenshot('sanctuary-edit.png');
   await evaluate('document.querySelector("#habit-name").select()');
   await send('Input.insertText', { text: 'Гитара у окна' });
   await click('.creation-form button[type="submit"]');
   await until('!document.querySelector(".creation-form") && document.querySelector("[data-habit-id=demo-guitar] h4").textContent === "Гитара у окна"', 'Edited definition renders');
-  await click('.journal > summary');
-  await until('document.querySelector(".journal").open && [...document.querySelectorAll(".entry h3")].filter(title => title.textContent === "Гитара").length === 2', 'Expandable journal preserves historical name snapshots');
+  await click('.chronicle > summary');
+  await until('document.querySelector(".chronicle").open && [...document.querySelectorAll(".entry h3")].filter(title => title.textContent === "Гитара").length === 2', 'Expandable journal preserves historical name snapshots');
   await screenshot('sanctuary-journal.png');
 
   await click(`${card} .habit-actions summary`);
@@ -125,14 +133,16 @@ try {
   await until('!document.querySelector(".archive-confirmation")', 'Archive confirmation cancels with Escape');
   await click(`${card} .habit-actions summary`);
   await click(`${card} .habit-action-options button:nth-child(2)`);
-  await click('.archive-confirmation .form-actions button:first-child');
+  await screenshot('sanctuary-archive-confirm.png');
+  await click('.archive-confirmation .form-actions button:last-child');
   await until('!document.querySelector("[data-habit-id=demo-guitar]")', 'Archive hides the active card');
-  await click('.list-heading button');
-  await until('document.querySelectorAll(".habit-card").length === 1 && !document.querySelector(".completion-button")', 'Archive management omits completion controls');
+  await click('.inventory-heading .button-quiet');
+  await until('document.querySelectorAll(".relic-item").length === 1 && !document.querySelector(".completion-button")', 'Archive management omits completion controls');
+  await screenshot('sanctuary-archived.png');
   await click(`${card} .habit-actions summary`);
   await click(`${card} .habit-action-options button:nth-child(2)`);
   await until('!document.querySelector("[data-habit-id=demo-guitar]")', 'Restore removes the card from the archive');
-  await click('.list-heading button');
+  await click('.inventory-heading .button-quiet');
   await until('document.querySelector("[data-habit-id=demo-guitar] h4")?.textContent === "Гитара у окна"', 'Restore retains edited definition');
   const entryCount = await evaluate('document.querySelectorAll(".entry").length');
   await click('.entry button');
@@ -143,7 +153,7 @@ try {
   for (const width of [320, 390, 768, 1000, 1280]) {
     await viewport(width);
     await until('document.documentElement.scrollWidth <= window.innerWidth', `No horizontal overflow at ${width}px`);
-    const dimensions = await evaluate(`(() => { const targets = [...document.querySelectorAll('button, input[type=date], .habit-actions summary, .journal > summary')].filter(element => element.getClientRects().length); return targets.every(element => element.getBoundingClientRect().height >= 44); })()`);
+    const dimensions = await evaluate(`(() => { const targets = [...document.querySelectorAll('button, input[type=date], .habit-actions summary, .chronicle > summary')].filter(element => element.getClientRects().length); return targets.every(element => element.getBoundingClientRect().height >= 44); })()`);
     assert.ok(dimensions, `44px action targets at ${width}px`);
     if (width === 390) await screenshot('sanctuary-mobile.png');
   }

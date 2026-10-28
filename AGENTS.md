@@ -22,6 +22,7 @@ Read README.md, docs/PRODUCT_VISION.md, docs/ROADMAP.md, docs/DECISIONS.md, and 
 - Maintain pure domain rules, deterministic calculations, versioned migrations/content, stable IDs, and minimal dependencies. Add tests with the relevant behavior; do not fabricate tests for absent systems.
 - Treat concept statistics, recipe examples, layouts, and feature promises as references. Do not reproduce proprietary Diablo artwork.
 - The owner's supplied prototype screens set the minimum visual target for atmosphere, material depth and authored detail. Compare actual renders with both references; a similar palette or a green build is not visual acceptance. Do not replace the intended rich environment with flat placeholders and call the design finished. Preserve quick, accessible Daily Mode while meeting that quality bar.
+- For SANCTUARY-UI-001 recovery, VISUAL_CONTRACT v0.2 and the original desktop TARGET govern composition (~90% perceptual fidelity); fake concept metrics/future controls remain excluded. Gate A composition/screenshots requires owner review before extensive Gate B polish. Keep PR #4 open; do not merge automatically.
 - The owner approved original bundled raster environment artwork for Sanctuary alongside CSS/SVG controls. Preserve offline assets and document provenance; do not rasterize interactive controls, embed fake game results or add remote artwork dependencies.
 
 ## Spoiler boundary

@@ -1,0 +1,27 @@
+.world-dialog { color: var(--ink); padding: 30px; width: min(760px, calc(100vw - 40px)); max-height: calc(100dvh - 40px); overflow: auto; border: 1px solid #bca06b; border-image: var(--panel-art) 24 / 13px / 0 stretch; background: radial-gradient(ellipse at 10% 40%, #54462b60, transparent 55%), #0a1218; box-shadow: 0 20px 100px #000c, inset 0 0 45px #0008; }
+.world-dialog::backdrop { background: #02070cbb; backdrop-filter: blur(4px); }
+.world-dialog__close { position: absolute; right: 5px; top: 5px; width: 44px; height: 44px; background: transparent; border: 0; padding: 10px; }
+.habit-editor { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 25px; align-items: center; }
+.habit-editor__art { text-align: center; color: #cfb37c; }
+.habit-editor__art .relic-art { width: 180px; height: 180px; }
+.habit-editor__art p { color: #c6b999; font: 19px/1.5 var(--font-display); }
+.creation-form { min-width: 0; }
+.creation-form h3 { font-size: 28px; margin-bottom: 22px; color: #ead2a3; }
+.name-field { display: block; font-size: 14px; margin-bottom: 7px; }
+.creation-form > input { width: 100%; font-size: 16px; }
+.creation-form fieldset { padding: 0; border: 0; margin: 22px 0; min-width: 0; }
+.creation-form legend { font-size: 15px; color: #e4d5bb; }
+#habit-spheres-help { font-size: 12px; margin: 6px 0 12px; }
+.sphere-options { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.sphere-option { display: flex; align-items: center; gap: 6px; padding: 8px; min-height: 48px; background: #070d12; border: 1px solid #6a6253; border-radius: 3px; font-size: 12px; cursor: pointer; }
+.sphere-option:has(input:checked) { background: linear-gradient(120deg, var(--sphere-dark), #080f14); border-color: var(--sphere); }
+.sphere-option input { width: 17px; height: 17px; min-height: 17px; margin: 0; accent-color: var(--sphere); }
+.sphere-option .line-icon { color: var(--sphere); width: 21px; height: 21px; flex-shrink: 0; }
+.form-actions { display: flex; gap: 10px; margin-top: 22px; }
+.form-actions button { flex: 1; font-size: 14px; }
+.archive-confirmation { padding: 12px 5px; }
+.archive-confirmation h3 { color: #e5cda0; font-size: 27px; margin: 0 30px 15px 0; }
+.archive-confirmation p { line-height: 1.6; }
+@media (max-width: 760px) { .world-dialog { margin: 0; width: 100vw; max-width: none; height: 100dvh; max-height: none; padding: 68px 20px 25px; border-width: 0; } .world-dialog__close { top: 12px; right: 12px; }
+  .habit-editor { display: block; } .habit-editor__art { display: none; } .creation-form h3 { font-size: 28px; } .sphere-options { grid-template-columns: 1fr; } .sphere-option { font-size: 14px; min-height: 52px; gap: 12px; } .creation-form > input { min-height: 48px; } .form-actions { padding-bottom: env(safe-area-inset-bottom); }
+}
