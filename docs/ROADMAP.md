@@ -2,7 +2,7 @@
 
 ## Execution rule and current release
 
-Current authorized task is SANCTUARY-STATE-001 on feature/sanctuary-state-001 from verified master 234c35a7be4306ba1fee082f01409122715e2846. BACKUP-001 is owner-accepted and PR #5 is merged. Implement only selected-day gemstones and a current-seven-day Sanctuary monogram; see [state contract](SANCTUARY_STATES.md) and [handoff](HANDOFF.md). No automatic merge or next task.
+Current authorized task is SANCTUARY-STATE-001 on feature/sanctuary-state-001 from verified master 234c35a7be4306ba1fee082f01409122715e2846. BACKUP-001 is owner-accepted and PR #5 is merged. Selected-day gemstones and a current-seven-day Sanctuary monogram are delivered for owner review; see [state contract](SANCTUARY_STATES.md) and [handoff](HANDOFF.md). No automatic merge or next task.
 
 One task at a time. Every later row is a queue, not authorization. Preserve existing data, native backups and Windows CI. Stop for owner visual/native acceptance after this delivery.
 
@@ -31,7 +31,7 @@ The owner's priority order is authoritative. The early Android checkpoint is cro
 | Priority | Small task | Acceptance boundary / dependency |
 | --- | --- | --- |
 | Accepted | BACKUP-001 | Owner-accepted local export/full replacement/safety recovery; PR #5 merge 234c35a7be4306ba1fee082f01409122715e2846 |
-| Active | SANCTUARY-STATE-001 | Selected-day illuminated/subdued state using real completion data and an original Sanctuary runic monogram replacing the compass; no schema/gameplay expansion |
+| Delivered; owner review pending | SANCTUARY-STATE-001 | [PR #6](https://github.com/Maximus1978/Relics/pull/6), [Windows run 40743447439](https://github.com/Maximus1978/Relics/actions/runs/40743447439) PASS on b272011d39a97f3d6b73aaf3261391464649eddf: 38 Node / 92 browser / 16 native tests, TypeScript/Vite and Windows EXE. Selected-day gems, original recent-period monogram, no schema/gameplay expansion; do not merge automatically |
 | 2 | SANCTUARY-STATE-002 | Specify and review independent daily / gradual Resonance / permanent Mastery visual layers; synthetic developer fixtures only until real projections exist; no invented runtime energy |
 | Early platform gate | ANDROID-001 | Android toolchain/CI shell build and device launch with existing SQLite/UI; no new gameplay |
 | Early platform gate | ANDROID-LOG-001 | Existing logging/backdating, management, migration/reopen and lifecycle compatibility on Android; after ANDROID-001 and before the complete game loop |
@@ -67,6 +67,6 @@ Dependencies may require a smaller split within the same priority. No formula, c
 
 SCHEDULE-001 covers flexible recurrence, planned rest and explicit inactivity, separately from repeated-event modeling. Further backup formats, notifications, widgets, cloud sync or optional AI integration need separate task cards and are not in the next-task queue.
 
-Future art polish: optional alternate shrine silhouettes, refined gem optics, auxiliary/compact typography and fuller state/mobile visual capture. Shared base frames are appropriate for ordinary relics; reserve unique silhouettes/art for authored rare/legendary discoveries. The unique runic monogram is queued in STATE-001. None blocks the accepted Sanctuary release.
+Future art polish: optional alternate shrine silhouettes, refined gem optics, auxiliary/compact typography and fuller state/mobile visual capture. Shared base frames are appropriate for ordinary relics; reserve unique silhouettes/art for authored rare/legendary discoveries. The unique runic monogram is delivered for owner review in STATE-001. None blocks the accepted Sanctuary release.
 
 The current seven-day observations are not implemented Resonance/Mastery. Notes, intensity, weights, repeated events, real progression, inventory, alchemy, rune/crafting/collection systems, optional experiences and world transitions are all unimplemented unless an accepted task above explicitly says otherwise. Preserve the versioned declarative World Pack architecture and finite authored discoveries.

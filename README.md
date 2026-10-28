@@ -36,7 +36,7 @@ For browser-only preview, run `npm.cmd run dev` and open http://localhost:1420; 
 
 Each device has its own SQLite database; shared schema does not imply device synchronization. Native Windows JSON backup/restore is implemented and owner-accepted; [format and recovery limitations](docs/BACKUP.md). Keep private backups of valuable history.
 
-Images are preserved as art references, not runtime assets or final UX. private/ is an empty ignored slot for separately authorized content. No secret recipes have been invented or imported. origin is configured for https://github.com/Maximus1978/Relics; the owner published the original two commits. See git history and [HANDOFF](docs/HANDOFF.md) for subsequent task/publication status.
+Supplied concept boards remain visual references; original offline runtime art is bundled under public/art/recovery/v1. State rendering follows the supplied style guide; owner visual acceptance of STATE-001 remains pending. private/ is an empty ignored slot for separately authorized content. No secret recipes have been invented or imported. origin is configured for https://github.com/Maximus1978/Relics; the owner published the original two commits. See git history and [HANDOFF](docs/HANDOFF.md) for subsequent task/publication status.
 
 ## HABITS-001A delivery
 

@@ -29,14 +29,14 @@ Domain rules cannot depend on React, Tauri, SQL, or theme artwork. Application u
 - `src/data/activityRepository.ts`: SQL plugin adapter and snapshot mapping.
 - `src/App.tsx`: small Sanctuary composition/navigation root. `src/application/useRelicsModel.ts` reuses existing habit/logging state and repository callbacks separately from presentation.
 - `src/components/`, `src/ui/sanctuary/`: shared validated habit controls, local-calendar helpers, shrine installation/wheel, relic inventory, Chronicle and native modal; scoped component styles and reusable design tokens.
-- `src/domain/recentActivity.ts`: pure, read-only seven-local-calendar-day snapshot projection; no progression, schema or persistence change.
+- `src/domain/recentActivity.ts`: pure, read-only current-seven-local-calendar-day projection; `selectedDayActivity.ts` independently projects saved daily spheres/completed habit IDs. `application/useLocalDay.ts` refreshes the current calendar anchor at midnight/focus/visibility. Neither projection persists derived states. `ui/sanctuary/SphereGem.tsx` and `SanctuaryRune.tsx` isolate Sanctuary material/monogram presentation; see [state contract](SANCTUARY_STATES.md).
 - `src/preview/sanctuaryPreview.ts`: browser-only fictional in-memory fixture; dynamically selected outside Tauri, explicitly labeled and reset on reload, with no persistent storage or SQLite access.
 - `public/art/recovery/v1/`: versioned local WebP environment, transparent shrine/wheel/pendant bases and hash manifest; approximately 810KB total. Original environment PNG retained as source; other masters outside Git. Real labels/controls remain HTML/SVG. [Prompts/provenance](art/VISUAL_RECOVERY.md).
 - `src-tauri/migrations/001_initial.sql` and `002_archive_habits.sql`: tables and additive habit archive field; `src-tauri/src/lib.rs` registers both migrations.
 - `content/sanctuary/manifest.json`: public epoch metadata, not a complete validated World Pack.
 - `tests/activity.test.ts`: date tests and real SQLite integrity scenarios via Node.
 
-The current application hook still coordinates use cases directly with the concrete adapter. A repository port and pure application service should be extracted in a dedicated task when expanding behavior. Schedules, weighted contributions, game progression projections, audit events and World Pack validation are not implemented. The read-only recorded-day projection is present; native Windows backup/restore is implemented in PR #5 with automated verification passed and owner native acceptance pending.
+The current application hook still coordinates use cases directly with the concrete adapter. A repository port and pure application service should be extracted in a dedicated task when expanding behavior. Schedules, weighted contributions, game progression projections, audit events and World Pack validation are not implemented. The read-only recorded-day projection is present; native Windows backup/restore is owner-accepted and merged in PR #5 at 234c35a7be4306ba1fee082f01409122715e2846; STATE-001 preserves its service and capabilities.
 
 ## Intended directory structure
 
