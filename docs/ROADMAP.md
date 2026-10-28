@@ -2,7 +2,7 @@
 
 ## Execution rule and current release
 
-Current authorized task is DOC-GAME-002: consolidate approved product decisions and release owner-accepted STATE-001 through regular merge of PR #6, with only Markdown changes. The owner tested STATE-001 on Windows and accepted its functionality/current visual direction, four-state rune, independent daily stones and responsive technical layers. Preserve this implementation; art imperfections are non-blocking. HANDOFF records actual merge/evidence.
+DOC-GAME-002 is complete: approved product decisions consolidated, owner-accepted STATE-001 released by regular merge of PR #6 at be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9, with only Markdown changes after the tested implementation. The owner tested STATE-001 on Windows and accepted its functionality/current visual direction, four-state rune, independent daily stones and responsive technical layers. Preserve this implementation; art imperfections are non-blocking. HANDOFF records actual merge/evidence.
 
 One task at a time. Every later row is a queue, not authorization. Preserve existing data, native backups and Windows CI. The next single functional task is NAV-CHRONICLE-001, then an early Android compatibility checkpoint. Begin neither automatically; all other rows remain a queue.
 
@@ -31,7 +31,7 @@ The owner's priority order is authoritative. The early Android checkpoint is cro
 | Priority | Small task | Acceptance boundary / dependency |
 | --- | --- | --- |
 | Accepted | BACKUP-001 | Owner-accepted local export/full replacement/safety recovery; PR #5 merge 234c35a7be4306ba1fee082f01409122715e2846 |
-| Accepted; DOC-GAME-002 release | SANCTUARY-STATE-001 | [PR #6](https://github.com/Maximus1978/Relics/pull/6). Clean independent RGBA frame/rune/stone, separate SVG signs and lighting, reference-only source board, alpha/overlay/stable-geometry proof and central-track scaling at 1920/2560. Temporal rules, schema, history and backups unchanged. Owner Windows functionality/current visuals accepted; exact CI/artifacts and actual authorized release state in HANDOFF |
+| Accepted and merged; DOC-GAME-002 complete | SANCTUARY-STATE-001 | [PR #6](https://github.com/Maximus1978/Relics/pull/6). Clean independent RGBA frame/rune/stone, separate SVG signs and lighting, reference-only source board, alpha/overlay/stable-geometry proof and central-track scaling at 1920/2560. Temporal rules, schema, history and backups unchanged. Owner Windows functionality/current visuals accepted; exact CI/artifacts and actual authorized release state in HANDOFF |
 | Next | NAV-CHRONICLE-001 | Move full history to existing left Chronicle destination; remove expanded dashboard Chronicle; preserve snapshots, backdating and cancellation. Optional compact activity hint. Verify history equality, date/cancellation flows and keyboard navigation; no new game systems |
 | Then, early platform checkpoint | ANDROID-001 | Build/launch existing shell and SQLite/UI on Android after NAV-CHRONICLE-001; before complex progression/content grows. No gameplay expansion |
 | Then, early compatibility checks | ANDROID-LOG-001 | After ANDROID-001: existing create/edit/archive, logging/backdating, migration/reopen and lifecycle persistence; preserve history, report device evidence |

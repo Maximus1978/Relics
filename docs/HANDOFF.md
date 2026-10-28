@@ -1,10 +1,14 @@
 # Project handoff
 
-## Current task: DOC-GAME-002 — approved decisions and STATE-001 release
+## Completed: DOC-GAME-002 — approved decisions and STATE-001 release
 
 Owner instruction dated 2026-10-28: STATE-001 functionality/current visual direction were tested and accepted on Windows, including the central rune, four illumination states, independent selected-day stones and responsive transparent technical layers. Remaining art defects are non-blocking future work. This explicit instruction supersedes prior PR #6 no-merge/review holds.
 
-Scope: Markdown-only product consolidation and regular merge of existing PR #6, then record actual merge/master state. No feature, artwork, schema, workflow or dependency changes. Source branch starts at 986bab5c2aa98dab8b11916f58b9f5b398b72f42; base master 234c35a7be4306ba1fee082f01409122715e2846. Changes after the successful tested runtime 81cc6e7897f03eafbaccd0f178eff992727a7a28 were verified Markdown-only. Release status: documentation review before owner-authorized merge; actual result will be recorded afterward.
+Scope: Markdown-only product consolidation and regular merge of existing PR #6, then record actual merge/master state. No feature, artwork, schema, workflow or dependency changes. Source branch starts at 986bab5c2aa98dab8b11916f58b9f5b398b72f42; base master 234c35a7be4306ba1fee082f01409122715e2846. Changes after the successful tested runtime 81cc6e7897f03eafbaccd0f178eff992727a7a28 were verified Markdown-only. Release status: PR #6 merged by regular merge at be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9 on 2026-10-28; GitHub reports merged=true and state=closed. Parents are accepted baseline 234c35a7be4306ba1fee082f01409122715e2846 and reviewed documentation head 9163d74d4bbe20808be076bb36a47d9414de9957. Local master was synchronized to this merge.
+
+## Final release verification
+
+Before merge, the existing Windows run 40764405205 was confirmed SUCCESS and all changes since its tested code/art head were Markdown-only. After merge, the master tree matched reviewed release tree 114bd97a236b49ca68f252db931161f0e4cf8d44. Runtime/art/tests/native code/locks/workflow remained byte-for-byte unchanged; no new executable or rerun was required. Documentation links, D001–D057/Q01–Q20 and retained Adventure task scope were checked. This subsequent master receipt updates Markdown only with [skip ci] and preserves the merge in history.
 
 ## Consolidated product boundaries
 
