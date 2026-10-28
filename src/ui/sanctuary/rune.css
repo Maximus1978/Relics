@@ -1,6 +1,6 @@
 .sanctuary-medallion { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; isolation: isolate; }
 .medallion-base { filter: saturate(.8) brightness(.88); }
-.medallion-halo { opacity: 0; }
+.medallion-halo { opacity: 0; filter: drop-shadow(0 0 7px #eaaa43); }
 .medallion-core-light { opacity: var(--core-light); filter: drop-shadow(0 0 3px #ffba50); }
 .medallion-frame-light { opacity: 0; filter: drop-shadow(0 0 2px #ffc45e); }
 .medallion-gem-light { opacity: 0; filter: drop-shadow(0 0 4px var(--gem-glow)); }

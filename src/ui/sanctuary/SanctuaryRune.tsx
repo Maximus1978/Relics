@@ -20,7 +20,7 @@ const runeRegion = 'M250 138 266 187 293 216 311 233 315 251 372 265 313 279 306
 export default function SanctuaryRune({ illumination }: { illumination: MedallionIllumination }) {
   const id = `sanctuary-${useId().replaceAll(':','')}`;
   const state = illumination.state;
-  const core = state === 'dormant' ? 0 : state === 'awakening' ? .22 + .34 * illumination.sphereDays / 35 : state === 'harmony' ? .76 : 1;
+  const core = state === 'dormant' ? 0 : state === 'awakening' ? .35 + .24 * illumination.sphereDays / 35 : state === 'harmony' ? .76 : 1;
   return <svg className="sanctuary-medallion sanctuary-rune" data-state={state} data-sphere-days={illumination.sphereDays} data-represented={illumination.recent.represented}
     style={{'--core-light':core} as CSSProperties} viewBox="0 0 500 500" aria-hidden="true" focusable="false">
     <defs>
@@ -34,23 +34,24 @@ export default function SanctuaryRune({ illumination }: { illumination: Medallio
         {order.map(sphere=><circle key={sphere} cx={gems[sphere].x} cy={gems[sphere].y} r="47" fill="black" />)}
       </mask>
       <filter id={`${id}-gold`} colorInterpolationFilters="sRGB">
-        <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 .69  0 0 0 0 .28  .32 .60 .08 0 -.09" />
-        <feComponentTransfer><feFuncA type="gamma" amplitude="2.3" exponent=".8" offset="0" /></feComponentTransfer>
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  .32 .60 .08 0 -.05" />
+        <feColorMatrix type="saturate" values="0" />
+        <feComponentTransfer><feFuncR type="gamma" amplitude="1.65" exponent=".65" offset="0" /><feFuncG type="gamma" amplitude="1.65" exponent=".65" offset="0" /><feFuncB type="gamma" amplitude="1.65" exponent=".65" offset="0" /><feFuncA type="gamma" amplitude="2.6" exponent=".7" offset="0" /></feComponentTransfer>
+        <feComponentTransfer><feFuncR type="table" tableValues="0 .4 .85 1 1" /><feFuncG type="table" tableValues="0 .2 .5 .83 1" /><feFuncB type="table" tableValues="0 .04 .12 .35 .78" /></feComponentTransfer>
       </filter>
-      <radialGradient id={`${id}-halo`}><stop offset=".48" stopColor="#efad47" stopOpacity="0" /><stop offset=".75" stopColor="#efa63b" stopOpacity=".25" /><stop offset="1" stopColor="#efa63b" stopOpacity="0" /></radialGradient>
+      <radialGradient id={`${id}-halo`}><stop offset=".86" stopColor="#efad47" stopOpacity="0" /><stop offset=".95" stopColor="#efa63b" stopOpacity=".55" /><stop offset="1" stopColor="#efa63b" stopOpacity="0" /></radialGradient>
       {order.map(sphere=>{
         const gem = gems[sphere];
         return <g key={sphere}>
           <clipPath id={`${id}-gem-${sphere}`}><path d={`M${gem.x} ${gem.y-47} ${gem.x+33} ${gem.y-33} ${gem.x+46} ${gem.y} ${gem.x+32} ${gem.y+33} ${gem.x} ${gem.y+46} ${gem.x-32} ${gem.y+33} ${gem.x-46} ${gem.y} ${gem.x-33} ${gem.y-33}Z`} /></clipPath>
           <filter id={`${id}-light-${sphere}`} colorInterpolationFilters="sRGB">
             <feColorMatrix type="saturate" values="0" />
-            <feComponentTransfer><feFuncR type="gamma" amplitude="1.7" exponent=".75" offset="0" /><feFuncG type="gamma" amplitude="1.7" exponent=".75" offset="0" /><feFuncB type="gamma" amplitude="1.7" exponent=".75" offset="0" /></feComponentTransfer>
+            <feComponentTransfer><feFuncR type="gamma" amplitude="1.4" exponent=".8" offset="0" /><feFuncG type="gamma" amplitude="1.4" exponent=".8" offset="0" /><feFuncB type="gamma" amplitude="1.4" exponent=".8" offset="0" /></feComponentTransfer>
             <feComponentTransfer><feFuncR type="table" tableValues={gem.channels[0]} /><feFuncG type="table" tableValues={gem.channels[1]} /><feFuncB type="table" tableValues={gem.channels[2]} /></feComponentTransfer>
           </filter>
         </g>;
       })}
     </defs>
-    <circle className="medallion-halo" cx="250" cy="250" r="249" fill={`url(#${id}-halo)`} />
     <g mask={`url(#${id}-object)`}>
       <use className="medallion-base" href={`#${id}-canonical`} />
       <g className="medallion-frame-light"><use href={`#${id}-canonical`} mask={`url(#${id}-frame)`} filter={`url(#${id}-gold)`} /></g>
@@ -59,5 +60,6 @@ export default function SanctuaryRune({ illumination }: { illumination: Medallio
         <g className="medallion-gem-light"><g clipPath={`url(#${id}-gem-${sphere})`}><use href={`#${id}-canonical`} filter={`url(#${id}-light-${sphere})`} /></g></g>
       </g>)}
     </g>
+    <circle className="medallion-halo" cx="250" cy="250" r="249" fill={`url(#${id}-halo)`} mask={`url(#${id}-frame)`} />
   </svg>;
 }
