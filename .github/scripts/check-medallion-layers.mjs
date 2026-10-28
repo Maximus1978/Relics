@@ -14,9 +14,9 @@ export async function checkMedallionLayers({output,evaluate,send,viewport,screen
   const reference=await readFile('docs/visual-references/sanctuary-medallion-source.png');
   const referenceUrl=`data:image/png;base64,${reference.toString('base64')}`;
   await writeFile(join(output,'reference-board.png'),reference);
-  const audit=await evaluate(`(async()=>{
+  const audit=await evaluate(String.raw`(async()=>{
     const urls=${JSON.stringify(urls)};
-    const load=src=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=src;});
+    const load=src=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error(src.startsWith('blob:')?'Technical SVG could not decode':'Technical PNG could not decode'));img.src=src;});
     const probes={frame:[[627,627],[627,218],[1034,493],[909,939],[337,939],[217,493]],rune:[[560,500],[690,500],[560,740],[690,740]]};
     const assets=[];
     for (const [path,src] of Object.entries(urls)) {
@@ -34,7 +34,10 @@ export async function checkMedallionLayers({output,evaluate,send,viewport,screen
     for(const node of clone.querySelectorAll('image'))node.setAttribute('href',urls[node.getAttribute('href')]);
     const css=document.createElementNS('http://www.w3.org/2000/svg','style');
     css.textContent=[...document.styleSheets].flatMap(sheet=>[...sheet.cssRules]).map(rule=>rule.cssText).filter(text=>/^(?:\.(?:sanctuary-medallion|medallion-|wheel-gem)|\[data-sphere)/.test(text)).join('\n');clone.prepend(css);
-    const xml=new XMLSerializer().serializeToString(clone);const blob=URL.createObjectURL(new Blob([xml],{type:'image/svg+xml'}));
+    const xml=new XMLSerializer().serializeToString(clone);
+    const parseError=new DOMParser().parseFromString(xml,'image/svg+xml').querySelector('parsererror');
+    if(parseError)throw new Error(parseError.textContent.slice(0,500));
+    const blob=URL.createObjectURL(new Blob([xml],{type:'image/svg+xml'}));
     const rendered=await load(blob);const canvas=document.createElement('canvas');canvas.width=500;canvas.height=500;const ctx=canvas.getContext('2d');ctx.drawImage(rendered,0,0,500,500);URL.revokeObjectURL(blob);
     const data=ctx.getImageData(0,0,500,500).data;
     const cavities=[[229,235],[271,235],[229,292],[271,292]].map(([x,y])=>({x,y,alpha:data[(y*500+x)*4+3]}));

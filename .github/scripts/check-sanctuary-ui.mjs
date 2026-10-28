@@ -32,7 +32,7 @@ function send(method, params = {}) {
 }
 async function evaluate(expression) {
   const response = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
-  if (response.exceptionDetails) throw new Error(response.exceptionDetails.text);
+  if (response.exceptionDetails) throw new Error((response.exceptionDetails.exception?.description ?? response.exceptionDetails.text).slice(0,1600));
   return response.result.value;
 }
 async function until(expression, description) {
