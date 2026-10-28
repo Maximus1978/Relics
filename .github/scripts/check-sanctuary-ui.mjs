@@ -1,3 +1,4 @@
+import { checkContributionEditor } from './check-contribution-editor.mjs';
 import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -186,6 +187,7 @@ try {
   await screenshot('sanctuary-backup-unavailable.png');
   await press('Escape', 'Escape', 27);
   await until('!document.querySelector(".backup-dialog") && document.activeElement.matches(".app-rail button[data-backup]")', 'Backup dialog closes and restores keyboard focus');
+  await checkContributionEditor({send,evaluate,until,click,viewport,screenshot});
   await checkSanctuaryStates({ output, send, evaluate, until, click, viewport, screenshot });
   assert.deepEqual(runtimeErrors, []);
   await writeFile(join(output, 'result.json'), JSON.stringify({ browserRendering: 'passed', interactionChecks: checks, runtimeErrors, nativeUiRuntimeVerified: false, storage: 'Synthetic in-memory demonstration; resets on reload' }, null, 2));
