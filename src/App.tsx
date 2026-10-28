@@ -53,7 +53,7 @@ export default function App() {
           <button aria-pressed={model.day === yesterday()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(yesterday())}>Вчера</button></div>
           <label>Дата отметки<input type="date" value={model.day} max={today} disabled={model.busy || model.managingHabit} onChange={event => model.setDay(event.target.value)} /></label></div>
       </header>
-      <SphereInstallation observation={observation} selected={selected} />
+      <SphereInstallation illumination={illumination} />
       <RelicInventory model={model} selected={selected} />
       <Chronicle model={model} open={journalOpen} onToggle={setJournalOpen} reference={journal} />
     </main>

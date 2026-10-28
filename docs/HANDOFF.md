@@ -1,5 +1,11 @@
 # Project handoff
 
+## Active correction — central medallion
+
+The owner rejected the previous represented-sphere light bands and the invented S-shaped rune. Continue SANCTUARY-STATE-001 in existing PR #6 / feature/sanctuary-state-001 from 93b0ad810366cd569ae376b665721550ec58b32b; do not merge or start another task. The newly supplied four-state medallion design is authoritative. Use one fixed construction/rune/gem placement and change lighting/material layers only.
+
+Required state priority: 35 distinct sphere-days in the actual current seven-day window = RADIANCE; otherwise all five selected-day spheres within that window = HARMONY; otherwise positive recent sphere-days = AWAKENING; zero = DORMANT. Duplicate sphere/day contributions never inflate coverage; backdating/cancellation update it. Daily gemstones are a separate selected-date signal. Clarification is pending for conflicting DORMANT/RADIANCE wording when the selected date is outside the current window, and for availability of original art layers. Continue only independent logic/tests while awaiting those answers. Prior implementation/CI below is historical, not acceptance of this correction.
+
 ## Current task and delivery boundary
 
 SANCTUARY-STATE-001 is implemented in [PR #6](https://github.com/Maximus1978/Relics/pull/6), branch feature/sanctuary-state-001, automated verification PASS, awaiting owner visual/native acceptance. Do not merge automatically or begin another task.

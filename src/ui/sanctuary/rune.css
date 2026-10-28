@@ -1,18 +1,12 @@
-.sanctuary-rune { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; --rune-light: .35; --rune-halo: .25; }
-.sanctuary-rune__aura { opacity: var(--rune-halo); }
-.sanctuary-rune__tracery { opacity: .48; }
-.sanctuary-rune__metal { filter: drop-shadow(0 1px .6px #000); }
-.sanctuary-rune__engraving { opacity: .6; }
-.sanctuary-rune__inlay { opacity: var(--rune-light); }
-.sanctuary-rune__embers { opacity: 0; }
-.sanctuary-rune[data-state="subdued"] .sanctuary-rune__metal { filter: saturate(.35) brightness(.65) drop-shadow(0 1px .6px #000); }
-.sanctuary-rune[data-state="subdued"] .sanctuary-rune__engraving { opacity: .2; }
-.sanctuary-rune[data-state="subdued"] .sanctuary-rune__aura { opacity: 0; }
-.sanctuary-rune[data-state="partial"] { --rune-light: .75; --rune-halo: .45; }
-.sanctuary-rune[data-state="partial"] .sanctuary-rune__metal { filter: drop-shadow(0 0 .55px #e4ad58); }
-.sanctuary-rune[data-state="diverse"] { --rune-light: .9; --rune-halo: .7; }
-.sanctuary-rune[data-state="diverse"] .sanctuary-rune__metal { filter: brightness(1.05) drop-shadow(0 0 .7px #e4ad58); }
-.sanctuary-rune[data-state="full"] { --rune-light: 1; --rune-halo: 1; }
-.sanctuary-rune[data-state="full"] .sanctuary-rune__metal { filter: brightness(1.12) drop-shadow(0 0 .75px #efb14a); }
-.sanctuary-rune[data-state="full"] .sanctuary-rune__engraving { opacity: 1; }
-.sanctuary-rune[data-state="full"] .sanctuary-rune__embers { opacity: .65; }
+.sanctuary-medallion { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; isolation: isolate; }
+.medallion-base { filter: saturate(.8) brightness(.88); }
+.medallion-halo { opacity: 0; }
+.medallion-core-light { opacity: var(--core-light); filter: drop-shadow(0 0 3px #ffba50); }
+.medallion-frame-light { opacity: 0; filter: drop-shadow(0 0 2px #ffc45e); }
+.medallion-gem-light { opacity: 0; filter: drop-shadow(0 0 4px var(--gem-glow)); }
+.wheel-gem[data-state="illuminated"] .medallion-gem-light { opacity: 1; }
+.sanctuary-medallion[data-state="awakening"] .medallion-core-light { filter: drop-shadow(0 0 2px #ffba50); }
+.sanctuary-medallion[data-state="harmony"] .medallion-halo { opacity: .35; }
+.sanctuary-medallion[data-state="radiance"] .medallion-halo { opacity: 1; }
+.sanctuary-medallion[data-state="radiance"] .medallion-frame-light { opacity: .95; }
+.sanctuary-medallion[data-state="radiance"] .medallion-core-light { filter: drop-shadow(0 0 5px #ffd16c); }

@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { medallionGeometryProof } from './medallion-geometry.mjs';
 
 /** Exercise actual controls against the explicitly fictional, nonpersistent demo.
  * No test hooks, DOM-forced visual states or owner data are used.
  */
 export async function checkSanctuaryStates({ output, send, evaluate, until, click, viewport, screenshot }) {
+  const geometry = medallionGeometryProof({evaluate,output});
   const active = selector => `[...document.querySelectorAll(${JSON.stringify(selector)})].filter(node => node.dataset.state === 'illuminated').map(node => node.dataset.sphere).sort()`;
   const shrines = '.sphere-shrine';
   const sockets = '.wheel-gem';
@@ -77,29 +79,41 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   }
   await click('.date-shortcuts button:first-child');
   await expectSpheres([], 'No current history leaves all selected-day gems subdued');
-  await until('document.querySelector(".sanctuary-rune").dataset.state === "subdued"', 'Zero seven-day coverage subdues the original monogram');
+  await until('document.querySelector(".sanctuary-rune").dataset.state === "dormant"', 'Zero seven-day coverage subdues the original monogram');
   await click('.chronicle > summary');
   await screenshot('state-subdued-desktop.png');
-  await closeup('rune-subdued.png');
+  await closeup('medallion-dormant.png');
+  await geometry.capture('dormant');
   await closeup('habit-gem-subdued.png', '[data-habit-id="demo-walk"] .relic-art');
   await viewport(390, 844);
   await screenshot('state-subdued-narrow.png');
   await viewport(1440, 900);
+  await selectDay('2000-01-01');
+  await log('walk');
+  await expectSpheres(['body','recovery'], 'DORMANT preserves illuminated gemstones on a recorded historical selected date');
+  await until('document.querySelector(".sanctuary-medallion").dataset.state === "dormant"', 'Historical logging does not awaken an empty current week');
+  await closeup('medallion-dormant-historical-gems.png');
+  await click('.chronicle > summary');
+  await cancelMatching('Прогулка','2000-01-01');
+  await click('.chronicle > summary');
+  await selectDay(today);
 
   await log('walk');
   await expectSpheres(['body', 'recovery'], 'Two-sphere completion awakens the selected day');
-  await until('document.querySelector(".sanctuary-rune").dataset.state === "partial"', 'Limited current-period coverage softly illuminates the rune');
+  await until('document.querySelector(".sanctuary-rune").dataset.state === "awakening"', 'Limited current-period coverage softly illuminates the rune');
   await screenshot('state-partial-desktop.png');
-  await closeup('rune-partial.png');
+  await closeup('medallion-awakening.png');
+  await geometry.capture('awakening');
   await log('read');
-  await until('document.querySelector(".sanctuary-rune").dataset.state === "diverse"', 'Three represented spheres give the monogram a restrained richer light');
-  await closeup('rune-diverse.png');
+  await until('document.querySelector(".sanctuary-rune").dataset.state === "awakening"', 'Three sphere-days remain AWAKENING rather than invented diversity tiers');
+  await closeup('medallion-awakening-more-coverage.png');
   await log('connect');
   await log('work');
   await expectSpheres(['body', 'mind', 'relationships', 'work', 'recovery'], 'All five recorded spheres illuminate matching shrines and sockets');
-  await until('document.querySelector(".sanctuary-rune").dataset.state === "full"', 'All-sphere seven-day coverage illuminates the authored seal without rewards');
+  await until('document.querySelector(".sanctuary-rune").dataset.state === "harmony"', 'All five selected-day spheres give HARMONY, not full-week RADIANCE');
   await screenshot('state-all-five-desktop.png');
-  await closeup('rune-all-five.png');
+  await closeup('medallion-harmony.png');
+  await geometry.capture('harmony');
   await closeup('habit-gem-illuminated.png', '[data-habit-id="demo-walk"] .relic-art');
   for (const [width, height] of [[1280,800],[1000,800],[390,844],[320,844]]) {
     await viewport(width,height);
@@ -120,14 +134,46 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await expectSpheres(['body', 'mind', 'relationships', 'work', 'recovery'], 'Archived historical snapshots still illuminate every recorded sphere');
   await click('.inventory-heading .button-quiet');
   await until('document.querySelector("[data-habit-id=demo-connect] .relic-art")?.dataset.state === "illuminated" && !document.querySelector(".completion-button")', 'Archive retains its selected-day historical gem without allowing logging');
+  await click('[data-habit-id="demo-connect"] .restore-button');
+  await until('!document.querySelector("[data-habit-id=demo-connect]")','Restored synthetic habit leaves archive without losing its history');
   await click('.inventory-heading .button-quiet');
   await selectDay('2000-01-01');
   await expectSpheres([], 'Date switching subdues sockets while current-period rune stays illuminated');
-  assert.equal(await evaluate('document.querySelector(".sanctuary-rune").dataset.state'), 'full');
+  assert.equal(await evaluate('document.querySelector(".sanctuary-rune").dataset.state'), 'awakening');
   assert.equal(await evaluate('document.querySelector(".balance-wheel").getAttribute("aria-label").includes("2000-01-01")'), true);
   await selectDay(today);
   await expectSpheres(['body', 'mind', 'relationships', 'work', 'recovery'], 'Returning to today restores its saved gemstone states');
+  // Fill the six preceding local calendar dates through existing controls.
+  const week = await evaluate(`(() => {const anchor=new Date(document.querySelector('input[type=date]').max+'T12:00:00');return Array.from({length:7},(_,index)=>{const day=new Date(anchor);day.setDate(day.getDate()-6+index);return [day.getFullYear(),String(day.getMonth()+1).padStart(2,'0'),String(day.getDate()).padStart(2,'0')].join('-');});})()`);
+  for (const day of week.slice(0,-1)) {
+    await selectDay(day);
+    for (const habit of ['walk','read','connect','work']) await log(habit);
+  }
+  await selectDay(today);
+  await until('document.querySelector(".sanctuary-medallion").dataset.state === "radiance" && document.querySelector(".sanctuary-medallion").dataset.sphereDays === "35"','Exactly 35 distinct sphere-days give RADIANCE');
+  await expectSpheres(['body','mind','relationships','work','recovery'],'RADIANCE retains the five actual selected-day gemstone states');
+  await screenshot('state-radiance-desktop.png');
+  await closeup('medallion-radiance.png');
+  await geometry.capture('radiance');
+  await geometry.finish();
+  await viewport(390,844);
+  await screenshot('state-radiance-narrow.png');
+  await viewport(1440,900);
+  await selectDay('2000-01-01');
+  await expectSpheres([],'RADIANCE never activates gemstones on an empty historical selected date');
+  await until('document.querySelector(".sanctuary-medallion").dataset.state === "radiance"','Historical date selection never reanchors full current-week coverage');
+  assert.equal(await evaluate('[...document.querySelectorAll(".wheel-gem")].every(node=>node.dataset.state === "subdued")'),true);
+  await closeup('medallion-radiance-historical-empty.png');
+  await selectDay(today);
+  await click('.chronicle > summary');
+  await cancelMatching('Работа над своим проектом',week[0]);
+  await until('document.querySelector(".sanctuary-medallion").dataset.state === "harmony" && document.querySelector(".sanctuary-medallion").dataset.sphereDays === "34"','Backdated cancellation recomputes RADIANCE to HARMONY immediately');
+  await click('.chronicle > summary');
+  await selectDay(week[0]);
+  await log('work');
+  await selectDay(today);
+  await until('document.querySelector(".sanctuary-medallion").dataset.state === "radiance"','Backdated re-addition restores RADIANCE without storing a visual state');
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   assert.equal(await evaluate('[...document.querySelectorAll(".sphere-gem, .sanctuary-rune")].every(node => getComputedStyle(node).animationName === "none")'), true);
-  await writeFile(join(output, 'state-evidence.json'), JSON.stringify({ selectedDay: today, pastDay: '2000-01-01', nativeUiRuntimeVerified: false, source: 'Actual browser UI; synthetic in-memory data; all changes made through existing controls', screenshots: ['state-subdued-desktop.png','state-partial-desktop.png','state-all-five-desktop.png','state-all-five-390x844.png','rune-subdued.png','rune-partial.png','rune-diverse.png','rune-all-five.png'] }, null, 2));
+  await writeFile(join(output, 'state-evidence.json'), JSON.stringify({ selectedDay: today, pastDay: '2000-01-01', nativeUiRuntimeVerified: false, source: 'Actual browser UI; synthetic in-memory data; all changes made through existing controls', screenshots: ['state-subdued-desktop.png','state-partial-desktop.png','state-all-five-desktop.png','state-all-five-390x844.png','medallion-dormant.png','medallion-awakening.png','medallion-harmony.png','medallion-radiance.png'] }, null, 2));
 }
