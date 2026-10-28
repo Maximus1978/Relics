@@ -1,5 +1,9 @@
 # Project handoff
 
+## Active implementation: WEIGHTS-001B, Gate B1
+
+WEIGHTS-001A owner-approved; PR #7 merged at 6e122e7221c33d909ff2f4ecdbfba75b210f5b08. Feature branch feature-weights-001b starts from that verified master. Implement profiles/migration004/snapshots and v2/v1 native backup with temporary-data rollback/crash verification first; Gate B1 PASS before UI integration: 59 Node/temporary-SQLite tests and22 native tests passed (one intentional child crash helper ignored standalone), including actual SQLx migration rollback, strict TS/Rust vectors, v1 replacement/weighted v2 safety undo, failure/crash/reopen and JSON byte limits. UI integration is now authorized by this verified gate. Deliver separate unmerged PR with Windows CI/EXE/screenshots, preserve rune/art/history/offline behavior and stop. No trend/progression/Android work and no owner-DB testing.
+
 ## Delivered for owner review: WEIGHTS-001A
 
 Verified latest origin/master: c2375e7543649ce80e25151bf79c0376c985ad9d (DOC-GAME-002 complete, PR #6 regular merge be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9). Branch docs-weights-001a; [documentation PR #7](https://github.com/Maximus1978/Relics/pull/7) is open and unmerged. Only Markdown changes; no migrations, application/native code, tests, artwork, dependencies or owner data changes.

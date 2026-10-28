@@ -1,3 +1,4 @@
+import type { ContributionProfile } from './contributions.ts';
 export const spheres = {
   body: 'Тело',
   mind: 'Разум',
@@ -7,7 +8,7 @@ export const spheres = {
 } as const;
 
 export type SphereId = keyof typeof spheres;
-export type Habit = { id: string; name: string; spheres: SphereId[]; archivedAt: string | null };
+export type Habit = { id: string; name: string; spheres: SphereId[]; archivedAt: string | null; contributionProfile?: ContributionProfile };
 export type Activity = {
   id: string;
   habitId: string;
@@ -16,6 +17,7 @@ export type Activity = {
   occurredOn: string;
   recordedAt: string;
   timezone: string;
+  contributionSnapshot?: ContributionProfile | null;
 };
 
 export const sampleHabits: Habit[] = [

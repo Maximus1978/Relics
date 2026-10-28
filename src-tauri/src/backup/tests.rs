@@ -2,6 +2,7 @@ use super::{
     model::{self, Activity, Backup, Data, Habit},
     storage,
 };
+use crate::contributions::{Origin, Profile};
 use sqlx::{
     migrate::{Migration, MigrationType, Migrator},
     sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions},
@@ -23,12 +24,20 @@ fn example() -> Backup {
                 name: "Гитара 'вечером'".into(),
                 spheres: vec!["mind".into(), "recovery".into()],
                 archived_at: None,
+                contribution_profile: {
+                    let mut p = Profile::defaults(&vec!["mind".into(), "recovery".into()]);
+                    p.origin = Origin::User;
+                    p.values.mind = 7;
+                    p.values.recovery = 3;
+                    p
+                },
             },
             Habit {
                 id: "read".into(),
                 name: "Книги".into(),
                 spheres: vec!["mind".into()],
                 archived_at: Some("2026-10-27T22:10:00.123Z".into()),
+                contribution_profile: Profile::defaults(&vec!["mind".into()]),
             },
         ],
         activities: vec![
@@ -40,6 +49,12 @@ fn example() -> Backup {
                 occurred_on: "2026-10-26".into(),
                 recorded_at: "2026-10-27T01:02:03.004Z".into(),
                 timezone: "America/Los_Angeles".into(),
+                contribution_snapshot: Some({
+                    let mut p = Profile::defaults(&vec!["mind".into()]);
+                    p.origin = Origin::User;
+                    p.values.mind = 7;
+                    p
+                }),
             },
             Activity {
                 id: "entry-27".into(),
@@ -49,6 +64,7 @@ fn example() -> Backup {
                 occurred_on: "2026-10-27".into(),
                 recorded_at: "2026-10-27T15:40:00+03:00".into(),
                 timezone: "Europe/Moscow".into(),
+                contribution_snapshot: None,
             },
         ],
     })
@@ -69,7 +85,7 @@ async fn connect(path: &Path) -> SqlitePool {
         .unwrap()
 }
 
-async fn migrate(pool: &SqlitePool, version: usize) {
+fn make_migrator(version: usize) -> Migrator {
     let definitions = [
         (
             "initial activity journal",
@@ -82,6 +98,10 @@ async fn migrate(pool: &SqlitePool, version: usize) {
         (
             "seed sample habits once before backup restoration",
             include_str!("../../migrations/003_seed_once.sql"),
+        ),
+        (
+            "subjective sphere contribution snapshots",
+            include_str!("../../migrations/004_habit_contributions.sql"),
         ),
     ];
     let migrations = definitions
@@ -102,16 +122,16 @@ async fn migrate(pool: &SqlitePool, version: usize) {
         migrations: Cow::Owned(migrations),
         ..Migrator::DEFAULT
     }
-    .run(pool)
-    .await
-    .unwrap();
+}
+async fn migrate(pool: &SqlitePool, version: usize) {
+    make_migrator(version).run(pool).await.unwrap();
 }
 
 async fn fixture() -> (TempDir, PathBuf, SqlitePool) {
     let temporary = tempfile::tempdir().unwrap();
     let path = temporary.path().join("synthetic.db");
     let pool = connect(&path).await;
-    migrate(&pool, 3).await;
+    migrate(&pool, 4).await;
     (temporary, path, pool)
 }
 
@@ -130,7 +150,7 @@ fn rejects_malformed_unknown_versions_fields_and_missing_archive_property() {
     assert!(model::parse(b"not json").is_err());
     for (key, value) in [
         ("format", serde_json::json!("other")),
-        ("formatVersion", serde_json::json!(2)),
+        ("formatVersion", serde_json::json!(3)),
         ("databaseSchemaVersion", serde_json::json!(2)),
         ("exportedAt", serde_json::json!("2026-99-99")),
         ("appVersion", serde_json::json!(null)),
@@ -231,10 +251,10 @@ async fn full_export_restore_reopen_preserves_metadata_snapshots_and_archive() {
     let checked = storage::read_backup(&external).unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 3).await;
+    migrate(&reopened, 4).await;
     assert_eq!(storage::export(&reopened).await.unwrap().data, backup.data);
     let other = connect(&temporary.path().join("fresh.db")).await;
-    migrate(&other, 3).await;
+    migrate(&other, 4).await;
     storage::restore(&other, &checked, &temporary.path().join("fresh-recovery"))
         .await
         .unwrap();
@@ -255,7 +275,7 @@ async fn empty_restored_database_stays_empty_after_migrations_and_reopen() {
         .unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 3).await;
+    migrate(&reopened, 4).await;
     assert_eq!(storage::export(&reopened).await.unwrap().data, backup.data);
     reopened.close().await;
 }
@@ -451,11 +471,23 @@ async fn migration_from_v1_and_archived_v2_preserves_history_and_does_not_reseed
         .execute(&pool)
         .await
         .unwrap();
-    let before = storage::export(&pool).await.unwrap().data;
-    migrate(&pool, 3).await;
+    let before_name: String = sqlx::query_scalar("SELECT name FROM habits WHERE id='walk'")
+        .fetch_one(&pool)
+        .await
+        .unwrap();
+    migrate(&pool, 4).await;
     let migrated = storage::export(&pool).await.unwrap();
-    assert_eq!(migrated.data.activities, before.activities);
-    assert_eq!(migrated.data.habits[0], before.habits[0]);
+    assert_eq!(migrated.data.activities[0].habit_name, "October snapshot");
+    assert_eq!(migrated.data.activities[0].contribution_snapshot, None);
+    assert_eq!(migrated.data.habits[0].name, before_name);
+    assert_eq!(
+        migrated.data.habits[0].contribution_profile.origin,
+        Origin::LegacyDefault
+    );
+    assert_eq!(
+        migrated.data.habits[0].archived_at.as_deref(),
+        Some("2026-10-27T01:00:00Z")
+    );
     sqlx::query("DELETE FROM activities")
         .execute(&pool)
         .await
@@ -464,7 +496,7 @@ async fn migration_from_v1_and_archived_v2_preserves_history_and_does_not_reseed
         .execute(&pool)
         .await
         .unwrap();
-    migrate(&pool, 3).await;
+    migrate(&pool, 4).await;
     assert_eq!(
         sqlx::query("SELECT COUNT(*) AS total FROM habits WHERE id = 'read'")
             .fetch_one(&pool)
@@ -520,4 +552,237 @@ fn crash_helper() {
         .await;
         panic!("crash injection was not reached");
     });
+}
+
+#[test]
+fn contribution_conformance_matches_typescript_vectors() {
+    #[derive(serde::Deserialize)]
+    struct Case {
+        name: String,
+        json: String,
+        spheres: Vec<String>,
+        valid: bool,
+    }
+    let cases: Vec<Case> = serde_json::from_str(include_str!(
+        "../../../tests/fixtures/contribution-profiles.json"
+    ))
+    .unwrap();
+    for c in cases {
+        let result = serde_json::from_str::<Profile>(&c.json)
+            .map_err(|_| "parse".to_string())
+            .and_then(|p| p.validate(&c.spheres));
+        assert_eq!(result.is_ok(), c.valid, "{}", c.name);
+    }
+}
+
+fn old_v1_bytes() -> Vec<u8> {
+    let mut value = serde_json::to_value(example()).unwrap();
+    value["formatVersion"] = serde_json::json!(1);
+    value["databaseSchemaVersion"] = serde_json::json!(3);
+    for h in value["data"]["habits"].as_array_mut().unwrap() {
+        h.as_object_mut().unwrap().remove("contributionProfile");
+    }
+    for a in value["data"]["activities"].as_array_mut().unwrap() {
+        a.as_object_mut().unwrap().remove("contributionSnapshot");
+    }
+    serde_json::to_vec(&value).unwrap()
+}
+#[test]
+fn strict_v1_adapter_and_v2_null_contract_do_not_drop_unknown_data() {
+    let old = model::parse(&old_v1_bytes()).unwrap();
+    assert_eq!(old.format_version, 1);
+    assert!(old
+        .data
+        .activities
+        .iter()
+        .all(|a| a.contribution_snapshot.is_none()));
+    assert!(old
+        .data
+        .habits
+        .iter()
+        .all(|h| h.contribution_profile.origin == Origin::LegacyDefault));
+    assert!(
+        model::encode(&old).is_err(),
+        "never export weighted state as v1"
+    );
+    let original = serde_json::to_value(example()).unwrap();
+    let mut missing = original.clone();
+    missing["data"]["activities"][1]
+        .as_object_mut()
+        .unwrap()
+        .remove("contributionSnapshot");
+    assert!(model::parse(&serde_json::to_vec(&missing).unwrap()).is_err());
+    let mut malformed = original.clone();
+    malformed["data"]["habits"][0]["contributionProfile"]["values"]["mind"] = serde_json::json!(11);
+    assert!(model::parse(&serde_json::to_vec(&malformed).unwrap()).is_err());
+    let mut future = original.clone();
+    future["data"]["habits"][0]["contributionProfile"]["version"] = serde_json::json!(2);
+    assert!(model::parse(&serde_json::to_vec(&future).unwrap()).is_err());
+    let mut mismatch = original.clone();
+    mismatch["data"]["activities"][0]["contributionSnapshot"]["values"]["body"] =
+        serde_json::json!(3);
+    assert!(
+        model::parse(&serde_json::to_vec(&mismatch).unwrap()).is_err(),
+        "compare historical own spheres"
+    );
+    let mut old_extra: serde_json::Value = serde_json::from_slice(&old_v1_bytes()).unwrap();
+    old_extra["data"]["habits"][0]["contributionProfile"] =
+        original["data"]["habits"][0]["contributionProfile"].clone();
+    assert!(model::parse(&serde_json::to_vec(&old_extra).unwrap()).is_err());
+    let text = String::from_utf8(old_v1_bytes()).unwrap().replacen(
+        "\"formatVersion\":1",
+        "\"formatVersion\":1,\"formatVersion\":1",
+        1,
+    );
+    assert!(model::parse(text.as_bytes()).is_err());
+    let text = serde_json::to_string(&example()).unwrap().replacen(
+        "\"mind\":7",
+        "\"mind\":7,\"mind\":5",
+        1,
+    );
+    assert!(model::parse(text.as_bytes()).is_err());
+}
+
+#[tokio::test]
+async fn v1_full_replacement_can_be_undone_with_complete_v2_weighted_safety() {
+    let (temporary, path, pool) = fixture().await;
+    let mut weighted = example();
+    let mut third = weighted.data.activities[0].clone();
+    third.id = "default-event".into();
+    third.habit_id = "read".into();
+    third.spheres = vec!["mind".into()];
+    third.occurred_on = "2026-10-25".into();
+    third.contribution_snapshot = Some(Profile::defaults(&third.spheres));
+    weighted.data.activities.push(third);
+    storage::restore(&pool, &weighted, &temporary.path().join("setup"))
+        .await
+        .unwrap();
+    let before = storage::export(&pool).await.unwrap().data;
+    let old = model::parse(&old_v1_bytes()).unwrap();
+    let safety = storage::restore(&pool, &old, &temporary.path().join("recovery"))
+        .await
+        .unwrap();
+    let converted = storage::export(&pool).await.unwrap();
+    assert_eq!(converted.format_version, 2);
+    assert_eq!(converted.database_schema_version, 4);
+    assert_eq!(converted.data, old.data);
+    assert!(converted
+        .data
+        .activities
+        .iter()
+        .all(|a| a.contribution_snapshot.is_none()));
+    let protective = storage::read_backup(&safety).unwrap();
+    assert_eq!(protective.format_version, 2);
+    assert_eq!(protective.data, before);
+    storage::restore(&pool, &protective, &temporary.path().join("undo"))
+        .await
+        .unwrap();
+    pool.close().await;
+    let reopened = connect(&path).await;
+    migrate(&reopened, 4).await;
+    let after = storage::export(&reopened).await.unwrap();
+    assert_eq!(after.data, before);
+    assert_eq!(after.summary().user_entries, 1);
+    assert_eq!(after.summary().default_entries, 1);
+    assert_eq!(after.summary().legacy_entries, 1);
+    reopened.close().await;
+}
+
+#[tokio::test]
+async fn migration_four_failure_rolls_back_schema_data_and_actual_sqlx_ledger() {
+    let temporary = tempfile::tempdir().unwrap();
+    let path = temporary.path().join("synthetic.db");
+    let pool = connect(&path).await;
+    migrate(&pool, 3).await;
+    sqlx::query("UPDATE habits SET spheres_json='[\"mind\",\"mind\"]' WHERE id='read'")
+        .execute(&pool)
+        .await
+        .unwrap();
+    assert!(make_migrator(4).run(&pool).await.is_err());
+    let columns = sqlx::query("PRAGMA table_info(habits)")
+        .fetch_all(&pool)
+        .await
+        .unwrap();
+    assert!(!columns
+        .iter()
+        .any(|r| r.get::<String, _>("name") == "contribution_profile_json"));
+    let version: i64 = sqlx::query_scalar("SELECT max(version) FROM _sqlx_migrations")
+        .fetch_one(&pool)
+        .await
+        .unwrap();
+    assert_eq!(version, 3);
+    sqlx::query("UPDATE habits SET spheres_json='[\"mind\"]' WHERE id='read'")
+        .execute(&pool)
+        .await
+        .unwrap();
+    pool.close().await;
+    let reopened = connect(&path).await;
+    migrate(&reopened, 4).await;
+    assert_eq!(
+        storage::export(&reopened).await.unwrap().data.habits.len(),
+        3
+    );
+    reopened.close().await;
+}
+
+#[tokio::test]
+async fn schema_three_upgrade_keeps_october_records_and_archived_profiles() {
+    let temporary = tempfile::tempdir().unwrap();
+    let path = temporary.path().join("synthetic.db");
+    let pool = connect(&path).await;
+    migrate(&pool, 3).await;
+    sqlx::query("UPDATE habits SET archived_at='2026-10-27T00:00:00Z' WHERE id='read'")
+        .execute(&pool)
+        .await
+        .unwrap();
+    for day in ["2026-10-26", "2026-10-27"] {
+        sqlx::query("INSERT INTO activities VALUES (?,'read','Historical name','[\"mind\",\"recovery\"]',?,'2026-10-27T00:00:00Z','UTC')").bind(day).bind(day).execute(&pool).await.unwrap();
+    }
+    migrate(&pool, 4).await;
+    migrate(&pool, 4).await;
+    pool.close().await;
+    let reopened = connect(&path).await;
+    let saved = storage::export(&reopened).await.unwrap();
+    assert_eq!(saved.data.activities.len(), 2);
+    assert!(saved
+        .data
+        .activities
+        .iter()
+        .all(|a| a.contribution_snapshot.is_none()
+            && a.habit_name == "Historical name"
+            && a.spheres.len() == 2));
+    assert!(saved
+        .data
+        .habits
+        .iter()
+        .find(|h| h.id == "read")
+        .unwrap()
+        .archived_at
+        .is_some());
+    reopened.close().await;
+}
+
+#[tokio::test]
+async fn export_counts_new_json_bytes_before_fetch_and_rejects_invalid_stored_profiles() {
+    let (_temporary, _, pool) = fixture().await;
+    sqlx::query("DROP TRIGGER contribution_habit_update")
+        .execute(&pool)
+        .await
+        .unwrap();
+    sqlx::query("UPDATE habits SET contribution_profile_json=NULL WHERE id='read'")
+        .execute(&pool)
+        .await
+        .unwrap();
+    assert!(storage::export(&pool).await.is_err());
+    let oversized = format!("{{\"padding\":\"{}\"}}", "x".repeat(model::MAX_BYTES));
+    sqlx::query("UPDATE habits SET contribution_profile_json=?")
+        .bind(oversized)
+        .execute(&pool)
+        .await
+        .unwrap();
+    assert!(storage::export(&pool)
+        .await
+        .unwrap_err()
+        .contains("ограничения"));
+    pool.close().await;
 }

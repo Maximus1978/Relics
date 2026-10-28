@@ -1,3 +1,4 @@
+import { defaultContributions } from '../src/domain/contributions.ts';
 import test, { type TestContext } from 'node:test';
 import assert from 'node:assert/strict';
 import { DatabaseSync, type SQLInputValue } from 'node:sqlite';
@@ -45,11 +46,12 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
     } catch (error) { database.exec('ROLLBACK'); throw error; }
   }
   function seedOnce() {
-    if (database.prepare('PRAGMA user_version').get()?.user_version === 3) return;
+    if (database.prepare('PRAGMA user_version').get()?.user_version >= 3) return;
     database.exec(readFileSync(new URL('../src-tauri/migrations/003_seed_once.sql', import.meta.url), 'utf8'));
     database.exec('PRAGMA user_version = 3');
   }
-  if (initialVersion === 2) { migrate(); seedOnce(); }
+  function weightsOnce(){if(Number(database.prepare('PRAGMA user_version').get()?.user_version)>=4)return;database.exec('BEGIN');try{database.exec(readFileSync(new URL('../src-tauri/migrations/004_habit_contributions.sql',import.meta.url),'utf8'));database.exec('PRAGMA user_version=4; COMMIT');}catch(error){database.exec('ROLLBACK');throw error;}}
+  if (initialVersion === 2) { migrate(); seedOnce(); weightsOnce(); }
   context.after(() => {
     database.close();
     if (dirname(folder) !== temporaryRoot) throw new Error('Unexpected test cleanup directory.');
@@ -58,13 +60,13 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
   return {
     get database() { return database; },
     migrate,
-    open() { seedOnce(); return openActivityRepository(sqliteAdapter(database)); },
+    open() { seedOnce(); weightsOnce(); return openActivityRepository(sqliteAdapter(database)); },
     reopen() {
       database.close();
       database = new DatabaseSync(path);
       database.exec('PRAGMA foreign_keys = ON');
       migrate();
-      seedOnce();
+      seedOnce(); weightsOnce();
       return openActivityRepository(sqliteAdapter(database));
     },
   };
@@ -152,15 +154,15 @@ test('repeated startup neither duplicates samples nor overwrites existing defini
   const database = fixture(context);
   let repository = await database.open();
   const custom = await repository.createHabit('Прогулка', ['mind']);
-  database.database.prepare('UPDATE habits SET name = ?, spheres_json = ? WHERE id = ?')
-    .run('Сохранённое название', '["recovery"]', 'walk');
+  database.database.prepare('UPDATE habits SET name = ?, spheres_json = ?, contribution_profile_json = ? WHERE id = ?')
+    .run('Сохранённое название', '["recovery"]', JSON.stringify(defaultContributions(['recovery'])), 'walk');
   for (let restart = 0; restart < 3; restart++) repository = await database.reopen();
   const habits = await repository.listHabits();
   assert.equal(habits.length, 4);
   for (const sample of sampleHabits) assert.equal(habits.filter(habit => habit.id === sample.id).length, 1);
   assert.deepEqual(habits.find(habit => habit.id === custom.id), custom);
   assert.deepEqual(habits.find(habit => habit.id === 'walk'), {
-    id: 'walk', name: 'Сохранённое название', spheres: ['recovery'], archivedAt: null,
+    id: 'walk', name: 'Сохранённое название', spheres: ['recovery'], archivedAt: null, contributionProfile:defaultContributions(['recovery']),
   });
 });
 
@@ -169,8 +171,8 @@ test('logging keeps the saved name and sphere snapshot after later database defi
   const repository = await database.open();
   const habit = await repository.createHabit('Гитара', ['mind', 'recovery']);
   await repository.log(habit, '2000-01-01');
-  database.database.prepare('UPDATE habits SET name = ?, spheres_json = ? WHERE id = ?')
-    .run('Другое название', '["body"]', habit.id);
+  database.database.prepare('UPDATE habits SET name = ?, spheres_json = ?, contribution_profile_json = ? WHERE id = ?')
+    .run('Другое название', '["body"]', JSON.stringify(defaultContributions(['body'])), habit.id);
   const [entry] = await repository.list();
   assert.equal(entry.habitName, 'Гитара');
   assert.deepEqual(entry.spheres, ['mind', 'recovery']);
@@ -249,7 +251,7 @@ test('restoration retains the last edited definition and re-enables logging afte
   await repository.restoreHabit(habit.id);
   repository = await database.reopen();
   assert.deepEqual((await repository.listHabits()).find(saved => saved.id === habit.id), {
-    ...habit, name: 'Гитара', spheres: ['mind', 'recovery'],
+    ...habit, name: 'Гитара', spheres: ['mind', 'recovery'], contributionProfile:defaultContributions(['mind','recovery']),
   });
   assert.deepEqual(await repository.listHabits('archived'), []);
   await repository.log(habit, '2000-01-01');
@@ -312,14 +314,14 @@ test('migration 2 upgrades a populated v1 database and remains safe across resta
       .run(`legacy-${day}`, 'legacy-guitar', 'Guitar', '["mind","recovery"]', day, `${day}T18:00:00Z`, 'America/Los_Angeles');
   }
   const habitsBefore = database.database.prepare('SELECT * FROM habits').all();
-  const historyBefore = database.database.prepare('SELECT * FROM activities ORDER BY id').all();
+  const historyBefore = database.database.prepare('SELECT id,habit_id,habit_name_snapshot,spheres_snapshot_json,occurred_on,recorded_at,timezone FROM activities ORDER BY id').all();
   database.migrate();
   assert.deepEqual(database.database.prepare('SELECT id, name, spheres_json FROM habits').all(), habitsBefore);
   assert.equal(database.database.prepare('SELECT archived_at FROM habits').get()?.archived_at, null);
   let repository = await database.open();
   await repository.archiveHabit('read');
   for (let restart = 0; restart < 3; restart++) repository = await database.reopen();
-  assert.deepEqual(database.database.prepare('SELECT * FROM activities ORDER BY id').all(), historyBefore);
+  assert.deepEqual(database.database.prepare('SELECT id,habit_id,habit_name_snapshot,spheres_snapshot_json,occurred_on,recorded_at,timezone FROM activities ORDER BY id').all(), historyBefore);
   assert.equal((await repository.listHabits('all')).length, 4);
   assert.equal((await repository.listHabits('archived'))[0].id, 'read');
   assert.equal(database.database.prepare('PRAGMA table_info(habits)').all().filter(column => column.name === 'archived_at').length, 1);
