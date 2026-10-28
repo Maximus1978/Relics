@@ -65,6 +65,6 @@ Corrections/removals should append auditable changes or retain revisions/tombsto
 
 ## Backup and security
 
-JSON backup/restore is required before trusting the app with long-term personal data. Define schema versions, validate the entire import, preserve stable IDs/history, apply atomically, and test restoration to a clean database. Backup is not device synchronization. File selection and export require platform-specific adapters; their runtime behavior is not verified yet.
+BACKUP-001 implements native Windows JSON export/preview/full replacement in src-tauri/src/backup, using the existing SQL plugin pool and one pinned SQLx transaction. Four explicitly allowed main-window commands choose files through native Rust dialogs, never caller-provided paths. Synced atomic file publication, retained protective JSON before deletion, strict validation and migration-level compatibility are documented in [BACKUP](BACKUP.md). Additive migration 3 seeds defaults only once; live file identity/migrations 1–2 stay intact. Native tests use temporary databases, including rollback and process crash. Owner native dialog/offline acceptance remains separate; this is not synchronization.
 
 Only local application content should receive SQL capabilities. Current SQL execute permission is broad; do not load remote pages into its privileged window. Do not log journal text or hidden content. Keep databases and secret packages outside Git. Node SQLite tests do not validate the Tauri bridge, Android lifecycle, or actual application storage locations.

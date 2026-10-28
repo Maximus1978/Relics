@@ -30,7 +30,7 @@ npm.cmd run tauri -- dev
 
 Windows requires Rust, MSVC Build Tools, and WebView2. Android setup is a separate task requiring JDK, Android SDK/NDK, Rust targets, and a device/emulator. Once configured: `npm run tauri android init`, then `npm run tauri android dev`. Consult [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) and [SQL plugin documentation](https://v2.tauri.app/plugin/sql/).
 
-For browser-only preview, run `npm.cmd run dev` and open http://localhost:1420; the labeled fictional demonstration is interactive but has no persistent storage. Stop that server before starting Tauri dev. One task at a time: finish the authorized Sanctuary release and stop; do not begin BACKUP-001, Android or gameplay automatically. Read [HANDOFF](docs/HANDOFF.md) for the current boundary.
+For browser-only preview, run `npm.cmd run dev` and open http://localhost:1420; the fictional demonstration has no persistent storage, and native backup actions are unavailable. Stop that server before Tauri dev. BACKUP-001 adds a Windows Резервная копия utility with native export/validated preview/confirmed full replacement and protective recovery copies; [format, limits and manual acceptance](docs/BACKUP.md). It is delivered for review, not merged automatically. No next task starts automatically; read [HANDOFF](docs/HANDOFF.md).
 
 ## Data and content
 

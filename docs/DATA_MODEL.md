@@ -29,6 +29,10 @@ Migration `002_archive_habits.sql`, version 2, adds nullable `habits.archived_at
 
 Repository queries distinguish active (default), archived and all habits. Logging atomically selects the current definition only from an active database row, rather than trusting UI state or stale objects. Conflict handling keeps one completion per habit/day; archived/missing habits are rejected. Names and sphere sets are snapshotted from SQLite at insertion. Parameter order follows SQLite binding occurrence order. Activity cancellation is unchanged. See [HABITS-001B](HABITS_001B.md) for tests and native acceptance limits.
 
+## BACKUP-001 additions
+
+BACKUP-001 introduces format v1 / migration level 3 with strict native validation and full replacement, not merging. [Backup contract, all fields, limits and recovery](BACKUP.md). Migration 003 only moves sample seeding to a one-time INSERT OR IGNORE; no user-data columns or gameplay tables change. Applied migrations 1/2 are untouched. Routine repository opening no longer seeds, so restored empty/subset datasets remain stable across restart. The plugin migration ledger is retained, not imported from JSON. Native SQLx transactions, historical snapshot preservation and temporary-database failure/reopen tests complement Node repository tests. Current cancellation semantics are unchanged. Progression/audit content is not invented for backup.
+
 ## Required model evolution, not implemented
 
 | Entity / type | Responsibility |
@@ -42,7 +46,7 @@ Repository queries distinguish active (default), archived and all habits. Loggin
 | Discovery | Stable discovery/recipe/artifact IDs, first discovery time, content/rules versions, idempotent grant |
 | ProgressProjection | Rebuildable lifetime/epoch Mastery, recent Resonance, Balance; evaluation time and rules version |
 | WorldPack / ArtifactDefinition / RecipeDefinition | Versioned declarative content, with spoiler-aware packaging |
-| BackupEnvelope | Schema/version, export metadata, validated entities and audit history |
+| BackupEnvelope evolution | v1 currently covers habits/activities; future persisted audit/discovery/epoch fields need explicit version adapters |
 
 These types describe requirements; create executable types incrementally with their use cases. The epoch transition must preserve the original activity and recording metadata. Whether backdated activities affect closed epoch projections is an open policy.
 

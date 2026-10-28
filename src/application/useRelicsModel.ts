@@ -137,6 +137,7 @@ export function useRelicsModel() {
           setActivities(entries); setHabits(savedHabits); setShowArchived(false);
           setError(''); setMessage('Данные восстановлены из резервной копии.');
         } catch {
+          setRepository(null);
           throw new Error('Данные восстановлены, но экран не обновился. Закройте и откройте приложение. Защитная копия сохранена в папке recovery.');
         }
       }

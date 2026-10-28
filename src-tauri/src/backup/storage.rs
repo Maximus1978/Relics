@@ -29,6 +29,10 @@ pub fn write_backup(path: &Path, backup: &Backup) -> BackupResult<()> {
 }
 
 pub fn atomic_write(path: &Path, bytes: &[u8]) -> BackupResult<()> {
+    publish(path, bytes, true)
+}
+
+fn publish(path: &Path, bytes: &[u8], overwrite: bool) -> BackupResult<()> {
     let parent = path
         .parent()
         .ok_or("Не удалось определить папку для копии.")?;
@@ -38,13 +42,42 @@ pub fn atomic_write(path: &Path, bytes: &[u8]) -> BackupResult<()> {
         .write_all(bytes)
         .and_then(|_| temporary.as_file().sync_all())
         .map_err(|_| "Не удалось полностью записать копию.")?;
-    temporary
-        .persist(path)
-        .map_err(|_| "Не удалось завершить запись копии. Предыдущий файл не удалялся.")?;
+    let published = if overwrite {
+        temporary.persist(path)
+    } else {
+        temporary.persist_noclobber(path)
+    }
+    .map_err(|_| "Не удалось завершить запись копии. Предыдущий файл не удалялся.")?;
+    if !overwrite {
+        published
+            .sync_all()
+            .map_err(|_| "Не удалось подтвердить полную запись защитной копии.")?;
+    }
+    Ok(())
+}
+
+pub(crate) fn write_safety(path: &Path, backup: &Backup) -> BackupResult<()> {
+    publish(path, &model::encode(backup)?, false)?;
+    if read_backup(path)? != *backup {
+        return Err("Защитная копия не прошла проверку; восстановление отменено.".into());
+    }
     Ok(())
 }
 
 pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup> {
+    let habit_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(name AS BLOB)) + length(CAST(spheres_json AS BLOB)) + COALESCE(length(archived_at),0)),0) AS bytes FROM habits")
+        .fetch_one(&mut *connection).await.map_err(|_| "Не удалось проверить размер привычек.")?;
+    let activity_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(habit_id AS BLOB)) + length(CAST(habit_name_snapshot AS BLOB)) + length(CAST(spheres_snapshot_json AS BLOB)) + length(occurred_on) + length(recorded_at) + length(timezone)),0) AS bytes FROM activities")
+        .fetch_one(&mut *connection).await.map_err(|_| "Не удалось проверить размер журнала.")?;
+    if habit_size.get::<i64, _>("total") > model::MAX_HABITS as i64
+        || activity_size.get::<i64, _>("total") > model::MAX_ACTIVITIES as i64
+        || habit_size.get::<i64, _>("bytes") + activity_size.get::<i64, _>("bytes")
+            > model::MAX_BYTES as i64
+    {
+        return Err(
+            "Данные превышают ограничения резервного копирования; записи не были обрезаны.".into(),
+        );
+    }
     let habit_rows = sqlx::query(
         "SELECT id, name, spheres_json, archived_at FROM habits ORDER BY rowid LIMIT 20001",
     )
@@ -110,7 +143,7 @@ pub async fn restore(
         pool,
         backup,
         |current| {
-            write_backup(&path, current)?;
+            write_safety(&path, current)?;
             Ok(path.clone())
         },
         || Ok(()),

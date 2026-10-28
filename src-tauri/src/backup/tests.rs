@@ -4,7 +4,7 @@ use super::{
 };
 use sqlx::{
     migrate::{Migration, MigrationType, Migrator},
-    sqlite::{SqliteConnectOptions, SqlitePoolOptions},
+    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions},
     Row, SqlitePool,
 };
 use std::{
@@ -62,6 +62,7 @@ async fn connect(path: &Path) -> SqlitePool {
                 .filename(path)
                 .create_if_missing(true)
                 .foreign_keys(true)
+                .journal_mode(SqliteJournalMode::Wal)
                 .busy_timeout(Duration::from_secs(3)),
         )
         .await
@@ -260,6 +261,44 @@ async fn empty_restored_database_stays_empty_after_migrations_and_reopen() {
 }
 
 #[tokio::test]
+async fn snapshot_stays_consistent_across_concurrent_commit() {
+    let (temporary, _, pool) = fixture().await;
+    storage::restore(&pool, &example(), &temporary.path().join("recovery"))
+        .await
+        .unwrap();
+    let before = storage::export(&pool).await.unwrap().data;
+    let mut reader = pool.begin().await.unwrap();
+    sqlx::query("SELECT id FROM habits")
+        .fetch_all(&mut *reader)
+        .await
+        .unwrap();
+    let mut writer = pool.begin().await.unwrap();
+    sqlx::query("UPDATE habits SET name = 'Changed atomically'")
+        .execute(&mut *writer)
+        .await
+        .unwrap();
+    sqlx::query("UPDATE activities SET habit_name_snapshot = 'Changed atomically'")
+        .execute(&mut *writer)
+        .await
+        .unwrap();
+    writer.commit().await.unwrap();
+    assert_eq!(storage::snapshot(&mut reader).await.unwrap().data, before);
+    reader.commit().await.unwrap();
+    let after = storage::export(&pool).await.unwrap();
+    assert!(after
+        .data
+        .habits
+        .iter()
+        .all(|habit| habit.name == "Changed atomically"));
+    assert!(after
+        .data
+        .activities
+        .iter()
+        .all(|activity| activity.habit_name == "Changed atomically"));
+    pool.close().await;
+}
+
+#[tokio::test]
 async fn rollback_after_delete_and_mid_insert_keeps_original_database() {
     let (temporary, _, pool) = fixture().await;
     let before = storage::export(&pool).await.unwrap().data;
@@ -371,6 +410,19 @@ fn atomic_file_publication_keeps_old_file_on_failure_and_replaces_on_success() {
     assert_eq!(std::fs::read(&existing).unwrap(), original);
     storage::atomic_write(&existing, b"complete replacement").unwrap();
     assert_eq!(std::fs::read(&existing).unwrap(), b"complete replacement");
+}
+
+#[test]
+fn retained_safety_snapshot_is_verified_and_cannot_be_overwritten() {
+    let temporary = tempfile::tempdir().unwrap();
+    let path = temporary.path().join("safety.json");
+    let original = example();
+    storage::write_safety(&path, &original).unwrap();
+    assert_eq!(storage::read_backup(&path).unwrap(), original);
+    let mut changed = original.clone();
+    changed.data.habits[0].name = "Changed".into();
+    assert!(storage::write_safety(&path, &changed).is_err());
+    assert_eq!(storage::read_backup(&path).unwrap(), original);
 }
 
 #[tokio::test]
