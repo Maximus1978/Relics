@@ -8,7 +8,7 @@ const today = '2026-10-28';
 const week = ['2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27',today];
 function entry(day: string, contributions: SphereId[]): Activity {
   return { id: crypto.randomUUID(), habitId: 'synthetic', habitName: 'Historical snapshot', spheres: contributions,
-    occurredOn: day, recordedAt: '2026-10-28T20:00:00Z', timezone: 'America/Los_Angeles' };
+    occurredOn: day, recordedAt: '2026-10-28T20:00:00Z', timezone: 'America/Los_Angeles', contributionSnapshot:null };
 }
 
 test('DORMANT means zero recent sphere-days, including when only older history exists', () => {

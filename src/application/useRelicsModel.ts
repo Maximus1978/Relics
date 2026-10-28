@@ -1,3 +1,4 @@
+import { ContributionError } from '../domain/contributions';
 import { useEffect, useRef, useState } from 'react';
 import { isTauri } from '@tauri-apps/api/core';
 import { localDay, type Activity, type Habit } from '../domain/activity';
@@ -61,7 +62,7 @@ export function useRelicsModel() {
       setMessage(native ? success : `Демонстрация: ${success} Изменения только в памяти этой страницы.`);
     } catch (failure) {
       setError(saved ? native ? 'Изменение сохранено, но список не обновился. Перезапустите приложение.' : 'Демонстрация изменена, но список не обновился. Обновите страницу.'
-        : failure instanceof HabitStateError || failure instanceof HabitValidationError ? failure.message
+        : failure instanceof ContributionError || failure instanceof HabitStateError || failure instanceof HabitValidationError ? failure.message
         : failure instanceof Error && failure.message.startsWith('Выберите') ? failure.message
         : failure instanceof Error && /дат/.test(failure.message) ? failure.message
         : 'Не удалось сохранить изменение. Повторите попытку.');
@@ -74,8 +75,8 @@ export function useRelicsModel() {
 
   async function saveHabit(input: HabitInput) {
     await perform(async store => {
-      if (editingHabit) await store.updateHabit(editingHabit.id, input.name, input.spheres);
-      else { await store.createHabit(input.name, input.spheres); setShowArchived(false); }
+      if (editingHabit) await store.updateHabit(editingHabit.id, input.name, input.spheres, input.contributionProfile);
+      else { await store.createHabit(input.name, input.spheres, input.contributionProfile); setShowArchived(false); }
       setCreatingHabit(false); setEditingHabit(null);
     }, 'Привычка сохранена.');
   }

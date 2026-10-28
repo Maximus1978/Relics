@@ -4,7 +4,7 @@ import { recentActivity } from '../src/domain/recentActivity.ts';
 import type { Activity, SphereId } from '../src/domain/activity.ts';
 
 function entry(day: string, contributions: SphereId[], habitName = 'Historical name'): Activity {
-  return { id: crypto.randomUUID(), habitId: 'archived-or-edited', habitName, spheres: contributions, occurredOn: day, recordedAt: '2026-10-27T12:00:00Z', timezone: 'America/Los_Angeles' };
+  return { id: crypto.randomUUID(), habitId: 'archived-or-edited', habitName, spheres: contributions, occurredOn: day, recordedAt: '2026-10-27T12:00:00Z', timezone: 'America/Los_Angeles', contributionSnapshot:null };
 }
 
 test('empty history has descriptive zero counts and no fabricated observations', () => {

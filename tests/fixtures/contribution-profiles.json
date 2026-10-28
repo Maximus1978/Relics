@@ -131,5 +131,21 @@
       "mind"
     ],
     "valid": false
+  },
+  {
+    "name": "non-integer-json-token-5.0",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":5.0,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "non-integer-json-token-5e0",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":5e0,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
   }
 ]
