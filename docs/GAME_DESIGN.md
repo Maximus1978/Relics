@@ -22,7 +22,7 @@ Daily logging remains useful without Adventure Mode. Discoveries are curated and
 
 Keep canonical IDs. Current sphere symbols/gems are category identities; they are not earned ranks.
 
-Approved future habit identity: a small curated icon gallery, with icon choice independent of sphere contributions. WEIGHTS-001A supersedes primary/secondary allocation math with equal-status independent subjective 1–10 sphere values; primary visual identity remains a separate deferred choice. An icon must not determine contributions or silently change them. Current implementation stores an unweighted sphere set and derives decorative color from the first sphere; it has no independently stored icon or explicit primary-sphere field.
+Approved future habit identity: a small curated icon gallery, with icon choice independent of sphere contributions. WEIGHTS-001A supersedes primary/secondary allocation math with equal-status independent subjective 1–10 sphere values; primary visual identity remains a separate deferred choice. An icon must not determine contributions or silently change them. WEIGHTS-001B adds a snapshotted subjective contribution profile while retaining the sphere set and first-sphere decoration; there is no independent icon or primary-sphere editor.
 
 Weights describe how a habit contributes across spheres. Optional intensity describes one activity occurrence. They are different concepts and fields. Owner-approved contribution ranges/defaults/no-normalization and legacy semantics are now specified in [WEIGHTS_001A](WEIGHTS_001A.md); primary visual identity and per-activity intensity effects remain separate future decisions. Do not retroactively reinterpret old snapshots.
 
@@ -30,7 +30,7 @@ Use a shared base frame for ordinary Habit Sigils. Reserve unique silhouettes an
 
 ## Implemented journal versus future activity details
 
-Implemented: create/edit/archive/restore habits; multiple unweighted spheres; today/backdated logging; one completion per habit/local date; historical name/sphere snapshots; SQLite persistence. Archiving retains history and prevents new logs until restoration. Cancellation currently physically deletes a record; auditable corrections are a future task.
+Implemented: create/edit/archive/restore habits; multiple spheres with independent profiles in PR #8; today/backdated logging; one completion per habit/local date; historical name/sphere snapshots; SQLite persistence. Archiving retains history and prevents new logs until restoration. Cancellation currently physically deletes a record; auditable corrections are a future task.
 
 Approved future activity details: optional intensity and note attached to an activity, not to habit creation. Add them through versioned additive migrations, retaining IDs, old records and unknown/NULL legacy values. Do not rewrite applied migrations. Notes/reflections can be omitted without consequences.
 
@@ -120,4 +120,4 @@ Habit profiles are definition data, with immutable activity snapshots created at
 
 Owner clarification: existing unweighted definitions receive marked 5 defaults for future logs, including archived definitions. Old activities remain numerically unknown. Future default-origin events ARE included in numeric trends with separate counts, not labeled explicitly calibrated. Explicit form Save confirms the future definition; it cannot relabel history. Known0 in a valid snapshot is not the same as absent legacy data.
 
-No new input on normal completion, new medallion/icon art, intensity/duration/quantity/repeated-session controls, AI estimation, recommendations, Balance grade or rewards. WEIGHTS-001A changes documentation only. The storage/backup/projection proposal awaits review; WEIGHTS-001B and SPHERE-TRENDS-001 do not start automatically.
+No new input on normal completion, new medallion/icon art, intensity/duration/quantity/repeated-session controls, AI estimation, recommendations, Balance grade or rewards. WEIGHTS-001A was documentation-only and is now approved/merged. WEIGHTS-001B implements storage/backup/editor in unmerged PR #8, with B1 verified before B2. Actual evidence and owner acceptance limits are in WEIGHTS_001B.md. Projection/charts remain unimplemented; SPHERE-TRENDS-001 does not start automatically.

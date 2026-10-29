@@ -2,7 +2,7 @@
 
 ## Implemented TypeScript contract
 
-`src/domain/activity.ts` currently defines `SphereId`, `Habit`, and `Activity`. `Habit` has `id`, `name`, an unweighted `spheres` array and nullable `archivedAt`. `Activity` has `id`, `habitId`, snapshot `habitName`/`spheres`, `occurredOn`, `recordedAt`, and `timezone`. These are scaffold types, not the complete target domain.
+`src/domain/activity.ts` currently defines `SphereId`, `Habit`, and `Activity`. `Habit` has `id`, `name`, `spheres`, nullable `archivedAt` and required `contributionProfile` (version 1/origin/all-five independent values). `Activity` has `id`, `habitId`, snapshot `habitName`/`spheres`, `occurredOn`, `recordedAt`, `timezone` and required nullable `contributionSnapshot`. Legacy history is null, not zero. These are scaffold types, not the complete target domain.
 
 ## Implemented SQLite schema
 
@@ -33,11 +33,11 @@ Repository queries distinguish active (default), archived and all habits. Loggin
 
 BACKUP-001 introduces format v1 / migration level 3 with strict native validation and full replacement, not merging. [Backup contract, all fields, limits and recovery](BACKUP.md). Migration 003 only moves sample seeding to a one-time INSERT OR IGNORE; no user-data columns or gameplay tables change. Applied migrations 1/2 are untouched. Routine repository opening no longer seeds, so restored empty/subset datasets remain stable across restart. The plugin migration ledger is retained, not imported from JSON. Native SQLx transactions, historical snapshot preservation and temporary-database failure/reopen tests complement Node repository tests. Current cancellation semantics are unchanged. Progression/audit content is not invented for backup.
 
-## Required model evolution, not implemented
+## Model evolution and implementation status
 
 | Entity / type | Responsibility |
 | --- | --- |
-| SphereContribution | Stable sphereId, independent selected integer 1–10/unselected 0; default 5, no normalization. Owner contract approved; storage proposal in WEIGHTS_001A.md |
+| ContributionProfile (implemented candidate) | Version1/origin/all-five independent values in WEIGHTS-001B; analytics remain future |
 | HabitSchedule | Daily/scheduled/flexible recurrence; schedule versions; definition editing/archive/restore delivered separately in HABITS-001B |
 | Activity + ActivityRevision / JournalEvent | Stable identity, local day, optional instant, recordedAt, timezone, historical contribution snapshot, correction/deletion audit |
 | DayObservation | Explicit unknown, confirmed inactivity, or planned rest; missing data never implies failure |
@@ -62,7 +62,7 @@ Test migration from an earlier database, weighted snapshots, scheduling boundari
 
 ## DOC-GAME-002 — accepted semantic boundaries, no schema changes
 
-Habit Sigil is the user-facing identity of the existing Habit, not a new earned-artifact record or a schema rename. The current name/sphere/archive fields and historical activity snapshots remain unchanged. Future icon identity remains independent. WEIGHTS-001A defines independent1–10 values without primary/secondary normalization; primary visual identity/per-activity intensity are separate. Contribution storage requires additive migration and backup-version changes.
+Habit Sigil is the user-facing identity of the existing Habit, not a new earned-artifact record or a schema rename. The current name/sphere/archive fields and historical activity snapshots remain unchanged. Future icon identity remains independent. WEIGHTS-001A defines independent 1–10 values without primary/secondary normalization; primary visual identity/per-activity intensity are separate. Contribution storage requires additive migration and backup-version changes.
 
 Unique Artifacts require stable authored definition identities and earned/discovered instance/grant references with provenance/versioning; they are not inferred from ordinary habit IDs or art. This is future ARTIFACT-001/discovery work. Collection is an earned-content view, Chronicle is real activity/reflection history, and Museum is retained artifact/story/epoch context. Navigation separation must preserve existing IDs/dates/snapshots/cancellation behavior.
 
@@ -74,9 +74,9 @@ Future temporary Blessings need approved origin/identity/lifecycle/correction/ve
 
 These are modeling requirements, not implemented entities/columns/tables. Future additions require versioned additive migrations and explicit backup-format adapters preserving old records and IDs; no migration, backup format or one-completion-per-day change is made in DOC-GAME-002.
 
-## WEIGHTS-001A — concrete proposal, no migration applied
+## WEIGHTS-001A contract and WEIGHTS-001B implementation candidate
 
-See [WEIGHTS_001A](WEIGHTS_001A.md) sections2–5 for complete schemas/validation/transaction/compatibility details. Proposed next migration 004 adds habits.contribution_profile_json and activities.contribution_snapshot_json as nullable JSON-object TEXT columns; preserve 001–003, IDs, archive flags, existing name/sphere snapshots, DB/app identity and habit/day uniqueness.
+See [WEIGHTS_001A](WEIGHTS_001A.md) sections2–5 for complete schemas/validation/transaction/compatibility details. Implemented migration 004 adds habits.contribution_profile_json and activities.contribution_snapshot_json as nullable JSON-object TEXT columns; preserve 001–003, IDs, archive flags, existing name/sphere snapshots, DB/app identity and habit/day uniqueness.
 
 ContributionProfileV1 has version=1, origin=user|legacy-default and all five canonical values; selected 1–10, unselected 0, positive-key set equals that row's existing spheres. Unknown/duplicate/missing keys, bad ranges/types/origin/version and malformed non-null profiles are errors. SQL JSON checks are coarse; TS and native Rust semantic validation must agree.
 
@@ -84,6 +84,8 @@ In a transactional upgrade, materialize5/default-origin profiles for existing ac
 
 Create/edit writes the name/sphere/profile atomically with bound SQL; existing one-statement INSERT...SELECT copies all event snapshots from the same active persisted habit row. Backdated entries snapshot the current definition at recording time; duplicate retries preserve the first snapshot. Archive/restore affects only archived_at.
 
-Proposed backup v2/schema 4 requires non-null habit contributionProfile and required nullable activity contributionSnapshot, retaining every current field. Strict v1/schema 3 imports use a typed adapter: imported habit defaults from their own spheres, imported events null. New exports/protective safety copies must be v2, never lossy v1. Validate before full replacement; synced/read-verified v2 safety copy and one pinned SQLx transaction preserve all weights/origins/null on rollback/undo. Older binaries cannot consume v2 or write schema 4 safely; do not claim downgrade compatibility. [BACKUP](BACKUP.md) keeps the implemented v1 versus proposed v2 boundary.
+Implemented candidate backup v2/schema 4 requires non-null habit contributionProfile and required nullable activity contributionSnapshot, retaining every current field. Strict v1/schema 3 imports use a typed adapter: imported habit defaults from their own spheres, imported events null. New exports/protective safety copies must be v2, never lossy v1. Validate before full replacement; synced/read-verified v2 safety copy and one pinned SQLx transaction preserve all weights/origins/null on rollback/undo. Older binaries cannot consume v2 or write schema 4 safely; do not claim downgrade compatibility. [BACKUP](BACKUP.md) keeps the implemented v1 versus proposed v2 boundary.
 
 Future deterministic analytics consume event snapshots, not today's habit profiles: sum known units by occurredOn/day/week, derive relative shares with no-data=null, and report included/default/user/excluded-legacy counts. Default-origin events are included; null legacy excluded, not interpreted as no activity. Calendar buckets, explicit boundaries/as-of date and 4–8 complete weeks are proposed in the contract. No derived numeric state or graph is stored/implemented here.
+
+WEIGHTS-001B implements the approved contract in PR #8. Migration004 is registered in the native SQL plugin and preserves 001–003 unchanged; it validates legacy sets transactionally before materializing defaults. SQL triggers enforce profile/set consistency on definition writes/non-null event inserts. The migration ledger and required columns are checked before repository use; unsupported versions fail clearly. [Actual gates/test map](WEIGHTS_001B.md). Future analytics remain absent, and old snapshots are never joined to current definitions to invent values.

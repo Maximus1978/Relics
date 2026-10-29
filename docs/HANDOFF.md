@@ -1,32 +1,30 @@
 # Project handoff
 
-## Active implementation: WEIGHTS-001B, Gate B1
+## Current delivery: WEIGHTS-001B, unmerged owner review
 
-WEIGHTS-001A owner-approved; PR #7 merged at 6e122e7221c33d909ff2f4ecdbfba75b210f5b08. Feature branch feature-weights-001b starts from that verified master. Implement profiles/migration004/snapshots and v2/v1 native backup with temporary-data rollback/crash verification first; Gate B1 PASS before UI integration: 59 Node/temporary-SQLite tests and22 native tests passed (one intentional child crash helper ignored standalone), including actual SQLx migration rollback, strict TS/Rust vectors, v1 replacement/weighted v2 safety undo, failure/crash/reopen and JSON byte limits. UI integration is now authorized by this verified gate. Deliver separate unmerged PR with Windows CI/EXE/screenshots, preserve rune/art/history/offline behavior and stop. No trend/progression/Android work and no owner-DB testing.
+[PR #8](https://github.com/Maximus1978/Relics/pull/8), branch feature-weights-001b. Owner/reviewer approved WEIGHTS-001A; PR #7 expected head 554ba3ce3185e759742fc1a208f4a4789208c8ad was verified Markdown-only/mergeable and merged normally at 6e122e7221c33d909ff2f4ecdbfba75b210f5b08. Implementation starts from that verified master. Do not merge PR #8 or start SPHERE-TRENDS-001.
 
-## Delivered for owner review: WEIGHTS-001A
+## Gate order and actual evidence
 
-Verified latest origin/master: c2375e7543649ce80e25151bf79c0376c985ad9d (DOC-GAME-002 complete, PR #6 regular merge be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9). Branch docs-weights-001a; [documentation PR #7](https://github.com/Maximus1978/Relics/pull/7) is open and unmerged. Only Markdown changes; no migrations, application/native code, tests, artwork, dependencies or owner data changes.
+Gate B1 passed BEFORE UI integration and is separately committed at 240fb1e895c9a8bd8ef14b63ba8adef5d8d144dc: 59 Node/temporary-SQLite tests, 22 native safety tests,0 failed,1 intentionally ignored child crash helper executed by its passing parent. Includes actual SQLx migration/ledger rollback, v1 replacement, weighted v2 safety undo, restart/crash and size bounds. Only then did B2 integrate shared Create/Edit controls and native backup summaries.
 
-Owner-approved: independent subjective contribution 1–10 per selected sphere, default 5, unselected 0, no normalization, one-to-five spheres, no extra completion input, immutable recording-time activity profiles and unchanged binary rune. Owner clarification: old definitions get marked 5 defaults for future logs; those future entries are included in numeric trends with origin/count disclosure. Old activities remain unknown, never fabricated zeros or fives. See D058–D063.
+Current full-test source: 1f957faa863af755a6b5eb435cdbffe56ae98069. Windows [run 40790775136](https://github.com/Maximus1978/Relics/actions/runs/40790775136): SUCCESS: 59 Node/temporary-SQLite tests, TypeScript/Vite, 174 actual browser checks with runtimeErrors=[], actual Tauri Windows release compilation and 22 native tests PASS (one intentional standalone crash helper ignored). Synthetic PR merge source 1caccfa7df56627c54db5a333a8e428fa5636794.. The browser stage passed with zero reported runtime errors; the actual Create/Edit screenshots were downloaded and visually inspected against the supplied concept. Local B2 test baseline: 59 Node, 22 native and 172 browser checks; CI adds Space/accessibility assertions. No manual native UI acceptance is claimed.
 
-[WEIGHTS_001A](WEIGHTS_001A.md) is the implementation-ready REVIEW PROPOSAL: versioned profile/origin, next additive 004 migration, atomic habit writes/event snapshot, strict backup v2/schema 4 with v1/schema 3 import and weighted safety/rollback, reference-based Create/Edit accessibility, pure future day/week/share/4–8-week projection, explicit WEIGHTS-001B task and W01–W26/T01–T05 matrix. Engineering proposal approval is pending; no proposed functionality is implemented here.
+[Browser/screenshot artifact](https://github.com/Maximus1978/Relics/actions/runs/40790775136/artifacts/12861866097): 51,234,695 bytes; downloaded SHA256 21b7eb97c2b6505b1fe1eef6bb446a7c3e5825580102dd49e3a9400b6f9fbe29 matches GitHub. Local evidence outside Git: ../Relics-WEIGHTS-001B-browser[.zip]. Screenshot names: weights-create-{one,two,five}.png, weights-edit-{one,two,five}.png, validation and narrow variants. The accepted art/rune geometry remains unchanged. [Windows EXE ZIP](https://github.com/Maximus1978/Relics/actions/runs/40790775136/artifacts/12861303313): 11,866,783 bytes, downloaded SHA256 75ad2885c8f2dbbc5fd368fd066521533ff373d9dfc21b5f6925da8541aff87e matched GitHub. EXE 20,600,832 bytes, SHA256 1c736b1df5cc709b413c271b09f74e74dce4acace59585480ea3f62e0f9ddcbe matched its manifest. build-info confirms source/head above, Node 22.23.4 / Rust 1.99.1, unsigned/nativeUiRuntimeVerified=false. Local ZIP/extracted files outside Git: ../Relics-WEIGHTS-001B-windows-x64[.zip]. Documentation-only receipt commits leave all tested runtime/assets/scripts/locks/workflow unchanged.
 
-Reference 2026-10-28_14-44-28.jpg supplies Sanctuary rows/controls/visual language. Show units, not percentages; inactive rows0, no active editor. Existing medallion art stays. Pictured description/icon picker/counters and effort fields are not scope. No graphs, intensity/duration/repeated sessions/AI/Balance grades/Mastery/essences/rarity/probabilities.
+## Implemented candidate and compatibility
 
-## Priority override and next single task — do not start
+[WEIGHTS_001B](WEIGHTS_001B.md) maps all W01–W26 to automated tests or clearly pending manual gates and lists no-build-tools Windows acceptance. Subjective independent 1–10/default 5/unselected 0 profiles, atomic edits and immutable recording-time snapshots are implemented. Values are not intensity/time/health or Balance.
 
-Owner explicitly overrides the prior NAV → early Android sequence:
-1. WEIGHTS-001A: specification/UX review, this documentation PR; do not auto-merge.
-2. WEIGHTS-001B: separate persistence/editor/backup PR and native Windows acceptance after specification approval.
-3. SPHERE-TRENDS-001: real snapshot-based absolute/relative trends after WEIGHTS-001B acceptance.
-4. NAV-CHRONICLE-001: dedicated Chronicle view.
+Migration004 preserves 001–003, IDs, archives, name/sphere/date snapshots, DB/app identity and daily uniqueness. Old habit definitions get legacy-default 5; old activity numeric snapshots remain NULL. New default-origin events preserve provenance; Edit Save confirms only future profiles. Do not use current definitions to recalculate history. Binary rune/daily stones ignore numeric magnitudes.
 
-Android is deferred until core mechanics are validated on Windows. All earlier approved roadmap features remain. Review concrete storage/projection details (Q21/Q22); primary visual identity/rewards/actual progression stay separate. Next single implementation task: WEIGHTS-001B, NOT started. Stop for owner review.
+New exports/protective copies are strict v2/schema 4; existing v1/schema 3 import is retained via a strict typed adapter. Preview explains conversion/full replacement; complete weighted pre-state safety is verified before deletion. Recovery/rollback/crash tests include all values/origins/null. Old binaries/v2 downgrade are unsupported; close old windows and keep a private v1 backup before upgrade. No owner DB, personal backup or private catalog was accessed or used in tests.
 
-## Documentation checks and publication
+## Boundaries and next task
 
-Required docs plus linked full contract, consistency notes in README/AGENTS/product vision/World Packs and backup-evolution note are updated. Preserve previous decision IDs; append D058–D063. Review completed: 13 Markdown files only; relative links/anchors valid; all previous decision rows and roadmap task IDs retained; D001–D063/Q01–Q22 unique; 26 WEIGHTS-001B and 5 future trend cases documented, not run. No runtime tests/build/EXE are claimed for documentation-only WEIGHTS-001A. The last accepted Windows build remains run 40764405205 on 81cc6e7897f03eafbaccd0f178eff992727a7a28 (50 Node/150 browser/16 native tests), not execution of the new planned weight cases.
+PR #8 remains open and unmerged. Owner native Windows UI/dialog/offline upgrade/accessibility acceptance is pending. The build is unsigned and requires Windows x64/WebView2. No new medallion artwork, icon gallery, description, graph, progression/Balance/reward, intensity/duration/repeated sessions, Android or Chronicle navigation changes. Tests and screenshots use synthetic data only; browser preview remains in-memory and resets.
+
+Next queued task after owner acceptance: SPHERE-TRENDS-001, not begun. Then NAV-CHRONICLE-001. Android remains deferred until Windows mechanics validation; all other approved tasks remain in ROADMAP. Stop after WEIGHTS-001B delivery.
 
 ## Historical DOC-GAME-002 release receipt
 
@@ -82,7 +80,7 @@ Locked npm ci, all 50 Node/temporary-SQLite tests, TypeScript and Vite PASS. 150
 
 Local ZIP/extracted evidence: outputs/Relics-technical-layers-browser[.zip], outside Git. Original generated masters were copied unchanged to public/art/medallion/v2/.
 
-[New Windows x64 EXE ZIP](https://github.com/Maximus1978/Relics/actions/runs/40764405205/artifacts/12849154157): 11,806,625 bytes; downloaded SHA256 78ea47ee7fbb2fc3edd5daba619a60df459b61ba92b14bd0a25b1575a083ba07 matches GitHub. EXE 20,387,328 bytes; SHA256 4f9a6970aa0036c13650f64b62f4a56d70078226dd64bd7c40458a9c98385585 matches executable-sha256.json. build-info confirms exact tested head and synthetic merge above, Node22.23.4/Rust1.99.1, signed=false and nativeUiRuntimeVerified=false. Artifact expires 2026-11-11. Local ZIP/extracted files: outputs/Relics-technical-layers-windows-x64[.zip], outside Git.
+[New Windows x64 EXE ZIP](https://github.com/Maximus1978/Relics/actions/runs/40764405205/artifacts/12849154157): 11,806,625 bytes; downloaded SHA256 78ea47ee7fbb2fc3edd5daba619a60df459b61ba92b14bd0a25b1575a083ba07 matches GitHub. EXE 20,387,328 bytes; SHA256 4f9a6970aa0036c13650f64b62f4a56d70078226dd64bd7c40458a9c98385585 matches executable-sha256.json. build-info confirms exact tested head and synthetic merge above, Node 22.23.4 / Rust 1.99.1, signed=false and nativeUiRuntimeVerified=false. Artifact expires 2026-11-11. Local ZIP/extracted files: outputs/Relics-technical-layers-windows-x64[.zip], outside Git.
 
 ## Release evidence and historical limits
 

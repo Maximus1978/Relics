@@ -4,15 +4,15 @@
 
 Native Windows utility, offline and user-controlled. Export/restore use real native dialogs, not command-line operations. Browser demonstration shows an unavailable explanation and never pretends to save/restore files. No cloud, scheduler, encryption, merge/conflict resolution, Android backup UI or new activity/game fields.
 
-The current implementation is under review in [PR #5](https://github.com/Maximus1978/Relics/pull/5), based on master 5fdc02dc1777c6b5793bababda918beac195856b. Native automated test/build evidence and owner manual acceptance are distinct; see HANDOFF for exact tested commit/run/results. Do not merge automatically.
+BACKUP-001 was owner-accepted and merged in PR #5. WEIGHTS-001B extends it in [PR #8](https://github.com/Maximus1978/Relics/pull/8); see [current evidence](WEIGHTS_001B.md). The old v1 foundation evidence below is historical. Native automated test/build evidence and owner manual acceptance are distinct; see HANDOFF for exact tested commit/run/results. Do not merge PR #8 automatically.
 
 [Windows run 40717100257](https://github.com/Maximus1978/Relics/actions/runs/40717100257) passed on 7f76aea1da3b8daecc808e921c5797f09314e657: 31 Node/SQLite tests, TypeScript/Vite, 42 browser checks, Tauri Windows release compilation and 16 native tests. The crash helper is run as a child, intentionally ignored standalone. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40717100257/artifacts/12829521933). Native manual acceptance remains pending; later documentation-only evidence leaves source/tests/locks unchanged.
 
 ## Format and compatibility
 
-UTF-8 human-readable JSON, format identifier relics-backup, formatVersion 1, databaseSchemaVersion 3, exportedAt RFC 3339 with offset, appVersion nonempty version string. All envelope/data/record properties are required, including archivedAt as null or a timestamp. Unknown fields/versions are rejected, not discarded. This is the first delivered backup format; the earlier schema-2 envelope was a proposal, never a supported export.
+UTF-8 human-readable JSON, format identifier relics-backup, new exports use formatVersion 2/databaseSchemaVersion4, with strict import of existing formatVersion 1/schema 3, exportedAt RFC 3339 with offset, appVersion nonempty version string. All envelope/data/record properties are required, including archivedAt as null or a timestamp. V2 adds required habit contributionProfile and required nullable activity contributionSnapshot, with strict version 1/origin/user-or-legacy-default/all-five values. Unknown fields/versions are rejected, not discarded. V1 was the first delivered backup format; the earlier schema-2 envelope was a proposal, never a supported export.
 
-Minimal valid synthetic example (intentionally empty data):
+Legacy v1/schema 3 synthetic example, still supported for IMPORT (new exports/safety files are v2/schema 4):
 
 ```json
 {
@@ -29,12 +29,12 @@ Schema level 3 is the additive one-time seeding migration; habit/activity column
 
 | JSON collection | Fields, all preserved |
 | --- | --- |
-| data.habits | id, name, spheres (ordered canonical ID array), archivedAt (null or original RFC 3339 timestamp) |
-| data.activities | id, habitId, habitName (historical snapshot), spheres (historical snapshot array), occurredOn (original local YYYY-MM-DD), recordedAt (original timestamp string), timezone (original IANA ID) |
+| data.habits | id, name, spheres (ordered canonical ID array), archivedAt (null or original RFC 3339 timestamp), contributionProfile (v2 required) |
+| data.activities | id, habitId, habitName (historical snapshot), spheres (historical snapshot array), occurredOn (original local YYYY-MM-DD), recordedAt (original timestamp string), timezone (original IANA ID), contributionSnapshot (v2 required, explicit null for legacy history) |
 
 Arrays retain exported database row order. IDs, text, sphere order and timestamp/zone representations are preserved, never normalized or recomputed. Historical name/spheres may differ from current habit definitions and are intentionally not reconciled. Derived counters, UI state, schema internals, paths, credentials and closed catalog content are excluded. No real secret recipes are imported/exported.
 
-Only format v1 / schema level 3 is accepted. Future schema/format support must be explicitly implemented and tested through additive migrations/version adapters. Newer files cannot be interpreted as v1 by dropping unknown content.
+Current candidate accepts strict v1/schema 3 import and v2/schema 4. V1 adapts habit definitions to marked 5 defaults but leaves event snapshots unknown; metadata/IDs are preserved. New exports and protective copies use v2 only; no lossy downgrade. Future schema/format support must be explicitly implemented and tested through additive migrations/version adapters. Newer files cannot be interpreted as v1 by dropping unknown content.
 
 Validation: strict JSON/field types; known versions; nonblank IDs/names; canonical nonempty sphere sets without duplicates; valid Gregorian local dates (years 0001–9999); RFC 3339 timestamps; recognized IANA timezones; unique IDs; existing habit/day uniqueness; activity-to-habit references; valid nullable archive timestamps. Historical restore validates calendar validity without comparing dates to the receiving computer's current clock; normal new activity logging still rejects future dates. No missing record is interpreted as inactivity/failure.
 
@@ -58,7 +58,7 @@ Before any DELETE, capture the current database and successfully publish a recov
 
 **%APPDATA%\\local.relics.app\\recovery** on Windows (Tauri app_config_dir/recovery).
 
-The actual safety path is shown after success. Safety files are published without overwriting an existing path, synced and read back/compared with the complete current snapshot before any deletion. Safety creation/validation/write failure aborts replacement. Safety copies are retained even if subsequent SQL fails; they are not automatically pruned. They have the same format and can be selected through Выбрать копию to undo a replacement. No safety copy is stored in Git/logs/CI. Keep this directory private as well.
+The actual safety path is shown after success. Safety files are published without overwriting an existing path, synced and read back/compared with the complete current snapshot before any deletion. Safety creation/validation/write failure aborts replacement. Safety copies are retained even if subsequent SQL fails; they are not automatically pruned. They use v2 including every weight/origin/null and can be selected through Выбрать копию to undo a replacement. No safety copy is stored in Git/logs/CI. Keep this directory private as well.
 
 ## Atomicity, connection lifecycle and security
 
@@ -97,10 +97,12 @@ Automated rollback/crash/disk-failure tests use synthetic temporary files only; 
 - [Tauri native dialogs](https://v2.tauri.app/plugin/dialog/) and [application command permissions](https://docs.rs/tauri-build/latest/tauri_build/struct.AppManifest.html).
 - [tempfile atomic persist API](https://docs.rs/tempfile/latest/tempfile/struct.NamedTempFile.html).
 
-## WEIGHTS-001A — future v2 proposal; current v1 is unchanged
+## WEIGHTS-001B — v2 implementation candidate, v1 import retained
 
-The current deployed contract remains format v1/schema 3. WEIGHTS-001A applies no migration/parser/export change. [Full proposed compatibility matrix and safety plan](WEIGHTS_001A.md#5-proposed-backup-v2-and-compatibility-matrix) is a WEIGHTS-001B review prerequisite.
+The previous accepted executable remains v1/schema 3; PR #8 upgrades the candidate to schema 4/new v2 exports. WEIGHTS-001A itself applied no migration/parser/export change; its approved contract is now implemented by WEIGHTS-001B. [Full proposed compatibility matrix and safety plan](WEIGHTS_001A.md#5-proposed-backup-v2-and-compatibility-matrix) is a WEIGHTS-001B review prerequisite.
 
 Weighted storage would require format v2/schema 4, version-dispatched strict Rust DTOs, required habit contributionProfile and required nullable event contributionSnapshot. Preserve all existing fields/order/metadata/limits. Retain strict v1 input: adapt imported habit sphere sets to marked 5 defaults for future logs; keep old event numeric snapshots null. Never add/drop unknown fields in v1 parsing or borrow destination weights. Unknown versions/malformed profiles fail before mutation.
 
 New export and protective pre-restore safety copies must include every weight/origin/null in v2. No lossy v1 export/downgrade. Preview explains v1 conversion and full replacement, with numeric/default/legacy counts. Validating/syncing/read-verifying the weighted pre-state safety copy precedes any DELETE; native pinned-transaction rollback/crash/undo tests must preserve new fields too. Include profile bytes in size preflight. Existing native dialogs, tokens, archive behavior, migration ledger and no-reseed guarantees remain. The old executable is v1-only, not a v2 reader; Windows round-trip/offline acceptance is required separately.
+
+Actual backup tests in WEIGHTS-001B include strict TS/Rust conformance, v1 full replacement with NULL historical snapshots, weighted v2 protective undo/reopen, original rollback/crash/preview/token checks and new JSON-byte size preflight. Gate B1 passed before UI integration. [WEIGHTS_001B](WEIGHTS_001B.md) records final Windows CI, artifact and native acceptance. Existing migration files and application database identity remain unchanged; no owner data was used in automated tests.
