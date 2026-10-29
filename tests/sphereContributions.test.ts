@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { projectSphereContributions, completeWeekWindow, addCalendarDays, startOfWeek } from '../src/domain/sphereContributions.ts';
+import { projectSphereContributions, completeWeekWindow, recentDayWindow, addCalendarDays, startOfWeek } from '../src/domain/sphereContributions.ts';
 import { defaultContributions } from '../src/domain/contributions.ts';
 import { medallionIllumination } from '../src/domain/medallionIllumination.ts';
 import { type Activity, type SphereId } from '../src/domain/activity.ts';
@@ -123,4 +123,19 @@ test('presentation uses all-sphere denominator, explicit gaps, dates and roundin
     assert.equal(formatContribution(chartValue(bucket, 'body', 'shares'), 'shares'), '33,3 %');
     assert.equal(weekLabel(bucket), '19.10–25.10.2026');
     assert.equal(chartValue(project([]).weeks[0], 'body', 'shares'), null);
+});
+
+
+test('Recent seven calendar days include today and first boundary, exclude older/future records', () => {
+ const asOfDay='2026-10-29',bounds=recentDayWindow(asOfDay);
+ assert.deepEqual(bounds,{startDay:'2026-10-23',endDayExclusive:'2026-10-30'});
+ const p=project([event('first','2026-10-23'),event('today','2026-10-29'),event('old','2026-10-22'),event('future','2026-10-30')],{...bounds,asOfDay});
+ assert.equal(p.daily.length,7);assert.equal(p.period.includedEventCount,2);assert.equal(p.period.totalUnits,20);
+ assert.equal(p.daily[0].totalUnits,10);assert.equal(p.daily[6].totalUnits,10);assert.equal(p.daily[1].hasNumericEvidence,false);assert.equal(p.daily[1].shares.mind,null);
+});
+test('Rolling seven-day bounds remain calendar-correct over leap/year/DST and include legacy counts', () => {
+ for(const [today,start,end] of [['2024-03-01','2024-02-24','2024-03-02'],['2026-01-02','2025-12-27','2026-01-03'],['2024-03-11','2024-03-05','2024-03-12'],['2024-11-04','2024-10-29','2024-11-05']])assert.deepEqual(recentDayWindow(today),{startDay:start,endDayExclusive:end});
+ const asOfDay='2026-10-29',p=project([{...event('old','2026-10-29'),contributionSnapshot:null},event('default','2026-10-28',{body:5},'legacy-default')],{...recentDayWindow(asOfDay),asOfDay});
+ assert.equal(p.period.excludedLegacyCount,1);assert.equal(p.period.defaultOriginCount,1);assert.equal(p.period.totalUnits,5);
+ assert.throws(()=>recentDayWindow('2026-02-30'));
 });

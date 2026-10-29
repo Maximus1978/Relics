@@ -27,6 +27,10 @@ export function completeWeekWindow(asOfDay: string, trendWeeks: number, weekStar
     const endDayExclusive = startOfWeek(asOfDay, weekStartsOn);
     return { startDay: addCalendarDays(endDayExclusive, -7 * trendWeeks), endDayExclusive };
 }
+/** Rolling local calendar dates, inclusive of the explicit current day. */
+export function recentDayWindow(asOfDay: string) {
+    return { startDay: addCalendarDays(asOfDay, -6), endDayExclusive: addCalendarDays(asOfDay, 1) };
+}
 export type ContributionBucket = {
     startDay: string;
     endDayExclusive: string;

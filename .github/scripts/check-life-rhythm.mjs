@@ -70,6 +70,22 @@ export async function checkLifeRhythm({send,evaluate,until,click,viewport,output
  assert.deepEqual(await evaluate('[...document.querySelectorAll(".rhythm-quality strong")].map(x=>Number(x.textContent))'),[24,0,0,24]);await capture('rhythm-legacy-only.png');
  await load('empty');await click('[data-mode=shares]');
  await until('document.querySelector(".rhythm-empty")?.textContent.includes("Нет числовых данных")','Empty numeric history has no fabricated percentages');assert.deepEqual(await evaluate('[...document.querySelectorAll(".rhythm-legend output")].map(x=>x.textContent)'),['—','—','—','—','—']);await capture('rhythm-empty.png');
+ // Owner addendum: rolling7-day view is daily and includes today's real preview snapshot.
+ await evaluate('document.querySelector(".rhythm-period select").focus()');
+ for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'Home',code:'Home',windowsVirtualKeyCode:36});
+ await until('document.querySelector(".rhythm-period select").value==="1"&&document.querySelectorAll(".rhythm-table tbody tr").length===7','One-week selector shows seven daily rows including today');
+ const today=await evaluate('document.querySelector("input[type=date]").max');
+ assert.equal(await evaluate('document.querySelector(".rhythm-table tbody tr:last-child th").textContent'),today);
+ await until('document.querySelector(".rhythm-timeframe").textContent.includes("включая сегодня")','Rolling timeframe is labeled independently of completed weeks');
+ await click('[data-habit-id=demo-guitar] .completion-button');
+ await until('Number(document.querySelector(".rhythm-quality strong").textContent)===1&&!!document.querySelector(".rhythm-plot canvas")','Today completion immediately contributes in the seven-day view');
+ assert.deepEqual(await evaluate('[...document.querySelectorAll(".rhythm-legend output")].map(e=>e.textContent)'),['0 %','50 %','0 %','0 %','50 %']);
+ await click('[data-mode=units]');await until('document.querySelector(".rhythm-legend [data-sphere=mind] output").textContent==="5"','Daily absolute mode uses saved contribution units');
+ await capture('rhythm-seven-days.png',true);
+ await viewport(390,1100);await until('document.documentElement.scrollWidth<=innerWidth','Seven-day selector and chart fit narrow layout');await capture('rhythm-seven-days-narrow.png');await viewport(1440,1000);
+ await evaluate('document.querySelector(".rhythm-period select").focus()');
+ for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'ArrowDown',code:'ArrowDown',windowsVirtualKeyCode:40});
+ await until('document.querySelector(".rhythm-period select").value==="4"&&document.querySelectorAll(".rhythm-table tbody tr").length===4&&Number(document.querySelector(".rhythm-quality strong").textContent)===0','Returning to four complete weeks retains its original bounds');
  await click('.rhythm-expander>summary');await until('!document.querySelector(".rhythm-expander").open','Panel can collapse without changing the Chronicle');
  await send('Page.navigate',{url:'http://127.0.0.1:1420'});await until('document.querySelectorAll(".relic-item").length===6','Original preview restored after analytics verification');
 }
