@@ -1,3 +1,11 @@
+# Active task: SPHERE-TRENDS-001
+
+Owner accepted WEIGHTS-001B in native Windows. Verified PR #8 head c3754f8373a5ac6e708182999f179773f6155c4e, successful Windows run40790775136 and Markdown-only difference from tested1f957faa. Merged normally at293e7d20b2cfcb1802059699b72381a33cc6bf23; verified master parents and created feature-sphere-trends-001 from that master.
+
+Scope: pure snapshot-only deterministic weekly projection, compact expandable analytics below inventory, absolute/share modes, 4/8 complete Monday weeks, accessible filtering/table and provenance/unknown disclosures. Preserve rune/art/habits/Chronicle/schema4/backupv2. Synthetic tests/screenshots, Windows CI/EXE and focused PR; do not merge automatically or begin NAV-CHRONICLE-001. Implementation candidate ready for focused PR: locked npm ci,71 Node/temporary SQLite tests, TypeScript/Vite,22 native backup tests and202 actual browser checks PASS locally;runtimeErrors=[]. Actual four/eight-week, share, mixed/empty/legacy and narrow screenshots inspected. No hosted success/native UI acceptance claimed; Windows CI/EXE delivery pending.
+
+## Historical WEIGHTS-001B delivery receipt (owner accepted and merged above)
+
 # Project handoff
 
 ## Current delivery: WEIGHTS-001B, unmerged owner review

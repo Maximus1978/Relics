@@ -1,3 +1,4 @@
+import { rhythmFixtures } from './rhythmFixtures.ts';
 import { defaultContributions,validateContributionProfile } from '../domain/contributions.ts';
 import { localDay, sampleHabits, validateDay, type Activity, type Habit } from '../domain/activity.ts';
 import { HabitStateError, validateHabitInput } from '../domain/habit.ts';
@@ -15,6 +16,10 @@ export async function createSanctuaryPreview(): Promise<Awaited<ReturnType<typeo
     { id: 'demo-walk-today', habitId: 'demo-walk', habitName: 'Прогулка', spheres: ['body', 'recovery'], occurredOn: localDay(), recordedAt: new Date().toISOString(), timezone: 'Demo', contributionSnapshot:null },
     { id: 'demo-read-yesterday', habitId: 'demo-read', habitName: 'Чтение', spheres: ['mind'], occurredOn: yesterday(), recordedAt: new Date().toISOString(), timezone: 'Demo', contributionSnapshot:null },
   ];
+  if (typeof window !== 'undefined') {
+    const fixture=rhythmFixtures(new URLSearchParams(window.location.search).get('rhythmFixture')??'',localDay(),habits);
+    if(fixture)activities=fixture;
+  }
   function findHabit(id: string): Habit {
     const habit = habits.find(habit => habit.id === id);
     if (!habit) throw new HabitStateError('Привычка не найдена.');

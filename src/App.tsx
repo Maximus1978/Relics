@@ -7,6 +7,7 @@ import { yesterday } from './ui/dates';
 import SphereInstallation from './ui/sanctuary/SphereInstallation';
 import RelicInventory from './ui/sanctuary/RelicInventory';
 import Chronicle from './ui/sanctuary/Chronicle';
+import LifeRhythm from './ui/sanctuary/LifeRhythm';
 import WorldDialog from './ui/sanctuary/WorldDialog';
 import BackupDialog from './ui/sanctuary/BackupDialog';
 import RelicArt from './ui/sanctuary/RelicArt';
@@ -54,6 +55,7 @@ export default function App() {
       </header>
       <SphereInstallation illumination={illumination} />
       <RelicInventory model={model} selected={selected} />
+      <LifeRhythm activities={model.activities} today={today} ready={model.canSave} />
       <Chronicle model={model} open={journalOpen} onToggle={setJournalOpen} reference={journal} />
     </main>
     <nav className="mobile-navigation" aria-label="Разделы на узком экране"><button onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button><button onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button><button onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button><button aria-label="Резервная копия" disabled={model.busy || model.managingHabit} onClick={model.openBackup}><ShellIcon kind="backup" /><span>Копия</span></button></nav>

@@ -1,0 +1,37 @@
+# SPHERE-TRENDS-001 — snapshot contribution trends
+
+## Scope and release boundary
+
+Owner accepted WEIGHTS-001B in native Windows. PR #8 expected headc3754f8373a5ac6e708182999f179773f6155c4e was verified mergeable, Windows run40790775136 successful, with only12 Markdown files changed since tested1f957faa863af755a6b5eb435cdbffe56ae98069. Regular merge293e7d20b2cfcb1802059699b72381a33cc6bf23 was verified with parents6e122e7 andc3754f8. Feature starts on that updated master, branch feature-sphere-trends-001. This feature is a review candidate, not an owner-accepted release. No automatic merge or NAV-CHRONICLE-001.
+
+## Calculation contract
+
+src/domain/sphereContributions.ts implements WEIGHTS_001A section7. Explicit startDay/endDayExclusive/asOfDay/weekStartsOn/trendWeeks; no clock, repository reads, live habit definitions or persisted aggregates. Gregorian calendar-day arithmetic uses UTC date fields as calendar carriers, not local midnight or elapsed24-hour durations. Monday default for presentation, explicit ISO1–7 supported by the projection. Four/eight complete weeks end at start of the current local week; selected logging date does not reanchor them. Current partial week is explicitly excluded. The generic period and complete-week windows can differ; caller supplies their union.
+
+Validate each saved event sphere/profile/date/identity. Identical repeated IDs count once; conflicting ID or distinct IDs for the same habit/date fail visibly, never inflate totals. Input order does not affect output; input objects are not mutated. Multiple different habits per date add all profile values. Integer totals remain exact; shares retain numerator/denominator. Period shares use period totals, not averages of weekly percentages. Unknown NULL profiles contribute only record/legacy-selected counters; included user/default events retain separate origin counts. Known zero differs from unknown. No-numeric bucket has hasNumericEvidence=false and null shares/chart values; lines break rather than bridge unknown weeks. Valid non-null profiles can show known0 for an unselected sphere. No snapshot rebasing after editing/archiving.
+
+## Presentation and dependency
+
+LifeRhythm follows the owner's analytics render only for this module. Inserted after RelicInventory and before unchanged Chronicle. Existing shrines, canonical rune/gemstones, Habit Sigils, rail and environment remain untouched. Expand/collapse, units/shares buttons,4/8 completed-week selector, five real legend checkboxes, axis/date labels, full period bounds and compact quality summary. Hiding a line changes only chart visibility; all-five denominator and totals remain stable. All-hidden is explicit and reversible.
+
+Canvas rendering uses pinned uPlot1.6.32 (MIT), no transitive runtime dependencies; [upstream](https://github.com/leeoniya/uPlot). Calendar grouping/math/formatting remain separate from this maintained chart renderer. ResizeObserver handles size changes; destroy/disconnect on replacement/unmount. No remote assets/network at runtime. Native semantic controls and expandable table expose every week's five values and record/included/default/unknown counts, including hidden series. Canonical colors plus dash patterns; no chart-only information or hover requirement.
+
+Relative display rounds to0.1%; exact ratios sum to100 when evidence exists, rounded labels may differ by0.1. This is a share of recorded subjective units, not life quality. Absolute axis auto-ranges without a target. Missing numeric evidence yields an honest empty state/emdashes, not five0% outcomes. Default5 entries included with provenance; unknown legacy entries excluded with incomplete-history explanation. Narrow eight-week charts label alternate weeks to avoid collisions; table retains every date. No ideal20%, grade, warning, recommendation, notification or reward.
+
+## Verification map
+
+- T01: exact same-day8/9/0/0/3 units,total20,40/45/0/0/15% oracle; independent all-five10 profiles total350 over7 days while binary rune remains unchanged.
+- T02: user/default/unknown counts; legacy-only and empty periods, explicit known0 versus unknown null; full empty calendar buckets.
+- T03: input reorder/identical duplicate/canonical map order; conflicting IDs, duplicate habit/date, malformed snapshot rejected.
+- T04: complete4/8 weeks, half-open range, separate generic period/trend union, leap/year/DST, occurredOn regardless of recordedAt/timezone; invalid parameters.
+- T05: snapshot-only reproject, backdated add/cancel; actual temporary SQLite create/edit/archive/restore/reopen/cancel integration, old profile unchanged.
+- Browser: actual chart canvas, exact synthetic totals/counts, units/shares, interactive hide/show/all-hidden/Space, native period keyboard, full accessible table, backdated one-click log/cancel refresh, existing Chronicle, below-inventory placement,390/320 narrow views, mixed/legacy-only/empty states. Existing editor/rune/geometry/art tests retained; old first-fold Chronicle assumption replaced by explicit inventory→analytics→Chronicle ordering.
+- Existing native backup/migration/rollback/crash tests retained. No migration, backup contract, owner database or secret content change.
+
+Local final results: locked npm ci (0 audit vulnerabilities),71 Node/temporary SQLite tests PASS; TypeScript/Vite PASS;22 native tests PASS (standalone crash helper intentionally ignored and run by its passing parent);202 browser checks PASS with runtimeErrors=[] including final narrow eight-week refinement. Actual screenshots inspected against the supplied analytics render. Hosted Windows CI/EXE pending; exact source/run/artifacts will be recorded in HANDOFF after completion.
+
+## Browser evidence and Windows acceptance
+
+Ordinary browser preview remains explicitly fictional/in-memory, resets on reload. Optional query rhythmFixture=mixed/legacy/empty supplies synthetic snapshots only through the browser preview repository for reproducible render checks; native opens SQLite and never calls that fixture factory. Rendered values are calculated from those repository snapshots, never copied from the owner's image. Native analytics receives actual model.activities from the saved journal. No browser persistence or native runtime verification is claimed by screenshots.
+
+Owner acceptance: close old binary, extract new unsigned Windows x64 ZIP and run relics.exe with WebView2; no build tools needed. Expand Life Rhythm below habits; compare4/8 complete-week bounds, units/shares, filters and table against known saved snapshots. Recent records in current unfinished week do not appear until it completes. Backdate an intended real record or use an isolated synthetic environment to verify immediate refresh/cancel; edit a habit and confirm old totals stay unchanged. Reopen offline. Keep a private backup before manual data changes. Native visual/functional acceptance remains for owner; do not merge before review.
