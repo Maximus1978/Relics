@@ -1,6 +1,6 @@
 # Open questions
 
-Status: every unresolved item below is open; accepted principles constrain its answer. Questions are resolved in individual tasks. Do not silently turn an implementation convenience into a product decision. Current one-completion-per-day/cancellation behavior remains provisional and unchanged; resolved backup choices are identified explicitly. Owner acceptance of STATE-001 is recorded in D049, not an open visual gate. Q03's numeric semantics/defaults are now resolved by the owner; concrete storage/projection proposals still await WEIGHTS-001A review.
+Status: every unresolved item below is open; accepted principles constrain its answer. Questions are resolved in individual tasks. Do not silently turn an implementation convenience into a product decision. Current one-completion-per-day/cancellation behavior remains provisional and unchanged; resolved backup choices are identified explicitly. Owner acceptance of STATE-001 is recorded in D049, not an open visual gate. Q03's numeric semantics/defaults are now resolved by the owner; the owner has approved the WEIGHTS-001A contract. WEIGHTS-001B implementation/native acceptance and later trends remain distinct.
 
 | ID | Question | Resolve before |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Status: every unresolved item below is open; accepted principles constrain its a
 | Q18 | Insight observation horizon and contextual evidence, consent, schedule/vacation handling, uncertainty and dismiss/snooze/disable storage? | RHYTHM-INSIGHTS-001 before any suggestion engine |
 | Q19 | Audio defaults, event priority/concurrency limits, assets/provenance, mute/volume scope/persistence and accessible alternatives? | AUDIO-001 before AUDIO-002/003 |
 | Q20 | Future artifact grant identity versus sigil evolution, Collection/Museum retention and discovery-story/version compatibility? Distinct domain responsibilities are approved. | ARTIFACT-001 / COLLECTION-001 / EPOCH-001 / MUSEUM-001 |
-| Q21 | Review proposed profile origin contract, additive 004/backfill constraints, backup v2/schema 4 DTO compatibility and atomic safety test matrix. Exact next migration number must be reverified. | WEIGHTS-001A owner review before WEIGHTS-001B |
-| Q22 | Review proposed Monday/calendar 4–8 complete-week grouping, as-of date, exact-share/no-data output and default/excluded disclosure; graph formatting/rounding remains later UX work. | Projection contract review, then SPHERE-TRENDS-001 after WEIGHTS-001B |
+| Q21 | Approved profile/origin, verified migration 004 and v2/v1 safety contract are implemented in PR #8. Remaining acceptance is native Windows operation, not a reopened product decision. | Resolved specification; implementation candidate PR #8, native acceptance pending |
+| Q22 | Review proposed Monday/calendar 4–8 complete-week grouping, as-of date, exact-share/no-data output and default/excluded disclosure; graph formatting/rounding remains later UX work. | Approved deterministic input contract; later graph formatting in SPHERE-TRENDS-001 after WEIGHTS-001B acceptance |
 
 The original assistant responses and actual secret recipes were not retrievable. Do not infer their contents from examples in concept illustrations.

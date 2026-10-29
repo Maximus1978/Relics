@@ -5,7 +5,7 @@ import { recentActivity } from '../src/domain/recentActivity.ts';
 import type { Activity, SphereId } from '../src/domain/activity.ts';
 
 function entry(id: string, day: string, spheres: SphereId[]): Activity {
-  return { id, habitId: `habit-${id}`, habitName: 'Saved historical name', spheres, occurredOn: day, recordedAt: '2026-10-28T22:00:00Z', timezone: 'Pacific/Auckland' };
+  return { id, habitId: `habit-${id}`, habitName: 'Saved historical name', spheres, occurredOn: day, recordedAt: '2026-10-28T22:00:00Z', timezone: 'Pacific/Auckland', contributionSnapshot:null };
 }
 const dark = { body: false, mind: false, relationships: false, work: false, recovery: false };
 

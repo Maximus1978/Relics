@@ -1,5 +1,6 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
 mod backup;
+mod contributions;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -20,6 +21,12 @@ pub fn run() {
             version: 3,
             description: "seed sample habits once before backup restoration",
             sql: include_str!("../migrations/003_seed_once.sql"),
+            kind: MigrationKind::Up,
+        },
+        Migration {
+            version: 4,
+            description: "subjective sphere contribution snapshots",
+            sql: include_str!("../migrations/004_habit_contributions.sql"),
             kind: MigrationKind::Up,
         },
     ];

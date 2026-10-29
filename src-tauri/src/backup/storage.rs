@@ -65,9 +65,19 @@ pub(crate) fn write_safety(path: &Path, backup: &Backup) -> BackupResult<()> {
 }
 
 pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup> {
-    let habit_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(name AS BLOB)) + length(CAST(spheres_json AS BLOB)) + COALESCE(length(archived_at),0)),0) AS bytes FROM habits")
+    let version: Option<i64> =
+        sqlx::query_scalar("SELECT MAX(version) FROM _sqlx_migrations WHERE success=1")
+            .fetch_one(&mut *connection)
+            .await
+            .map_err(|_| "Не удалось проверить версию базы.")?;
+    if version != Some(model::SCHEMA_VERSION as i64) {
+        return Err(
+            "Версия базы не поддерживается. Закройте старые окна и обновите Relics.".into(),
+        );
+    }
+    let habit_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(name AS BLOB)) + length(CAST(spheres_json AS BLOB)) + COALESCE(length(archived_at),0) + COALESCE(length(CAST(contribution_profile_json AS BLOB)),0)),0) AS bytes FROM habits")
         .fetch_one(&mut *connection).await.map_err(|_| "Не удалось проверить размер привычек.")?;
-    let activity_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(habit_id AS BLOB)) + length(CAST(habit_name_snapshot AS BLOB)) + length(CAST(spheres_snapshot_json AS BLOB)) + length(occurred_on) + length(recorded_at) + length(timezone)),0) AS bytes FROM activities")
+    let activity_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(habit_id AS BLOB)) + length(CAST(habit_name_snapshot AS BLOB)) + length(CAST(spheres_snapshot_json AS BLOB)) + length(occurred_on) + length(recorded_at) + length(timezone) + COALESCE(length(CAST(contribution_snapshot_json AS BLOB)),0)),0) AS bytes FROM activities")
         .fetch_one(&mut *connection).await.map_err(|_| "Не удалось проверить размер журнала.")?;
     if habit_size.get::<i64, _>("total") > model::MAX_HABITS as i64
         || activity_size.get::<i64, _>("total") > model::MAX_ACTIVITIES as i64
@@ -79,12 +89,12 @@ pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup>
         );
     }
     let habit_rows = sqlx::query(
-        "SELECT id, name, spheres_json, archived_at FROM habits ORDER BY rowid LIMIT 20001",
+        "SELECT id, name, spheres_json, archived_at, contribution_profile_json FROM habits ORDER BY rowid LIMIT 20001",
     )
     .fetch_all(&mut *connection)
     .await
     .map_err(|_| "Не удалось прочитать привычки.")?;
-    let activity_rows = sqlx::query("SELECT id, habit_id, habit_name_snapshot, spheres_snapshot_json, occurred_on, recorded_at, timezone FROM activities ORDER BY rowid LIMIT 100001")
+    let activity_rows = sqlx::query("SELECT id, habit_id, habit_name_snapshot, spheres_snapshot_json, occurred_on, recorded_at, timezone, contribution_snapshot_json FROM activities ORDER BY rowid LIMIT 100001")
         .fetch_all(&mut *connection).await.map_err(|_| "Не удалось прочитать журнал.")?;
     let mut habits = Vec::new();
     for row in habit_rows {
@@ -92,6 +102,11 @@ pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup>
             id: row.get("id"),
             name: row.get("name"),
             archived_at: row.get("archived_at"),
+            contribution_profile: serde_json::from_str(
+                &row.try_get::<String, _>("contribution_profile_json")
+                    .map_err(|_| "Отсутствует профиль вклада привычки.")?,
+            )
+            .map_err(|_| "Некорректный профиль вклада привычки.")?,
             spheres: serde_json::from_str(row.get::<&str, _>("spheres_json"))
                 .map_err(|_| "В локальной базе некорректные сферы; экспорт остановлен.")?,
         });
@@ -105,6 +120,11 @@ pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup>
             occurred_on: row.get("occurred_on"),
             recorded_at: row.get("recorded_at"),
             timezone: row.get("timezone"),
+            contribution_snapshot: row
+                .try_get::<Option<String>, _>("contribution_snapshot_json")
+                .map_err(|_| "Не удалось прочитать снимок вклада.")?
+                .map(|json| serde_json::from_str(&json).map_err(|_| "Некорректный снимок вклада."))
+                .transpose()?,
             spheres: serde_json::from_str(row.get::<&str, _>("spheres_snapshot_json"))
                 .map_err(|_| "В локальной базе некорректные снимки сфер; экспорт остановлен.")?,
         });
@@ -186,20 +206,22 @@ pub(crate) async fn replace(
         .map_err(|_| "Не удалось заменить привычки; транзакция отменена.")?;
     after_delete()?;
     for habit in &backup.data.habits {
-        sqlx::query("INSERT INTO habits (id, name, spheres_json, archived_at) VALUES (?, ?, ?, ?)")
+        sqlx::query("INSERT INTO habits (id, name, spheres_json, archived_at, contribution_profile_json) VALUES (?, ?, ?, ?, ?)")
             .bind(&habit.id)
             .bind(&habit.name)
             .bind(serde_json::to_string(&habit.spheres).map_err(|_| "Ошибка сфер.")?)
             .bind(&habit.archived_at)
+            .bind(serde_json::to_string(&habit.contribution_profile).map_err(|_|"Ошибка профиля вклада.")?)
             .execute(&mut *transaction)
             .await
             .map_err(|_| "Не удалось восстановить привычки; транзакция отменена.")?;
     }
     for activity in &backup.data.activities {
-        sqlx::query("INSERT INTO activities (id, habit_id, habit_name_snapshot, spheres_snapshot_json, occurred_on, recorded_at, timezone) VALUES (?, ?, ?, ?, ?, ?, ?)")
+        sqlx::query("INSERT INTO activities (id, habit_id, habit_name_snapshot, spheres_snapshot_json, occurred_on, recorded_at, timezone, contribution_snapshot_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
             .bind(&activity.id).bind(&activity.habit_id).bind(&activity.habit_name)
             .bind(serde_json::to_string(&activity.spheres).map_err(|_| "Ошибка снимка сфер.")?)
             .bind(&activity.occurred_on).bind(&activity.recorded_at).bind(&activity.timezone)
+            .bind(activity.contribution_snapshot.as_ref().map(serde_json::to_string).transpose().map_err(|_|"Ошибка снимка вклада.")?)
             .execute(&mut *transaction).await.map_err(|_| "Не удалось восстановить действия; транзакция отменена.")?;
     }
     let violations = sqlx::query("PRAGMA foreign_key_check")

@@ -2,7 +2,7 @@
 
 ## Status, source and approval boundary
 
-Documentation-only proposal based on verified master c2375e7543649ce80e25151bf79c0376c985ad9d. Product semantics below are owner-approved requirements. Named columns, JSON/backup versioning, transaction details and projection interface are concrete engineering proposals for review, not deployed code. WEIGHTS-001B implements them in a separate PR only after review. SPHERE-TRENDS-001 later implements projection/graphs. No real personal data, secret catalog or migration is touched here.
+Owner/reviewer-approved specification (PR #7 merged at 6e122e7221c33d909ff2f4ecdbfba75b210f5b08). Original documentation-only proposal was based on verified master c2375e7543649ce80e25151bf79c0376c985ad9d. Product semantics below are owner-approved requirements. The owner approved this contract for WEIGHTS-001B. The originally proposed storage/backup/editor now has an unmerged implementation in PR #8; the projection/graphs remain future work. See [WEIGHTS_001B](WEIGHTS_001B.md) for actual gates/results and manual acceptance. SPHERE-TRENDS-001 later implements projection/graphs. No real personal data, secret catalog or migration is touched here.
 
 Owner priority: WEIGHTS-001A → WEIGHTS-001B → SPHERE-TRENDS-001 → NAV-CHRONICLE-001. Android remains in the roadmap but is deferred until core mechanics are validated on Windows. This supersedes the earlier immediate NAV → Android ordering.
 
@@ -73,7 +73,7 @@ ALTER TABLE activities ADD COLUMN contribution_snapshot_json TEXT
       THEN json_type(contribution_snapshot_json) = 'object' ELSE 0 END);
 ```
 
-This is a Markdown proposal, not an applied migration. In the same migration transaction, construct the five-key legacy-default habit profiles from each row's existing spheres_json; do not update activities. Every migrated habit must end with a valid non-null profile. Nullable physical storage permits additive upgrade; normal create/update/restore paths must never leave a habit NULL. A NULL/malformed habit after completed migration is an integrity error, not a silent 5 fallback. Empty databases stay empty; migration 003's ledger/seeding rules are retained. Fresh sample habits inserted by 003 get marked defaults via 004 once, not routine startup reseeding.
+This approved Markdown snippet specifies the shape; migration 004 is now implemented in PR #8 with additional database validation triggers. This document itself does not apply SQL. In the same migration transaction, construct the five-key legacy-default habit profiles from each row's existing spheres_json; do not update activities. Every migrated habit must end with a valid non-null profile. Nullable physical storage permits additive upgrade; normal create/update/restore paths must never leave a habit NULL. A NULL/malformed habit after completed migration is an integrity error, not a silent 5 fallback. Empty databases stay empty; migration 003's ledger/seeding rules are retained. Fresh sample habits inserted by 003 get marked defaults via 004 once, not routine startup reseeding.
 
 Coarse SQL CHECKs are not a full semantic validator. Implement a shared specified contract in TypeScript and native Rust backup parsing, including selected-set equivalence/origin rules. Validate migrated/generated data before committing the migration; malformed legacy sphere JSON/IDs must stop upgrade without partial changes. Tests must prove atomic DDL/backfill/ledger behavior in the actual plugin, not assume it.
 
@@ -85,12 +85,12 @@ Native backup uses the existing pinned SQLx transaction/exclusive plugin guard; 
 
 ## 5. Proposed backup v2 and compatibility matrix
 
-Keep current v1/schema3 parsing EXACTLY strict. New ordinary exports and protective recovery copies use format=relics-backup, formatVersion=2, databaseSchemaVersion=4 (or the actual separately approved next schema version). Preserve all current envelope/record fields, ordering, timestamps and limits; add required habit contributionProfile (non-null V1 object), activity contributionSnapshot (V1 object or required explicit null). Profile version 1 is independent of backup version 2. Missing snapshot key in v2 is invalid, not equivalent to explicit null.
+Keep current v1/schema 3 parsing EXACTLY strict. New ordinary exports and protective recovery copies use format=relics-backup, formatVersion=2, databaseSchemaVersion=4 (or the actual separately approved next schema version). Preserve all current envelope/record fields, ordering, timestamps and limits; add required habit contributionProfile (non-null V1 object), activity contributionSnapshot (V1 object or required explicit null). Profile version 1 is independent of backup version 2. Missing snapshot key in v2 is invalid, not equivalent to explicit null.
 
 | Source → upgraded application | Contract |
 | --- | --- |
-| v1/schema3 → schema4 | Parse unchanged strict v1 DTO, validate, then typed adapter: habit defaults from each imported habit's own spheres; activities null. Preserve imported IDs/archives/name/sphere snapshots, dates/metadata; never borrow destination profiles |
-| v2/schema4 → schema4 | Validate all fields/profiles; preserve values/origins/null exactly. Activity profiles match their own historical sphere snapshots, not today's habit definition |
+| v1/schema 3 → schema 4 | Parse unchanged strict v1 DTO, validate, then typed adapter: habit defaults from each imported habit's own spheres; activities null. Preserve imported IDs/archives/name/sphere snapshots, dates/metadata; never borrow destination profiles |
+| v2/schema 4 → schema 4 | Validate all fields/profiles; preserve values/origins/null exactly. Activity profiles match their own historical sphere snapshots, not today's habit definition |
 | Future/unknown format/profile/schema; malformed v1/v2 | Reject before mutation; no field stripping, guessing or truncation |
 | v2 → old v1-only binary | Unsupported; explicit upgrade message, no downgrade export that discards weights |
 
@@ -153,7 +153,7 @@ Entry gate: owner review of this contract, reverify latest master and next migra
 
 ## 9. Required WEIGHTS-001B / future analytics test matrix
 
-Tests below are planned, NOT executed by this documentation task.
+This matrix was planned by WEIGHTS-001A. [WEIGHTS_001B](WEIGHTS_001B.md#w01w26-evidence-map) maps W01–W26 to actual automated evidence and pending owner native checks. T01–T05 are still future, not implemented.
 
 | ID | Layer / fixture | Required outcome |
 | --- | --- | --- |
@@ -165,12 +165,12 @@ Tests below are planned, NOT executed by this documentation task.
 | W06 | Fresh install, empty/subset-restored DB, restart repeatedly | Defaults seeded once only; no restored/archived sample reactivation |
 | W07 | Inject migration failure during backfill/invalid legacy data | DDL/backfill/ledger roll back; restart can retry safely |
 | W08 | Create/edit/reopen; invalid edit/canceled form/failed SQL | Full valid profile persists atomically; old state preserved on failure/cancel |
-| W09 | Legacy default habit logs before/after first valid Edit Save | Before: included legacy-default5; after: user-origin; old event origin untouched |
+| W09 | Legacy default habit logs before/after first valid Edit Save | Before: included legacy-default 5; after: user-origin; old event origin untouched |
 | W10 | Rename/sphere/value edits after logging | All old name/sphere/profile/origin snapshots unchanged |
 | W11 | Backdated creation and cancel/re-add after edit | Recording-time profile; re-created event gets current profile; no implicit backfill |
 | W12 | Duplicate retry and concurrent habit edit/log | First record unchanged; coherent old/new snapshot, never mixed fields |
 | W13 | Archived habit rejects new log; restore/reopen | Same profile/origin retained, history intact; logging reenabled |
-| W14 | v1/schema3 strict backup including empty/archived/legacy-history fixtures | Restore accepted; imported defaults only on definitions, history null; no destination-profile borrowing |
+| W14 | v1/schema 3 strict backup including empty/archived/legacy-history fixtures | Restore accepted; imported defaults only on definitions, history null; no destination-profile borrowing |
 | W15 | v2 round-trip, mixed user/default/null, historical spheres differ from current habit | Full equality of all fields/metadata/origins/null after reopen |
 | W16 | v2 required-null versus missing, profile mismatch, extra fields, future version/schema | Reject before mutation; never silently discard |
 | W17 | v1 extra contribution fields / duplicate JSON members | Strict reject; v1 parser not weakened |

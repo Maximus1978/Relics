@@ -1,6 +1,7 @@
+import type { ContributionProfile } from './contributions.ts';
 import { spheres, type SphereId } from './activity.ts';
 
-export type HabitInput = { name: string; spheres: SphereId[] };
+export type HabitInput = { name: string; spheres: SphereId[]; contributionProfile?:ContributionProfile };
 
 export class HabitStateError extends Error {
   constructor(message: string) {

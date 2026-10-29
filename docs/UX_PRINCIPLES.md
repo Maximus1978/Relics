@@ -64,7 +64,7 @@ Blessings offer optional temporary opportunities without fabricated records, art
 
 Audio is future work: gentle local effects, accessible visual equivalents, mute and volume controls, restrained playback for completion/gems/rune/discovery/alchemy and world themes. No repetitive attention-seeking loop. Remaining art defects are accepted non-blocking backlog; larger shrine signs and further optics do not restart the accepted release gate.
 
-## WEIGHTS-001A — reference-based Create/Edit contract, not implemented
+## WEIGHTS-001A approved contract; WEIGHTS-001B editor candidate
 
 Use the owner's Sanctuary creation image 2026-10-28_14-44-28.jpg for compact dark panels/aged-gold hierarchy, five selectable sphere rows and immediate numerical feedback. Preserve current medallion artwork and canonical line icons/colors. The pictured description, icon picker and character counters do not expand scope. [Detailed interaction/accessibility contract](WEIGHTS_001A.md#6-ux-contract-tied-to-owner-reference).
 
@@ -73,3 +73,5 @@ Each selected row has independent native discrete slider 1–10/step 1 plus acce
 Create/Edit share state/validation; immediate values, keyboard arrows/Home/End, number entry, visible focus, explicit per-sphere labels and native screen-reader values. Keep drafts after invalid input/save error, focus first error, offer retry; Cancel/Escape writes nothing and restores focus. Existing busy/save behavior stays. Name rules stay as implemented; no new description/icon-picker/medallion-art work. Reachable Save/Cancel and no horizontal overflow at narrow widths are future acceptance checks.
 
 Saving a visible old default profile confirms only future records; normal completion stays one action with no extra contribution input. Future analytics may display relative shares of recorded subjective units, clearly labeled and separated from this editor; never objective life-balance percentages. Unknown legacy history and known0 remain distinct, with default/excluded counts.
+
+PR #8 implements these Create/Edit controls with existing medallion art and native discrete ranges/numeric alternatives. Actual screenshots include one/two/five selected spheres and narrow layouts; keyboard Arrow/Home/End/Space and accessibility-tree tests are part of the browser suite. Cancel preserves data, normal completion stays one-click, and backup preview explicitly explains v1→v2 conversion/full replacement. Owner native/accessibility/visual acceptance remains pending; [evidence](WEIGHTS_001B.md).

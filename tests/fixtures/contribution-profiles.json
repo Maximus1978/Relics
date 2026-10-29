@@ -1,0 +1,151 @@
+[
+  {
+    "name": "user-two",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":7,\"relationships\":0,\"work\":0,\"recovery\":3}}",
+    "spheres": [
+      "mind",
+      "recovery"
+    ],
+    "valid": true
+  },
+  {
+    "name": "legacy-default",
+    "json": "{\"version\":1,\"origin\":\"legacy-default\",\"values\":{\"body\":0,\"mind\":5,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": true
+  },
+  {
+    "name": "all-ten",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":10,\"mind\":10,\"relationships\":10,\"work\":10,\"recovery\":10}}",
+    "spheres": [
+      "body",
+      "mind",
+      "relationships",
+      "work",
+      "recovery"
+    ],
+    "valid": true
+  },
+  {
+    "name": "bad-value-0",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":0,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "bad-value-11",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":11,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "bad-value--1",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":-1,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "bad-value-1.5",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":1.5,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "bad-value-\"5\"",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":\"5\",\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "bad-value-true",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":true,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "bad-value-null",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":null,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "mismatch",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":5,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "body"
+    ],
+    "valid": false
+  },
+  {
+    "name": "default-not5",
+    "json": "{\"version\":1,\"origin\":\"legacy-default\",\"values\":{\"body\":0,\"mind\":7,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "unknown-key",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":5,\"relationships\":0,\"work\":0,\"recovery\":0,\"other\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "duplicate-key",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":5,\"mind\":7,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "escaped-duplicate",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":5,\"\\u006dind\":7,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "bad-version",
+    "json": "{\"version\":2,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":5,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "non-integer-json-token-5.0",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":5.0,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  },
+  {
+    "name": "non-integer-json-token-5e0",
+    "json": "{\"version\":1,\"origin\":\"user\",\"values\":{\"body\":0,\"mind\":5e0,\"relationships\":0,\"work\":0,\"recovery\":0}}",
+    "spheres": [
+      "mind"
+    ],
+    "valid": false
+  }
+]
