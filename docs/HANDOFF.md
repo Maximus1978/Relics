@@ -1,8 +1,18 @@
 # Active owner addendum: recent seven-day analytics
 
-Add «1 неделя (последние 7 дней)» to the existing PR #9 selector, including actual local today and six prior calendar days, with daily points/table rows. Keep the existing default4 and completed4/8-week modes, snapshot/provenance/empty rules, rune/schema/backups unchanged. Update docs, verify and publish on the same unmerged PR; no next task. Local verification PASS:73 Node/SQLite tests, TypeScript/Vite and208 browser checks with zero runtime errors. Actual seven-day desktop/narrow screenshots inspected. Windows CI for this update pending.
+Add «1 неделя (последние 7 дней)» to the existing PR #9 selector, including actual local today and six prior calendar days, with daily points/table rows. Keep the existing default4 and completed4/8-week modes, snapshot/provenance/empty rules, rune/schema/backups unchanged. Update docs, verify and publish on the same unmerged PR; no next task. Local verification PASS:73 Node/SQLite tests, TypeScript/Vite and208 browser checks with zero runtime errors. Actual seven-day desktop/narrow screenshots inspected. Hosted Windows CI now PASS; current source/artifacts below supersede the previous delivery.
 
-# Current delivery: SPHERE-TRENDS-001 — unmerged owner review
+## Verified seven-day update delivery
+
+Tested implementation:6a1e539d220ddec4e6fc07c8a7bf7d4d9488f39c; synthetic PR merge build:31729d090ab478e130eb8b422d0c2c8caf23ca62. [Windows run40943769883](https://github.com/Maximus1978/Relics/actions/runs/40943769883) SUCCESS: locked npm ci,73 Node/SQLite tests, TypeScript/Vite,208 browser checks with runtimeErrors=[], native Tauri Windows release and22 native safety tests PASS (one intentionally ignored standalone crash helper runs under its passing parent).
+
+[New Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40943769883/artifacts/12929011322): 11,896,662 bytes; downloaded SHA256 3af571b6b7f11f954d6eed48429ae386b726c5b7c00c80590a3598cc4cf88b2b matches GitHub. EXE 20,630,016 bytes; SHA256 373a1c95b6f4002ba4d90c0447feb0a1ee50e4fe6e820e9ecb154c1dd9db229d matches manifest; build-info confirms both source SHAs. Unsigned Windows x64/WebView2; extract and run relics.exe. Native UI acceptance remains for owner, no automated owner-DB launch.
+
+[Browser screenshots/proof](https://github.com/Maximus1978/Relics/actions/runs/40943769883/artifacts/12928133238): 60,620,602 bytes; downloaded SHA256 b3562071aac645cbea76baa6d3a66360e42dcbaa6b2646707386d0852ae29065 matches GitHub. Actual rhythm-seven-days.png and rhythm-seven-days-narrow.png inspected,208 checks confirmed. Synthetic in-memory snapshots only. ZIP/extracted evidence outside Git: ../Relics-SPHERE-TRENDS-001-7days-{browser,windows-x64}[.zip]. Run40809834288 and its old EXE are historical and do not include this owner update.
+
+PR #9 remains OPEN/UNMERGED. Documentation-only receipt follows tested code using [skip ci]; no runtime changes afterward. Next NAV-CHRONICLE-001 not begun.
+
+# Historical previous delivery: SPHERE-TRENDS-001 — unmerged owner review
 
 [PR #9](https://github.com/Maximus1978/Relics/pull/9), feature-sphere-trends-001, starts from verified master 293e7d20b2cfcb1802059699b72381a33cc6bf23. Owner accepted native WEIGHTS-001B; PR #8 expected head c3754f8 and successful Windows CI 40790775136 were verified, differences since tested 1f957faa Markdown-only, then merged normally. This supersedes earlier pending PR #8 acceptance/merge holds.
 
