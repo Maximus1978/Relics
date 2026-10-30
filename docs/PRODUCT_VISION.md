@@ -8,7 +8,7 @@ The application serves life. Success means a person can record meaningful experi
 
 - Offline operation without a required account, cloud service, or ChatGPT connection.
 - Windows 11 and Android, with shared domain logic and platform-specific interactions.
-- Five spheres: Body, Mind, Bonds, Work, Recovery. A habit may select one to five spheres with independent subjective contribution units 1–10 (default 5), 0 when unselected; no normalization, intensity or objective health measurement. Persistence is future WEIGHTS-001B.
+- Five spheres: Body, Mind, Bonds, Work, Recovery. A habit may select one to five spheres with independent subjective contribution units 1–10 (default 5), 0 when unselected; no normalization, intensity or objective health measurement. Persistence/editor/backup compatibility are owner-accepted in WEIGHTS-001B (PR #8); read-only trends are a separate SPHERE-TRENDS-001 review candidate.
 - Instant and backdated logging; correction and removal; optional notes and emotional reflection.
 - Habit creation, editing, archiving, restoration, and daily, scheduled, or flexible recurrence.
 - Unrecorded days remain unknown. Confirmed inactivity and planned rest are explicit states, not inferred from missing entries.

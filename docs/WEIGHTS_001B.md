@@ -1,3 +1,7 @@
+# Release receipt — owner accepted
+
+Owner has completed and approved native Windows acceptance. PR #8 was verified at expected headc3754f8373a5ac6e708182999f179773f6155c4e with only Markdown since tested1f957faa and successful Windows run40790775136. Regular merge into master:293e7d20b2cfcb1802059699b72381a33cc6bf23. This supersedes pending-review statements in the historical delivery receipt below; runtime/schema/backups are unchanged by that merge.
+
 # WEIGHTS-001B — implementation and Windows acceptance
 
 ## Scope and release status

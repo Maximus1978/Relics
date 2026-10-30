@@ -1,3 +1,4 @@
+import { projectSphereContributions } from '../src/domain/sphereContributions.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DatabaseSync, type SQLInputValue } from 'node:sqlite';
@@ -155,4 +156,15 @@ test('W12 INSERT SELECT snapshots an edit immediately before insertion without m
     assert.equal(a.habitName, 'Coherent');
     assert.deepEqual(a.spheres, ['mind', 'recovery']);
     assert.deepEqual(a.contributionSnapshot, p);
+});
+
+test('T05 actual SQLite edit/reopen/archive/backdated cancellation uses immutable journal profiles',async context=>{
+ const f=fixture(context);f.migrate();let r=await f.repo();
+ const h=await r.createHabit('Guitar',['mind','recovery'],guitar());await r.log(h,'2000-01-02');
+ const opts={startDay:'2000-01-01',endDayExclusive:'2000-01-10',asOfDay:'2000-01-10',weekStartsOn:1,trendWeeks:4};
+ const before=projectSphereContributions(await r.list(),opts);
+ const next=guitar();next.values.mind=2;await r.updateHabit(h.id,'Edited',['mind','recovery'],next);await r.archiveHabit(h.id);r=await f.reopen();
+ assert.deepEqual(projectSphereContributions(await r.list(),opts),before);
+ await r.restoreHabit(h.id);await r.log(h,'2000-01-03');const rows=await r.list();assert.equal(projectSphereContributions(rows,opts).period.totalUnits,15);
+ await r.remove(rows.find(e=>e.occurredOn==='2000-01-03')!.id);r=await f.reopen();assert.deepEqual(projectSphereContributions(await r.list(),opts),before);
 });

@@ -1,3 +1,55 @@
+# Active owner addendum: recent seven-day analytics
+
+Add «1 неделя (последние 7 дней)» to the existing PR #9 selector, including actual local today and six prior calendar days, with daily points/table rows. Keep the existing default4 and completed4/8-week modes, snapshot/provenance/empty rules, rune/schema/backups unchanged. Update docs, verify and publish on the same unmerged PR; no next task. Local verification PASS:73 Node/SQLite tests, TypeScript/Vite and208 browser checks with zero runtime errors. Actual seven-day desktop/narrow screenshots inspected. Hosted Windows CI now PASS; current source/artifacts below supersede the previous delivery.
+
+## Verified seven-day update delivery
+
+Tested implementation:6a1e539d220ddec4e6fc07c8a7bf7d4d9488f39c; synthetic PR merge build:31729d090ab478e130eb8b422d0c2c8caf23ca62. [Windows run40943769883](https://github.com/Maximus1978/Relics/actions/runs/40943769883) SUCCESS: locked npm ci,73 Node/SQLite tests, TypeScript/Vite,208 browser checks with runtimeErrors=[], native Tauri Windows release and22 native safety tests PASS (one intentionally ignored standalone crash helper runs under its passing parent).
+
+[New Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/40943769883/artifacts/12929011322): 11,896,662 bytes; downloaded SHA256 3af571b6b7f11f954d6eed48429ae386b726c5b7c00c80590a3598cc4cf88b2b matches GitHub. EXE 20,630,016 bytes; SHA256 373a1c95b6f4002ba4d90c0447feb0a1ee50e4fe6e820e9ecb154c1dd9db229d matches manifest; build-info confirms both source SHAs. Unsigned Windows x64/WebView2; extract and run relics.exe. Native UI acceptance remains for owner, no automated owner-DB launch.
+
+[Browser screenshots/proof](https://github.com/Maximus1978/Relics/actions/runs/40943769883/artifacts/12928133238): 60,620,602 bytes; downloaded SHA256 b3562071aac645cbea76baa6d3a66360e42dcbaa6b2646707386d0852ae29065 matches GitHub. Actual rhythm-seven-days.png and rhythm-seven-days-narrow.png inspected,208 checks confirmed. Synthetic in-memory snapshots only. ZIP/extracted evidence outside Git: ../Relics-SPHERE-TRENDS-001-7days-{browser,windows-x64}[.zip]. Run40809834288 and its old EXE are historical and do not include this owner update.
+
+PR #9 remains OPEN/UNMERGED. Documentation-only receipt follows tested code using [skip ci]; no runtime changes afterward. Next NAV-CHRONICLE-001 not begun.
+
+# Historical previous delivery: SPHERE-TRENDS-001 — unmerged owner review
+
+[PR #9](https://github.com/Maximus1978/Relics/pull/9), feature-sphere-trends-001, starts from verified master 293e7d20b2cfcb1802059699b72381a33cc6bf23. Owner accepted native WEIGHTS-001B; PR #8 expected head c3754f8 and successful Windows CI 40790775136 were verified, differences since tested 1f957faa Markdown-only, then merged normally. This supersedes earlier pending PR #8 acceptance/merge holds.
+
+## Verified source and checks
+
+Exact tested implementation/scripts/tests: 53ebd643e297f4249784c7a7d90138d4d4c83478. Synthetic PR merge build source: d52ce0c3fce5e4e86e78bd1cf782c3d40620edad. [Windows run 40809834288](https://github.com/Maximus1978/Relics/actions/runs/40809834288): SUCCESS. Logs confirm locked npm ci, 71 Node/temporary SQLite tests (0 failures), TypeScript/Vite, 202 actual browser checks with runtimeErrors=[], native Tauri Windows release compilation and 22 native backup safety tests PASS. One standalone crash helper intentionally ignored; its passing parent runs it as a child. Node 22.23.4/Rust 1.99.1. Local equivalents also passed. No owner DB/private catalog accessed.
+
+## Downloaded and verified artifacts
+
+[Windows x64 ZIP](https://github.com/Maximus1978/Relics/actions/runs/40809834288/artifacts/12870331947): 11,896,361 bytes, SHA256 aea2b5a508aa20c036fb6899d69b4d86e24c8fea4108e94a89578a8309e1e725 matched GitHub. relics.exe 20,629,504 bytes, SHA256 ccaa8d2ec62af1c960780644ff6236a40e27d15bf30e0eb90fc3c2156573bd0d matched included manifest. build-info source/head match both SHAs above; signed=false/nativeUiRuntimeVerified=false. Extract ZIP and run relics.exe on Windows x64 with WebView2, no build tools. Artifact expires 2026-11-12 UTC.
+
+[Actual browser screenshot ZIP](https://github.com/Maximus1978/Relics/actions/runs/40809834288/artifacts/12870280727): 59,599,335 bytes, SHA256 8f2d87c563419eb9734853b07aeb4d0b0b4a0ea589153408589ded16202b667e matched GitHub. Inspected actual four-week/relative/mixed/empty/legacy/narrow 8-week captures against owner analytics render. rhythm-four-weeks-inventory.png proves placement below original habit cards; rhythm-distribution.png, rhythm-mixed-quality-table.png, rhythm-empty.png, rhythm-legacy-only.png, rhythm-eight-weeks.png and rhythm-eight-weeks-narrow.png cover required states. Existing medallion/rune/art/geometry and editor checks retained.
+
+Archives/extracted evidence are outside Git at ../Relics-SPHERE-TRENDS-001-{browser,windows-x64}[.zip]. Owner-facing copies (Windows ZIP, 11 screenshots, result.json, manifests and Russian acceptance notes): C:/Users/maxim/OneDrive/Documents/ChatGPT/Relics App/deliveries/SPHERE-TRENDS-001-53ebd643. No personal data or test DB included. Final documentation-only receipt uses [skip ci] and leaves tested runtime/locks/art/scripts unchanged.
+
+## Implemented scope and limits
+
+Pure snapshot-only calendar projection: independent units, exact all-five-denominator shares, user/default/unknown counters, duplicate/conflicting event validation, complete Monday 4/8 weeks, no clock/DB/habit joins. Expandable Sanctuary panel below inventory and before existing Chronicle; uPlot 1.6.32 plus native mode/period/filter controls and accessible full table. Hidden lines do not change math; no-numeric weeks are gaps/null, old unknown entries remain counted/excluded, default 5 entries included with provenance. [Detailed contract/T01–T05 map](SPHERE_TRENDS_001.md).
+
+Preserved schema 4/migrations 001–004/native backup v1/v2, identifiers, original art/rune/shrines/gems/sigils/sidebar, habit logging/archive/history and Chronicle navigation. No numerical Balance, recommendations, progression/rewards or Android. Browser fixtures are explicitly fictional and in-memory; only browser preview can select the synthetic fixture, native uses actual SQLite journal snapshots. Current incomplete week is excluded, so an owner with only this week's logs may truthfully see an empty complete-week graph. narrow 8-week chart labels alternate weeks; table retains all dates. Rounded shares can differ from 100% by 0.1; underlying exact ratios sum to 100.
+
+Native UI/visual/functional acceptance remains for the owner. Close old binary, launch extracted new EXE, verify 4/8 weeks/units/shares/filter/table against known past journal snapshots, check backdated add/cancel and immutable historical totals after habit edits, then offline reopen. Do not fabricate events in owner history for screenshots; use an isolated synthetic environment when needed. Build unsigned; no installer or native UI launch claimed here.
+
+PR #9 stays OPEN/UNMERGED. Next queued task after owner acceptance is NAV-CHRONICLE-001; not begun. Android remains deferred and all approved roadmap tasks retained. Stop after delivery.
+
+## Historical preparation and earlier delivery receipts
+
+Statements below about pending PR #8 acceptance or unfinished analytics are historical and superseded by this receipt.
+
+# Active task: SPHERE-TRENDS-001
+
+Owner accepted WEIGHTS-001B in native Windows. Verified PR #8 head c3754f8373a5ac6e708182999f179773f6155c4e, successful Windows run40790775136 and Markdown-only difference from tested1f957faa. Merged normally at293e7d20b2cfcb1802059699b72381a33cc6bf23; verified master parents and created feature-sphere-trends-001 from that master.
+
+Scope: pure snapshot-only deterministic weekly projection, compact expandable analytics below inventory, absolute/share modes, 4/8 complete Monday weeks, accessible filtering/table and provenance/unknown disclosures. Preserve rune/art/habits/Chronicle/schema4/backupv2. Synthetic tests/screenshots, Windows CI/EXE and focused PR; do not merge automatically or begin NAV-CHRONICLE-001. Implementation candidate ready for focused PR: locked npm ci,71 Node/temporary SQLite tests, TypeScript/Vite,22 native backup tests and202 actual browser checks PASS locally;runtimeErrors=[]. Actual four/eight-week, share, mixed/empty/legacy and narrow screenshots inspected. No hosted success/native UI acceptance claimed; Windows CI/EXE delivery pending.
+
+## Historical WEIGHTS-001B delivery receipt (owner accepted and merged above)
+
 # Project handoff
 
 ## Current delivery: WEIGHTS-001B, unmerged owner review

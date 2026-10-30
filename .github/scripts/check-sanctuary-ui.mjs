@@ -1,3 +1,4 @@
+import { checkLifeRhythm } from './check-life-rhythm.mjs';
 import { checkContributionEditor } from './check-contribution-editor.mjs';
 import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
@@ -77,7 +78,7 @@ try {
     await until('document.querySelector(".observation-period").getBoundingClientRect().top >= document.querySelector(".balance-caption").getBoundingClientRect().bottom', `Timeframe labels remain below the central panel at ${width}px`);
     await until('[...document.querySelectorAll(".sphere-shrine")].every(shrine => { const name = shrine.querySelector("h2").getBoundingClientRect(); const count = shrine.querySelector(".recorded-ring").getBoundingClientRect(); return name.bottom <= count.top + 1 || name.right <= count.left + 1 || count.right <= name.left + 1; })', `Sphere names and recorded-day counts remain separate at ${width}px`);
     if (width >= 1000) {
-      if (width === 1440) assert.ok(await evaluate('document.querySelector(".chronicle > summary").getBoundingClientRect().bottom <= innerHeight'), 'Complete Chronicle summary visible at 1440x900');
+      if (width === 1440) assert.ok(await evaluate('document.querySelector("#life-rhythm").getBoundingClientRect().top >= document.querySelector("#inventory").getBoundingClientRect().bottom && document.querySelector("#chronicle").getBoundingClientRect().top >= document.querySelector("#life-rhythm").getBoundingClientRect().bottom'), 'Analytics below inventory; original Chronicle remains after it');
       assert.ok(await evaluate('document.querySelector(".relic-item").getBoundingClientRect().bottom <= innerHeight'), `Complete first inventory row visible at ${width}x${height}`);
       assert.ok(await evaluate('document.querySelector(".balance-wheel").getBoundingClientRect().width >= 210'), 'Prominent central wheel');
       if (width>=1920) {
@@ -187,6 +188,7 @@ try {
   await screenshot('sanctuary-backup-unavailable.png');
   await press('Escape', 'Escape', 27);
   await until('!document.querySelector(".backup-dialog") && document.activeElement.matches(".app-rail button[data-backup]")', 'Backup dialog closes and restores keyboard focus');
+  await checkLifeRhythm({send,evaluate,until,click,viewport,screenshot,output});
   await checkContributionEditor({send,evaluate,until,click,viewport,screenshot});
   await checkSanctuaryStates({ output, send, evaluate, until, click, viewport, screenshot });
   assert.deepEqual(runtimeErrors, []);

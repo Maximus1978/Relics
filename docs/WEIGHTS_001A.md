@@ -1,3 +1,7 @@
+# Implementation status after owner acceptance
+
+Owner accepted native WEIGHTS-001B; PR #8 merged normally at 293e7d20b2cfcb1802059699b72381a33cc6bf23. Profile/migration004/editor/backup contracts below are implemented; the original proposal wording is retained as specification history. SPHERE-TRENDS-001 now implements section7 and T01–T05 in a separate unmerged review candidate: [contract and evidence](SPHERE_TRENDS_001.md). No automatic merge or continuation.
+
 # WEIGHTS-001A — subjective sphere contributions
 
 ## Status, source and approval boundary
