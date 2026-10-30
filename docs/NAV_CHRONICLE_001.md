@@ -18,7 +18,7 @@ No repository, SQLite migration/schema4, backupv1/v2, contribution/rune/chart ca
 
 ## Automated evidence map
 
-Local preliminary:75 Node/temporary SQLite tests, TypeScript/Vite and282 actual browser checks PASS with zero runtime errors. Hosted Windows CI/EXE pending. Final exact source/run/manifest receipt belongs in HANDOFF.
+Verified source a520f1e38595a9e020df5e8c868edadbe9d9e96b. [Windows run41104319143](https://github.com/Maximus1978/Relics/actions/runs/41104319143) SUCCESS:75 Node/temporary SQLite tests, TypeScript/Vite,282 actual browser checks (0 runtime errors), real Tauri Windows EXE and22 native safety tests PASS. Local equivalents and locked/offline native build also passed. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/41104319143/artifacts/13000757903) and [screenshots](https://github.com/Maximus1978/Relics/actions/runs/41104319143/artifacts/13000187101) downloaded/digest-verified; exact sizes/SHA256/manifests in HANDOFF. PR #10 remains unmerged; owner native UI acceptance pending.
 
 1. Dashboard Chronicle absence and natural end after LifeRhythm: actual DOM and screenshot; initial layout assertion updated without dropping shrine/rune geometry tests.
 2. Separate view/current-page/heading focus: real sidebar keyboard Tab/Enter, desktop/mobile destinations, view-aware skip link, main landmark, accessibility tree excluding inactive date picker.

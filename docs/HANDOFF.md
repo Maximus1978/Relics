@@ -1,3 +1,33 @@
+# Current delivery: NAV-CHRONICLE-001 — owner review
+
+[PR #10](https://github.com/Maximus1978/Relics/pull/10), feature-nav-chronicle-001, OPEN/UNMERGED. Owner accepted SPHERE-TRENDS-001 including rolling7 days; PR #9 was verified and merged normally at 39af6b782385ba202c177cc3e99467c208f99d9d before this branch began. Current master remains that accepted release; NAV is not merged.
+
+## Exact verified source and results
+
+Tested code/scripts/tests head: a520f1e38595a9e020df5e8c868edadbe9d9e96b. Synthetic PR merge source: e41131b1629c057b3f095a874ce70e55cea53665. [Windows run 41104319143](https://github.com/Maximus1978/Relics/actions/runs/41104319143) SUCCESS; logs confirm locked npm ci, 75 Node/temporary SQLite tests (0 failed), TypeScript/Vite, 282 real browser checks with runtimeErrors=[], actual native Tauri release compilation and 22 native safety tests PASS. One standalone crash helper is intentionally ignored and run by its passing parent. Node 22.23.4/Rust 1.99.1.
+
+Local 75/282/TypeScript/Vite also PASS. During the GitHub status delay a locked/offline native Windows build completed successfully in 1m03s; real native 22 tests also passed locally. No actual app was launched against owner data. Final receipt modifies Markdown only with [skip ci]; tested application/art/locks/tests remain unchanged.
+
+## Downloaded and checked artifacts
+
+[Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/41104319143/artifacts/13000757903): 11,897,255 bytes; SHA256 7a958942fd7e3258c072a1fba42fe6d683bbcab80fa30cb2d0e1f502e9047f8c matches GitHub. EXE 20,631,040 bytes; SHA256 dbd6e973843882e2aa990e6f6d8ad7b4e84eab65528dca58665bf7cca5977064 matches manifest. build-info verifies head/source above, signed=false/nativeUiRuntimeVerified=false. Artifact expires 2026-11-13 UTC. Extract and run relics.exe on Windows x64 with WebView2; no build tools required.
+
+[Actual screenshots/browser proof](https://github.com/Maximus1978/Relics/actions/runs/41104319143/artifacts/13000187101): 69,539,871 bytes; SHA256 72f0f650f9e2b8d65e06bc97f906e8719d507b5b046b8b1281624669308ad98b matches GitHub. Downloaded result.json confirms 282 checks/zero runtime errors. Actual required captures inspected: chronicle-sanctuary-dashboard.png, chronicle-1440x900.png, chronicle-1280x800.png, chronicle-390x844.png, chronicle-archived-history.png, chronicle-archived-only.png, chronicle-empty.png and mobile variant. Source is explicitly synthetic in-memory preview, not owner data. Existing rune/geometry/editor/analytics proofs retained.
+
+chronicle-sqlite-bridge-proof.json separately confirms real temporary SQLite + mocked native IPC, one repository load before error reload, two mock replacements and cancel/restore/error refresh. It explicitly does NOT claim real Rust backup/native UI verification. Existing 22 Rust tests verify actual backup/migration/rollback/crash safety; owner must still accept real native dialogs/UI. Archive/snapshot IDs/names/spheres/dates preserved, no owner DB/private catalog accessed.
+
+Local downloaded ZIP/extracted evidence is outside Git at ../Relics-NAV-CHRONICLE-001-{browser,windows-x64}[.zip]. CI artifact, not the optional local build, is the published owner candidate.
+
+## Delivered behavior, manual acceptance and limits
+
+One shared app model/repository and sidebar/mobile view state; date-grouped snapshot Chronicle only mounts on its destination. Sanctuary ends after unchanged LifeRhythm. Inactive Sanctuary is hidden/inert to retain selected day/chart1/4/8 mode/filter state. Current-page/heading/skip/announcement semantics, adjacent cancel focus and active-view status/error/loading/empty handling are implemented. Restore refreshes the same journal; a refresh failure remains visible after modal close. No schema/repository/backup protocol/rune/chart/art/dependency/workflow or deletion-semantic change.
+
+[Full native Windows acceptance steps](NAV_CHRONICLE_001.md#windows-owner-acceptance--no-compilation-commands): close old app, extract new ZIP/run; inspect dashboard and dedicated Chronicle/date groups/counts/archived snapshots, keyboard/mobile/focus; cancel an intended synthetic record and inspect updated Sanctuary/rune/1-week chart; use isolated synthetic data for native v1/v2 restore/full replacement; resize1440x900/1280x800/390x844, close/reopen offline. Keep valuable personal backups private. Browser mock-IPC tests do not replace native dialog acceptance.
+
+Known limits: unsigned x64/WebView2, native visual/functional owner acceptance pending, in-memory navigation starts Sanctuary on restart (no URL/history/persisted route). No new diary/filter/search/date edit/undo/audit/gameplay/Android. Next queued ANDROID-001 requires separate owner scheduling; not begun. Stop after delivery, do not merge PR #10 automatically.
+
+## Historical implementation and earlier receipts
+
 # Active task: NAV-CHRONICLE-001
 
 Owner accepted SPHERE-TRENDS-001 including rolling7 days on Windows. PR #9 expected head317756f09eab239f5f1a9c7bdb5277be8362599b verified mergeable, Windows run40943769883 SUCCESS and only4 Markdown files since tested6a1e539d. Regular merge39af6b782385ba202c177cc3e99467c208f99d9d verified on master (parents293e7d20 and317756f0). Local master fast-forwarded; feature-nav-chronicle-001 starts there.
