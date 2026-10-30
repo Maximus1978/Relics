@@ -4,7 +4,9 @@
 
 DOC-GAME-002 is complete: approved product decisions consolidated, owner-accepted STATE-001 released by regular merge of PR #6 at be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9, with only Markdown changes after the tested implementation. The owner tested STATE-001 on Windows and accepted its functionality/current visual direction, four-state rune, independent daily stones and responsive technical layers. Preserve this implementation; art imperfections are non-blocking. HANDOFF records actual merge/evidence.
 
-One task at a time. Active task: NAV-CHRONICLE-001. Owner accepted native WEIGHTS-001B; PR #8 merged normally at 293e7d20b2cfcb1802059699b72381a33cc6bf23 after verifying CI and Markdown-only differences. Owner accepted SPHERE-TRENDS-001 including rolling7 days; PR #9 verified and merged normally at39af6b782385ba202c177cc3e99467c208f99d9d. Deliver dedicated Chronicle in a separate unmerged PR; stop for owner acceptance. The owner's later priority override is WEIGHTS-001A → WEIGHTS-001B → SPHERE-TRENDS-001 → NAV-CHRONICLE-001. Android is deferred until core mechanics are validated on Windows. Preserve all approved scope, history, backups and CI; no automatic next task.
+One task at a time. Active task: PROGRESS-001 REVISION, documentation-only. Owner accepted NAV-CHRONICLE-001 on Windows; PR #10 merged at 8503670a31b8adc74bac61b6a84826e6772664eb, matching freshly fetched master on 2026-10-30. Earlier NAV review/active statements are superseded. Contributions/trends/Chronicle are accepted and implemented, not queued features. Preserve history, backups, central rune and CI. [Canonical proposal](PROGRESS_001.md) and [Russian owner review](PROGRESS_001_REVIEW_RU.md). Do not implement or auto-merge this task.
+
+Latest owner sequence: PROGRESS-001 → UI-COLLAPSE-001 → HABIT-RHYTHM-001 → HABIT-SIGILS-001 (including HABIT-ICONS-001) → PROGRESS-002A → PROGRESS-002B → ARCHIVE-CLEANUP-001 → AUDIO-001. This supersedes the now-completed WEIGHTS/trends/NAV queue; it is recommended scheduling, not authorization. Android remains deferred until Windows core mechanics validate and owner schedules it.
 
 ## Accepted foundation
 
@@ -26,26 +28,26 @@ The owner has now authorized full replacement only, with validated summary and e
 
 ## Ordered implementation priorities
 
-The owner's latest priority override is authoritative; it supersedes DOC-GAME-002's earlier NAV → early Android order. Android remains an approved compatibility milestone after Windows core-mechanics validation. Every row below is a separately authorized future task, not work to begin now.
+The PROGRESS-001 REVISION priority override above is authoritative; accepted completed prerequisites below are release history, and future scope is retained. Android remains an approved compatibility milestone after Windows core-mechanics validation. Every row below is a separately authorized future task, not work to begin now.
 
 | Priority | Small task | Acceptance boundary / dependency |
 | --- | --- | --- |
 | Accepted | BACKUP-001 | Owner-accepted local export/full replacement/safety recovery; PR #5 merge 234c35a7be4306ba1fee082f01409122715e2846 |
 | Accepted and merged; DOC-GAME-002 complete | SANCTUARY-STATE-001 | [PR #6](https://github.com/Maximus1978/Relics/pull/6). Clean independent RGBA frame/rune/stone, separate SVG signs and lighting, reference-only source board, alpha/overlay/stable-geometry proof and central-track scaling at 1920/2560. Temporal rules, schema, history and backups unchanged. Owner Windows functionality/current visuals accepted; exact CI/artifacts and actual authorized release state in HANDOFF |
 | Accepted; PR #7 merged | WEIGHTS-001A | Define independent subjective 1–10 profile, legacy defaults/provenance, immutable event snapshots, additive storage and v1→v2 backup contract, reference UX and pure projection; no code. [Plan/test matrix](WEIGHTS_001A.md) |
-| Owner accepted and merged PR #8 | WEIGHTS-001B | [PR #8](https://github.com/Maximus1978/Relics/pull/8): persistence/migration004, shared Create/Edit, atomic snapshots and native v1/v2 safety accepted on Windows; regular merge293e7d20. Historical automated evidence in WEIGHTS_001B.md |
-| Owner accepted and merged PR #9 | SPHERE-TRENDS-001 | Snapshot-only pure projection, absolute/relative modes, rolling7 days including today plus4/8 completed Monday weeks, interactive legend, table and default/excluded disclosure below inventory; no rune/schema/backup/navigation changes. [Contract/evidence](SPHERE_TRENDS_001.md). [PR #9](https://github.com/Maximus1978/Relics/pull/9), [Updated Windows CI](https://github.com/Maximus1978/Relics/actions/runs/40943769883) SUCCESS:73 Node/208 browser/22 native plus native EXE. Owner accepted on Windows; regular merge39af6b78 |
-| Active implementation candidate | NAV-CHRONICLE-001 | Dedicated date-grouped historical view, shared sidebar/mobile state, snapshot names/spheres, visible cancel/loading/error feedback, focus/skip semantics. Sanctuary ends after unchanged analytics; schema/backup/rune untouched. [Contract/acceptance](NAV_CHRONICLE_001.md). [PR #10](https://github.com/Maximus1978/Relics/pull/10); [Windows CI](https://github.com/Maximus1978/Relics/actions/runs/41104319143) SUCCESS:75 Node/282 browser/22 native plus EXE. Owner native acceptance pending, no automatic merge or next task |
+| Owner accepted and merged PR #8 | WEIGHTS-001B | [PR #8](https://github.com/Maximus1978/Relics/pull/8): persistence/migration004, shared Create/Edit, atomic snapshots and native v1/v2 safety accepted on Windows; regular merge 293e7d20. Historical automated evidence in WEIGHTS_001B.md |
+| Owner accepted and merged PR #9 | SPHERE-TRENDS-001 | Snapshot-only pure projection, absolute/relative modes, rolling7 days including today plus4/8 completed Monday weeks, interactive legend, table and default/excluded disclosure below inventory; no rune/schema/backup/navigation changes. [Contract/evidence](SPHERE_TRENDS_001.md). [PR #9](https://github.com/Maximus1978/Relics/pull/9), [Updated Windows CI](https://github.com/Maximus1978/Relics/actions/runs/40943769883) SUCCESS:73 Node/208 browser/22 native plus native EXE. Owner accepted on Windows; regular merge 39af6b78 |
+| Owner accepted and merged PR #10 | NAV-CHRONICLE-001 | Dedicated Chronicle/snapshots/shared navigation delivered; owner Windows accepted, regular merge 8503670a31b8adc74bac61b6a84826e6772664eb verified. [Historical evidence](NAV_CHRONICLE_001.md):75 Node/282 browser/22 native and actual EXE; no current pending acceptance |
 | Deferred until Windows core mechanics validated | ANDROID-001 | Approved shell/toolchain/device compatibility milestone retained; after contributions/trends Windows acceptance and owner scheduling, not an immediate prerequisite. No gameplay expansion |
 | Deferred; after ANDROID-001 | ANDROID-LOG-001 | After ANDROID-001: existing create/edit/archive, logging/backdating, migration/reopen and lifecycle persistence; preserve history, report device evidence |
-| 2 | SANCTUARY-STATE-002 | Specify and review independent daily / gradual Resonance / permanent Mastery visual layers; synthetic developer fixtures only until real projections exist; no invented runtime energy |
-| 3 | HABIT-ICONS-001 | Small curated icon picker and independent persisted habit icon identity; safe migration/defaults and existing history intact |
+| Consolidated into PROGRESS-001 / PROGRESS-002B | SANCTUARY-STATE-002 | Independent ordinary-medal material/phase, recent light, selected-day check and interaction contract now in PROGRESS_001.md. Keep this traceable art/state requirement; existing central rune unchanged |
+| Scoped within HABIT-SIGILS-001 | HABIT-ICONS-001 | Curated manual icon/default identity, independent from spheres/units/frequency/material; migration/backup and fixed center registration. No assets in current task |
 | 4 | ACTIVITY-DETAILS-001A | Optional per-activity note with additive migration and legacy compatibility; not a habit field |
 | 4 | ACTIVITY-DETAILS-001B | Optional per-activity intensity after scale/effect agreement; distinct from contribution weights; no forced entry |
 | 4 | ACTIVITY-MODEL-001 | Small design/compatibility task for repeated sessions and quantities/units/identity; do not remove current uniqueness until a separately approved implementation |
 | 5 specification gate | BALANCE-001 | Specify contextual sphere diversity, evaluation window, contribution weighting, anti-grinding and missing-data/life context; cover one-all-five-habit 35/35 case. No formulas/KPIs implemented. Required before numeric Balance or Balance-derived rewards |
-| 5 | PROGRESS-001 | Agree/version pure Mastery, Resonance and thematic essence contracts, evaluation time, no-absence-loss and anti-grind/correction policies; use synthetic examples; coordinate with BALANCE-001 before Balance-linked effects |
-| 5 | PROGRESS-002 | Implement tested Mastery/Resonance projections and durable evolution semantics without losing history; integrate real visual layers from STATE-002 |
+| Current documentation review | PROGRESS-001 | [Revised canonical spec](PROGRESS_001.md): two Forging models, exact cycle/threshold/correction examples, layered medal/reference contract, minimal history/backup design and P01–P09 gates; numerical choices proposed, no runtime changes |
+| Superseded split, scope retained | PROGRESS-002 | Replaced by separately reviewed pure engine PROGRESS-002A and data/visual integration PROGRESS-002B below; no large combined implementation |
 | 6 prerequisite | AUDIT-001 | Auditable corrections and explicit consequences for resource/discovery grants before permanent rewards depend on mutable history |
 | 6 prerequisite | WORLD-001 | Validate versioned declarative pack schema/loader, compatibility, safe component/effect vocabulary and public/closed boundary |
 | 6 | ESSENCE-001 | Minimal thematic essence/material inventory and idempotent activity-derived accounting; approved yields/correction policy, no permanent-progress spending |
@@ -70,19 +72,19 @@ Dependencies may require a smaller split within the same priority. No formula, c
 
 ## Deferred independent work and accepted art backlog
 
-SCHEDULE-001 covers flexible recurrence, planned rest and explicit inactivity, separately from repeated-event modeling. Further backup formats, notifications, widgets, cloud sync or optional AI integration need separate task cards and are not in the next-task queue.
+HABIT-RHYTHM-001 now covers the initial daily/three-per-week/weekly count intention. SCHEDULE-001 retains later explicit planned rest/inactivity and any separately approved weekday calendar; no weekday editor in MVP. The earlier vague flexible-frequency scope is superseded: spontaneous “Whenever I feel like it” habit frequency is explicitly deferred to a separate experience mechanism, not an obligation to log every moment. Further backup formats, notifications, widgets, cloud sync or optional AI integration need separate task cards and are not in the next-task queue.
 
 Future art polish: optional alternate shrine silhouettes, refined gem optics, auxiliary/compact typography and fuller state/mobile visual capture. Shared base frames are appropriate for ordinary relics; reserve unique silhouettes/art for authored rare/legendary discoveries. The unique runic monogram and current visual direction were owner-accepted in STATE-001. None blocks the accepted Sanctuary release.
 
-The current seven-day observations are not implemented Resonance/Mastery. Notes, intensity, weights, repeated events, real progression, inventory, alchemy, rune/crafting/collection systems, optional experiences and world transitions are all unimplemented unless an accepted task above explicitly says otherwise. Preserve the versioned declarative World Pack architecture and finite authored discoveries.
+The current seven-day observations are not implemented Resonance/Mastery. Notes, intensity, repeated events, real progression, inventory, alchemy, rune/crafting/collection systems, optional experiences and world transitions are all unimplemented unless an accepted task above explicitly says otherwise. Preserve the versioned declarative World Pack architecture and finite authored discoveries.
 
 ## Accepted additional scope — future, independently testable tasks
 
-These are approved directions, not implemented functionality or permission to begin. The immediate sequence is WEIGHTS-001A → WEIGHTS-001B → SPHERE-TRENDS-001 → NAV-CHRONICLE-001; Android waits for validated Windows mechanics; later scheduling depends on prerequisites and a new owner task.
+These are approved directions, not implemented functionality or permission to begin. The immediate sequence is the PROGRESS-001 REVISION queue at the top; earlier WEIGHTS/trends/NAV milestones are accepted. Android waits for validated Windows mechanics; later scheduling still requires a new owner task.
 
 | Task | Small acceptance boundary | Dependency / open contract |
 | --- | --- | --- |
-| HABIT-SIGILS-001 | Rename current «Ваши реликвии» to «Печати привычек» in visible/accessibility copy; verify no identity/data/behavior changes | Separate future naming task; no rename in DOC-GAME-002 |
+| HABIT-SIGILS-001 | Expanded owner-approved future scope: canonical six-material/three-phase ordinary medal family, manual curated HABIT-ICONS-001, compact card toggle/menu and planned «Печати привычек» label; first visual acceptance, then small persistence/backup/card increments | PROGRESS-001 P03/P09 and data contract; no live fake tiers before engine, no assets created now |
 | LIFE-RHYTHM-001 | Vacation specification: manual one-day/interval/until-ended mode, optional logging, truthful stones/rune, restful aura and possible brief cosmetic afterglow; review timezone/expiry/persistence/defaults | Approved principles; open details, before implementation |
 | LIFE-RHYTHM-002 | Persist approved manual mode and explicit start/end controls; additive migration/backup compatibility if needed; restart/end/cancel tests | LIFE-RHYTHM-001; no automatic activity, Recovery or Mastery |
 | LIFE-RHYTHM-003 | Approved restful aura/afterglow using persisted mode; prove selected-day and seven-day states unaffected, accessible/reduced-motion alternative | LIFE-RHYTHM-002 and approved duration/art contract; optional permanent memories/discoveries remain later authored work |
@@ -108,6 +110,23 @@ Icon gallery/contribution identity are tracked above rather than duplicated. Exi
 
 ## Unimplemented scope and decision status
 
-Accepted principles do not select numeric mechanics. Mastery/Resonance progression, numeric Balance, Blessings, vacation/insights, sound, notes/intensity/weights/schedules, authored inventory/discovery/hidden recipes, rune collection, alchemy/crafting/customization, unique artifacts/awakening, optional reflections/microquests, Collection, World Pack selection, voluntary epochs and Museum are future tasks unless explicitly accepted as implemented above.
+Accepted principles do not select numeric mechanics. Mastery/Resonance progression, numeric Balance, Blessings, vacation/insights, sound, notes/intensity/schedules, authored inventory/discovery/hidden recipes, rune collection, alchemy/crafting/customization, unique artifacts/awakening, optional reflections/microquests, Collection, World Pack selection, voluntary epochs and Museum are future tasks unless explicitly accepted as implemented above.
 
 Keep Sanctuary, Clockwork, Wasteland and Verdant and versioned declarative packs. No fake gameplay screens, empty reward systems or exposed secret recipes. BALANCE-001 precedes numeric Balance KPIs/rewards; exact mechanics remain open in OPEN_QUESTIONS. Work Sprint Mode is outside this specification.
+
+## PROGRESS-001 REVISION — small implementation gates, not authorization
+
+| Order | Task | Scope and dependency |
+| --- | --- | --- |
+| 1 | PROGRESS-001 | Current documentation-only owner review; proposals P01–P09 must be decided explicitly before affected code |
+| 2 | UI-COLLAPSE-001 | Independent inventory/analytics collapse, device-local preferences, visible essential actions, accessibility, chart/date/filter state retained; no SQLite just for preferences |
+| 3 | HABIT-RHYTHM-001 | Approved frequency/effective dates and known archive intervals; atomic save; additive migration and strict older-backup import/export/recovery gates before editor release |
+| 4 | HABIT-SIGILS-001 / HABIT-ICONS-001 | Owner visual gate on canonical registered medals/manual glyphs; small identity/persistence/backup/card increments, no invented live progression |
+| 5 | PROGRESS-002A | Pure deterministic frequency-aware Mastery/Forging/Resonance and correction replay/candidate receipts; synthetic tests, no persistence/UI changes |
+| 6 | PROGRESS-002B | Native idempotent permanent receipt/backup integration first; real material/phase/light/check states second; Windows owner acceptance |
+| 7 | ARCHIVE-CLEANUP-001 | Hide unwanted archived habits, retain journal/analytics/FK and archived logging guard; genuine zero-history hard deletion only if separately approved |
+| 8 | AUDIO-001 | Existing sound/world-theme specification scope retained; no audio assets or playback authorized now |
+
+[Exact algorithms, examples, dependencies and P-T01–P-T20 future test matrix](PROGRESS_001.md). The previous0/7/21/50/120/250 milestones are provisional historical candidates, not runtime requirements. New0/3/9/18/36/72 cycles, phase checkpoints and interruption/Resonance formulas are recommendations for owner approval, not accepted values. No contribution multiplier, reward probability, essence yield or scientific automaticity threshold.
+
+Preserve Vacation Mode/cosmetic afterglow, contextual opt-in Life Rhythm insights, Balance, essences, Alchemy, Blessings, authored unique Artifacts, Collection, Museum, voluntary epochs and optional Android. The versioned declarative World Packs remain Sanctuary, Clockwork, Wasteland and Verdant. Spontaneous experiences/microquests remain optional future authored opportunities; no sixth sphere, random infinite loot or duty to record every small activity. UI-COLLAPSE-001 is the next single recommended task after this review, never started automatically.

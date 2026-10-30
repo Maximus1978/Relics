@@ -36,7 +36,7 @@ Domain rules cannot depend on React, Tauri, SQL, or theme artwork. Application u
 - `content/sanctuary/manifest.json`: public epoch metadata, not a complete validated World Pack.
 - `tests/activity.test.ts`: date tests and real SQLite integrity scenarios via Node.
 
-The current application hook still coordinates use cases directly with the concrete adapter. A repository port and pure application service should be extracted in a dedicated task when expanding behavior. Schedules, weighted contributions, game progression projections, audit events and World Pack validation are not implemented. The read-only recorded-day projection is present; native Windows backup/restore is owner-accepted and merged in PR #5 at 234c35a7be4306ba1fee082f01409122715e2846; STATE-001 preserves its service and capabilities.
+The current application hook still coordinates use cases directly with the concrete adapter. A repository port and pure application service should be extracted in a dedicated task when expanding behavior. Independent contribution persistence/snapshots and snapshot-only trends are implemented and owner-accepted; dedicated Chronicle shares the same model/repository after PR #10. Rhythms, game progression, audit events and World Pack validation remain unimplemented. The read-only recorded-day projection is present; native Windows backup/restore is owner-accepted and merged in PR #5 at 234c35a7be4306ba1fee082f01409122715e2846; STATE-001 preserves its service and capabilities.
 
 ## Intended directory structure
 
@@ -72,3 +72,7 @@ Only local application content should receive SQL capabilities. Current SQL exec
 ## Central medallion art boundary
 
 The original board lives only in docs/visual-references/. Runtime uses public/art/medallion/v2/ frame, rune and neutral stone masters; no complete-render crop or background disc. Asset manifests, alpha/overlay audit and wide-desktop scaling are documented in [MEDALLION_LAYERS](art/MEDALLION_LAYERS.md). Light is presentation-only; selected-day and current-window projections remain independent. No migration, native capability or dependency change.
+
+## PROGRESS-001 REVISION — proposed extension, not runtime architecture
+
+[Canonical proposed contract](PROGRESS_001.md#9-data-migrations-backup-and-safety-proposal-p07p08): minimal effective-date frequency/pause histories, pure versioned cycle/Forging/Resonance projections with explicit local today, later sparse material/phase receipts and registered manual-icon medal layers. No persistent XP ledger or duplicate aggregate store. Multi-row definition changes and receipt reconciliation require a pinned native transaction, not unpinned frontend transaction commands. Each persisted addition requires native backup adapters/protective full replacement and synthetic migration/crash tests before release. Existing schema 4/backups/rune/snapshot charts/Chronicle are unchanged by this docs PR. Numerical and correction policies P01–P09 are pending owner review.

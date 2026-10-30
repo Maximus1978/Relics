@@ -1,3 +1,26 @@
+# Current task: PROGRESS-001 REVISION — documentation delivered for review
+
+Verified2026-10-30: owner accepted NAV-CHRONICLE-001 on Windows. [PR #10](https://github.com/Maximus1978/Relics/pull/10) is merged at8503670a31b8adc74bac61b6a84826e6772664eb; freshly fetched origin/master matches, parents39af6b78/db1d2f7. Earlier NAV active/pending/unmerged statements below are historical and superseded. docs-progress-001 starts from that merge with a clean baseline.
+
+## Current review package
+
+- [Canonical PROGRESS-001 specification](PROGRESS_001.md): approved direction versus proposed mechanics versus implemented baseline/deferred scope; two Forging models, recommendation, concrete calendars/interruptions/return examples, threshold/phase durations, effective-frequency changes/backdates/corrections, independent visual layer diagram, minimal native storage/backup proposal and P-T01–P-T20 future test matrix.
+- [Russian owner review](PROGRESS_001_REVIEW_RU.md): accepted principles, recommended rhythm/checkpoints, material pacing, data safety, visual composition, small milestones and explicit P01–P09 approvals. No numerical rule is approved by implication.
+- [Art/reference contract](art/HABIT_MEDALS.md): supplied material/state board name/hash/provenance, three-phase six-material family, manual center icon, layered green confirmation/glow/focus; no full-medal grayscale. Original attachment remains a reference, no asset copied/generated/modified here. Existing Sanctuary/rune artwork unchanged.
+- ROADMAP/GAME_DESIGN/PRODUCT_VISION/UX_PRINCIPLES/DATA_MODEL/DECISIONS/OPEN_QUESTIONS updated, plus README/AGENTS/architecture/reference inventory and NAV accepted-release status. Previous decisions retained with explicit supersession. All approved future systems/worlds preserved.
+
+## Actual checks and limits
+
+Documentation-only change list:16 Markdown files, no application code, SQL migrations, runtime/test scripts, artwork, packages/locks, workflow, database or private content. git diff --check passes. Relative local Markdown targets/heading anchors checked; no missing target/anchor. One-off design arithmetic/calendar checks pass: ten checks cover cycle examples, phase monotonicity, Nov/Dec boundaries, Resonance4/7,432 active combinations, preserved task/world list,20 future test scenarios and9 explicit decision gates. These are document sanity checks, not an implemented/tested progression engine. P-T01–P-T20 remain future acceptance requirements, not executed tests.
+
+No new runtime/TypeScript/browser/Rust/Windows build is run or claimed for this documentation-only task. Existing successful [NAV Windows run41104319143](https://github.com/Maximus1978/Relics/actions/runs/41104319143), tested head a520f1e38595a9e020df5e8c868edadbe9d9e96b and its artifacts remain historical release evidence. No new EXE/screenshots are required or fabricated. Publication uses one docs-only PR, with [skip ci] to avoid an unrelated build. Owner journal never opened.
+
+Recommendation only: complete weekly cycles with7/3/1 targets; Model B protects earned phase checkpoints; proposed material frontier0/3/9/18/36/72, three phases; legacy rhythm unconfigured until explicit enrollment, future-only effective edits, retained achievement receipts after correction; two-gap habit Resonance. Thresholds, tolerances, reset/checkpoint policy, effective dates, correction retention, pause treatment and new backup versions are **not owner-approved**. No numeric contribution multiplier or reward/recipe formula.
+
+Next single recommended task after review: **UI-COLLAPSE-001**, independently collapsible inventory/Life Rhythm with device-local preferences and no SQLite just for UI preferences. Not begun. HABIT-RHYTHM-001, HABIT-SIGILS-001/icons, PROGRESS-002A/B, ARCHIVE-CLEANUP-001 and AUDIO-001 remain queued, not authorized implementations. No automatic merge; stop for owner review.
+
+## Historical receipts — release holds below superseded above
+
 # Current delivery: NAV-CHRONICLE-001 — owner review
 
 [PR #10](https://github.com/Maximus1978/Relics/pull/10), feature-nav-chronicle-001, OPEN/UNMERGED. Owner accepted SPHERE-TRENDS-001 including rolling7 days; PR #9 was verified and merged normally at 39af6b782385ba202c177cc3e99467c208f99d9d before this branch began. Current master remains that accepted release; NAV is not merged.
