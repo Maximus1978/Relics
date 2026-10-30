@@ -1,3 +1,7 @@
+## Release acceptance — 2026-10-30
+
+Owner accepted Windows functionality including rolling7 days. PR #9 expected head317756f0 verified; after successful tested6a1e539d/run40943769883 only four Markdown files changed. Regular merge39af6b782385ba202c177cc3e99467c208f99d9d. Earlier pending-review statements below are historical; accepted chart/projection are unchanged by NAV-CHRONICLE-001.
+
 ## Owner update — 2026-10-29: last seven days
 
 Selector now additionally supports «1 неделя (последние 7 дней)». This is a rolling seven-local-calendar-day window including actual today and six preceding days, shown as seven daily points/table rows. It is independent of the selected logging date and is not a completed Monday week. Totals, shares, filters and quality counts use that exact half-open range [today−6, today+1). Empty/unknown days remain gaps/null.

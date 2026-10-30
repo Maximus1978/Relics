@@ -1,3 +1,5 @@
+import { checkChronicleSqlite } from './check-chronicle-sqlite.mjs';
+import { checkChronicleNavigation } from './check-chronicle-navigation.mjs';
 import { checkLifeRhythm } from './check-life-rhythm.mjs';
 import { checkContributionEditor } from './check-contribution-editor.mjs';
 import assert from 'node:assert/strict';
@@ -14,10 +16,19 @@ const socket = new WebSocket(target.webSocketDebuggerUrl);
 await new Promise((resolve, reject) => { socket.addEventListener('open', resolve, { once: true }); socket.addEventListener('error', reject, { once: true }); });
 let identifier = 0;
 const pending = new Map();
+let bridgeHandler=null;
+async function bindIpc(handler){bridgeHandler=handler;await send(handler?'Runtime.addBinding':'Runtime.removeBinding',{name:'__chronicleTestIpc'});}
 const runtimeErrors = [];
 const checks = [];
 socket.addEventListener('message', event => {
   const message = JSON.parse(event.data);
+  if(message.method==='Runtime.bindingCalled'&&message.params.name==='__chronicleTestIpc') {
+    const invocation=JSON.parse(message.params.payload);
+    Promise.resolve().then(()=>bridgeHandler(invocation.cmd,invocation.args)).then(
+      value=>send('Runtime.evaluate',{expression:'window.__chronicleTestResolve?.('+invocation.id+',true,'+JSON.stringify(value??null)+')'}),
+      error=>send('Runtime.evaluate',{expression:'window.__chronicleTestResolve?.('+invocation.id+',false,'+JSON.stringify(String(error.message??error))+')'})
+    ).catch(()=>{});
+  }
   if (message.method === 'Runtime.exceptionThrown') runtimeErrors.push(message.params.exceptionDetails.text);
   const request = pending.get(message.id);
   if (!request) return;
@@ -78,7 +89,7 @@ try {
     await until('document.querySelector(".observation-period").getBoundingClientRect().top >= document.querySelector(".balance-caption").getBoundingClientRect().bottom', `Timeframe labels remain below the central panel at ${width}px`);
     await until('[...document.querySelectorAll(".sphere-shrine")].every(shrine => { const name = shrine.querySelector("h2").getBoundingClientRect(); const count = shrine.querySelector(".recorded-ring").getBoundingClientRect(); return name.bottom <= count.top + 1 || name.right <= count.left + 1 || count.right <= name.left + 1; })', `Sphere names and recorded-day counts remain separate at ${width}px`);
     if (width >= 1000) {
-      if (width === 1440) assert.ok(await evaluate('document.querySelector("#life-rhythm").getBoundingClientRect().top >= document.querySelector("#inventory").getBoundingClientRect().bottom && document.querySelector("#chronicle").getBoundingClientRect().top >= document.querySelector("#life-rhythm").getBoundingClientRect().bottom'), 'Analytics below inventory; original Chronicle remains after it');
+      if (width === 1440) assert.ok(await evaluate('document.querySelector("#life-rhythm").getBoundingClientRect().top >= document.querySelector("#inventory").getBoundingClientRect().bottom && !document.querySelector("#chronicle")'), 'Dashboard ends after analytics; Chronicle is not mounted');
       assert.ok(await evaluate('document.querySelector(".relic-item").getBoundingClientRect().bottom <= innerHeight'), `Complete first inventory row visible at ${width}x${height}`);
       assert.ok(await evaluate('document.querySelector(".balance-wheel").getBoundingClientRect().width >= 210'), 'Prominent central wheel');
       if (width>=1920) {
@@ -139,9 +150,11 @@ try {
   await send('Input.insertText', { text: 'Гитара у окна' });
   await click('.creation-form button[type="submit"]');
   await until('!document.querySelector(".creation-form") && document.querySelector("[data-habit-id=demo-guitar] h4").textContent === "Гитара у окна"', 'Edited definition renders');
-  await click('.chronicle > summary');
-  await until('document.querySelector(".chronicle").open && [...document.querySelectorAll(".entry h3")].filter(title => title.textContent === "Гитара").length === 2', 'Expandable journal preserves historical name snapshots');
+  await click('.app-rail [data-nav=chronicle]');
+  await until('document.querySelector("#chronicle") && [...document.querySelectorAll(".entry h3")].filter(title => title.textContent === "Гитара").length === 2', 'Dedicated Chronicle preserves historical name snapshots');
   await screenshot('sanctuary-journal.png');
+  await click('.app-rail [data-nav=sanctuary]');
+  await until('document.activeElement.id==="sanctuary-title"','Return from Chronicle focuses Sanctuary');
 
   await click(`${card} .habit-actions summary`);
   await click(`${card} .habit-action-options button:nth-child(2)`);
@@ -161,6 +174,8 @@ try {
   await until('!document.querySelector("[data-habit-id=demo-guitar]")', 'Restore removes the card from the archive');
   await click('.inventory-heading .button-quiet');
   await until('document.querySelector("[data-habit-id=demo-guitar] h4")?.textContent === "Гитара у окна"', 'Restore retains edited definition');
+  await click('.app-rail [data-nav=chronicle]');
+  await until('document.activeElement.id==="journal-title"','Chronicle opens for cancellation');
   const entryCount = await evaluate('document.querySelectorAll(".entry").length');
   await click('.entry button');
   await until(`document.querySelectorAll('.entry').length === ${entryCount - 1}`, 'Existing journal cancellation remains accessible');
@@ -188,6 +203,8 @@ try {
   await screenshot('sanctuary-backup-unavailable.png');
   await press('Escape', 'Escape', 27);
   await until('!document.querySelector(".backup-dialog") && document.activeElement.matches(".app-rail button[data-backup]")', 'Backup dialog closes and restores keyboard focus');
+  await checkChronicleNavigation({send,evaluate,until,click,viewport,screenshot,output});
+  await checkChronicleSqlite({send,evaluate,until,click,viewport,bindIpc,output});
   await checkLifeRhythm({send,evaluate,until,click,viewport,screenshot,output});
   await checkContributionEditor({send,evaluate,until,click,viewport,screenshot});
   await checkSanctuaryStates({ output, send, evaluate, until, click, viewport, screenshot });

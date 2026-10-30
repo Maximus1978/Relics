@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { medallionIllumination } from './domain/medallionIllumination';
 import { useLocalDay } from './application/useLocalDay';
 import { useRelicsModel } from './application/useRelicsModel';
@@ -17,37 +17,44 @@ import './ui/sanctuary/shell.css';
 
 export default function App() {
   const model = useRelicsModel();
-  const [journalOpen, setJournalOpen] = useState(false);
-  const journal = useRef<HTMLDetailsElement>(null);
+  const [view, setView] = useState<'sanctuary'|'chronicle'>('sanctuary');
+  const [navigationRevision, setNavigationRevision] = useState(0);
+  const focusTarget = useRef('sanctuary-title');
+  const destination = view === 'chronicle' ? 'chronicle' : model.showArchived ? 'archive' : 'sanctuary';
+  useEffect(() => {
+    if (!navigationRevision) return;
+    window.scrollTo({ top:0, behavior:'instant' });
+    document.getElementById(focusTarget.current)?.focus({preventScroll:true});
+  }, [navigationRevision]);
   const today = useLocalDay();
   const illumination = medallionIllumination(model.activities, model.day, today);
   const selected = illumination.selected;
 
   function navigate(destination: 'sanctuary' | 'chronicle' | 'archive') {
     if (model.busy || model.managingHabit) return;
-    if (destination === 'chronicle') {
-      setJournalOpen(true);
-      requestAnimationFrame(() => { journal.current?.scrollIntoView({ block: 'nearest' }); journal.current?.querySelector('summary')?.focus(); });
-    } else {
-      model.setShowArchived(destination === 'archive');
-      document.getElementById(destination === 'archive' ? 'inventory' : 'main-content')?.scrollIntoView({ block: 'start' });
-    }
+    setView(destination === 'chronicle' ? 'chronicle' : 'sanctuary');
+    if (destination !== 'chronicle') model.setShowArchived(destination === 'archive');
+    focusTarget.current = destination === 'chronicle' ? 'journal-title' : destination === 'archive' ? 'habits-title' : 'sanctuary-title';
+    setNavigationRevision(revision => revision + 1);
   }
 
   return <div className="sanctuary-app">
     <div className="world-backdrop" aria-hidden="true"><img src={sanctuaryArt.environment} className="sanctuary-scene" width="1672" height="941" alt="" fetchPriority="high" /></div>
-    <a className="skip-link" href="#habits-title">Перейти к реликвиям</a>
+    <a className="skip-link" href={view === 'chronicle' ? '#journal-title' : '#habits-title'}>{view === 'chronicle' ? 'Перейти к хронике' : 'Перейти к реликвиям'}</a>
     <aside className="app-rail">
-      <a className="app-brand" href="#main-content" aria-label="Relics — Sanctuary"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M20 2 37 24 20 46 3 24ZM20 9v30M10 24h20m-15-8 5 8-5 8m10-16-5 8 5 8" /></svg><span>Relics<small>Жизнь как приключение</small></span></a>
-      <nav aria-label="Разделы Relics"><button aria-current={!model.showArchived ? 'page' : undefined} onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button>
-        <button onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button>
-        <button aria-current={model.showArchived ? 'page' : undefined} onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button>
+      <a className="app-brand" onClick={event => {event.preventDefault();navigate('sanctuary');}} href="#main-content" aria-label="Relics — Sanctuary"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M20 2 37 24 20 46 3 24ZM20 9v30M10 24h20m-15-8 5 8-5 8m10-16-5 8 5 8" /></svg><span>Relics<small>Жизнь как приключение</small></span></a>
+      <nav aria-label="Разделы Relics"><button data-nav="sanctuary" aria-current={destination === 'sanctuary' ? 'page' : undefined} onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button>
+        <button data-nav="chronicle" aria-current={destination === 'chronicle' ? 'page' : undefined} onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button>
+        <button data-nav="archive" aria-current={destination === 'archive' ? 'page' : undefined} onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button>
         <button data-backup ref={model.backupButton} disabled={model.busy || model.managingHabit} onClick={model.openBackup}><ShellIcon kind="backup" /><span>Резервная копия</span></button></nav>
       <div className="rail-reflection"><span aria-hidden="true">◇</span><p>«Маленькие действия оставляют большую историю».</p><span aria-hidden="true">◇</span></div>
       <p className={model.native ? 'rail-status' : 'preview-notice'}>{model.native ? 'Локально · офлайн' : 'Демонстрация. Вымышленные данные; изменения не сохраняются.'}</p>
     </aside>
-    <main className="sanctuary-main" id="main-content">
-      <header className="world-heading"><div><h1>Sanctuary</h1><p>Ваше убежище · первая эпоха</p></div>
+    <main className="sanctuary-main" id="main-content" data-view={destination} aria-labelledby={destination === 'chronicle' ? 'journal-title' : destination === 'archive' ? 'habits-title' : 'sanctuary-title'}>
+      <p className="view-announcement" role="status" aria-live="polite">{destination === 'chronicle' ? 'Открыта Жизненная хроника' : destination === 'archive' ? 'Открыт архив привычек' : 'Открыт Sanctuary'}</p>
+      {/* Keep inactive Sanctuary inert to retain chart preferences; Chronicle mounts only in its own view. */}
+      <div className="sanctuary-view" hidden={view === 'chronicle'} inert={view === 'chronicle'}>
+      <header className="world-heading"><div><h1 id="sanctuary-title" tabIndex={-1}>Sanctuary</h1><p>Ваше убежище · первая эпоха</p></div>
         <div className="world-heading__date"><span className="world-heading__sun" aria-hidden="true">☼</span><div className="date-shortcuts" role="group" aria-label="Быстрый выбор даты">
           <button aria-pressed={model.day === today} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(today)}>Сегодня</button>
           <button aria-pressed={model.day === yesterday()} disabled={model.busy || model.managingHabit} onClick={() => model.setDay(yesterday())}>Вчера</button></div>
@@ -56,9 +63,10 @@ export default function App() {
       <SphereInstallation illumination={illumination} />
       <RelicInventory model={model} selected={selected} />
       <LifeRhythm activities={model.activities} today={today} ready={model.canSave} />
-      <Chronicle model={model} open={journalOpen} onToggle={setJournalOpen} reference={journal} />
+      </div>
+      {view === 'chronicle' && <Chronicle model={model} />}
     </main>
-    <nav className="mobile-navigation" aria-label="Разделы на узком экране"><button onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button><button onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button><button onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button><button aria-label="Резервная копия" disabled={model.busy || model.managingHabit} onClick={model.openBackup}><ShellIcon kind="backup" /><span>Копия</span></button></nav>
+    <nav className="mobile-navigation" aria-label="Разделы на узком экране"><button data-nav="sanctuary" aria-current={destination === 'sanctuary' ? 'page' : undefined} onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button><button data-nav="chronicle" aria-current={destination === 'chronicle' ? 'page' : undefined} onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button><button data-nav="archive" aria-current={destination === 'archive' ? 'page' : undefined} onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button><button aria-label="Резервная копия" disabled={model.busy || model.managingHabit} onClick={model.openBackup}><ShellIcon kind="backup" /><span>Копия</span></button></nav>
     {model.backupOpen && <BackupDialog model={model} />}
     {model.formOpen && <WorldDialog labelledBy="create-habit-title" busy={model.busy} onClose={model.cancelManagement}>
       <div className="habit-editor"><div className="habit-editor__art"><RelicArt sphere={model.editingHabit?.spheres[0] ?? 'recovery'} /><p>Одна привычка может объединять несколько граней жизни.</p></div>
