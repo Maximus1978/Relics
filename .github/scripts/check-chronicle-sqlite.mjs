@@ -13,10 +13,11 @@ export async function checkChronicleSqlite({send,evaluate,until,click,viewport,b
  const db=new DatabaseSync(join(directory,'synthetic.db'));db.exec('PRAGMA foreign_keys=ON');
  for(const file of ['001_initial.sql','002_archive_habits.sql','003_seed_once.sql','004_habit_contributions.sql'])db.exec(readFileSync(new URL('../../src-tauri/migrations/'+file,import.meta.url),'utf8'));
  const today=await evaluate('document.querySelector("input[type=date]").max');
+ const recentDay=offset=>{const date=new Date(today+'T12:00:00Z');date.setUTCDate(date.getUTCDate()+offset);return date.toISOString().slice(0,10);};
  const profile=(values,origin='user')=>JSON.stringify({version:1,origin,values:{body:0,mind:0,relationships:0,work:0,recovery:0,...values}});
  const insert=db.prepare('INSERT INTO activities(id,habit_id,habit_name_snapshot,spheres_snapshot_json,occurred_on,recorded_at,timezone,contribution_snapshot_json) VALUES(?,?,?,?,?,?,?,?)');
- insert.run('bridge-26','read','Чтение до переименования','["mind"]','2026-10-26','2026-10-29T12:00:00Z','Synthetic',null);
- insert.run('bridge-27','walk','Старая прогулка','["body","recovery"]','2026-10-27','2026-10-29T12:00:00Z','Synthetic',null);
+ insert.run('bridge-26','read','Чтение до переименования','["mind"]',recentDay(-4),'2026-10-29T12:00:00Z','Synthetic',null);
+ insert.run('bridge-27','walk','Старая прогулка','["body","recovery"]',recentDay(-3),'2026-10-29T12:00:00Z','Synthetic',null);
  insert.run('bridge-current','walk','Прогулка сегодня','["body","recovery"]',today,today+'T12:00:00Z','Synthetic',profile({body:5,recovery:5},'legacy-default'));
  db.prepare('UPDATE habits SET name=?,spheres_json=?,contribution_profile_json=?,archived_at=? WHERE id=?').run('Нынешнее имя','["body"]',profile({body:5}),'2026-10-29T12:00:00Z','read');
  let loads=0,failDelete=false,failLoad=false,failRefresh=false,restored=false,restores=0;
