@@ -1,8 +1,12 @@
 # NAV-CHRONICLE-001 — dedicated history view
 
+## Accepted release — supersedes review holds below
+
+Owner reports completed native Windows acceptance. PR #10 is merged at 8503670a31b8adc74bac61b6a84826e6772664eb (verified current master2026-10-30), reviewed head db1d2f7982bfdd691e0fcafd0671cbbb7ec763a1. Test/runtime evidence below is unchanged historical evidence, not a new build. Any later text saying candidate/unmerged/owner acceptance pending is retained as the original delivery receipt and is superseded here. PROGRESS-001 REVISION is the new documentation-only task; no next implementation begins automatically.
+
 ## Scope and prerequisite release
 
-Owner accepted SPHERE-TRENDS-001 including rolling seven days on Windows. Verified PR #9 head317756f09eab239f5f1a9c7bdb5277be8362599b, mergeability and Windows run40943769883 SUCCESS. Compare to tested6a1e539d showed four Markdown files only. Regular merge39af6b782385ba202c177cc3e99467c208f99d9d verified with parents293e7d20/317756f0; local master synchronized and feature-nav-chronicle-001 created. Current feature is an unmerged review candidate. No next task authorized.
+Owner accepted SPHERE-TRENDS-001 including rolling seven days on Windows. Verified PR #9 head 317756f09eab239f5f1a9c7bdb5277be8362599b, mergeability and Windows run 40943769883 SUCCESS. Compare to tested 6a1e539d showed four Markdown files only. Regular merge 39af6b782385ba202c177cc3e99467c208f99d9d verified with parents293e7d20/317756f0; local master synchronized and feature-nav-chronicle-001 created. Current feature is an unmerged review candidate. No next task authorized.
 
 ## Architecture and behavior
 
@@ -14,11 +18,11 @@ Chronicle groups copied activity arrays by occurredOn, newest dates first, then 
 
 Cancellation uses the same repository/domain behavior, no extra confirmation or undo. Entry disappears after shared refresh; other event snapshots stay unchanged; adjacent action or heading receives focus. Active Chronicle owns accessible busy/success/error feedback. Sanctuary rune/gems and contribution chart update from the same activity array. Existing native restore also refreshes that model; a post-restore list failure now sets the shared restart/recovery error so it stays visible after the backup dialog closes. Loading and repository errors do not masquerade as an empty personal history. All-archived history remains visible; no native placeholders.
 
-No repository, SQLite migration/schema4, backupv1/v2, contribution/rune/chart calculation, app/DB identity, lockfile, permission, dependency, art or gameplay changes. Physical cancellation deletion is unchanged; audit/undo remains separate future work.
+No repository, SQLite migration/schema 4, backupv 1/v2, contribution/rune/chart calculation, app/DB identity, lockfile, permission, dependency, art or gameplay changes. Physical cancellation deletion is unchanged; audit/undo remains separate future work.
 
 ## Automated evidence map
 
-Verified source a520f1e38595a9e020df5e8c868edadbe9d9e96b. [Windows run41104319143](https://github.com/Maximus1978/Relics/actions/runs/41104319143) SUCCESS:75 Node/temporary SQLite tests, TypeScript/Vite,282 actual browser checks (0 runtime errors), real Tauri Windows EXE and22 native safety tests PASS. Local equivalents and locked/offline native build also passed. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/41104319143/artifacts/13000757903) and [screenshots](https://github.com/Maximus1978/Relics/actions/runs/41104319143/artifacts/13000187101) downloaded/digest-verified; exact sizes/SHA256/manifests in HANDOFF. PR #10 remains unmerged; owner native UI acceptance pending.
+Verified source a520f1e38595a9e020df5e8c868edadbe9d9e96b. [Windows run 41104319143](https://github.com/Maximus1978/Relics/actions/runs/41104319143) SUCCESS:75 Node/temporary SQLite tests, TypeScript/Vite,282 actual browser checks (0 runtime errors), real Tauri Windows EXE and22 native safety tests PASS. Local equivalents and locked/offline native build also passed. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/41104319143/artifacts/13000757903) and [screenshots](https://github.com/Maximus1978/Relics/actions/runs/41104319143/artifacts/13000187101) downloaded/digest-verified; exact sizes/SHA256/manifests in HANDOFF. PR #10 remains unmerged; owner native UI acceptance pending.
 
 1. Dashboard Chronicle absence and natural end after LifeRhythm: actual DOM and screenshot; initial layout assertion updated without dropping shrine/rune geometry tests.
 2. Separate view/current-page/heading focus: real sidebar keyboard Tab/Enter, desktop/mobile destinations, view-aware skip link, main landmark, accessibility tree excluding inactive date picker.

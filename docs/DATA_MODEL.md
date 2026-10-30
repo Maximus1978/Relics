@@ -37,8 +37,8 @@ BACKUP-001 introduces format v1 / migration level 3 with strict native validatio
 
 | Entity / type | Responsibility |
 | --- | --- |
-| ContributionProfile (implemented candidate) | Version1/origin/all-five independent values in WEIGHTS-001B; analytics remain future |
-| HabitSchedule | Daily/scheduled/flexible recurrence; schedule versions; definition editing/archive/restore delivered separately in HABITS-001B |
+| ContributionProfile (implemented, owner accepted) | Version1/origin/all-five independent values in WEIGHTS-001B; immutable snapshots feed implemented trends |
+| HabitSchedule / FrequencySegment (proposed) | Initial daily/three-weekly/weekly effective-date intentions; fixed weekdays/explicit rest later; no spontaneous-frequency MVP. Canonical plan in PROGRESS_001.md |
 | Activity + ActivityRevision / JournalEvent | Stable identity, local day, optional instant, recordedAt, timezone, historical contribution snapshot, correction/deletion audit |
 | DayObservation | Explicit unknown, confirmed inactivity, or planned rest; missing data never implies failure |
 | DiaryEntry | Optional note/reflection independent of required logging |
@@ -46,7 +46,7 @@ BACKUP-001 introduces format v1 / migration level 3 with strict native validatio
 | Discovery | Stable discovery/recipe/artifact IDs, first discovery time, content/rules versions, idempotent grant |
 | ProgressProjection | Rebuildable lifetime/epoch Mastery, recent Resonance, Balance; evaluation time and rules version |
 | WorldPack / ArtifactDefinition / RecipeDefinition | Versioned declarative content, with spoiler-aware packaging |
-| BackupEnvelope evolution | v1 currently covers habits/activities; future persisted audit/discovery/epoch fields need explicit version adapters |
+| BackupEnvelope evolution | Implemented v2/schema 4 export and strict v1/schema 3 import; all future rhythm/icon/receipt/audit/discovery/epoch fields require explicit version adapters |
 
 These types describe requirements; create executable types incrementally with their use cases. The epoch transition must preserve the original activity and recording metadata. Whether backdated activities affect closed epoch projections is an open policy.
 
@@ -74,7 +74,7 @@ Future temporary Blessings need approved origin/identity/lifecycle/correction/ve
 
 These are modeling requirements, not implemented entities/columns/tables. Future additions require versioned additive migrations and explicit backup-format adapters preserving old records and IDs; no migration, backup format or one-completion-per-day change is made in DOC-GAME-002.
 
-## WEIGHTS-001A contract and WEIGHTS-001B implementation candidate
+## WEIGHTS-001A/B — implemented owner-accepted schema 4 contract
 
 See [WEIGHTS_001A](WEIGHTS_001A.md) sections2–5 for complete schemas/validation/transaction/compatibility details. Implemented migration 004 adds habits.contribution_profile_json and activities.contribution_snapshot_json as nullable JSON-object TEXT columns; preserve 001–003, IDs, archive flags, existing name/sphere snapshots, DB/app identity and habit/day uniqueness.
 
@@ -84,8 +84,20 @@ In a transactional upgrade, materialize5/default-origin profiles for existing ac
 
 Create/edit writes the name/sphere/profile atomically with bound SQL; existing one-statement INSERT...SELECT copies all event snapshots from the same active persisted habit row. Backdated entries snapshot the current definition at recording time; duplicate retries preserve the first snapshot. Archive/restore affects only archived_at.
 
-Implemented candidate backup v2/schema 4 requires non-null habit contributionProfile and required nullable activity contributionSnapshot, retaining every current field. Strict v1/schema 3 imports use a typed adapter: imported habit defaults from their own spheres, imported events null. New exports/protective safety copies must be v2, never lossy v1. Validate before full replacement; synced/read-verified v2 safety copy and one pinned SQLx transaction preserve all weights/origins/null on rollback/undo. Older binaries cannot consume v2 or write schema 4 safely; do not claim downgrade compatibility. [BACKUP](BACKUP.md) keeps the implemented v1 versus proposed v2 boundary.
+Implemented backup v2/schema 4 requires non-null habit contributionProfile and required nullable activity contributionSnapshot, retaining every current field. Strict v1/schema 3 imports use a typed adapter: imported habit defaults from their own spheres, imported events null. New exports/protective safety copies must be v2, never lossy v1. Validate before full replacement; synced/read-verified v2 safety copy and one pinned SQLx transaction preserve all weights/origins/null on rollback/undo. Older binaries cannot consume v2 or write schema 4 safely; do not claim downgrade compatibility. [BACKUP](BACKUP.md) describes implemented v1 import/v2 export and protective recovery.
 
-Future deterministic analytics consume event snapshots, not today's habit profiles: sum known units by occurredOn/day/week, derive relative shares with no-data=null, and report included/default/user/excluded-legacy counts. Default-origin events are included; null legacy excluded, not interpreted as no activity. Calendar buckets, explicit boundaries/as-of date and 4–8 complete weeks are proposed in the contract. No derived numeric state or graph is stored/implemented here.
+Implemented snapshot-only analytics consume event snapshots, not today's habit profiles: sum known units by occurredOn/day/week, derive relative shares with no-data=null, and report included/default/user/excluded-legacy counts. Default-origin events are included; null legacy excluded, not interpreted as no activity. Calendar buckets, explicit boundaries/as-of date, rolling7 days and4/8 complete weeks are implemented by SPHERE-TRENDS-001. No derived numeric state is stored; SPHERE-TRENDS-001 subsequently implemented the snapshot graph, including rolling7 and complete4/8 weeks.
 
-WEIGHTS-001B implements the approved contract in PR #8. Migration004 is registered in the native SQL plugin and preserves 001–003 unchanged; it validates legacy sets transactionally before materializing defaults. SQL triggers enforce profile/set consistency on definition writes/non-null event inserts. The migration ledger and required columns are checked before repository use; unsupported versions fail clearly. [Actual gates/test map](WEIGHTS_001B.md). Future analytics remain absent, and old snapshots are never joined to current definitions to invent values.
+WEIGHTS-001B implements the approved contract in PR #8. Migration004 is registered in the native SQL plugin and preserves 001–003 unchanged; it validates legacy sets transactionally before materializing defaults. SQL triggers enforce profile/set consistency on definition writes/non-null event inserts. The migration ledger and required columns are checked before repository use; unsupported versions fail clearly. [Actual gates/test map](WEIGHTS_001B.md). Snapshot analytics are now owner-accepted/merged PR #9; old snapshots are never joined to current definitions to invent values.
+
+## PROGRESS-001 REVISION — proposed schema evolution, not deployed
+
+Current deployment remains schema 4/migrations001–004 and backupv 2 export/v1+v2 import. Nothing in this documentation PR changes SQLite, event DTOs or native backup. [Single canonical proposed table/version/transaction contract](PROGRESS_001.md#9-data-migrations-backup-and-safety-proposal-p07p08). Do not treat migration/format numbers as reserved until implementation checks actual availability.
+
+Minimum proposed additions: effective frequency segments keyed by stable habit/date; known archive pause intervals (current archivedAt cannot reconstruct past intervals); later manual iconId/provenance; later sparse earned material/phase milestone receipts. No habit duplication, no event-frequency snapshot needed where occurrence-date segment lookup answers historical evaluation. Name/sphere/contribution snapshots remain recorded-time facts, including backdates. Missing legacy frequency is unconfigured, not guessed Daily. Full archive/restore and normal logging stay available.
+
+Applied frequency segments are immutable; pending future same-date row may change atomically. New record uses current persisted definition snapshots but its occurredOn joins the historical frequency segment. Latest local today is an explicit projection input, never a global clock or selectedDate anchor. Pure deterministic Mastery/Forging/Resonance emits candidate milestones; it does not mint rewards or store duplicate aggregate counters. Sparse milestone receipts are proposed only because physical cancellation otherwise removes evidence for permanent attainment. Retain them at earned cycle boundary during replay, not as an initial final rank. Exact correction retention/partial progress/phase policies require owner review P01–P08.
+
+Candidate005/rhythm+pause and backupv 3;006/manual icon andv4;007/milestone receipts andv5. PROGRESS-002A itself is pure/no migration. Each persistence increment must update strict native validators/export/protective recovery/older-format adapters before shipping; no field can be silently lost. Multi-row definition/rhythm changes and receipt reconciliation require a pinned native transaction/revision, not frontend BEGIN/COMMIT on pooled connections. Full-replacement restore includes all supported tables or none, with rollback/crash/reopen and v1/v2/intermediate-format tests on synthetic data. A deliberate older-backup replacement can replace newer achievements only with explicit warning/protective current-state copy; do not secretly merge them.
+
+Stable unique future grant identities must survive evaluation/retry/re-record/version changes; event UUID alone is insufficient. AUDIT-001 remains a separate prerequisite before mutable journal feeds consumable/Artifact rewards. No per-event XP ledger is justified here. UI-COLLAPSE preferences are device-local/not journal-backed, need no SQLite migration and are excluded from backup; restore does not overwrite them.
