@@ -31,13 +31,16 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
     await click(`[data-habit-id="demo-${id}"] .completion-button`);
     await until(`document.querySelector('[data-habit-id="demo-${id}"]')?.dataset.state === 'illuminated' && !document.querySelector('.save-status').textContent.includes('Сохраняем')`, `Saved ${id} awakens its ordinary relic`);
   }
+  async function go(view) {await click('.app-rail [data-nav='+view+']');await until('document.activeElement.id==='+JSON.stringify(view==='chronicle'?'journal-title':'sanctuary-title'),'State test navigates to '+view);}
   async function cancelMatching(name, day) {
+    await go('chronicle');
     await click(`.entry button[aria-label="Отменить: ${name}, ${day}"]`);
     await until(`![...document.querySelectorAll('.entry button')].some(button => button.getAttribute('aria-label') === ${JSON.stringify(`Отменить: ${name}, ${day}`)})`, `Cancellation refreshes ${name} on ${day}`);
+    await go('sanctuary');
   }
   await send('Page.reload');
   await viewport(1440, 900);
-  await until('document.querySelectorAll(".entry").length === 2 && document.querySelectorAll(".relic-item").length === 6', 'State scenarios start with isolated synthetic history');
+  await until('!document.querySelector("#chronicle") && document.querySelectorAll(".relic-item").length === 6', 'State scenarios start with isolated synthetic history');
   const today = await evaluate('document.querySelector("input[type=date]").value');
   const observation = await evaluate('[...document.querySelectorAll(".recorded-ring")].map(node => node.getAttribute("aria-label"))');
   await expectSpheres(['body', 'recovery'], 'Today illuminates only its saved snapshot spheres');
@@ -66,22 +69,22 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await click('.creation-form button[type="submit"]');
   await until('!document.querySelector(".creation-form") && document.querySelector("[data-habit-id=demo-guitar]")?.dataset.sphere === "body"', 'Definition changes future identity, not historical contributions');
   await expectSpheres(['mind', 'recovery'], 'Edited definitions leave saved sphere illumination unchanged');
-  await click('.chronicle > summary');
   await cancelMatching('Гитара', '2000-01-01');
   await expectSpheres(['mind'], 'Cancelling a multisphere snapshot removes only its remaining contributions');
   await cancelMatching('Чтение', '2000-01-01');
   await expectSpheres([], 'Cancelling the last selected-day record returns gems to subdued');
 
   // Empty the synthetic journal using actual cancellation controls.
+  await go('chronicle');
   while (await evaluate('document.querySelectorAll(".entry").length > 0')) {
     const count = await evaluate('document.querySelectorAll(".entry").length');
     await click('.entry button');
     await until(`document.querySelectorAll('.entry').length === ${count - 1}`, 'Synthetic record cancellation refreshes current-period observations');
   }
+  await go('sanctuary');
   await click('.date-shortcuts button:first-child');
   await expectSpheres([], 'No current history leaves all selected-day gems subdued');
   await until('document.querySelector(".sanctuary-rune").dataset.state === "dormant"', 'Zero seven-day coverage subdues the original monogram');
-  await click('.chronicle > summary');
   await screenshot('state-subdued-desktop.png');
   await closeup('medallion-dormant.png');
   await geometry.capture('dormant');
@@ -95,9 +98,7 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await expectSpheres(['body','recovery'], 'DORMANT preserves illuminated gemstones on a recorded historical selected date');
   await until('document.querySelector(".sanctuary-medallion").dataset.state === "dormant"', 'Historical logging does not awaken an empty current week');
   await closeup('medallion-dormant-historical-gems.png');
-  await click('.chronicle > summary');
   await cancelMatching('Прогулка','2000-01-01');
-  await click('.chronicle > summary');
   await selectDay(today);
 
   await log('walk');
@@ -172,10 +173,8 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   assert.equal(await evaluate('[...document.querySelectorAll(".wheel-gem")].every(node=>node.dataset.state === "subdued")'),true);
   await closeup('medallion-radiance-historical-empty.png');
   await selectDay(today);
-  await click('.chronicle > summary');
   await cancelMatching('Работа над своим проектом',week[0]);
   await until('document.querySelector(".sanctuary-medallion").dataset.state === "harmony" && document.querySelector(".sanctuary-medallion").dataset.sphereDays === "34"','Backdated cancellation recomputes RADIANCE to HARMONY immediately');
-  await click('.chronicle > summary');
   await selectDay(week[0]);
   await log('work');
   await selectDay(today);

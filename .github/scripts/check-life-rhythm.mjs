@@ -11,7 +11,7 @@ export async function checkLifeRhythm({send,evaluate,until,click,viewport,output
  async function load(kind) {await send('Page.navigate',{url:'http://127.0.0.1:1420/?rhythmFixture='+kind});await until('document.querySelectorAll(".relic-item").length===6&&!!document.querySelector(".rhythm-quality")','Synthetic '+kind+' journal is loaded through the real preview repository');}
  await viewport(1440,1150);await load('mixed');
  await until('!!document.querySelector(".rhythm-plot canvas")','Actual uPlot canvas renders snapshot series');
- const placement=await evaluate('(()=>{const i=document.querySelector("#inventory").getBoundingClientRect(),r=document.querySelector("#life-rhythm").getBoundingClientRect(),c=document.querySelector("#chronicle").getBoundingClientRect();return {below:r.top>=i.bottom,chronicle:c.top>=r.bottom,shrines:document.querySelectorAll(".sphere-shrine").length};})()');
+ const placement=await evaluate('(()=>{const i=document.querySelector("#inventory").getBoundingClientRect(),r=document.querySelector("#life-rhythm").getBoundingClientRect(),c=document.querySelector("#chronicle");return {below:r.top>=i.bottom,chronicle:c===null,shrines:document.querySelectorAll(".sphere-shrine").length};})()');
  assert.deepEqual(placement,{below:true,chronicle:true,shrines:5});
  assert.deepEqual(await evaluate('[...document.querySelectorAll(".rhythm-quality strong")].map(x=>Number(x.textContent))'),[24,22,10,2]);
  assert.deepEqual(await evaluate('[...document.querySelectorAll(".rhythm-legend output")].map(x=>x.textContent)'),['20','64','10','22','62']);
@@ -54,11 +54,12 @@ export async function checkLifeRhythm({send,evaluate,until,click,viewport,output
  await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled','Backdated journal logging remains one click');
  await until('Number(document.querySelector(".rhythm-quality strong").textContent)===25','Backdated addition refreshes real snapshot aggregation');
  await click('[aria-label="Разделы Relics"] button:nth-child(2)');
- await until('document.querySelector(".chronicle").open','Existing Chronicle navigation still opens history');
+ await until('!!document.querySelector("#chronicle")','Chronicle navigation opens distinct history view');
  const cancel=await evaluate('(()=>{const date=document.querySelector("input[type=date]").value;return [...document.querySelectorAll(".entry")].find(e=>e.querySelector("time").dateTime===date&&e.querySelector("h3").textContent==="Гитара").querySelector("button").getAttribute("aria-label");})()');
  await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
  await evaluate('document.querySelector('+JSON.stringify('button[aria-label='+JSON.stringify(cancel)+']')+').focus()');
  for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'Enter',code:'Enter',windowsVirtualKeyCode:13,...(type==='keyDown'?{text:'\r',unmodifiedText:'\r'}:{})});
+ await click('.app-rail [data-nav=sanctuary]');await until('document.activeElement.id==="sanctuary-title"','Return to dashboard after Chronicle cancellation');
  await until('Number(document.querySelector(".rhythm-quality strong").textContent)===24','Cancellation restores previous aggregate');assert.equal(await read(),initial);
  for(const [width,height] of [[1280,900],[390,1100],[320,1000]]) {
   await viewport(width,height);await until('document.documentElement.scrollWidth<=innerWidth','Analytics has no horizontal overflow at '+width);

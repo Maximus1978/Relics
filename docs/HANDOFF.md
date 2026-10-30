@@ -1,3 +1,11 @@
+# Active task: NAV-CHRONICLE-001
+
+Owner accepted SPHERE-TRENDS-001 including rolling7 days on Windows. PR #9 expected head317756f09eab239f5f1a9c7bdb5277be8362599b verified mergeable, Windows run40943769883 SUCCESS and only4 Markdown files since tested6a1e539d. Regular merge39af6b782385ba202c177cc3e99467c208f99d9d verified on master (parents293e7d20 and317756f0). Local master fast-forwarded; feature-nav-chronicle-001 starts there.
+
+Only active scope: dedicated Chronicle through shared desktop/mobile view state, historical date groups, accessible focus/active/skip semantics, visible cancellation/loading/error feedback and shared repository/restore refresh. Preserve Sanctuary/art/analytics1/4/8/rune, schema4/backupv1/v2 and physical cancellation. Focused unmerged PR, actual screenshots/Windows CI/EXE/manual acceptance. No next feature, owner DB or private content. Implementation candidate:75 Node/SQLite tests, TypeScript/Vite and282 actual browser checks PASS locally with runtimeErrors=[]. Temporary SQLite/mock-IPC integration covers load/cancel/restore/error paths; native UI acceptance not claimed. Windows CI/EXE pending. Earlier PR #9 holds below are historical, superseded above.
+
+## Historical delivery receipts
+
 # Active owner addendum: recent seven-day analytics
 
 Add «1 неделя (последние 7 дней)» to the existing PR #9 selector, including actual local today and six prior calendar days, with daily points/table rows. Keep the existing default4 and completed4/8-week modes, snapshot/provenance/empty rules, rune/schema/backups unchanged. Update docs, verify and publish on the same unmerged PR; no next task. Local verification PASS:73 Node/SQLite tests, TypeScript/Vite and208 browser checks with zero runtime errors. Actual seven-day desktop/narrow screenshots inspected. Hosted Windows CI now PASS; current source/artifacts below supersede the previous delivery.
