@@ -22,9 +22,9 @@ Daily logging remains useful without Adventure Mode. Discoveries are curated and
 
 Keep canonical IDs. Current sphere symbols/gems are category identities; they are not earned ranks.
 
-Approved future habit identity: a small curated icon gallery, with icon choice independent of sphere contributions. WEIGHTS-001A supersedes primary/secondary allocation math with equal-status independent subjective 1–10 sphere values; primary visual identity remains a separate deferred choice. An icon must not determine contributions or silently change them. WEIGHTS-001B adds a snapshotted subjective contribution profile while retaining the sphere set and first-sphere decoration; there is no independent icon or primary-sphere editor.
+Approved future habit identity: a small curated icon gallery, with icon choice independent of sphere contributions. WEIGHTS-001A supersedes primary/secondary allocation math with equal-status independent subjective 1–10 sphere values; PROGRESS-001 REVISION now approves manual icon identity; a primary-sphere editor is not required for it. An icon must not determine contributions or silently change them. WEIGHTS-001B adds a snapshotted subjective contribution profile while retaining the sphere set and first-sphere decoration; there is no independent icon or primary-sphere editor.
 
-Weights describe how a habit contributes across spheres. Optional intensity describes one activity occurrence. They are different concepts and fields. Owner-approved contribution ranges/defaults/no-normalization and legacy semantics are now specified in [WEIGHTS_001A](WEIGHTS_001A.md); primary visual identity and per-activity intensity effects remain separate future decisions. Do not retroactively reinterpret old snapshots.
+Weights describe how a habit contributes across spheres. Optional intensity describes one activity occurrence. They are different concepts and fields. Owner-approved contribution ranges/defaults/no-normalization and legacy semantics are now specified in [WEIGHTS_001A](WEIGHTS_001A.md); manual glyph selection/persistence and per-activity intensity effects remain separate future tasks. Do not retroactively reinterpret old snapshots.
 
 Use a shared base frame for ordinary Habit Sigils. Reserve unique silhouettes and individually authored art for rare/legendary artifacts. The current common frame is an accepted foundation, not a release defect or evidence of earned rarity.
 
@@ -36,9 +36,9 @@ Approved future activity details: optional intensity and note attached to an act
 
 Future modeling must accommodate repeated sessions and quantified activities. Occurrence identity, quantities/units, duplicate detection and migration of the unique habit/day constraint remain unresolved. The current one-completion-per-day rule does not change in this milestone.
 
-Daily/scheduled/flexible recurrence, explicit planned rest and confirmed inactivity remain future requirements. Missing records remain unknown.
+Initial intended rhythms daily/three-per-week/weekly are approved future direction; exact effective-date/cycle/forging policy is proposed in PROGRESS_001.md. Fixed weekday editing is out of MVP; “Whenever I feel like it” as a habit frequency is deferred to optional experiences. Planned rest and explicit inactivity remain later requirements; missing records stay unknown.
 
-## Three independent visual states
+## Implemented observations versus future visual dimensions
 
 | State | Meaning | Approved behavior | Current implementation |
 | --- | --- | --- | --- |
@@ -78,17 +78,17 @@ Private discovery names, actual recipes, unlock conditions and undiscovered art 
 | --- | --- | --- |
 | Habit Sigil | User-defined habit, reusable ordinary medallion frame; future Mastery evolution | Existing habit cards implement tracking, not unique rewards. «Печати привычек» is a queued label change from «Ваши реликвии» |
 | Unique Artifact | Earned/discovered stable identity and authored design; optional bounded unlocks | Future ARTIFACT-001 / discovery / Collection work |
-| Chronicle | Real activities and optional reflections; historical names/contributions | Activities/snapshots are implemented. Full destination separation and reflections are future |
+| Chronicle | Real activities and optional future reflections; historical names/contributions | Dedicated snapshot history is owner-accepted and merged in PR #10 at 8503670; reflections remain future |
 | Collection | Browse earned artifacts and discovered collection content | Future COLLECTION-001; not a synonym for habit cards |
 | Museum | Preserve earned artifacts, discovery stories and completed epochs | Future MUSEUM-001; does not replace Chronicle or Collection |
 
-NAV-CHRONICLE-001 will place full activity history at the existing left-navigation destination and remove the expanded dashboard Chronicle. Backdating/cancellation/snapshots remain; compact recent activity may be retained if useful. This remains queued after WEIGHTS-001B and SPHERE-TRENDS-001 under the later priority override, not an implemented refactor.
+NAV-CHRONICLE-001 is implemented, owner-accepted on Windows and merged at 8503670a31b8adc74bac61b6a84826e6772664eb. Full history is its own existing navigation destination; Sanctuary ends after Life Rhythm. Backdating/cancellation/snapshots and one shared journal remain.
 
 ## Balance boundary — accepted principle, mechanics open
 
 Balance means context-sensitive diversity of attention, not perfect completion. BALANCE-001 is a specification gate before any numeric Balance KPI. A habit contributing to all five spheres, logged on each of seven days, legitimately produces 35 distinct sphere-days for the present rune. It is not proof of healthy life balance and cannot automatically justify disproportionate rewards.
 
-Future progression must consider contribution weights, anti-grinding and life context, with missing-data uncertainty. No percentage, score, threshold for health or new reward formula is approved here. The descriptive rune remains independent from actual Mastery and Resonance.
+Future contextual Balance must consider contribution weighting and life context with missing-data uncertainty; ordinary habit Mastery must not automatically multiply by subjective contribution magnitudes. No percentage, score, threshold for health or new reward formula is approved here. The descriptive rune remains independent from actual Mastery and Resonance.
 
 ## Blessings — accepted future scope, exact mechanics open
 
@@ -121,3 +121,23 @@ Habit profiles are definition data, with immutable activity snapshots created at
 Owner clarification: existing unweighted definitions receive marked 5 defaults for future logs, including archived definitions. Old activities remain numerically unknown. Future default-origin events ARE included in numeric trends with separate counts, not labeled explicitly calibrated. Explicit form Save confirms the future definition; it cannot relabel history. Known0 in a valid snapshot is not the same as absent legacy data.
 
 No new input on normal completion, new medallion/icon art, intensity/duration/quantity/repeated-session controls, AI estimation, recommendations, Balance grade or rewards. WEIGHTS-001A was documentation-only and is now approved/merged. WEIGHTS-001B implements storage/backup/editor in unmerged PR #8, with B1 verified before B2. Actual evidence and owner acceptance limits are in WEIGHTS_001B.md. Projection/charts remain unimplemented; SPHERE-TRENDS-001 does not start automatically.
+
+## PROGRESS-001 REVISION — authoritative ordinary-habit direction
+
+[Canonical specification](PROGRESS_001.md) is the single proposed numerical/engineering/visual contract; [Russian review](PROGRESS_001_REVIEW_RU.md) is its owner-facing summary. Approved direction: stable editable Habit identity; material Mastery retained through inactivity; separate unfinished Forging; recent frequency-aware Resonance; selected-date binary completion. Daily/three-weekly/weekly are count intentions, not compulsory calendar appointments. Changes preserve historical name/sphere/contribution snapshots; frequency needs minimal explicit effective-date history. Current rune/trends/Chronicle remain independent.
+
+Six ordinary material families Stone/Copper/Bronze/Silver/Gold/Platinum and preferably three deterministic acquired detail phases follow the owner reference, never random alternative medals or Unique Artifact rarity. Manual icon uses material treatment, not sphere color. Green saved check, temporary glow and hover/focus/press are independent; no full-medal grayscale or absence-based loss of earned geometry. Compact full-card toggle/separate menu and independent inventory/analytics collapse are future tasks, not current UI. See [reference contract](art/HABIT_MEDALS.md).
+
+The earlier undefined event thresholds0/7/21/50/120/250 are retained only as provisional comparison. Recommended successful-week frontier 0/3/9/18/36/72, protected phase checkpoints, tolerance, grace-then-fade Resonance and deterministic correction replay are NOT approved formulas. Owner decisions P01–P09 gate implementation. Missing evidence is not confirmed life failure; no daily-login requirement or automaticity claim. Basic experiments never consume permanent progress.
+
+Optional spontaneous experiences/microquests belong to future authored discovery/experience work, not a new habit frequency or sphere. Vacation must eventually suspend ordinary expectations without fake completion; exact lifecycle/afterglow remains separate. All previously approved Adventure scope, worlds and optional Android remain in ROADMAP. No secret recipes or numerical resource/reward rules are invented.
+
+### Product review2026-10-31 — revised candidates, not implementation
+
+P01 now proposes eligibility6/3/1 distinct recorded habit-days per complete week:Daily has one-day allowance, while3/week andWeekly retain their meaningful count. Daily 6/7 and7/7 both give1 cycle; extra records or subjective sphere magnitudes never multiply it. Current partial weeks remain neutral. Protected phase checkpoints remain the preferred Forging candidate, not an approved formula.
+
+P05 distinguishes inactivity (never reduces attained material) from actual history correction (can legitimately change reconstructed progress/material). Prefer deterministic replay from authoritative journal/effective frequency/pause history for initial MVP; do not store permanent ordinary milestone receipts solely to retain unsupported achievements. Unique Artifact/discovery persistence/correction rules remain unchanged.
+
+P06 proposes full illumination through expected intervalg, then fading over2g:Weekly 0/7days=100%,14=50%,21=0%; Daily 0/1full,2half,3zero; Three/weekg=7/3. Not a forgetting rate or psychological measurement. Material, Forging and selected-date check are independent.
+
+Plan phase-local Forging feedback with thin track and accessible text, e.g.Silver 18→24 at F20 displays2/6 cycles, next qualified week3/6. It is progression information, not currency/reward. Six materials/three phases and P01–P09 remain review candidates;[canonical examples/tests](PROGRESS_001.md).
