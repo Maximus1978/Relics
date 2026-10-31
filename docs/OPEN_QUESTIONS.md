@@ -4,8 +4,8 @@ Status: every unresolved item below is open; accepted principles constrain its a
 
 | ID | Question | Resolve before |
 | --- | --- | --- |
-| Q01 | PROGRESS-001 P01–P05 propose full-week cycles, protected phase checkpoints, thresholds, frequency boundaries and correction-retained receipts. Owner has NOT approved these numeric/edge-case choices. | Explicit owner decisions before HABIT-RHYTHM/PROGRESS-002A/B |
-| Q02 | Habit Resonance P06 proposes two expected-gap fade, not an approved curve; current binary rune remains independent. Contextual Balance window/weights/uncertainty, including all-five35/35, stays BALANCE-001. | Owner Resonance approval before002A/B; separate Balance gate before KPIs/rewards |
+| Q01 | PROGRESS-001 P01–P05 propose full-week cycles, protected phase checkpoints, thresholds, frequency boundaries and deterministic correction replay. Owner has NOT approved these numeric/edge-case choices. | Explicit owner decisions before HABIT-RHYTHM/PROGRESS-002A/B |
+| Q02 | Habit Resonance P06 proposes full expected-interval grace followed by a two-interval fade, not an approved curve; current binary rune remains independent. Contextual Balance window/weights/uncertainty, including all-five35/35, stays BALANCE-001. | Owner Resonance approval before002A/B; separate Balance gate before KPIs/rewards |
 | Q03 | Resolved numeric model: selected independent integer 1–10, new selection 5, unselected 0, no normalization. Owner accepts future old-habit 5 defaults included with separate provenance; old activity values stay unknown. Manual icon direction is approved in PROGRESS-001; exact glyph set/default visual acceptance remains P09. Proposed persistence/backup/projection details are in WEIGHTS_001A.md. | Resolved, implemented and owner accepted in PR #8; do not reopen contribution math |
 | Q04 | Scheduled weekdays, local day boundaries, schedule edits, planned rest semantics? | Scheduling |
 | Q05 | Optional per-event intensity scale/effects; repeated sessions, quantities/units and duplicate identity? Intensity/note are approved activity fields, not habit fields. | Respective activity detail/model tasks; current daily uniqueness stays |
@@ -35,14 +35,16 @@ The original assistant responses and actual secret recipes were not retrievable.
 
 | Gate | Owner decision needed | Implementation dependency |
 | --- | --- | --- |
-| P01 | Complete Monday weeks,7/3/1 days, cap1, neutral partial weeks; unconfigured legacy no invented past credit. Is repeated6/7 daily non-advancement acceptable? | Rhythm and cycle model |
+| P01 | Complete Monday weeks, minima6/3/1; Daily 6/7 and7/7 qualify equally, no extra multiplier; neutral current/partial weeks and unconfigured legacy. Asymmetric allowance awaits final approval | Rhythm and cycle model |
 | P02 | Recommended model B: one shortfall holds; two clear only tail after earned phase checkpoint; no loss of material/engraving | Forging |
-| P03 |0/3/9/18/36/72 material thresholds and three phase points including84/96 Platinum | Pacing and art mapping |
+| P03 |0/3/9/18/36/72 material thresholds and three phase points including84/96 Platinum;phase-local visible progress (e.g.2/6 cycles) | Pacing and art mapping |
 | P04 | First enrollment today; next-Monday frequency changes, pending same-date replacement, keep frontier/clear shortfall run | Definition history/editor |
-| P05 | Ordinary corrections retain attained receipts/art; replay at earned boundary with evidence flag; replacement backup warns and replaces exactly | Permanent state/corrections |
-| P06 | Linear Resonance over two expected gaps, current rhythm, quiet paused/archive light, no visible score | Habit light engine |
+| P05 | Prefer deterministic reconstruction from journal/frequency/pause history:no inactivity loss, but actual correction may change ordinary progress/material; no persistent attainment receipts to preserve unsupported history | Ordinary correction semantics |
+| P06 | Full light through expected gapg, then linear fade for2g; Weekly 0/7full,14half,21zero; Daily 0/1full,2half,3zero; not psychological measurement | Habit light engine |
 | P07 | Archive intervals neutralize intersected weeks; no guessed old archive history; future explicit Vacation adapter | Lifecycle history |
-| P08 | Incremental migration/backup evolution and strict old-version adapters/sparse receipts, verify free versions before implementation | Every persistence gate |
-| P09 | Final «Печати привычек» wording, curated glyph/default and accessible full-card re-toggle correction (not promised Undo) | HABIT-SIGILS visual acceptance |
+| P08 | Incremental migration/backup evolution and strict old-version adapters for authoritative input only; no ordinary receipt ledger, verify free versions before implementation | Every persistence gate |
+| P09 | Final «Печати привычек» wording, curated glyph/default, accessible full-card re-toggle correction (not promised Undo) and lightweight phase-progress track/text | HABIT-SIGILS visual acceptance |
 
 Q04 weekday calendar remains later than the initial count rhythm; no MVP weekday editor. “Whenever I feel like it” habit frequency is explicitly deferred; optional experiences remain a separate future mechanism. Q07 permanent Artifact/discovery correction is NOT resolved by the ordinary medal receipt proposal. Q11 supported v1/v2 restore is implemented; v3+ here are proposals requiring full native tests, not supported files. Vacation expiry/afterglow, Balance, sound, unique reward formulas and optional Android packaging remain their existing separate gates. UI-COLLAPSE-001 is next recommended small task after review, not begun.
+
+Review 2026-10-31 supersedes the prior P01 strict7/7, P05 correction-retention receipts and P06 immediate fading. P01–P09 remain proposed unless explicitly finally approved. Protected phase checkpoints remain the preferred inactivity policy; they are reconstructed within replay and can change after actual evidence correction. Unique Artifact/discovery storage and Q07 correction decisions are unchanged. No runtime work or automatic PR #11 merge.

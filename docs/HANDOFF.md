@@ -1,3 +1,24 @@
+# Current task: PROGRESS-001 REVIEW CORRECTIONS — documentation review
+
+Updated2026-10-31 on the SAME [PR #11](https://github.com/Maximus1978/Relics/pull/11),docs-progress-001. Verified prior head dab611ff1e7fa483a3f922790f0fc64ee26651c4,PR OPEN/UNMERGED,current master8503670a31b8adc74bac61b6a84826e6772664eb. No merge or implementation authorized. The receipt below explicitly supersedes the original strict7/7,correction-retention receipt ledger and immediate-fade proposals; other accepted principles remain intact.
+
+## Revised proposal
+
+- P01 minima6/3/1 distinct habit-days per complete week;Daily6/7 and7/7 both give1 cycle. Explain Daily's one-day allowance without silently discounting3/week orWeekly. Current/initial partial weeks remain neutral;no extra-record or contribution multipliers. Numbers await final approval.
+- P05 prefer deterministic ordinary material/phase/Forging reconstruction from authoritative journal,effective frequency history,known pauses and explicit today/rulesVersion. Inactivity cannot remove material;actual corrections can change it. No permanent ordinary attainment receipts,receipt migration007/backupv5 or prior-rank cache override. Artifact/discovery persistence and correction decisions untouched.
+- P06 full light through expected gapg,then linear fade over2g:Weekly0/7full,14half,21zero;Daily0/1full,2half,3zero;Three/weekg=7/3. Independent material/Forging/checkmark;no forgetting-rate or psychological claim.
+- P03/P09 lightweight phase-local progress track+accessible text,exampleSilver18→24 atF20=2/6,then3/6;no currency/reward. Six tiers/three phases,protected Forging checkpoints,manual icons,no grayscale,interaction layers and all prior small-task/world scope retained. P01–P09 still proposed,not implicitly finally approved.
+
+[Canonical spec](PROGRESS_001.md),[Russian numerical review](PROGRESS_001_REVIEW_RU.md),[open decisions](OPEN_QUESTIONS.md) and related game/roadmap/data/architecture/UX documents agree;D079–D080 supersede prior conflicting D075/D076 proposals without deleting history. Diagram derives material with no receipt-write arrow. Future matrix is P-T01–P-T21,not executed application tests.
+
+## Checks and delivery boundary
+
+11 documentation Markdown files only. No application code,migrations,test scripts,artwork,dependencies,workflow,owner database or private content changes. git diff --check and local links/heading anchors/table validation checked before publication. Eleven one-off documentation arithmetic checks pass: eligibility boundaries,6/7 recurring practice,cross-week interruptions,checkpoint/return sequence,20-week absence versus actual cancellation/re-add,frequency-change backdate replay,all three grace/fade curves,phase-local progress and revised daily duration ranges. Future Artifact/discovery grant-policy body verified byte-for-byte unchanged against prior PR head. These checks verify document examples,not a shipped engine.
+
+No runtime tests,new native build or EXE claimed for a documentation-only correction;existing NAV CI remains historical evidence. Publish a non-force follow-up commit to existing PR #11;leave it OPEN/UNMERGED. Next recommended UI-COLLAPSE-001 remains queued,not begun. Stop for owner review.
+
+## Historical original PROGRESS proposal — corrected semantics superseded above
+
 # Current task: PROGRESS-001 REVISION — documentation delivered for review
 
 Verified2026-10-30: owner accepted NAV-CHRONICLE-001 on Windows. [PR #10](https://github.com/Maximus1978/Relics/pull/10) is merged at8503670a31b8adc74bac61b6a84826e6772664eb; freshly fetched origin/master matches, parents39af6b78/db1d2f7. Earlier NAV active/pending/unmerged statements below are historical and superseded. docs-progress-001 starts from that merge with a clean baseline.
