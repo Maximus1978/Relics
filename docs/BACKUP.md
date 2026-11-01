@@ -1,5 +1,13 @@
 # BACKUP-001 — local backup and full-replacement restore
 
+## Current candidate — HABIT-RHYTHM-001, v3/schema5
+[Complete fields,validation,adapters,recovery tests and Windows steps](HABIT_RHYTHM_001.md#backupv3-compatibility). New exports/protective files use formatVersion3/databaseSchemaVersion5. data requires frequencySegments and archivePauses alongside unchanged habits/activities. Frequency record:id,habitId,frequency(daily|three_per_week|weekly),effectiveOn,createdOn,version1. Pause:id,habitId,startOn(nullable required),endExclusiveOn(nullable required),reason=archive,provenance=recorded|legacy_unknown. No derived progression/UI preferences.
+
+Strictv1/schema3 andv2/schema4 import remains supported;no extra new fields accepted in old envelopes. v1 weights adapt as before,v2 values/origins/nulls stay exact. Both have no rhythm history and synthesize only unknown-start legacy archive metadata for archived definitions. No guessed schedule/start date. Restore actual unknown archive end survivesv3.
+
+Validate order/date/version/reference/overlap/archive-flag agreement before any mutation;100,000 segment/100,000 pause limits join existing bounds. Mandatory synced/read-verified completev3 safety copy precedes full atomic replacement. Delete child histories before parents;insert all children and checkFKs in pinned native transaction. Old import can be undone withv3 safety file. Tests cover migration rollback/retry,reopen,strict invalid envelopes,mid-insert rollback,killed-process recovery and old-format protective undo. Native UI/dialog/offline restart remains owner acceptance. Priorv1/v2-only descriptions below are historical;downgrade to old binaries is unsupported.
+
+
 ## Status and scope
 
 Native Windows utility, offline and user-controlled. Export/restore use real native dialogs, not command-line operations. Browser demonstration shows an unavailable explanation and never pretends to save/restore files. No cloud, scheduler, encryption, merge/conflict resolution, Android backup UI or new activity/game fields.

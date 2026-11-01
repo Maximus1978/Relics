@@ -1,3 +1,4 @@
+import { createHabitMutationDriver } from '../.github/scripts/habit-sql-test-driver.mjs';
 import { defaultContributions } from '../src/domain/contributions.ts';
 import test, { type TestContext } from 'node:test';
 import assert from 'node:assert/strict';
@@ -16,6 +17,7 @@ function sqliteAdapter(database: DatabaseSync): SqlDatabase {
     return Object.fromEntries(parameters.map((parameter, index) => [parameter, values[index] as SQLInputValue]));
   }
   return {
+    mutateHabit:createHabitMutationDriver(database),
     async execute(query, values = []) {
       const statement = database.prepare(query);
       const result = values.length ? statement.run(bindings(query, values)) : statement.run();
@@ -51,7 +53,8 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
     database.exec('PRAGMA user_version = 3');
   }
   function weightsOnce(){if(Number(database.prepare('PRAGMA user_version').get()?.user_version)>=4)return;database.exec('BEGIN');try{database.exec(readFileSync(new URL('../src-tauri/migrations/004_habit_contributions.sql',import.meta.url),'utf8'));database.exec('PRAGMA user_version=4; COMMIT');}catch(error){database.exec('ROLLBACK');throw error;}}
-  if (initialVersion === 2) { migrate(); seedOnce(); weightsOnce(); }
+  function rhythmOnce(){if(Number(database.prepare('PRAGMA user_version').get()?.user_version)>=5)return;database.exec(readFileSync(new URL('../src-tauri/migrations/005_habit_rhythm.sql',import.meta.url),'utf8'));database.exec('PRAGMA user_version=5');}
+  if (initialVersion === 2) { migrate(); seedOnce(); weightsOnce(); rhythmOnce(); }
   context.after(() => {
     database.close();
     if (dirname(folder) !== temporaryRoot) throw new Error('Unexpected test cleanup directory.');
@@ -60,13 +63,13 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
   return {
     get database() { return database; },
     migrate,
-    open() { seedOnce(); weightsOnce(); return openActivityRepository(sqliteAdapter(database)); },
+    open() { seedOnce(); weightsOnce(); rhythmOnce(); return openActivityRepository(sqliteAdapter(database)); },
     reopen() {
       database.close();
       database = new DatabaseSync(path);
       database.exec('PRAGMA foreign_keys = ON');
       migrate();
-      seedOnce(); weightsOnce();
+      seedOnce(); weightsOnce(); rhythmOnce();
       return openActivityRepository(sqliteAdapter(database));
     },
   };
@@ -75,7 +78,7 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
 test('creates a habit with one sphere using the production repository', async context => {
   const database = fixture(context);
   const repository = await database.open();
-  const habit = await repository.createHabit('Зарядка', ['body']);
+  const habit = await repository.createHabit('Зарядка', ['body'], undefined, 'daily');
   assert.ok(habit.id);
   assert.deepEqual(habit.spheres, ['body']);
   assert.deepEqual((await repository.listHabits()).find(entry => entry.id === habit.id), habit);
@@ -84,7 +87,7 @@ test('creates a habit with one sphere using the production repository', async co
 test('creates Гитара with Mind and Recovery, trimming the name', async context => {
   const database = fixture(context);
   const repository = await database.open();
-  const habit = await repository.createHabit('  Гитара  ', ['mind', 'recovery']);
+  const habit = await repository.createHabit('  Гитара  ', ['mind', 'recovery'], undefined, 'daily');
   assert.equal(habit.name, 'Гитара');
   assert.deepEqual(habit.spheres, ['mind', 'recovery']);
   assert.deepEqual((await repository.listHabits()).at(-1), habit);
@@ -94,7 +97,7 @@ test('rejects empty and whitespace-only names without inserting rows', async con
   const database = fixture(context);
   const repository = await database.open();
   for (const name of ['', '   ', '\t\n']) {
-    await assert.rejects(repository.createHabit(name, ['mind']),
+    await assert.rejects(repository.createHabit(name, ['mind'], undefined, 'daily'),
       error => error instanceof HabitValidationError && error.field === 'name');
   }
   assert.equal((await repository.listHabits()).length, sampleHabits.length);
@@ -103,7 +106,7 @@ test('rejects empty and whitespace-only names without inserting rows', async con
 test('rejects empty sphere selection without inserting a habit', async context => {
   const database = fixture(context);
   const repository = await database.open();
-  await assert.rejects(repository.createHabit('Гитара', []),
+  await assert.rejects(repository.createHabit('Гитара', [], undefined, 'daily'),
     error => error instanceof HabitValidationError && error.field === 'spheres');
   assert.equal((await repository.listHabits()).length, sampleHabits.length);
 });
@@ -118,7 +121,7 @@ test('rejects unknown spheres and normalizes duplicate selections to canonical o
 test('habit and backdated activity survive reopening with snapshots and no duplicate completion', async context => {
   const database = fixture(context);
   let repository = await database.open();
-  const habit = await repository.createHabit('Гитара', ['mind', 'recovery']);
+  const habit = await repository.createHabit('Гитара', ['mind', 'recovery'], undefined, 'daily');
   const previousDay = new Date();
   previousDay.setDate(previousDay.getDate() - 1);
   const day = localDay(previousDay);
@@ -144,7 +147,7 @@ test('existing October 26 and 27 records remain unchanged when creating and reop
       '["body","recovery"]', day, `${day}T18:00:00Z`, 'America/Los_Angeles');
   }
   const before = await repository.list();
-  await repository.createHabit('Гитара', ['mind', 'recovery']);
+  await repository.createHabit('Гитара', ['mind', 'recovery'], undefined, 'daily');
   repository = await database.reopen();
   assert.deepEqual(await repository.list(), before);
   assert.equal((await repository.listHabits()).length, 4);
@@ -153,7 +156,7 @@ test('existing October 26 and 27 records remain unchanged when creating and reop
 test('repeated startup neither duplicates samples nor overwrites existing definitions or custom habits', async context => {
   const database = fixture(context);
   let repository = await database.open();
-  const custom = await repository.createHabit('Прогулка', ['mind']);
+  const custom = await repository.createHabit('Прогулка', ['mind'], undefined, 'daily');
   database.database.prepare('UPDATE habits SET name = ?, spheres_json = ?, contribution_profile_json = ? WHERE id = ?')
     .run('Сохранённое название', '["recovery"]', JSON.stringify(defaultContributions(['recovery'])), 'walk');
   for (let restart = 0; restart < 3; restart++) repository = await database.reopen();
@@ -162,14 +165,14 @@ test('repeated startup neither duplicates samples nor overwrites existing defini
   for (const sample of sampleHabits) assert.equal(habits.filter(habit => habit.id === sample.id).length, 1);
   assert.deepEqual(habits.find(habit => habit.id === custom.id), custom);
   assert.deepEqual(habits.find(habit => habit.id === 'walk'), {
-    id: 'walk', name: 'Сохранённое название', spheres: ['recovery'], archivedAt: null, contributionProfile:defaultContributions(['recovery']),
+    id: 'walk', name: 'Сохранённое название', spheres: ['recovery'], archivedAt: null, contributionProfile:defaultContributions(['recovery']),frequencySegments:[],archivePauses:[],
   });
 });
 
 test('logging keeps the saved name and sphere snapshot after later database definition changes', async context => {
   const database = fixture(context);
   const repository = await database.open();
-  const habit = await repository.createHabit('Гитара', ['mind', 'recovery']);
+  const habit = await repository.createHabit('Гитара', ['mind', 'recovery'], undefined, 'daily');
   await repository.log(habit, '2000-01-01');
   database.database.prepare('UPDATE habits SET name = ?, spheres_json = ?, contribution_profile_json = ? WHERE id = ?')
     .run('Другое название', '["body"]', JSON.stringify(defaultContributions(['body'])), habit.id);
@@ -181,7 +184,7 @@ test('logging keeps the saved name and sphere snapshot after later database defi
 test('renaming Guitar to Гитара persists after reopening without changing its ID or spheres', async context => {
   const database = fixture(context);
   let repository = await database.open();
-  const habit = await repository.createHabit('Guitar', ['mind', 'recovery']);
+  const habit = await repository.createHabit('Guitar', ['mind', 'recovery'], undefined, 'daily');
   await repository.updateHabit(habit.id, '  Гитара  ', habit.spheres);
   repository = await database.reopen();
   assert.deepEqual((await repository.listHabits()).find(saved => saved.id === habit.id), { ...habit, name: 'Гитара' });
@@ -190,7 +193,7 @@ test('renaming Guitar to Гитара persists after reopening without changing 
 test('sphere edits persist after reopening', async context => {
   const database = fixture(context);
   let repository = await database.open();
-  const habit = await repository.createHabit('Гитара', ['mind']);
+  const habit = await repository.createHabit('Гитара', ['mind'], undefined, 'daily');
   await repository.updateHabit(habit.id, habit.name, ['recovery', 'mind']);
   repository = await database.reopen();
   assert.deepEqual((await repository.listHabits()).find(saved => saved.id === habit.id)?.spheres, ['mind', 'recovery']);
@@ -199,7 +202,7 @@ test('sphere edits persist after reopening', async context => {
 test('editing preserves old snapshots and future logging reads the database rather than a stale definition', async context => {
   const database = fixture(context);
   const repository = await database.open();
-  const habit = await repository.createHabit('Guitar', ['mind']);
+  const habit = await repository.createHabit('Guitar', ['mind'], undefined, 'daily');
   await repository.log(habit, '2000-01-01');
   const [original] = await repository.list();
   await repository.updateHabit(habit.id, 'Гитара', ['mind', 'recovery']);
@@ -213,7 +216,7 @@ test('editing preserves old snapshots and future logging reads the database rath
 test('archiving hides active habits, retains them in management and preserves every activity', async context => {
   const database = fixture(context);
   let repository = await database.open();
-  const habit = await repository.createHabit('Гитара', ['mind', 'recovery']);
+  const habit = await repository.createHabit('Гитара', ['mind', 'recovery'], undefined, 'daily');
   await repository.log(habit, '2000-01-01');
   const history = await repository.list();
   await repository.archiveHabit(habit.id);
@@ -243,7 +246,7 @@ test('archived habits reject backdated and duplicate logging through stale objec
 test('restoration retains the last edited definition and re-enables logging after reopening', async context => {
   const database = fixture(context);
   let repository = await database.open();
-  const habit = await repository.createHabit('Guitar', ['mind']);
+  const habit = await repository.createHabit('Guitar', ['mind'], undefined, 'daily');
   await repository.archiveHabit(habit.id);
   await repository.updateHabit(habit.id, 'Гитара', ['mind', 'recovery']);
   assert.equal((await repository.listHabits('archived'))[0].name, 'Гитара');
@@ -290,7 +293,7 @@ test('October 26–27 records survive edits, archive, restore and offline reopen
 test('invalid edits and unknown IDs cannot change saved definitions or history', async context => {
   const database = fixture(context);
   const repository = await database.open();
-  const habit = await repository.createHabit('Гитара', ['mind', 'recovery']);
+  const habit = await repository.createHabit('Гитара', ['mind', 'recovery'], undefined, 'daily');
   await repository.log(habit, '2000-01-01');
   const before = await repository.listHabits('all');
   const history = await repository.list();

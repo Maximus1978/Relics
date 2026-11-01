@@ -1,12 +1,13 @@
 use crate::contributions::{Origin, Profile};
+use crate::rhythm::{self, ArchivePause, FrequencySegment};
 use chrono::{DateTime, Datelike, NaiveDate, Utc};
 use serde::{Deserialize, Deserializer, Serialize};
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 pub const MAX_BYTES: usize = 32 * 1024 * 1024;
 pub const MAX_HABITS: usize = 20_000;
 pub const MAX_ACTIVITIES: usize = 100_000;
-pub const SCHEMA_VERSION: u32 = 4;
+pub const SCHEMA_VERSION: u32 = 5;
 
 pub type BackupResult<T> = Result<T, String>;
 
@@ -41,11 +42,13 @@ pub struct Activity {
     pub contribution_snapshot: Option<Profile>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(deny_unknown_fields)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Data {
     pub habits: Vec<Habit>,
     pub activities: Vec<Activity>,
+    pub frequency_segments: Vec<FrequencySegment>,
+    pub archive_pauses: Vec<ArchivePause>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -72,13 +75,16 @@ pub struct Summary {
     pub user_entries: usize,
     pub default_entries: usize,
     pub legacy_entries: usize,
+    pub frequency_segments: usize,
+    pub configured_habits: usize,
+    pub archive_pauses: usize,
 }
 
 impl Backup {
     pub fn new(data: Data) -> Self {
         Self {
             format: "relics-backup".into(),
-            format_version: 2,
+            format_version: 3,
             exported_at: Utc::now().to_rfc3339(),
             app_version: env!("CARGO_PKG_VERSION").into(),
             database_schema_version: SCHEMA_VERSION,
@@ -88,6 +94,15 @@ impl Backup {
 
     pub fn summary(&self) -> Summary {
         Summary {
+            frequency_segments: self.data.frequency_segments.len(),
+            configured_habits: self
+                .data
+                .frequency_segments
+                .iter()
+                .map(|s| &s.habit_id)
+                .collect::<HashSet<_>>()
+                .len(),
+            archive_pauses: self.data.archive_pauses.len(),
             exported_at: self.exported_at.clone(),
             habits: self.data.habits.len(),
             archived_habits: self
@@ -131,10 +146,11 @@ impl Backup {
 
     pub fn validate(&self) -> BackupResult<()> {
         if self.format != "relics-backup"
-            || !((self.format_version == 2 && self.database_schema_version == SCHEMA_VERSION)
+            || !((self.format_version == 3 && self.database_schema_version == SCHEMA_VERSION)
+                || (self.format_version == 2 && self.database_schema_version == 4)
                 || (self.format_version == 1 && self.database_schema_version == 3))
         {
-            return Err("Неподдерживаемый формат или версия резервной копии. Нужны relics-backup v1/схема 3 или v2/схема 4.".into());
+            return Err("Неподдерживаемый формат или версия резервной копии. Нужны relics-backup v1/схема 3, v2/схема 4 или v3/схема 5.".into());
         }
         timestamp(&self.exported_at)?;
         text(&self.app_version, 64)?;
@@ -157,6 +173,17 @@ impl Backup {
                 timestamp(archived)?;
             }
         }
+        let states: HashMap<String, bool> = self
+            .data
+            .habits
+            .iter()
+            .map(|h| (h.id.clone(), h.archived_at.is_some()))
+            .collect();
+        rhythm::validate_histories(
+            &self.data.frequency_segments,
+            &self.data.archive_pauses,
+            &states,
+        )?;
         let mut activity_ids = HashSet::new();
         let mut habit_days = HashSet::new();
         for activity in &self.data.activities {
@@ -228,7 +255,39 @@ fn sphere_set(values: &[String]) -> BackupResult<()> {
     Ok(())
 }
 
-// Separate strict v1 DTOs preserve the original version boundary.
+pub fn legacy_pauses(habits: &[Habit]) -> Vec<ArchivePause> {
+    habits
+        .iter()
+        .filter(|h| h.archived_at.is_some())
+        .map(|h| ArchivePause {
+            id: uuid::Uuid::new_v4().to_string(),
+            habit_id: h.id.clone(),
+            start_on: None,
+            end_exclusive_on: None,
+            reason: "archive".into(),
+            provenance: "legacy_unknown".into(),
+        })
+        .collect()
+}
+
+// Separate strict DTOs preserve each supported original version boundary.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct V2Data {
+    habits: Vec<Habit>,
+    activities: Vec<Activity>,
+}
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct V2Backup {
+    format: String,
+    format_version: u32,
+    exported_at: String,
+    app_version: String,
+    database_schema_version: u32,
+    data: V2Data,
+}
+
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct V1Habit {
@@ -289,38 +348,60 @@ pub fn parse(bytes: &[u8]) -> BackupResult<Backup> {
                 exported_at: old.exported_at,
                 app_version: old.app_version,
                 database_schema_version: old.database_schema_version,
-                data: Data {
-                    habits: old
-                        .data
-                        .habits
-                        .into_iter()
-                        .map(|h| Habit {
-                            contribution_profile: Profile::defaults(&h.spheres),
-                            id: h.id,
-                            name: h.name,
-                            spheres: h.spheres,
-                            archived_at: h.archived_at,
-                        })
-                        .collect(),
-                    activities: old
-                        .data
-                        .activities
-                        .into_iter()
-                        .map(|a| Activity {
-                            id: a.id,
-                            habit_id: a.habit_id,
-                            habit_name: a.habit_name,
-                            spheres: a.spheres,
-                            occurred_on: a.occurred_on,
-                            recorded_at: a.recorded_at,
-                            timezone: a.timezone,
-                            contribution_snapshot: None,
-                        })
-                        .collect(),
+                data: {
+                    let mut data = Data {
+                        habits: old
+                            .data
+                            .habits
+                            .into_iter()
+                            .map(|h| Habit {
+                                contribution_profile: Profile::defaults(&h.spheres),
+                                id: h.id,
+                                name: h.name,
+                                spheres: h.spheres,
+                                archived_at: h.archived_at,
+                            })
+                            .collect(),
+                        activities: old
+                            .data
+                            .activities
+                            .into_iter()
+                            .map(|a| Activity {
+                                id: a.id,
+                                habit_id: a.habit_id,
+                                habit_name: a.habit_name,
+                                spheres: a.spheres,
+                                occurred_on: a.occurred_on,
+                                recorded_at: a.recorded_at,
+                                timezone: a.timezone,
+                                contribution_snapshot: None,
+                            })
+                            .collect(),
+                        ..Data::default()
+                    };
+                    data.archive_pauses = legacy_pauses(&data.habits);
+                    data
                 },
             }
         }
-        2 => serde_json::from_slice::<Backup>(bytes).map_err(|_| error())?,
+        2 => {
+            let old: V2Backup = serde_json::from_slice(bytes).map_err(|_| error())?;
+            let archive_pauses = legacy_pauses(&old.data.habits);
+            Backup {
+                format: old.format,
+                format_version: old.format_version,
+                exported_at: old.exported_at,
+                app_version: old.app_version,
+                database_schema_version: old.database_schema_version,
+                data: Data {
+                    habits: old.data.habits,
+                    activities: old.data.activities,
+                    frequency_segments: vec![],
+                    archive_pauses,
+                },
+            }
+        }
+        3 => serde_json::from_slice::<Backup>(bytes).map_err(|_| error())?,
         _ => return Err("Неподдерживаемая версия копии. Обновите Relics.".into()),
     };
     backup.validate()?;
@@ -328,8 +409,8 @@ pub fn parse(bytes: &[u8]) -> BackupResult<Backup> {
 }
 pub fn encode(backup: &Backup) -> BackupResult<Vec<u8>> {
     backup.validate()?;
-    if backup.format_version != 2 || backup.database_schema_version != SCHEMA_VERSION {
-        return Err("Экспорт без потери данных доступен только в формате v2.".into());
+    if backup.format_version != 3 || backup.database_schema_version != SCHEMA_VERSION {
+        return Err("Экспорт без потери данных доступен только в формате v3.".into());
     }
     let mut bytes =
         serde_json::to_vec_pretty(backup).map_err(|_| "Не удалось подготовить JSON.")?;

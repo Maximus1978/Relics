@@ -3,6 +3,9 @@ use super::{
     storage,
 };
 use crate::contributions::{Origin, Profile};
+use crate::rhythm::{
+    ArchivePause, Frequency, FrequencySegment, HabitMutation, MutationKind, RhythmChange,
+};
 use sqlx::{
     migrate::{Migration, MigrationType, Migrator},
     sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions},
@@ -67,6 +70,32 @@ fn example() -> Backup {
                 contribution_snapshot: None,
             },
         ],
+        frequency_segments: vec![
+            FrequencySegment {
+                id: "rhythm-guitar-initial".into(),
+                habit_id: "guitar".into(),
+                frequency: Frequency::Daily,
+                effective_on: "2026-10-26".into(),
+                created_on: "2026-10-26".into(),
+                version: 1,
+            },
+            FrequencySegment {
+                id: "rhythm-guitar-pending".into(),
+                habit_id: "guitar".into(),
+                frequency: Frequency::Weekly,
+                effective_on: "2026-11-02".into(),
+                created_on: "2026-10-28".into(),
+                version: 1,
+            },
+        ],
+        archive_pauses: vec![ArchivePause {
+            id: "legacy-read".into(),
+            habit_id: "read".into(),
+            start_on: None,
+            end_exclusive_on: None,
+            reason: "archive".into(),
+            provenance: "legacy_unknown".into(),
+        }],
     })
 }
 
@@ -103,6 +132,10 @@ fn make_migrator(version: usize) -> Migrator {
             "subjective sphere contribution snapshots",
             include_str!("../../migrations/004_habit_contributions.sql"),
         ),
+        (
+            "habit frequency and archive history",
+            include_str!("../../migrations/005_habit_rhythm.sql"),
+        ),
     ];
     let migrations = definitions
         .iter()
@@ -131,7 +164,7 @@ async fn fixture() -> (TempDir, PathBuf, SqlitePool) {
     let temporary = tempfile::tempdir().unwrap();
     let path = temporary.path().join("synthetic.db");
     let pool = connect(&path).await;
-    migrate(&pool, 4).await;
+    migrate(&pool, 5).await;
     (temporary, path, pool)
 }
 
@@ -150,7 +183,7 @@ fn rejects_malformed_unknown_versions_fields_and_missing_archive_property() {
     assert!(model::parse(b"not json").is_err());
     for (key, value) in [
         ("format", serde_json::json!("other")),
-        ("formatVersion", serde_json::json!(3)),
+        ("formatVersion", serde_json::json!(4)),
         ("databaseSchemaVersion", serde_json::json!(2)),
         ("exportedAt", serde_json::json!("2026-99-99")),
         ("appVersion", serde_json::json!(null)),
@@ -251,10 +284,10 @@ async fn full_export_restore_reopen_preserves_metadata_snapshots_and_archive() {
     let checked = storage::read_backup(&external).unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 4).await;
+    migrate(&reopened, 5).await;
     assert_eq!(storage::export(&reopened).await.unwrap().data, backup.data);
     let other = connect(&temporary.path().join("fresh.db")).await;
-    migrate(&other, 4).await;
+    migrate(&other, 5).await;
     storage::restore(&other, &checked, &temporary.path().join("fresh-recovery"))
         .await
         .unwrap();
@@ -269,13 +302,14 @@ async fn empty_restored_database_stays_empty_after_migrations_and_reopen() {
     let backup = Backup::new(Data {
         habits: vec![],
         activities: vec![],
+        ..Data::default()
     });
     storage::restore(&pool, &backup, &temporary.path().join("recovery"))
         .await
         .unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 4).await;
+    migrate(&reopened, 5).await;
     assert_eq!(storage::export(&reopened).await.unwrap().data, backup.data);
     reopened.close().await;
 }
@@ -475,7 +509,7 @@ async fn migration_from_v1_and_archived_v2_preserves_history_and_does_not_reseed
         .fetch_one(&pool)
         .await
         .unwrap();
-    migrate(&pool, 4).await;
+    migrate(&pool, 5).await;
     let migrated = storage::export(&pool).await.unwrap();
     assert_eq!(migrated.data.activities[0].habit_name, "October snapshot");
     assert_eq!(migrated.data.activities[0].contribution_snapshot, None);
@@ -496,7 +530,7 @@ async fn migration_from_v1_and_archived_v2_preserves_history_and_does_not_reseed
         .execute(&pool)
         .await
         .unwrap();
-    migrate(&pool, 4).await;
+    migrate(&pool, 5).await;
     assert_eq!(
         sqlx::query("SELECT COUNT(*) AS total FROM habits WHERE id = 'read'")
             .fetch_one(&pool)
@@ -579,6 +613,14 @@ fn old_v1_bytes() -> Vec<u8> {
     let mut value = serde_json::to_value(example()).unwrap();
     value["formatVersion"] = serde_json::json!(1);
     value["databaseSchemaVersion"] = serde_json::json!(3);
+    value["data"]
+        .as_object_mut()
+        .unwrap()
+        .remove("frequencySegments");
+    value["data"]
+        .as_object_mut()
+        .unwrap()
+        .remove("archivePauses");
     for h in value["data"]["habits"].as_array_mut().unwrap() {
         h.as_object_mut().unwrap().remove("contributionProfile");
     }
@@ -663,8 +705,8 @@ async fn v1_full_replacement_can_be_undone_with_complete_v2_weighted_safety() {
         .await
         .unwrap();
     let converted = storage::export(&pool).await.unwrap();
-    assert_eq!(converted.format_version, 2);
-    assert_eq!(converted.database_schema_version, 4);
+    assert_eq!(converted.format_version, 3);
+    assert_eq!(converted.database_schema_version, 5);
     assert_eq!(converted.data, old.data);
     assert!(converted
         .data
@@ -672,14 +714,14 @@ async fn v1_full_replacement_can_be_undone_with_complete_v2_weighted_safety() {
         .iter()
         .all(|a| a.contribution_snapshot.is_none()));
     let protective = storage::read_backup(&safety).unwrap();
-    assert_eq!(protective.format_version, 2);
+    assert_eq!(protective.format_version, 3);
     assert_eq!(protective.data, before);
     storage::restore(&pool, &protective, &temporary.path().join("undo"))
         .await
         .unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 4).await;
+    migrate(&reopened, 5).await;
     let after = storage::export(&reopened).await.unwrap();
     assert_eq!(after.data, before);
     assert_eq!(after.summary().user_entries, 1);
@@ -717,7 +759,7 @@ async fn migration_four_failure_rolls_back_schema_data_and_actual_sqlx_ledger() 
         .unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 4).await;
+    migrate(&reopened, 5).await;
     assert_eq!(
         storage::export(&reopened).await.unwrap().data.habits.len(),
         3
@@ -738,8 +780,8 @@ async fn schema_three_upgrade_keeps_october_records_and_archived_profiles() {
     for day in ["2026-10-26", "2026-10-27"] {
         sqlx::query("INSERT INTO activities VALUES (?,'read','Historical name','[\"mind\",\"recovery\"]',?,'2026-10-27T00:00:00Z','UTC')").bind(day).bind(day).execute(&pool).await.unwrap();
     }
-    migrate(&pool, 4).await;
-    migrate(&pool, 4).await;
+    migrate(&pool, 5).await;
+    migrate(&pool, 5).await;
     pool.close().await;
     let reopened = connect(&path).await;
     let saved = storage::export(&reopened).await.unwrap();
@@ -785,4 +827,441 @@ async fn export_counts_new_json_bytes_before_fetch_and_rejects_invalid_stored_pr
         .unwrap_err()
         .contains("ограничения"));
     pool.close().await;
+}
+
+fn rhythm_input(kind: MutationKind, id: &str, change: RhythmChange) -> HabitMutation {
+    let definition = matches!(kind, MutationKind::Create | MutationKind::Update);
+    HabitMutation {
+        kind,
+        id: id.into(),
+        name: definition.then(|| "Гитара 'без потери истории'".into()),
+        spheres: definition.then(|| vec!["mind".into(), "recovery".into()]),
+        contribution_profile: definition
+            .then(|| Profile::defaults(&vec!["mind".into(), "recovery".into()])),
+        rhythm_change: change,
+    }
+}
+#[test]
+fn rhythm_calendar_boundaries_and_strict_native_input() {
+    for (today, next) in [
+        ("2026-11-01", "2026-11-02"),
+        ("2026-11-02", "2026-11-09"),
+        ("2026-12-31", "2027-01-04"),
+        ("2024-02-29", "2024-03-04"),
+        ("2026-03-08", "2026-03-09"),
+    ] {
+        assert_eq!(crate::rhythm::monday(today).unwrap(), next);
+    }
+    for invalid in ["2025-02-29", "0000-01-01", "2026-13-01"] {
+        assert!(crate::rhythm::day(invalid).is_err());
+    }
+    let base = serde_json::json!({"kind":"create","id":"new","name":"Name","spheres":["mind"],"contributionProfile":Profile::defaults(&vec!["mind".into()]),"rhythmChange":{"kind":"set","frequency":"daily"}});
+    for frequency in ["whenever", "three-per-week", ""] {
+        let mut bad = base.clone();
+        bad["rhythmChange"]["frequency"] = serde_json::json!(frequency);
+        assert!(serde_json::from_value::<HabitMutation>(bad).is_err());
+    }
+    let mut bad = base;
+    bad["today"] = serde_json::json!("1999-01-01");
+    assert!(
+        serde_json::from_value::<HabitMutation>(bad).is_err(),
+        "caller cannot choose native effective day"
+    );
+}
+#[tokio::test]
+async fn native_rhythm_enrollment_pending_replace_cancel_and_reopen_are_atomic() {
+    let (_temp, path, pool) = fixture().await;
+    let before = storage::export(&pool).await.unwrap();
+    assert!(before.data.frequency_segments.is_empty());
+    for (id, freq) in [
+        ("new-daily", Frequency::Daily),
+        ("new-three", Frequency::ThreePerWeek),
+        ("new-weekly", Frequency::Weekly),
+    ] {
+        let result = crate::rhythm::mutate(
+            &pool,
+            &rhythm_input(
+                MutationKind::Create,
+                id,
+                RhythmChange::Set {
+                    frequency: freq.clone(),
+                },
+            ),
+            "2026-10-28",
+            "2026-10-28T12:00:00Z",
+        )
+        .await
+        .unwrap();
+        assert_eq!(result.frequency_segments[0].frequency, freq);
+        assert_eq!(result.frequency_segments[0].effective_on, "2026-10-28");
+    }
+    let first = crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(
+            MutationKind::Update,
+            "new-weekly",
+            RhythmChange::Set {
+                frequency: Frequency::Daily,
+            },
+        ),
+        "2026-10-29",
+        "2026-10-29T12:00:00Z",
+    )
+    .await
+    .unwrap();
+    let pending_id = first.frequency_segments[1].id.clone();
+    assert_eq!(first.frequency_segments[1].effective_on, "2026-11-02");
+    let replaced = crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(
+            MutationKind::Update,
+            "new-weekly",
+            RhythmChange::Set {
+                frequency: Frequency::ThreePerWeek,
+            },
+        ),
+        "2026-11-01",
+        "2026-11-01T12:00:00Z",
+    )
+    .await
+    .unwrap();
+    assert_eq!(replaced.frequency_segments.len(), 2);
+    assert_eq!(replaced.frequency_segments[1].id, pending_id);
+    assert_eq!(replaced.frequency_segments[0], first.frequency_segments[0]);
+    let canceled = crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(
+            MutationKind::Update,
+            "new-weekly",
+            RhythmChange::CancelPending,
+        ),
+        "2026-11-01",
+        "2026-11-01T12:00:00Z",
+    )
+    .await
+    .unwrap();
+    assert_eq!(canceled.frequency_segments.len(), 1);
+    let pending = crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(
+            MutationKind::Update,
+            "new-weekly",
+            RhythmChange::Set {
+                frequency: Frequency::Daily,
+            },
+        ),
+        "2026-11-01",
+        "2026-11-01T12:00:00Z",
+    )
+    .await
+    .unwrap();
+    let next = crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(
+            MutationKind::Update,
+            "new-weekly",
+            RhythmChange::Set {
+                frequency: Frequency::ThreePerWeek,
+            },
+        ),
+        "2026-11-02",
+        "2026-11-02T12:00:00Z",
+    )
+    .await
+    .unwrap();
+    assert_eq!(next.frequency_segments.len(), 3);
+    assert_eq!(next.frequency_segments[1], pending.frequency_segments[1]);
+    assert_eq!(next.frequency_segments[2].effective_on, "2026-11-09");
+    let snapshot = storage::export(&pool).await.unwrap();
+    pool.close().await;
+    let reopened = connect(&path).await;
+    migrate(&reopened, 5).await;
+    assert_eq!(
+        storage::export(&reopened).await.unwrap().data,
+        snapshot.data
+    );
+    reopened.close().await;
+}
+#[tokio::test]
+async fn native_archive_unknown_start_actual_end_same_day_and_guarded_foreign_keys() {
+    let (temp, path, pool) = fixture().await;
+    storage::restore(&pool, &example(), &temp.path().join("setup"))
+        .await
+        .unwrap();
+    let before = storage::export(&pool).await.unwrap();
+    let restored = crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(MutationKind::Restore, "read", RhythmChange::Keep),
+        "2026-10-30",
+        "2026-10-30T12:00:00Z",
+    )
+    .await
+    .unwrap();
+    assert_eq!(restored.archive_pauses[0].start_on, None);
+    assert_eq!(restored.archive_pauses[0].provenance, "legacy_unknown");
+    assert_eq!(
+        restored.archive_pauses[0].end_exclusive_on.as_deref(),
+        Some("2026-10-30")
+    );
+    crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(MutationKind::Archive, "read", RhythmChange::Keep),
+        "2026-10-31",
+        "2026-10-31T12:00:00Z",
+    )
+    .await
+    .unwrap();
+    let state = storage::export(&pool).await.unwrap();
+    assert_eq!(state.data.archive_pauses.len(), 2);
+    assert_eq!(state.data.activities, before.data.activities);
+    assert!(
+        crate::rhythm::mutate(
+            &pool,
+            &rhythm_input(MutationKind::Restore, "read", RhythmChange::Keep),
+            "2026-10-29",
+            "2026-10-29T12:00:00Z"
+        )
+        .await
+        .is_err(),
+        "clock rollback cannot damage pause"
+    );
+    assert_eq!(storage::export(&pool).await.unwrap().data, state.data);
+    let same = crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(MutationKind::Restore, "read", RhythmChange::Keep),
+        "2026-10-31",
+        "2026-10-31T13:00:00Z",
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        same.archive_pauses.len(),
+        1,
+        "same-day known pause excluded,legacy unknown retained"
+    );
+    pool.close().await;
+    let single = SqlitePoolOptions::new()
+        .max_connections(1)
+        .connect_with(
+            SqliteConnectOptions::new()
+                .filename(&path)
+                .foreign_keys(false),
+        )
+        .await
+        .unwrap();
+    sqlx::query("PRAGMA foreign_keys=OFF")
+        .execute(&single)
+        .await
+        .unwrap();
+    crate::rhythm::mutate(
+        &single,
+        &rhythm_input(MutationKind::Update, "guitar", RhythmChange::Keep),
+        "2026-11-01",
+        "2026-11-01T12:00:00Z",
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        sqlx::query_scalar::<_, i64>("PRAGMA foreign_keys")
+            .fetch_one(&single)
+            .await
+            .unwrap(),
+        1
+    );
+    assert!(sqlx::query("INSERT INTO habit_frequency_segments VALUES('orphan','absent','daily','2026-10-28','2026-10-28',1)").execute(&single).await.is_err());
+    single.close().await;
+}
+#[tokio::test]
+async fn native_definition_rhythm_failure_rolls_back_all_changes() {
+    let (_temp, _path, pool) = fixture().await;
+    let before = storage::export(&pool).await.unwrap().data;
+    sqlx::query("CREATE TRIGGER synthetic_fail_rhythm BEFORE INSERT ON habit_frequency_segments BEGIN SELECT RAISE(ABORT,'synthetic'); END").execute(&pool).await.unwrap();
+    assert!(crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(
+            MutationKind::Create,
+            "never-partial",
+            RhythmChange::Set {
+                frequency: Frequency::Daily
+            }
+        ),
+        "2026-10-28",
+        "2026-10-28T12:00:00Z"
+    )
+    .await
+    .is_err());
+    assert_eq!(storage::export(&pool).await.unwrap().data, before);
+    sqlx::query("DROP TRIGGER synthetic_fail_rhythm")
+        .execute(&pool)
+        .await
+        .unwrap();
+    assert!(crate::rhythm::mutate(
+        &pool,
+        &rhythm_input(
+            MutationKind::Create,
+            "missing-frequency",
+            RhythmChange::Keep
+        ),
+        "2026-10-28",
+        "2026-10-28T12:00:00Z"
+    )
+    .await
+    .is_err());
+    assert_eq!(storage::export(&pool).await.unwrap().data, before);
+}
+fn old_v2_bytes() -> Vec<u8> {
+    let mut value = serde_json::to_value(example()).unwrap();
+    value["formatVersion"] = serde_json::json!(2);
+    value["databaseSchemaVersion"] = serde_json::json!(4);
+    value["data"]
+        .as_object_mut()
+        .unwrap()
+        .remove("frequencySegments");
+    value["data"]
+        .as_object_mut()
+        .unwrap()
+        .remove("archivePauses");
+    serde_json::to_vec(&value).unwrap()
+}
+#[tokio::test]
+async fn v3_histories_round_trip_old_v1_v2_import_and_native_protective_undo() {
+    let (temp, path, pool) = fixture().await;
+    let input = example();
+    storage::restore(&pool, &input, &temp.path().join("setup"))
+        .await
+        .unwrap();
+    let before = storage::export(&pool).await.unwrap();
+    assert_eq!(before.data.frequency_segments.len(), 2);
+    for bytes in [old_v1_bytes(), old_v2_bytes()] {
+        let old = model::parse(&bytes).unwrap();
+        assert!(old.data.frequency_segments.is_empty());
+        assert_eq!(old.data.archive_pauses[0].start_on, None);
+        assert_eq!(old.data.archive_pauses[0].provenance, "legacy_unknown");
+        let safety = storage::restore(&pool, &old, &temp.path().join("recovery"))
+            .await
+            .unwrap();
+        let recovered = storage::read_backup(&safety).unwrap();
+        assert_eq!(recovered.format_version, 3);
+        assert_eq!(recovered.data, before.data);
+        assert_eq!(storage::export(&pool).await.unwrap().data, old.data);
+        storage::restore(&pool, &recovered, &temp.path().join("undo"))
+            .await
+            .unwrap();
+        assert_eq!(storage::export(&pool).await.unwrap().data, before.data);
+    }
+    pool.close().await;
+    let reopened = connect(&path).await;
+    migrate(&reopened, 5).await;
+    assert_eq!(storage::export(&reopened).await.unwrap().data, before.data);
+    reopened.close().await;
+}
+#[test]
+fn strict_v3_rejects_missing_unknown_out_of_order_inconsistent_frequency_and_archive_history() {
+    let value = serde_json::to_value(example()).unwrap();
+    for collection in ["frequencySegments", "archivePauses"] {
+        let mut bad = value.clone();
+        bad["data"].as_object_mut().unwrap().remove(collection);
+        assert!(model::parse(&serde_json::to_vec(&bad).unwrap()).is_err());
+    }
+    for (field, bad_value) in [
+        ("frequency", serde_json::json!("whenever")),
+        ("effectiveOn", serde_json::json!("2026-11-03")),
+        ("createdOn", serde_json::json!("2025-02-29")),
+        ("habitId", serde_json::json!("absent")),
+        ("version", serde_json::json!(2)),
+    ] {
+        let mut bad = value.clone();
+        bad["data"]["frequencySegments"][1][field] = bad_value;
+        assert!(model::parse(&serde_json::to_vec(&bad).unwrap()).is_err());
+    }
+    let mut bad = value.clone();
+    bad["data"]["frequencySegments"]
+        .as_array_mut()
+        .unwrap()
+        .reverse();
+    assert!(model::parse(&serde_json::to_vec(&bad).unwrap()).is_err());
+    for (field, bad_value) in [
+        ("startOn", serde_json::json!("2026-10-27")),
+        ("provenance", serde_json::json!("recorded")),
+        ("habitId", serde_json::json!("absent")),
+        ("endExclusiveOn", serde_json::json!("2025-02-29")),
+    ] {
+        let mut bad = value.clone();
+        bad["data"]["archivePauses"][0][field] = bad_value;
+        assert!(model::parse(&serde_json::to_vec(&bad).unwrap()).is_err());
+    }
+    let mut bad = value.clone();
+    bad["data"]["habits"][1]["archivedAt"] = serde_json::Value::Null;
+    assert!(model::parse(&serde_json::to_vec(&bad).unwrap()).is_err());
+    let mut old: serde_json::Value = serde_json::from_slice(&old_v2_bytes()).unwrap();
+    old["data"]["frequencySegments"] = serde_json::json!([]);
+    assert!(model::parse(&serde_json::to_vec(&old).unwrap()).is_err());
+}
+#[tokio::test]
+async fn v3_replacement_failure_keeps_histories_and_snapshots_together() {
+    let (temp, _path, pool) = fixture().await;
+    storage::restore(&pool, &example(), &temp.path().join("setup"))
+        .await
+        .unwrap();
+    let before = storage::export(&pool).await.unwrap().data;
+    assert!(storage::replace(
+        &pool,
+        &example(),
+        |_| Ok(temp.path().join("synthetic-safety")),
+        || Err("synthetic after-delete failure".into())
+    )
+    .await
+    .is_err());
+    assert_eq!(storage::export(&pool).await.unwrap().data, before);
+    let mut invalid = example();
+    invalid.data.frequency_segments[0].effective_on = "2025-02-29".into();
+    assert!(storage::replace(
+        &pool,
+        &invalid,
+        |_| panic!("malformed input must not start replacement"),
+        || Ok(())
+    )
+    .await
+    .is_err());
+    assert_eq!(storage::export(&pool).await.unwrap().data, before);
+}
+
+#[tokio::test]
+async fn migration_five_failure_rolls_back_ddl_and_sqlx_ledger_then_retries() {
+    let temp = TempDir::new().unwrap();
+    let path = temp.path().join("migration-five.db");
+    let pool = connect(&path).await;
+    migrate(&pool, 4).await;
+    sqlx::query("CREATE TABLE habit_archive_pauses(synthetic_conflict TEXT)")
+        .execute(&pool)
+        .await
+        .unwrap();
+    assert!(make_migrator(5).run(&pool).await.is_err());
+    assert_eq!(
+        sqlx::query_scalar::<_, i64>("SELECT MAX(version) FROM _sqlx_migrations")
+            .fetch_one(&pool)
+            .await
+            .unwrap(),
+        4
+    );
+    assert_eq!(
+        sqlx::query_scalar::<_, i64>(
+            "SELECT COUNT(*) FROM sqlite_master WHERE name='habit_frequency_segments'"
+        )
+        .fetch_one(&pool)
+        .await
+        .unwrap(),
+        0
+    );
+    sqlx::query("DROP TABLE habit_archive_pauses")
+        .execute(&pool)
+        .await
+        .unwrap();
+    migrate(&pool, 5).await;
+    let before = storage::export(&pool).await.unwrap().data;
+    pool.close().await;
+    let reopened = connect(&path).await;
+    migrate(&reopened, 5).await;
+    assert_eq!(storage::export(&reopened).await.unwrap().data, before);
+    reopened.close().await;
 }

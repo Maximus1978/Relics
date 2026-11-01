@@ -1,5 +1,11 @@
 # Game design
 
+## HABIT-RHYTHM-001 operational boundary
+Frequency persistence/editor is now implemented as a review candidate;see [contract](HABIT_RHYTHM_001.md). Intentions daily/three_per_week/weekly preserve one habit ID. Legacy habits remain unconfigured until explicit enrollment today;later edits begin next Monday with visible cancellable pending rule. Occurrence-date lookup does not rewrite event snapshots. Archive pauses retain explicit unknown legacy starts and actual restoration ends;unknown history is neutral,not evidence of practice or inactivity.
+
+This operational model supplies future engines only. P01–P09 numerical/checkpoint/curve/gameplay parameters remain proposed. No Mastery,Forging,Resonance,medal,XP,rewards or Vacation calculation is delivered. Selected-day completion and existing seven-day binary rune remain independent and unchanged. Intention changes carry no loss/status warning.
+
+
 ## Status and approved core loop
 
 Sanctuary Gate A is owner-approved and the implemented functionality has been manually verified by the owner in Windows. This acceptance covers the present UI/tracker milestone, not absent game systems. DOC-GAME-002 additionally records owner acceptance of STATE-001's functionality and visual direction after Windows testing and authorizes releasing PR #6. Remaining artistic differences are non-blocking future improvements; no feature changes occur in this release.

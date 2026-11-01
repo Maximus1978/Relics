@@ -17,7 +17,7 @@ test('browser demonstration isolates its sessions and discards mutations when re
   const journal = await second.list();
   await first.updateHabit('demo-guitar', 'Другая гитара', ['body']);
   await first.archiveHabit('demo-read');
-  await first.createHabit('Только в демонстрации', ['mind']);
+  await first.createHabit('Только в демонстрации', ['mind'], undefined, 'daily');
   await first.log((await first.listHabits()).find(habit => habit.id === 'demo-guitar')!, '2000-01-01');
   await first.remove((await first.list())[0].id);
   const exported = await second.listHabits('all');

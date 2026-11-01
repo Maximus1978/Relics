@@ -8,7 +8,7 @@ function Summary({ value }: { value: BackupSummary }) {
   return <dl className="backup-summary"><dt>Создана</dt><dd>{new Date(value.exportedAt).toLocaleString('ru-RU')}</dd>
     <dt>Привычек</dt><dd>{value.habits} (в архиве: {value.archivedHabits})</dd><dt>Записей активности</dt><dd>{value.activities}</dd>
     <dt>Формат</dt><dd>relics-backup v{value.formatVersion}, схема {value.databaseSchemaVersion} — поддерживается</dd>
-    <dt>Числовые снимки</dt><dd>Ваш профиль: {value.userEntries}; по умолчанию: {value.defaultEntries}; без значений: {value.legacyEntries}</dd></dl>;
+    <dt>Числовые снимки</dt><dd>Ваш профиль: {value.userEntries}; по умолчанию: {value.defaultEntries}; без значений: {value.legacyEntries}</dd><dt>История ритма</dt><dd>Настроено привычек: {value.configuredHabits}; правил: {value.frequencySegments}; периодов архива: {value.archivePauses}</dd></dl>;
 }
 
 export default function BackupDialog({ model }: { model: RelicsModel }) {
@@ -50,7 +50,8 @@ export default function BackupDialog({ model }: { model: RelicsModel }) {
           })}>Создать копию</button>
           <button disabled={model.busy || !model.canSave} onClick={() => void execute(async () => { setPreview(await model.backupOperation(nativeBackup.preview)); setSafetyFile(''); })}>Выбрать копию</button></div>}
           {preview && <section aria-labelledby="backup-preview-title"><h3 id="backup-preview-title">Копия проверена</h3><Summary value={preview.summary} />
-            {preview.summary.formatVersion===1&&<p className="backup-conversion">Копия v1 не содержит числового вклада. У привычек будут значения по умолчанию 5 для новых отметок; старая история останется без числовых значений. Восстановление заменит текущие данные, включая профили вклада. Защитная копия v2 позволит вернуть их.</p>}
+            {preview.summary.formatVersion===1&&<p className="backup-conversion">Копия v1 не содержит числового вклада. У привычек будут значения по умолчанию 5 для новых отметок; старая история останется без числовых значений. Восстановление заменит текущие данные, включая профили вклада. Защитная копия v3 позволит вернуть их.</p>}
+            {preview.summary.formatVersion<3&&<p className="backup-conversion">В копии v{preview.summary.formatVersion} нет истории ритма. Привычки останутся без настроенного ритма. Начало старого архива неизвестно; прошлые даты не будут придуманы. Защитная копия v3 сохранит текущую историю ритма и архива.</p>}
             <p className="backup-replacement">Все текущие привычки и записи журнала будут заменены данными этой копии. Объединения не будет. Перед заменой Relics сохранит защитную копию текущих данных; если это не удастся, восстановление отменится.</p>
             <div className="form-actions"><button autoFocus disabled={model.busy} onClick={() => void execute(cancelPreview)}>Отмена</button>
               <button className="button-primary" disabled={model.busy} onClick={() => void execute(async () => {

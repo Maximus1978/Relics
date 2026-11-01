@@ -1,3 +1,4 @@
+import {checkHabitRhythm} from './check-habit-rhythm.mjs';
 import { checkSectionCollapse } from './check-section-collapse.mjs';
 import { checkChronicleSqlite } from './check-chronicle-sqlite.mjs';
 import { checkChronicleNavigation } from './check-chronicle-navigation.mjs';
@@ -212,6 +213,7 @@ try {
   await checkLifeRhythm({send,evaluate,until,click,viewport,screenshot,output});
   await checkContributionEditor({send,evaluate,until,click,viewport,screenshot});
   await checkSanctuaryStates({ output, send, evaluate, until, click, viewport, screenshot });
+  await checkHabitRhythm({send,evaluate,until,click,viewport,screenshot,bindIpc,output});
   await checkSectionCollapse({send,evaluate,until,click,viewport,output});
   assert.deepEqual(runtimeErrors, []);
   await writeFile(join(output, 'result.json'), JSON.stringify({ browserRendering: 'passed', interactionChecks: checks, runtimeErrors, nativeUiRuntimeVerified: false, storage: 'Synthetic in-memory demonstration; resets on reload' }, null, 2));

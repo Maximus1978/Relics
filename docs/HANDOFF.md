@@ -1,3 +1,15 @@
+# Active delivery: HABIT-RHYTHM-001 — local Gate C passed, hosted CI pending
+
+UI-COLLAPSE-001 prerequisite normally merged at de1b2f9e954a6a74071a817f6ef81cdf22226276 after reviewed head1250d9f/Windows run41255208180/five Markdown-only changes since tested4f0d26bf verified. Owner accepted functionally;native offline restart separately UNCONFIRMED. Nonblocking UX backlog awaits owner details.
+
+Implementation on feature-habit-rhythm-001 from that merge:three supported frequencies,legacy unconfigured/enrollment native actual today,strictly next-Monday subsequent changes,single stable replaceable/cancellable pending segment,Create/Edit current+pending/date,atomic definition/history/archive lifecycle,schema005,strictv3 export/protective recovery andv1/v2 import. Approved legacy archive startNULL/provenancelegacy_unknown,actual restore end;unknown interval neutral for future engines. No progression/art changes. [Full contract,test matrix and manual Windows acceptance](HABIT_RHYTHM_001.md).
+
+Gate A passed before UI:89 Node/SQLite and30 native tests;all recovery checks green. Final local Node89/89,Rust30 passed/0 failed/1 intentionally ignored standalone crash helper(executed by passing parent),TypeScript/Vite PASS. Actual Edge browser385 checks,zero runtime errors;temporary SQLite close/reopen and mock IPC are explicitly separate from native UI verification. Existing rune,trends,Chronicle,sliders andcollapse coverage retained. Screenshots captured for all three creation frequencies,legacy unconfigured,current+pending,and narrow Edit;local actual images inspected. Old migrations001–004 unchanged,no dependency/identity change,no owner journal/private access.
+
+Hosted Windows CI and downloadable EXE not yet verified for this branch. PR publication/receipt follows;do not claim delivery before CI succeeds. Native visual/offline process restart remains owner acceptance. Keep HABIT-RHYTHM PR unmerged. Next single queued task:HABIT-SIGILS-001,not begun.
+
+## Historical previous deliveries
+
 # Current delivery: UI-COLLAPSE-001 — ready for owner acceptance, PR unmerged
 
 [PR #12](https://github.com/Maximus1978/Relics/pull/12),feature-ui-collapse-001,OPEN/UNMERGED. Prerequisite PR #11 reviewed head c43c0974953c458ef28d6f4e6c4fa7d6d22cc368 was verified mergeable and documentation-only,then merged normally at5b7229d58c040c7ebd44d0fe423f92bdc82c57e2. P01–P09 remain proposed mechanics,NOT final implementation approval. No progression delivered.

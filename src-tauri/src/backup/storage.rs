@@ -75,13 +75,22 @@ pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup>
             "Версия базы не поддерживается. Закройте старые окна и обновите Relics.".into(),
         );
     }
+    let history_size=sqlx::query("SELECT (SELECT COUNT(*) FROM habit_frequency_segments) AS segments,(SELECT COUNT(*) FROM habit_archive_pauses) AS pauses,COALESCE((SELECT SUM(length(id)+length(habit_id)+length(frequency)+length(effective_on)+length(created_on)+8) FROM habit_frequency_segments),0)+COALESCE((SELECT SUM(length(id)+length(habit_id)+COALESCE(length(start_on),0)+COALESCE(length(end_exclusive_on),0)+length(reason)+length(provenance)) FROM habit_archive_pauses),0) AS bytes").fetch_one(&mut *connection).await.map_err(|_|"Не удалось проверить размер истории ритма.")?;
+    if history_size.get::<i64, _>("segments") > crate::rhythm::MAX_SEGMENTS as i64
+        || history_size.get::<i64, _>("pauses") > crate::rhythm::MAX_PAUSES as i64
+        || history_size.get::<i64, _>("bytes") > model::MAX_BYTES as i64
+    {
+        return Err("История ритма превышает ограничения копии;данные не обрезаны.".into());
+    }
     let habit_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(name AS BLOB)) + length(CAST(spheres_json AS BLOB)) + COALESCE(length(archived_at),0) + COALESCE(length(CAST(contribution_profile_json AS BLOB)),0)),0) AS bytes FROM habits")
         .fetch_one(&mut *connection).await.map_err(|_| "Не удалось проверить размер привычек.")?;
     let activity_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(habit_id AS BLOB)) + length(CAST(habit_name_snapshot AS BLOB)) + length(CAST(spheres_snapshot_json AS BLOB)) + length(occurred_on) + length(recorded_at) + length(timezone) + COALESCE(length(CAST(contribution_snapshot_json AS BLOB)),0)),0) AS bytes FROM activities")
         .fetch_one(&mut *connection).await.map_err(|_| "Не удалось проверить размер журнала.")?;
     if habit_size.get::<i64, _>("total") > model::MAX_HABITS as i64
         || activity_size.get::<i64, _>("total") > model::MAX_ACTIVITIES as i64
-        || habit_size.get::<i64, _>("bytes") + activity_size.get::<i64, _>("bytes")
+        || habit_size.get::<i64, _>("bytes")
+            + activity_size.get::<i64, _>("bytes")
+            + history_size.get::<i64, _>("bytes")
             > model::MAX_BYTES as i64
     {
         return Err(
@@ -129,7 +138,13 @@ pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup>
                 .map_err(|_| "В локальной базе некорректные снимки сфер; экспорт остановлен.")?,
         });
     }
-    let backup = Backup::new(Data { habits, activities });
+    let (frequency_segments, archive_pauses) = crate::rhythm::histories(connection).await?;
+    let backup = Backup::new(Data {
+        habits,
+        activities,
+        frequency_segments,
+        archive_pauses,
+    });
     backup.validate()?;
     Ok(backup)
 }
@@ -196,6 +211,14 @@ pub(crate) async fn replace(
         .map_err(|_| "База занята. Повторите восстановление позже.")?;
     let current = snapshot(&mut transaction).await?;
     let safety_path = safety(&current)?;
+    sqlx::query("DELETE FROM habit_frequency_segments")
+        .execute(&mut *transaction)
+        .await
+        .map_err(|_| "Не удалось заменить ритмы;транзакция отменена.")?;
+    sqlx::query("DELETE FROM habit_archive_pauses")
+        .execute(&mut *transaction)
+        .await
+        .map_err(|_| "Не удалось заменить архив;транзакция отменена.")?;
     sqlx::query("DELETE FROM activities")
         .execute(&mut *transaction)
         .await
@@ -223,6 +246,12 @@ pub(crate) async fn replace(
             .bind(&activity.occurred_on).bind(&activity.recorded_at).bind(&activity.timezone)
             .bind(activity.contribution_snapshot.as_ref().map(serde_json::to_string).transpose().map_err(|_|"Ошибка снимка вклада.")?)
             .execute(&mut *transaction).await.map_err(|_| "Не удалось восстановить действия; транзакция отменена.")?;
+    }
+    for s in &backup.data.frequency_segments {
+        sqlx::query("INSERT INTO habit_frequency_segments(id,habit_id,frequency,effective_on,created_on,version) VALUES(?,?,?,?,?,?)").bind(&s.id).bind(&s.habit_id).bind(serde_json::to_value(&s.frequency).unwrap().as_str().unwrap()).bind(&s.effective_on).bind(&s.created_on).bind(s.version as i64).execute(&mut *transaction).await.map_err(|_|"Не удалось восстановить историю ритма;транзакция отменена.")?;
+    }
+    for p in &backup.data.archive_pauses {
+        sqlx::query("INSERT INTO habit_archive_pauses(id,habit_id,start_on,end_exclusive_on,reason,provenance) VALUES(?,?,?,?,?,?)").bind(&p.id).bind(&p.habit_id).bind(&p.start_on).bind(&p.end_exclusive_on).bind(&p.reason).bind(&p.provenance).execute(&mut *transaction).await.map_err(|_|"Не удалось восстановить архив;транзакция отменена.")?;
     }
     let violations = sqlx::query("PRAGMA foreign_key_check")
         .fetch_all(&mut *transaction)

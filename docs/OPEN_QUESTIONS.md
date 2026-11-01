@@ -1,5 +1,11 @@
 # Open questions
 
+## HABIT-RHYTHM-001 scope resolution
+Owner explicitly approved unknown legacy archive start(NULL),legacy_unknown provenance,and actual local restoration end. Never invent start;future interpretation neutral,no practice credit or inactivity penalty. Persisted in005/v3 and covered by deterministic tests. No remaining implementation blocker for this policy.
+
+Authorized candidate operational rules:first enrollment actual local today,later edits strictly next Monday,current/pending visible,single replaceable/cancellable pending rule,legacy unconfigured. Exact scheduling behavior awaits owner Windows acceptance;it does not approve every P01–P09 gameplay parameter. Historical enrollment,custom weekdays,Vacation,icon selection and all progression numbers remain separately deferred. Clock rollback incompatible with saved history safely rejects writes rather than guessing. Native UI/offline restart acceptance remains outstanding until owner tests the new EXE.
+
+
 Status: every unresolved item below is open; accepted principles constrain its answer. Questions are resolved in individual tasks. Do not silently turn an implementation convenience into a product decision. Current one-completion-per-day/cancellation behavior remains provisional and unchanged; resolved backup choices are identified explicitly. Owner acceptance of STATE-001 is recorded in D049, not an open visual gate. Q03's numeric semantics/defaults are now resolved by the owner; the owner has approved the WEIGHTS-001A contract. WEIGHTS-001B and trends are now owner-accepted and merged; NAV-CHRONICLE-001 is accepted/merged8503670. Current specification review is PROGRESS-001 REVISION; P01–P09 below are proposals, not resolved formulas.
 
 | ID | Question | Resolve before |

@@ -72,7 +72,7 @@ export default function App() {
     {model.backupOpen && <BackupDialog model={model} />}
     {model.formOpen && <WorldDialog labelledBy="create-habit-title" busy={model.busy} onClose={model.cancelManagement}>
       <div className="habit-editor"><div className="habit-editor__art"><RelicArt sphere={model.editingHabit?.spheres[0] ?? 'recovery'} /><p>Одна привычка может объединять несколько граней жизни.</p></div>
-        <HabitForm key={model.editingHabit?.id ?? 'new'} busy={model.busy} canSave={model.canSave} habit={model.editingHabit ?? undefined} saveError={model.error} onSave={model.saveHabit} onCancel={model.cancelManagement} /></div>
+        <HabitForm today={today} key={model.editingHabit?.id ?? 'new'} busy={model.busy} canSave={model.canSave} habit={model.editingHabit ?? undefined} saveError={model.error} onSave={model.saveHabit} onCancel={model.cancelManagement} /></div>
     </WorldDialog>}
     {model.archivingHabit && <WorldDialog labelledBy="archive-confirm-title" busy={model.busy} onClose={model.cancelManagement}>
       <div className="archive-confirmation"><ShellIcon kind="archive" /><h3 id="archive-confirm-title">В архив: {model.archivingHabit.name}?</h3><p>Привычка исчезнет из активного списка. Все записи в хронике сохранятся. Вы сможете восстановить её из архива.</p>

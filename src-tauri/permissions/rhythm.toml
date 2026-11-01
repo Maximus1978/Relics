@@ -1,0 +1,4 @@
+[[permission]]
+identifier = "local-habit-rhythm"
+description = "Main-window validated habit definition, rhythm history and archive lifecycle in one native transaction. No caller-provided SQL, paths or effective dates."
+commands.allow = ["mutate_habit"]

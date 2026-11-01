@@ -1,7 +1,8 @@
+import type { RhythmChange } from './habitRhythm.ts';
 import type { ContributionProfile } from './contributions.ts';
 import { spheres, type SphereId } from './activity.ts';
 
-export type HabitInput = { name: string; spheres: SphereId[]; contributionProfile?:ContributionProfile };
+export type HabitInput = { name: string; spheres: SphereId[]; contributionProfile?:ContributionProfile; rhythmChange?:RhythmChange };
 
 export class HabitStateError extends Error {
   constructor(message: string) {

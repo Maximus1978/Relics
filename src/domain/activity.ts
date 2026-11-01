@@ -1,3 +1,4 @@
+import type { FrequencySegment, ArchivePause } from './habitRhythm.ts';
 import { defaultContributions } from './contributions.ts';
 import type { ContributionProfile } from './contributions.ts';
 export const spheres = {
@@ -9,7 +10,7 @@ export const spheres = {
 } as const;
 
 export type SphereId = keyof typeof spheres;
-export type Habit = { id: string; name: string; spheres: SphereId[]; archivedAt: string | null; contributionProfile: ContributionProfile };
+export type Habit = { id: string; name: string; spheres: SphereId[]; archivedAt: string | null; contributionProfile: ContributionProfile; frequencySegments?: FrequencySegment[]; archivePauses?: ArchivePause[] };
 export type Activity = {
   id: string;
   habitId: string;
