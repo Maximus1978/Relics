@@ -1,0 +1,7 @@
+.section-toggle { flex:0 0 44px; width:44px; min-height:44px; padding:6px; border-color:transparent; background:transparent; color:var(--gold); font-size:22px; }
+.section-toggle:hover { border-color:#b89b6266; background:#b5985a12; }
+.section-toggle:focus-visible { outline:2px solid #f1cf91; outline-offset:3px; }
+.section-toggle span { display:block; transition:transform .15s; }
+.section-toggle[aria-expanded=false] span { transform:rotate(-90deg); }
+.section-content[hidden] { display:none; }
+@media(prefers-reduced-motion:reduce) { .section-toggle span { transition:none; } }

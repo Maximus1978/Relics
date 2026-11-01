@@ -5,15 +5,16 @@ import { contributionSphereIds } from '../../domain/contributions';
 import { spheres, type SphereId } from '../../domain/activity';
 import { addCalendarDays, type ContributionBucket } from '../../domain/sphereContributions';
 import { chartColors, chartDashes, chartValue, shortDay, type ContributionMode } from './contributionPresentation';
-export default function ContributionChart({ buckets, daily, mode, visible }: {
+export default function ContributionChart({ buckets, daily, mode, visible, active }: {
     buckets: ContributionBucket[];
     daily: boolean;
     mode: ContributionMode;
     visible: Record<SphereId, boolean>;
+    active: boolean;
 }) {
     const host = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        if (!host.current)
+        if (!active || !host.current)
             return;
         const container = host.current;
         const data: uPlot.AlignedData = [buckets.map((_, i) => i), ...contributionSphereIds.map(s => buckets.map(w => chartValue(w, s, mode)))];
@@ -28,6 +29,6 @@ export default function ContributionChart({ buckets, daily, mode, visible }: {
             plot.setSize({ width: Math.max(240, width), height: 232 }); });
         observer.observe(container);
         return () => { observer.disconnect(); plot.destroy(); };
-    }, [buckets, daily, mode, visible]);
+    }, [buckets, daily, mode, visible, active]);
     return <div className="rhythm-plot" ref={host} aria-hidden="true"/>;
 }

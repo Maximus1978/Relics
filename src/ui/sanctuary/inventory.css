@@ -36,3 +36,7 @@
   .relic-item .relic-art { width: 68px; height: 68px; } .relic-item__definition { text-align: left; padding-right: 9px; } .relic-item h4 { font-size: 16px; } .relic-item .sphere-tags { justify-content: flex-start; font-size: 10px; }
   .completion-button { width: 44px; height: 44px; padding: 7px; margin: 20px 0 0; } .completion-button > span { display: none; } .completion-button .line-icon { width: 22px; height: 22px; } .restore-button { grid-column: 2 / -1; width: auto; margin: 0; } .habit-actions { top: -5px; right: 2px; }
 }
+
+.inventory-heading__title {display:flex;align-items:center;gap:5px;min-width:0;}
+.inventory-heading__title>div {min-width:0;}
+.inventory-heading:has([aria-expanded=false]) p {display:block;}
