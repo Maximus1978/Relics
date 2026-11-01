@@ -82,4 +82,4 @@ Unsigned EXE may prompt Windows; no installer/signing is included. Screenshots u
 
 ## Delivery record
 
-Local and hosted results,exact tested SHA,PR/CI/artifact links and screenshots are recorded in HANDOFF.md after verification. Keep this PR unmerged. Next queued task HABIT-SIGILS-001 requires separate authorization.
+[PR #13](https://github.com/Maximus1978/Relics/pull/13),tested4969d7afe193fc924c616554295a8c250b0e5378. [Windows run41262296440](https://github.com/Maximus1978/Relics/actions/runs/41262296440) SUCCESS:89 Node/SQLite,30 native tests,TypeScript/Vite,385 Edge checks and native EXE. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/41262296440/artifacts/13065204614);[screenshots/proof ZIP](https://github.com/Maximus1978/Relics/actions/runs/41262296440/artifacts/13065009240). Both downloaded ZIP hashes and EXE/source manifest verified;details in HANDOFF.md. Final receipt Markdown-only;native owner acceptance remains pending. Keep this PR unmerged. Next queued task HABIT-SIGILS-001 requires separate authorization.
