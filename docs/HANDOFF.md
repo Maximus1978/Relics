@@ -1,3 +1,29 @@
+# Current delivery: UI-COLLAPSE-001 — ready for owner acceptance, PR unmerged
+
+[PR #12](https://github.com/Maximus1978/Relics/pull/12),feature-ui-collapse-001,OPEN/UNMERGED. Prerequisite PR #11 reviewed head c43c0974953c458ef28d6f4e6c4fa7d6d22cc368 was verified mergeable and documentation-only,then merged normally at5b7229d58c040c7ebd44d0fe423f92bdc82c57e2. P01–P09 remain proposed mechanics,NOT final implementation approval. No progression delivered.
+
+## Verified source and successful Windows CI
+
+Exact tested code/scripts/tests head:4f0d26bf1679d5445e8dc5284b63d69507d58e33. Synthetic PR merge build source:2f60f26c46e5e52bf32c91dd5dc406081787c23a. [Windows run41255208180](https://github.com/Maximus1978/Relics/actions/runs/41255208180) SUCCESS,job124696806879;decoded logs confirm locked npm ci,79 Node/temporary-SQLite tests(0 failed),TypeScript,Vite,354 actual Edge browser checks(runtimeErrors=[]),real Tauri Windows release EXE and22 native backup safety tests PASS(0 failed,one intentionally ignored standalone crash helper runs under its passing parent). Node22.23.4/Rust1.99.1. Equivalent local checks passed. This is native compilation/backup verification,NOT native UI/offline-restart acceptance.
+
+## Downloaded artifacts and verified digests
+
+[Windows x64 ZIP](https://github.com/Maximus1978/Relics/actions/runs/41255208180/artifacts/13062659539):11,897,389 bytes,SHA25653e942f0311eb9bbe272b8c67502de9376d08c8c5b3b43a7b5cb07819bae875d matched GitHub. EXE20,631,040 bytes,SHA256036388b377c8d7b484cb6bf8175c02ea1a9ee7dfa7afea8f45b9cfc80d1794f4 matched included manifest. build-info verifies head/source above,signed=false,nativeUiRuntimeVerified=false. Unsigned Windows x64 with WebView2:extract and run relics.exe,no build tools required. Artifact expires2026-11-15 UTC.
+
+[Browser screenshots/proof ZIP](https://github.com/Maximus1978/Relics/actions/runs/41255208180/artifacts/13063290209):76,071,377 bytes,SHA256a74320954ce87335fe24c33618c186aff30bf5564e8fdb427ddd35dfae05151b matched GitHub. Downloaded result.json confirms354 checks/zero runtime errors;section-collapse-proof.json confirms all four combinations,only two stored booleans,browser app reload and offline navigation,explicit nativeOfflineRestartVerified=false. Five actual captures:collapse-both-expanded.png,collapse-inventory.png,collapse-rhythm.png,collapse-both.png,collapse-narrow-windows.png. Local equivalents plus hosted collapsed/narrow captures inspected against unchanged Sanctuary;all other existing rune/editor/analytics/Chronicle screenshots retained.
+
+Archives/extracted evidence reside outside Git at ../Relics-UI-COLLAPSE-001-{browser,windows-x64}[.zip]. No real journal,backups,private content,logs or build artifacts committed. Final receipt changes Markdown only after tested head;no implementation changes after verification.
+
+## Implemented behavior and manual acceptance
+
+Two independently persisted disclosures,both expanded by default. Strict versioned localStorage holds only inventoryExpanded/rhythmExpanded;invalid/denied/full storage safely defaults or allows session-only operation. Hidden/inert bodies retain components but leave focus/AX;native toggle handles Enter/Space,44px focus,reduced motion and rescues internal focus. Inventory name/count/Add/archive/status remain visible and creating while collapsed works. Date/1/4/8/units-shares/filters/table state survive collapse/navigation;existing uPlot observer plus paused draw/recreate gives real nonblank correct-width charts after hidden resize1920/1280/390/320. Art,central rune,journal,schema4,v1/v2 backup,Chronicle and dependencies unchanged. Test-only Sunday-safe backdate fixture preserves valid complete-week regression checks on hosted UTC Sundays.
+
+[Full contract and Windows steps](UI_COLLAPSE_001.md#native-windows-owner-acceptance--no-build-tools):close old app,download/extract/run new ZIP;try both toggles and collapsed Add/archive/count;verify chosen historical date/chart controls across collapse and Chronicle;resize while chart hidden and inspect reopened lines;leave one section collapsed,close,disconnect network,reopen same build and check persisted expansion. No personal journal changes required for UI acceptance. Only expansion prefs persist after process restart;ordinary date/chart controls retain existing restart defaults. Device UI prefs are excluded from journal backup and unchanged by restore.
+
+Native visual/UI/offline process-restart acceptance remains pending for owner;do not label browser reload as native verification. Storage denial/clear/profile changes can reset expansion to defaults. No progression/rhythm editor/medal/gallery/audio/Android. Do not merge PR #12 automatically. Next single queued task:HABIT-RHYTHM-001,not begun;requires new authorization and relevant proposed-contract decisions.
+
+## Historical preparation and prior receipts — superseded release holds below
+
 # Current task: UI-COLLAPSE-001 — implementation candidate for owner acceptance
 
 Owner authorized PROGRESS-001 [PR #11](https://github.com/Maximus1978/Relics/pull/11) normal merge. Verified reviewed head c43c0974953c458ef28d6f4e6c4fa7d6d22cc368,mergeability and16 Markdown-only files;merge5b7229d58c040c7ebd44d0fe423f92bdc82c57e2 with parents8503670/c43c097 matches master. feature-ui-collapse-001 starts there. PROGRESS-001 passed review only as a proposed mechanics contract;P01–P09 are NOT final owner-approved implementation parameters.
