@@ -6,10 +6,13 @@ import SphereIcon from '../../components/SphereIcon';
 import ContributionChart from './ContributionChart';
 import { chartValue, formatContribution, weekLabel, type ContributionMode } from './contributionPresentation';
 import './rhythm.css';
-export default function LifeRhythm({ activities, today, ready }: {
+import SectionToggle from '../../components/SectionToggle';
+export default function LifeRhythm({ activities, today, ready, expanded, onToggle }: {
     activities: readonly Activity[];
     today: string;
     ready: boolean;
+    expanded: boolean;
+    onToggle: () => void;
 }) {
     const [weeks, setWeeks] = useState(4);
     const daily = weeks === 1;
@@ -26,9 +29,9 @@ export default function LifeRhythm({ activities, today, ready }: {
     const buckets = data ? (daily ? data.daily : data.weeks) : [];
     const filtered = contributionSphereIds.filter(s => visible[s]);
     return <section className="life-rhythm" id="life-rhythm" aria-labelledby="rhythm-title">
-  <details open className="rhythm-expander">
-   <summary><span className="rhythm-emblem" aria-hidden="true">☼</span><div><h2 id="rhythm-title">Жизненный ритм</h2><p>Вклад ваших записей в сферы жизни со временем.</p></div><span className="rhythm-chevron" aria-hidden="true">⌄</span></summary>
-   <div className="rhythm-body">
+  <div className="rhythm-expander">
+   <div className="rhythm-heading"><span className="rhythm-emblem" aria-hidden="true">☼</span><div><h2 id="rhythm-title">Жизненный ритм</h2><p>Вклад ваших записей в сферы жизни со временем.</p></div><SectionToggle id="rhythm-toggle" controls="rhythm-body" label="Жизненный ритм" expanded={expanded} onToggle={onToggle} /></div>
+   <div className="rhythm-body section-content" id="rhythm-body" hidden={!expanded} inert={!expanded}>
     <div className="rhythm-controls"><div role="group" aria-label="Вид вклада"><button type="button" data-mode="units" aria-pressed={mode === 'units'} onClick={() => setMode('units')}>Вклад (единицы)</button><button type="button" data-mode="shares" aria-pressed={mode === 'shares'} onClick={() => setMode('shares')}>Распределение (%)</button></div>
      <label className="rhythm-period"><span className="visually-hidden">Период графика</span><select aria-label="Период графика" value={weeks} onChange={e => setWeeks(Number(e.target.value))}><option value="1">1 неделя (последние 7 дней)</option><option value="4">4 полные недели</option><option value="8">8 полных недель</option></select></label></div>
     {!ready ? <p role="status">Данные журнала пока недоступны. После загрузки появится расчёт.</p> : result.error || !data ? <p role="alert">Не удалось рассчитать вклад: записи содержат несовместимые данные. История не изменена.</p> : <>
@@ -36,7 +39,7 @@ export default function LifeRhythm({ activities, today, ready }: {
      <div className="rhythm-visual">
       <figure className="rhythm-figure" aria-label={mode === 'units' ? (daily ? 'Дневной вклад в субъективных единицах' : 'Недельный вклад в субъективных единицах') : (daily ? 'Дневные доли записанного вклада' : 'Недельные доли записанного вклада')}>
        <figcaption>{mode === 'units' ? 'Единицы вклада' : 'Доля записанных единиц, %'}</figcaption>
-       {!data.period.hasNumericEvidence ? <div className="rhythm-empty">Нет числовых данных за этот период.<p>{data.period.excludedLegacyCount ? 'Старые записи сохранены, но в них ещё не было числового вклада.' : 'Здесь появится вклад записанных активностей.'} Отсутствие записи не означает отсутствие активности.</p></div> : !filtered.length ? <div className="rhythm-empty">Все линии скрыты. Выберите сферы в легенде.</div> : <ContributionChart buckets={buckets} daily={daily} mode={mode} visible={visible}/>}
+       {!data.period.hasNumericEvidence ? <div className="rhythm-empty">Нет числовых данных за этот период.<p>{data.period.excludedLegacyCount ? 'Старые записи сохранены, но в них ещё не было числового вклада.' : 'Здесь появится вклад записанных активностей.'} Отсутствие записи не означает отсутствие активности.</p></div> : !filtered.length ? <div className="rhythm-empty">Все линии скрыты. Выберите сферы в легенде.</div> : <ContributionChart buckets={buckets} daily={daily} mode={mode} visible={visible} active={expanded}/>}
       </figure>
       <fieldset className="rhythm-legend"><legend>{mode === 'units' ? 'За весь период, единицы' : 'За весь период, доли'}</legend>{contributionSphereIds.map((s, i) => <label key={s} data-sphere={s}><input type="checkbox" checked={visible[s]} onChange={e => setVisible({ ...visible, [s]: e.target.checked })}/><SphereIcon sphere={s}/><span>{spheres[s]}</span><span className={'rhythm-line rhythm-line--' + i} aria-hidden="true"/><output>{data.period.hasNumericEvidence ? formatContribution(chartValue(data.period, s, mode), mode) : '—'}</output></label>)}</fieldset>
      </div>
@@ -46,6 +49,6 @@ export default function LifeRhythm({ activities, today, ready }: {
      <details className="rhythm-table"><summary>Числовые данные по {daily ? 'дням' : 'неделям'}</summary><div className="rhythm-table-scroll" tabIndex={0} role="region" aria-label="Таблица вклада, прокручивается по горизонтали"><table><caption>{mode === 'units' ? 'Субъективные единицы' : 'Доли записанного вклада (%), округлены до 0,1 %'} · все пять сфер, включая скрытые линии</caption><thead><tr><th scope="col">{daily ? 'День' : 'Неделя'}</th>{contributionSphereIds.map(s => <th scope="col" key={s}>{spheres[s]}</th>)}<th scope="col">Записи / в расчёте / по умолчанию / без весов</th></tr></thead><tbody>{buckets.map(w => <tr key={w.startDay}><th scope="row">{daily ? w.startDay : weekLabel(w)}</th>{contributionSphereIds.map(s => <td key={s}>{formatContribution(chartValue(w, s, mode), mode)}</td>)}<td>{w.recordedEventCount} / {w.includedEventCount} / {w.defaultOriginCount} / {w.excludedLegacyCount}</td></tr>)}</tbody></table></div></details>
     </>}
    </div>
-  </details>
+  </div>
  </section>;
 }

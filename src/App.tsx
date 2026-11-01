@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { medallionIllumination } from './domain/medallionIllumination';
 import { useLocalDay } from './application/useLocalDay';
 import { useRelicsModel } from './application/useRelicsModel';
+import { useSectionPreferences } from './application/useSectionPreferences';
 import HabitForm from './components/HabitForm';
 import { yesterday } from './ui/dates';
 import SphereInstallation from './ui/sanctuary/SphereInstallation';
@@ -17,6 +18,7 @@ import './ui/sanctuary/shell.css';
 
 export default function App() {
   const model = useRelicsModel();
+  const sections = useSectionPreferences();
   const [view, setView] = useState<'sanctuary'|'chronicle'>('sanctuary');
   const [navigationRevision, setNavigationRevision] = useState(0);
   const focusTarget = useRef('sanctuary-title');
@@ -61,8 +63,8 @@ export default function App() {
           <label>Дата отметки<input type="date" value={model.day} max={today} disabled={model.busy || model.managingHabit} onChange={event => model.setDay(event.target.value)} /></label></div>
       </header>
       <SphereInstallation illumination={illumination} />
-      <RelicInventory model={model} selected={selected} />
-      <LifeRhythm activities={model.activities} today={today} ready={model.canSave} />
+      <RelicInventory model={model} selected={selected} expanded={sections.preferences.inventoryExpanded} onToggle={() => sections.setExpanded('inventoryExpanded', !sections.preferences.inventoryExpanded)} />
+      <LifeRhythm activities={model.activities} today={today} ready={model.canSave} expanded={sections.preferences.rhythmExpanded} onToggle={() => sections.setExpanded('rhythmExpanded', !sections.preferences.rhythmExpanded)} />
       </div>
       {view === 'chronicle' && <Chronicle model={model} />}
     </main>

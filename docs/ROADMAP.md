@@ -4,7 +4,7 @@
 
 DOC-GAME-002 is complete: approved product decisions consolidated, owner-accepted STATE-001 released by regular merge of PR #6 at be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9, with only Markdown changes after the tested implementation. The owner tested STATE-001 on Windows and accepted its functionality/current visual direction, four-state rune, independent daily stones and responsive technical layers. Preserve this implementation; art imperfections are non-blocking. HANDOFF records actual merge/evidence.
 
-One task at a time. Active task: PROGRESS-001 REVISION, documentation-only. Owner accepted NAV-CHRONICLE-001 on Windows; PR #10 merged at 8503670a31b8adc74bac61b6a84826e6772664eb, matching freshly fetched master on 2026-10-30. Earlier NAV review/active statements are superseded. Contributions/trends/Chronicle are accepted and implemented, not queued features. Preserve history, backups, central rune and CI. [Canonical proposal](PROGRESS_001.md) and [Russian owner review](PROGRESS_001_REVIEW_RU.md). Do not implement or auto-merge this task.
+One task at a time. Active task:UI-COLLAPSE-001. Owner authorized PROGRESS-001 PR #11 normal merge after verifying reviewed head c43c097,mergeability and Markdown-only scope;merge5b7229d58c040c7ebd44d0fe423f92bdc82c57e2 verified. P01–P09 remain proposed,not final implementation parameters. This task adds only independent inventory/Life Rhythm disclosures and local preferences,not progression. [Implementation/evidence/manual acceptance](UI_COLLAPSE_001.md). Separate unmerged PR;do not begin HABIT-RHYTHM-001.
 
 Latest owner sequence: PROGRESS-001 → UI-COLLAPSE-001 → HABIT-RHYTHM-001 → HABIT-SIGILS-001 (including HABIT-ICONS-001) → PROGRESS-002A → PROGRESS-002B → ARCHIVE-CLEANUP-001 → AUDIO-001. This supersedes the now-completed WEIGHTS/trends/NAV queue; it is recommended scheduling, not authorization. Android remains deferred until Windows core mechanics validate and owner schedules it.
 
@@ -118,8 +118,8 @@ Keep Sanctuary, Clockwork, Wasteland and Verdant and versioned declarative packs
 
 | Order | Task | Scope and dependency |
 | --- | --- | --- |
-| 1 | PROGRESS-001 | Current documentation-only owner review; proposals P01–P09 must be decided explicitly before affected code |
-| 2 | UI-COLLAPSE-001 | Independent inventory/analytics collapse, device-local preferences, visible essential actions, accessibility, chart/date/filter state retained; no SQLite just for preferences |
+| 1 completed proposal review | PROGRESS-001 | PR #11 merged5b7229d after authorized review;P01–P09 still proposed and must be explicitly decided before affected mechanics code |
+| 2 active implementation candidate | UI-COLLAPSE-001 | Independent persistent toggles,strict safe device preferences,visible inventory actions/count,hidden/inert bodies,retained date/chart state and resize. Local79 Node/354 browser/22 native plusTS/Vite PASS;Windows CI/EXE and owner native restart acceptance pending. [Contract](UI_COLLAPSE_001.md) |
 | 3 | HABIT-RHYTHM-001 | Approved frequency/effective dates and known archive intervals; atomic save; additive migration and strict older-backup import/export/recovery gates before editor release |
 | 4 | HABIT-SIGILS-001 / HABIT-ICONS-001 | Owner visual gate on canonical registered medals/manual glyphs; small identity/persistence/backup/card increments, no invented live progression |
 | 5 | PROGRESS-002A | Pure deterministic frequency-aware Mastery/Forging/Resonance and deterministic correction replay from authoritative inputs, no ordinary receipt ledger; synthetic tests, no persistence/UI changes |

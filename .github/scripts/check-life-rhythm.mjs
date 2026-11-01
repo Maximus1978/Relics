@@ -48,7 +48,7 @@ export async function checkLifeRhythm({send,evaluate,until,click,viewport,output
  await until('document.querySelector(".rhythm-plot")?.dataset.visibleSeries==="Разум"','Space restores a single series');
  await load('mixed');
  const initial=await read();const date=await evaluate('document.querySelector(".rhythm-table tbody tr").lastElementChild?.textContent && document.querySelector("input[type=date]").max');
- await evaluate('(()=>{const input=document.querySelector("input[type=date]");const d=new Date(input.max+"T12:00:00");d.setDate(d.getDate()-d.getDay()-2);const day=[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value").set.call(input,day);input.dispatchEvent(new Event("input",{bubbles:true}));input.dispatchEvent(new Event("change",{bubbles:true}));})()');
+ await evaluate('(()=>{const input=document.querySelector("input[type=date]");const d=new Date(input.max+"T12:00:00");d.setDate(d.getDate()-((d.getDay()+6)%7)-3);const day=[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value").set.call(input,day);input.dispatchEvent(new Event("input",{bubbles:true}));input.dispatchEvent(new Event("change",{bubbles:true}));})()');
  assert.equal(await read(),initial,'Selected logging date does not reanchor analytics');
  await click('[data-habit-id=demo-guitar] .completion-button');
  await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled','Backdated journal logging remains one click');
@@ -87,6 +87,7 @@ export async function checkLifeRhythm({send,evaluate,until,click,viewport,output
  await evaluate('document.querySelector(".rhythm-period select").focus()');
  for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'ArrowDown',code:'ArrowDown',windowsVirtualKeyCode:40});
  await until('document.querySelector(".rhythm-period select").value==="4"&&document.querySelectorAll(".rhythm-table tbody tr").length===4&&Number(document.querySelector(".rhythm-quality strong").textContent)===0','Returning to four complete weeks retains its original bounds');
- await click('.rhythm-expander>summary');await until('!document.querySelector(".rhythm-expander").open','Panel can collapse without changing the Chronicle');
+ await click('#rhythm-toggle');await until('document.querySelector("#rhythm-body").hidden','Panel can collapse without changing the Chronicle');
+ await click('#rhythm-toggle');await until('!document.querySelector("#rhythm-body").hidden','Original analytics preference restored for unrelated checks');
  await send('Page.navigate',{url:'http://127.0.0.1:1420'});await until('document.querySelectorAll(".relic-item").length===6','Original preview restored after analytics verification');
 }

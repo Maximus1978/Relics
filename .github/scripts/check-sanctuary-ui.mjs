@@ -1,3 +1,4 @@
+import { checkSectionCollapse } from './check-section-collapse.mjs';
 import { checkChronicleSqlite } from './check-chronicle-sqlite.mjs';
 import { checkChronicleNavigation } from './check-chronicle-navigation.mjs';
 import { checkLifeRhythm } from './check-life-rhythm.mjs';
@@ -78,6 +79,9 @@ try {
   await viewport(1440, 900);
   await send('Page.navigate', { url: 'http://127.0.0.1:1420' });
   await until('document.querySelectorAll(".relic-item").length === 6', 'Six explicitly synthetic preview habits render');
+  // This isolated automation profile contains synthetic data only; reset this task's UI preference key once.
+  await evaluate('localStorage.removeItem("relics.ui.sections.v1")');await send('Page.reload');
+  await until('!!document.querySelector("#inventory-toggle")&&document.querySelector("#inventory-toggle").getAttribute("aria-expanded")=="true"&&document.querySelector("#rhythm-toggle").getAttribute("aria-expanded")=="true"','Fresh test profile starts with both sections expanded');
   await until('[...document.images].every(image => image.complete && image.naturalWidth > 0)', 'Local decorative artwork loads successfully');
   await until('document.querySelectorAll(".sanctuary-scene").length === 1 && document.querySelector(".sanctuary-scene").naturalWidth >= 1500 && new URL(document.querySelector(".sanctuary-scene").src).origin === location.origin', 'One high-resolution environment is bundled locally');
   await until('document.querySelector(".preview-notice").textContent.includes("не сохраняются")', 'Preview storage limitation is visible');
@@ -208,6 +212,7 @@ try {
   await checkLifeRhythm({send,evaluate,until,click,viewport,screenshot,output});
   await checkContributionEditor({send,evaluate,until,click,viewport,screenshot});
   await checkSanctuaryStates({ output, send, evaluate, until, click, viewport, screenshot });
+  await checkSectionCollapse({send,evaluate,until,click,viewport,output});
   assert.deepEqual(runtimeErrors, []);
   await writeFile(join(output, 'result.json'), JSON.stringify({ browserRendering: 'passed', interactionChecks: checks, runtimeErrors, nativeUiRuntimeVerified: false, storage: 'Synthetic in-memory demonstration; resets on reload' }, null, 2));
   console.log(`Sanctuary browser verification passed: ${checks.length} checks. Native runtime remains unverified.`);

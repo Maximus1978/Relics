@@ -6,15 +6,18 @@ import SphereIcon from '../../components/SphereIcon';
 import RelicArt from './RelicArt';
 import ShellIcon from './ShellIcon';
 import './inventory.css';
+import SectionToggle from '../../components/SectionToggle';
 
-export default function RelicInventory({ model, selected }: { model: RelicsModel; selected: SelectedDayActivity }) {
+export default function RelicInventory({ model, selected, expanded, onToggle }: { model: RelicsModel; selected: SelectedDayActivity; expanded: boolean; onToggle: () => void }) {
+  const activeCount = model.habits.filter(habit => habit.archivedAt === null).length;
   return <section className="relic-inventory" aria-labelledby="habits-title" id="inventory">
-    <div className="inventory-heading"><div><h2 id="habits-title" tabIndex={-1}>{model.showArchived ? 'Архив реликвий' : 'Ваши реликвии'}</h2>
-      <p>{model.showArchived ? 'История остаётся с вами. Привычку можно восстановить.' : 'Привычки, которым вы уделяете внимание.'}</p></div>
+    <div className="inventory-heading"><div className="inventory-heading__title"><SectionToggle id="inventory-toggle" controls="inventory-body" label={model.showArchived ? 'Архив реликвий' : 'Ваши реликвии'} expanded={expanded} onToggle={onToggle} /><div><h2 id="habits-title" tabIndex={-1}>{model.showArchived ? 'Архив реликвий' : 'Ваши реликвии'}</h2>
+      <p>{expanded ? model.showArchived ? 'История остаётся с вами. Привычку можно восстановить.' : 'Привычки, которым вы уделяете внимание.' : model.canSave ? 'Активных привычек: ' + activeCount : 'Данные привычек загружаются…'}</p></div></div>
       <div className="inventory-heading__actions"><button className="button-quiet" ref={model.archiveToggle} onClick={model.toggleArchive} disabled={model.busy || model.managingHabit}>
         {model.showArchived ? 'Активные' : 'Архив привычек'}</button>
         <button className="button-primary" ref={model.addHabitButton} onClick={model.beginCreate} disabled={!model.canSave || model.busy || model.managingHabit} aria-haspopup="dialog"><ShellIcon kind="plus" />Добавить привычку</button></div>
     </div>
+    <div className="section-content" id="inventory-body" hidden={!expanded} inert={!expanded}>
     {!model.visibleHabits.length && <p className="inventory-empty">{model.showArchived ? 'В архиве пока нет привычек.' : 'Добавьте привычку, когда будет удобно.'}</p>}
     <ul className="relic-grid" id="habit-list">{model.visibleHabits.map(habit => {
       const done = selected.completedHabitIds.has(habit.id);
@@ -29,6 +32,7 @@ export default function RelicInventory({ model, selected }: { model: RelicsModel
           : <button className="restore-button" disabled={model.busy || model.managingHabit} onClick={() => model.restoreHabit(habit)}>Восстановить</button>}
       </li>;
     })}</ul>
+    </div>
     <p className="save-status" role="status" aria-live="polite">{model.busy ? 'Сохраняем…' : model.message}</p>
     {model.error && !model.formOpen && <p role="alert">{model.error}</p>}
   </section>;

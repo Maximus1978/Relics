@@ -1,3 +1,21 @@
+# Current task: UI-COLLAPSE-001 — implementation candidate for owner acceptance
+
+Owner authorized PROGRESS-001 [PR #11](https://github.com/Maximus1978/Relics/pull/11) normal merge. Verified reviewed head c43c0974953c458ef28d6f4e6c4fa7d6d22cc368,mergeability and16 Markdown-only files;merge5b7229d58c040c7ebd44d0fe423f92bdc82c57e2 with parents8503670/c43c097 matches master. feature-ui-collapse-001 starts there. PROGRESS-001 passed review only as a proposed mechanics contract;P01–P09 are NOT final owner-approved implementation parameters.
+
+## Delivered scope and local evidence
+
+Two independent accessible inventory/Life Rhythm toggles;versioned device-local storage contains only two booleans(default expanded),safe strict corrupt/denied/quota fallback. Hidden/inert content retains component state but cannot receive focus;toggle rescues internal focus. Inventory header/count/Add/archive/feedback always remain accessible. Existing date/1/4/8 mode/series/table choices retained across collapse/navigation;uPlot draw resources pause and recreate/resize on expansion. No renamed section,progression,SQLite/backup change,new dependency or art replacement. [Full contract,test map and Windows acceptance](UI_COLLAPSE_001.md).
+
+Local PASS:79 Node/temporary-SQLite tests,TypeScript/Vite,354 actual Edge browser checks with runtimeErrors=[],22 real Rust native backup safety tests (one standalone crash helper intentionally ignored and executed by its passing parent). Existing rune geometry/states,habit management,backdates,Chronicle,SQLite/mock-IPC restore and real native backup suites retained. Synthetic databases/browser profile only;owner journal never opened. Existing backdate test fixture now uses Sunday-safe previous-complete-week Friday,not changed runtime calendar logic.
+
+Actual five screenshots inspected:collapse-both-expanded.png,collapse-inventory.png,collapse-rhythm.png,collapse-both.png,collapse-narrow-windows.png. Existing Sanctuary art/rune/shrines unchanged;no clipping/overflow,real chart pixels checked after hidden resize1920/1280/390/320. section-collapse-proof.json explicitly distinguishes browser reload/offline navigation from native offline process restart,which remains owner acceptance. Only section expansion persists across app restart;date/analytics controls keep existing restart defaults. Device preferences are excluded from journal backup and do not change on restore.
+
+Windows hosted CI/EXE pending at initial publication. Separate focused implementation PR remains OPEN/UNMERGED;final exact head/run/ZIP/digests go above historical receipts after success. Unsigned Windows x64/WebView2 limitation remains. Native UI/offline-restart acceptance is not inferred from frontend/browser or native compilation. No owner-data testing.
+
+Next single queued task:HABIT-RHYTHM-001,only after owner acceptance/new authorization and resolution of its proposed-contract dependencies. Not begun. Do not merge this implementation PR or continue automatically.
+
+## Historical previous deliveries — active-task/merge holds superseded above
+
 # Current task: PROGRESS-001 REVIEW CORRECTIONS — documentation review
 
 Updated2026-10-31 on the SAME [PR #11](https://github.com/Maximus1978/Relics/pull/11),docs-progress-001. Verified prior head dab611ff1e7fa483a3f922790f0fc64ee26651c4,PR OPEN/UNMERGED,current master8503670a31b8adc74bac61b6a84826e6772664eb. No merge or implementation authorized. The receipt below explicitly supersedes the original strict7/7,correction-retention receipt ledger and immediate-fade proposals; other accepted principles remain intact.
