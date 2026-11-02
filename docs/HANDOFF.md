@@ -1,3 +1,19 @@
+# Transfer handoff — owner-authorized PR13 release, then STOP
+
+Owner update2026-11-01:functional HABIT-RHYTHM-001 acceptance on Windows CONFIRMED by the supplied next-task brief. A separate native offline process restart is NOT confirmed. Earlier pending-functional-acceptance/no-merge holds below are historical and superseded by the owner's explicit instruction to merge PR #13 normally into master.
+
+Pre-merge checks:reviewed head2314cbf08692e3073baf029e90ac2618bd641b1d matches,PR13 mergeable,base master de1b2f9e954a6a74071a817f6ef81cdf22226276 unchanged. Windows run41262296440 SUCCESS corresponds to implementation4969d7afe193fc924c616554295a8c250b0e5378;only four Markdown files changed afterward. This transfer update adds only documentation and a reference-only board under docs/,no runtime/tests/dependencies/schema/backup/artwork imports. Verify final PR head and resulting merge commit before ending. The canonical merge receipt is [PR #13](https://github.com/Maximus1978/Relics/pull/13);do not infer a merge from this preparation note.
+
+The owner requested STOP after the merge to change computers. HABIT-SIGILS-001A is queued,NOT started;no feature branch/component/art generation or showcase work in this release. [Full portable owner brief and mandatory iconId addendum](HABIT_SIGILS_001A_TASK.md),[reference PNG](art/references/HABIT_SIGILS_001A_OWNER_REFERENCE.png). Empty reusable center slot and live independently replaceable SVG icon in001A are mandatory;actual Create/Edit picker,persistence,neutral legacy default andbackupv4 belong to001B. 001C production-card integration,PROGRESS-002A/B and all other approved backlog remain later.
+
+## Resume on the second computer
+1. Clone or fast-forward the repository's master and confirm PR13 merged. No local-only source or required reference is needed from this computer.
+2. Read AGENTS.md,docs/HANDOFF.md,docs/ROADMAP.md,docs/HABIT_SIGILS_001A_TASK.md,docs/PROGRESS_001.md anddocs/art/HABIT_MEDALS.md.
+3. Use the checked-in reference board;keep the icon separate from every medal. Treat all18/showcase progression/light values as synthetic. Preserve schema5,backupv3,rhythm/history/rune/Chronicle/analytics/production inventory.
+4. Wait for the owner's instruction to resume001A,then create its focused branch from latest master. Do not merge001A automatically or start001B/001C/progression.
+
+## Historical HABIT-RHYTHM-001 delivery and verified evidence
+
 # Current delivery: HABIT-RHYTHM-001 — ready for owner acceptance, PR unmerged
 
 [PR #13](https://github.com/Maximus1978/Relics/pull/13),feature-habit-rhythm-001,OPEN/UNMERGED. Prerequisite PR #12 reviewed head1250d9f55041adc2f5e5ea39c310e9f1c30087c1 matched;mergeability,successful Windows run41255208180,and only five Markdown changes since tested4f0d26bf verified. Normal merge de1b2f9e954a6a74071a817f6ef81cdf22226276 verified on master. UI-COLLAPSE-001 owner-accepted functionally;native offline restart separately UNCONFIRMED. Deferred UX backlog awaits owner details,not invented.

@@ -1,3 +1,6 @@
+# Current owner instruction — release and transfer2026-11-01
+Functionally accepted HABIT-RHYTHM-001 PR13 is authorized for normal merge after reviewed-head/CI/documentation-delta checks. Separate native offline restart remains unconfirmed. After merge verification STOP for transfer to another computer. This supersedes historical no-merge instructions below. No HABIT-SIGILS implementation/branch yet. Before resuming read docs/HABIT_SIGILS_001A_TASK.md and its checked-in reference:001A MUST have an empty registered center and independently replaceable SVG through iconId;actual Create/Edit picker,iconId migration,neutral legacy default andbackupv4 are001B. Preserve all runtime/data/backup/art invariants.
+
 # Relics agent instructions
 
 Read README.md, docs/PRODUCT_VISION.md, docs/ROADMAP.md, docs/DECISIONS.md, and docs/HANDOFF.md before changes. Read the relevant design document for the active task. The canonical specification is under docs/; do not recreate competing root copies.
