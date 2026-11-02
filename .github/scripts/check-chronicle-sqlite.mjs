@@ -1,3 +1,4 @@
+import {createHabitMutationDriver} from './habit-sql-test-driver.mjs';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync,mkdtempSync,rmSync} from 'node:fs';
@@ -11,7 +12,7 @@ import {join,resolve,dirname,basename} from 'node:path';
 export async function checkChronicleSqlite({send,evaluate,until,click,viewport,bindIpc,output}) {
  const parent=resolve(tmpdir()),directory=mkdtempSync(join(parent,'relics-nav-ui-'));
  const db=new DatabaseSync(join(directory,'synthetic.db'));db.exec('PRAGMA foreign_keys=ON');
- for(const file of ['001_initial.sql','002_archive_habits.sql','003_seed_once.sql','004_habit_contributions.sql'])db.exec(readFileSync(new URL('../../src-tauri/migrations/'+file,import.meta.url),'utf8'));
+ for(const file of ['001_initial.sql','002_archive_habits.sql','003_seed_once.sql','004_habit_contributions.sql','005_habit_rhythm.sql'])db.exec(readFileSync(new URL('../../src-tauri/migrations/'+file,import.meta.url),'utf8'));
  const today=await evaluate('document.querySelector("input[type=date]").max');
  const recentDay=offset=>{const date=new Date(today+'T12:00:00Z');date.setUTCDate(date.getUTCDate()+offset);return date.toISOString().slice(0,10);};
  const profile=(values,origin='user')=>JSON.stringify({version:1,origin,values:{body:0,mind:0,relationships:0,work:0,recovery:0,...values}});
@@ -20,9 +21,11 @@ export async function checkChronicleSqlite({send,evaluate,until,click,viewport,b
  insert.run('bridge-27','walk','Старая прогулка','["body","recovery"]',recentDay(-3),'2026-10-29T12:00:00Z','Synthetic',null);
  insert.run('bridge-current','walk','Прогулка сегодня','["body","recovery"]',today,today+'T12:00:00Z','Synthetic',profile({body:5,recovery:5},'legacy-default'));
  db.prepare('UPDATE habits SET name=?,spheres_json=?,contribution_profile_json=?,archived_at=? WHERE id=?').run('Нынешнее имя','["body"]',profile({body:5}),'2026-10-29T12:00:00Z','read');
+ db.prepare("INSERT INTO habit_archive_pauses VALUES('legacy-read','read',NULL,NULL,'archive','legacy_unknown')").run();
+ const mutateHabit=createHabitMutationDriver(db,()=>today);
  let loads=0,failDelete=false,failLoad=false,failRefresh=false,restored=false,restores=0;
  let releaseLoad;const opening=new Promise(resolve=>releaseLoad=resolve);
- const summary={exportedAt:today+'T12:00:00Z',habits:1,archivedHabits:0,activities:1,formatVersion:2,databaseSchemaVersion:4,targetSchemaVersion:4,userEntries:1,defaultEntries:0,legacyEntries:0};
+ const summary={exportedAt:today+'T12:00:00Z',habits:1,archivedHabits:0,activities:1,formatVersion:3,databaseSchemaVersion:5,targetSchemaVersion:5,frequencySegments:0,configuredHabits:0,archivePauses:0,userEntries:1,defaultEntries:0,legacyEntries:0};
  const bind=(q,values=[])=>Object.fromEntries([...new Set(q.match(/\$\d+/g)??[])].map((name,i)=>[name,values[i]]));
  const commands=[];
  await bindIpc(async(cmd,args={})=>{
@@ -30,12 +33,13 @@ export async function checkChronicleSqlite({send,evaluate,until,click,viewport,b
   if(cmd==='plugin:sql|load'){loads++;await opening;if(failLoad)throw Error('Synthetic unavailable database');assert.equal(args.db,'sqlite:relics.db');return args.db;}
   if(cmd==='plugin:sql|select'){assert.equal(args.db,'sqlite:relics.db');if(restored&&failRefresh)throw Error('Synthetic refresh failure');return db.prepare(args.query).all(bind(args.query,args.values));}
   if(cmd==='plugin:sql|execute'){assert.equal(args.db,'sqlite:relics.db');if(failDelete&&args.query.startsWith('DELETE'))throw Error('Synthetic delete failure');const result=db.prepare(args.query).run(bind(args.query,args.values));return [Number(result.changes),Number(result.lastInsertRowid)];}
+  if(cmd==='mutate_habit')return mutateHabit(args.input);
   if(cmd==='cancel_backup')return null;
   if(cmd==='preview_backup')return {token:'synthetic-preview-token',summary};
   if(cmd==='restore_backup'){
    assert.equal(args.token,'synthetic-preview-token');restores++;
-   db.exec('BEGIN');try {db.exec('DELETE FROM activities; DELETE FROM habits');db.prepare('INSERT INTO habits(id,name,spheres_json,contribution_profile_json) VALUES(?,?,?,?)').run('restored','Текущее имя после импорта','["work"]',profile({work:7}));insert.run('restored-event','restored','Дело после восстановления','["work"]',today,today+'T12:00:00Z','Synthetic',profile({work:7}));db.exec('COMMIT');}catch(e){db.exec('ROLLBACK');throw e;}
-   restored=true;return {summary,safetyFile:'synthetic-recovery-v2.json'};
+   db.exec('BEGIN');try {db.exec('DELETE FROM habit_frequency_segments; DELETE FROM habit_archive_pauses; DELETE FROM activities; DELETE FROM habits');db.prepare('INSERT INTO habits(id,name,spheres_json,contribution_profile_json) VALUES(?,?,?,?)').run('restored','Текущее имя после импорта','["work"]',profile({work:7}));insert.run('restored-event','restored','Дело после восстановления','["work"]',today,today+'T12:00:00Z','Synthetic',profile({work:7}));db.exec('COMMIT');}catch(e){db.exec('ROLLBACK');throw e;}
+   restored=true;return {summary,safetyFile:'synthetic-recovery-v3.json'};
   }
   throw Error('Unexpected test IPC '+cmd);
  });

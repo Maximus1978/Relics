@@ -1,5 +1,11 @@
 # Data model
 
+## HABIT-RHYTHM-001 — implemented schema5 candidate
+See [canonical operational contract and test map](HABIT_RHYTHM_001.md). Additive005 creates habit_frequency_segments(id,habit_id,frequency,effective_on,created_on,version) and habit_archive_pauses(id,habit_id,start_on,end_exclusive_on,reason,provenance);001–004 unchanged. Current Habit reads include both histories;activity snapshots/IDs/dates/daily uniqueness unchanged. Native main-window semantic command performs one pinned FK-enabled BEGIN IMMEDIATE transaction for definition/rhythm/archive writes using one shared bound SQL plan. Empty history means legacy unconfigured,first explicit enrollment actual local today,later change next Monday,pending replace/cancel,applied segments retained.
+
+Legacy archived start is NULL with legacy_unknown provenance;restoration writes only actual local exclusive end. Never infer start from archived_at/upgrade date. Unknown interval neutral for future progression,no credit or inactivity penalty. Known zero-day pauses are removed. Backupv3/schema5 includes both required arrays;strictv1/v2 adapters leave rhythms empty and preserve old snapshots. Full replacement/protective copy/rollback include children. No progression storage or engine. Earlier schema4-only/proposed005 descriptions below are historical and superseded only for this bounded persistence candidate;native acceptance pending.
+
+
 ## Implemented TypeScript contract
 
 `src/domain/activity.ts` currently defines `SphereId`, `Habit`, and `Activity`. `Habit` has `id`, `name`, `spheres`, nullable `archivedAt` and required `contributionProfile` (version 1/origin/all-five independent values). `Activity` has `id`, `habitId`, snapshot `habitName`/`spheres`, `occurredOn`, `recordedAt`, `timezone` and required nullable `contributionSnapshot`. Legacy history is null, not zero. These are scaffold types, not the complete target domain.

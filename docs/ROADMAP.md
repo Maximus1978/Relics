@@ -4,9 +4,16 @@
 
 DOC-GAME-002 is complete: approved product decisions consolidated, owner-accepted STATE-001 released by regular merge of PR #6 at be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9, with only Markdown changes after the tested implementation. The owner tested STATE-001 on Windows and accepted its functionality/current visual direction, four-state rune, independent daily stones and responsive technical layers. Preserve this implementation; art imperfections are non-blocking. HANDOFF records actual merge/evidence.
 
-One task at a time. Active task:UI-COLLAPSE-001. Owner authorized PROGRESS-001 PR #11 normal merge after verifying reviewed head c43c097,mergeability and Markdown-only scope;merge5b7229d58c040c7ebd44d0fe423f92bdc82c57e2 verified. P01–P09 remain proposed,not final implementation parameters. This task adds only independent inventory/Life Rhythm disclosures and local preferences,not progression. [Implementation/evidence/manual acceptance](UI_COLLAPSE_001.md). Separate unmerged PR;do not begin HABIT-RHYTHM-001.
+One task at a time. Current action:owner-authorized normal release of HABIT-RHYTHM-001 PR #13,then STOP for transfer to a second computer. Owner functional Windows acceptance confirmed;separate native offline restart unconfirmed. Verified runtime4969d7a/Windows run41262296440 SUCCESS(89 Node,30 native,385 browser,TypeScript/Vite,native EXE);later reviewed2314cbf contains only Markdown receipt changes. HANDOFF records transfer/release checks.
 
-Latest owner sequence: PROGRESS-001 → UI-COLLAPSE-001 → HABIT-RHYTHM-001 → HABIT-SIGILS-001 (including HABIT-ICONS-001) → PROGRESS-002A → PROGRESS-002B → ARCHIVE-CLEANUP-001 → AUDIO-001. This supersedes the now-completed WEIGHTS/trends/NAV queue; it is recommended scheduling, not authorization. Android remains deferred until Windows core mechanics validate and owner schedules it.
+Next queued task:[HABIT-SIGILS-001A full brief/addendum/reference](HABIT_SIGILS_001A_TASK.md),NOT started. No new implementation branch before the owner resumes. Staged split:
+- 001A:isolated18-state visual system(six materials × three stages),registered EMPTY center and live independently replaceable SVG through iconId,material icon treatment,rendered evidence and owner design review;no production-card replacement.
+- 001B:manual icon picker in Create AND Edit,iconId persistence,neutral legacy default,additive migration andbackupv4 compatibility.
+- 001C:compact production habit cards,green completion check,full-card interaction,separate management menu,accessible cancellation.
+- PROGRESS-002A:actual deterministic Mastery/Forging/Resonance engine only after numerical approval.
+- PROGRESS-002B:connect real values to material/stage/Forging indicator/temporary illumination.
+
+This refines HABIT-SIGILS-001(including HABIT-ICONS-001),without removing approved tasks. Remaining sequence:ARCHIVE-CLEANUP-001→AUDIO-001;Android remains deferred until Windows core-mechanics validation and owner scheduling. All P01–P09 gameplay candidates remain proposed except the bounded frequency behavior separately accepted. No automatic continuation.
 
 ## Accepted foundation
 

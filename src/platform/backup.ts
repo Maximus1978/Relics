@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/core';
 
-export type BackupSummary = { exportedAt: string; habits: number; archivedHabits: number; activities: number; formatVersion: number; databaseSchemaVersion: number; targetSchemaVersion:number; userEntries:number; defaultEntries:number; legacyEntries:number };
+export type BackupSummary = { exportedAt: string; habits: number; archivedHabits: number; activities: number; formatVersion: number; databaseSchemaVersion: number; targetSchemaVersion:number; userEntries:number; defaultEntries:number; legacyEntries:number; frequencySegments:number; configuredHabits:number; archivePauses:number };
 export type BackupPreview = { token: string; summary: BackupSummary };
 export type BackupReceipt = { summary: BackupSummary; safetyFile: string };
 

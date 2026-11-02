@@ -40,7 +40,7 @@ export async function checkContributionEditor({send,evaluate,until,click,viewpor
  await viewport(390,844);assert.ok(await evaluate('document.querySelector(".world-dialog").scrollWidth<=innerWidth'));
  await screenshot('weights-create-two-narrow.png');
  await evaluate('document.querySelector(".creation-form .form-actions").scrollIntoView({block:"end"})');
- assert.ok(await evaluate('document.querySelector(".creation-form .form-actions").getBoundingClientRect().bottom<=innerHeight'));
+ await until('document.querySelector(".creation-form .form-actions").getBoundingClientRect().bottom<=innerHeight+1','Narrow form scroll settles with both Save and Cancel visible');
  await screenshot('weights-create-actions-narrow.png');
  await viewport(1440,1000);await evaluate('document.querySelector(".world-dialog").scrollTop=0');
  for(const s of ids){if(!await evaluate(`document.querySelector(${JSON.stringify(checkbox(s))}).checked`))await click(checkbox(s));await value(s,'10');}
@@ -53,7 +53,7 @@ export async function checkContributionEditor({send,evaluate,until,click,viewpor
  await click(checkbox('recovery'));await until('document.querySelector("#contribution-number-recovery").disabled&&document.querySelector("#contribution-number-recovery").value==="0"','Unselected sphere has zero and disabled editor');
  await click(checkbox('recovery'));await until('document.querySelector("#contribution-number-recovery").value==="5"','Reselect resets contribution to5');
  for(const s of ['body','relationships','work'])await click(checkbox(s));
- await value('mind','7');await value('recovery','3');await click('.creation-form button[type=submit]');
+ await value('mind','7');await value('recovery','3');await evaluate('document.querySelector("#habit-frequency").value="daily";document.querySelector("#habit-frequency").dispatchEvent(new Event("change",{bubbles:true}))');await click('.creation-form button[type=submit]');
  await until('!document.querySelector(".creation-form")&&[...document.querySelectorAll(".relic-item h4")].some(h=>h.textContent==="Вклад — проверка")','Valid contribution habit saves without an extra logging step');
  const card=await evaluate('[...document.querySelectorAll(".relic-item")].find(c=>c.querySelector("h4").textContent==="Вклад — проверка").dataset.habitId');
  async function edit(){await click(`[data-habit-id="${card}"] .habit-actions summary`);await click(`[data-habit-id="${card}"] .habit-action-options button:first-child`);await until('document.querySelector("#habit-name")?.value==="Вклад — проверка"','Edit opens saved contribution profile');}

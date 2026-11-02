@@ -1,3 +1,55 @@
+# Transfer handoff — owner-authorized PR13 release, then STOP
+
+Owner update2026-11-01:functional HABIT-RHYTHM-001 acceptance on Windows CONFIRMED by the supplied next-task brief. A separate native offline process restart is NOT confirmed. Earlier pending-functional-acceptance/no-merge holds below are historical and superseded by the owner's explicit instruction to merge PR #13 normally into master.
+
+Pre-merge checks:reviewed head2314cbf08692e3073baf029e90ac2618bd641b1d matches,PR13 mergeable,base master de1b2f9e954a6a74071a817f6ef81cdf22226276 unchanged. Windows run41262296440 SUCCESS corresponds to implementation4969d7afe193fc924c616554295a8c250b0e5378;only four Markdown files changed afterward. This transfer update adds only documentation and a reference-only board under docs/,no runtime/tests/dependencies/schema/backup/artwork imports. Verify final PR head and resulting merge commit before ending. The canonical merge receipt is [PR #13](https://github.com/Maximus1978/Relics/pull/13);do not infer a merge from this preparation note.
+
+The owner requested STOP after the merge to change computers. HABIT-SIGILS-001A is queued,NOT started;no feature branch/component/art generation or showcase work in this release. [Full portable owner brief and mandatory iconId addendum](HABIT_SIGILS_001A_TASK.md),[reference PNG](art/references/HABIT_SIGILS_001A_OWNER_REFERENCE.png). Empty reusable center slot and live independently replaceable SVG icon in001A are mandatory;actual Create/Edit picker,persistence,neutral legacy default andbackupv4 belong to001B. 001C production-card integration,PROGRESS-002A/B and all other approved backlog remain later.
+
+## Resume on the second computer
+1. Clone or fast-forward the repository's master and confirm PR13 merged. No local-only source or required reference is needed from this computer.
+2. Read AGENTS.md,docs/HANDOFF.md,docs/ROADMAP.md,docs/HABIT_SIGILS_001A_TASK.md,docs/PROGRESS_001.md anddocs/art/HABIT_MEDALS.md.
+3. Use the checked-in reference board;keep the icon separate from every medal. Treat all18/showcase progression/light values as synthetic. Preserve schema5,backupv3,rhythm/history/rune/Chronicle/analytics/production inventory.
+4. Wait for the owner's instruction to resume001A,then create its focused branch from latest master. Do not merge001A automatically or start001B/001C/progression.
+
+## Historical HABIT-RHYTHM-001 delivery and verified evidence
+
+# Current delivery: HABIT-RHYTHM-001 — ready for owner acceptance, PR unmerged
+
+[PR #13](https://github.com/Maximus1978/Relics/pull/13),feature-habit-rhythm-001,OPEN/UNMERGED. Prerequisite PR #12 reviewed head1250d9f55041adc2f5e5ea39c310e9f1c30087c1 matched;mergeability,successful Windows run41255208180,and only five Markdown changes since tested4f0d26bf verified. Normal merge de1b2f9e954a6a74071a817f6ef81cdf22226276 verified on master. UI-COLLAPSE-001 owner-accepted functionally;native offline restart separately UNCONFIRMED. Deferred UX backlog awaits owner details,not invented.
+
+## Tested source and successful Windows CI
+
+Exact tested implementation/scripts/tests head:4969d7afe193fc924c616554295a8c250b0e5378. Synthetic PR merge source:98159d367bae48488fc05e6ead5690cea0b4f3bc. [Windows run41262296440](https://github.com/Maximus1978/Relics/actions/runs/41262296440) completed SUCCESS,job124717852206. Decoded hosted logs confirm locked npm ci,89 Node/temporary-SQLite tests(0 failures),TypeScript,Vite,385 actual Edge checks(runtimeErrors=[]),real Tauri Windows release EXE and30 native Rust safety/rhythm tests(0 failures;one standalone crash helper intentionally ignored but executed under its passing parent). Hosted Node22.23.4/Rust1.99.1. Equivalent local checks passed. Gate A migration/recovery tests passed BEFORE frequency UI integration;no partial persistence release. Final receipt commit changes Markdown only after the tested source.
+
+## Downloaded artifacts and verified hashes
+
+[Windows x64 ZIP](https://github.com/Maximus1978/Relics/actions/runs/41262296440/artifacts/13065204614):11,996,275 bytes,SHA256 a1b3a4feb4166808072cfa1aa1d98f9c51c195fa6df116b2c00ea0ba0e1c59c0 matched GitHub. EXE20,925,440 bytes,SHA256 e86a6a64cefe238ccc9dcd6b61a60c418f06131b52d3ec69f42bd235447d6b7e matched included executable-sha256.json. Downloaded build-info verifies tested head/source above,Windows,Node/Rust versions,signed=false,nativeUiRuntimeVerified=false. Unsigned x64:extract ZIP and run relics.exe with WebView2,no build tools. Expires2026-11-15 UTC.
+
+[Browser screenshots/proof ZIP](https://github.com/Maximus1978/Relics/actions/runs/41262296440/artifacts/13065009240):78,838,513 bytes,SHA256 88dc35437cd6efca092d948be92e5d95ea0aa4d13386c26aaf7529fa6fca4eea matched GitHub. result.json confirms385 checks/zero runtime errors. habit-rhythm-proof.json confirms real synthetic temporary SQLite through mocked native IPC,three frequencies,current/pending/date,stable pending replacement,cancel draft/save,reopen,backdated snapshots,narrow layout and accessibility;ownerJournalTouched=false,nativeUiRuntimeVerified=false. Actual captures:habit-rhythm-create-daily.png,habit-rhythm-create-three_per_week.png,habit-rhythm-create-weekly.png,habit-rhythm-legacy.png,habit-rhythm-edit-pending.png,habit-rhythm-edit-narrow.png. Local/hosted captures inspected;existing Sanctuary artwork and medallion retained.
+
+Archives/extracted evidence saved outside Git at ../Relics-HABIT-RHYTHM-001-{browser,windows-x64}[.zip]. No private content,personal journals/databases,logs or build artifacts committed. Git tree matched connector publication. Migrations001–004,app/DB identity,dependencies/locks and artwork unchanged.
+
+## Implemented behavior and compatibility evidence
+
+Three intent frequencies,daily/three_per_week/weekly;legacy stays unconfigured until explicit native-local-today enrollment. New habit requires a choice. Later changes start next Monday strictly after today;current/pending/exact date displayed;one pending segment replaced with stable ID or canceled before effective. Habit ID and applied history retained. Selected logging date does not redefine decision date. Existing activity names/spheres/contribution snapshots/dates and daily uniqueness preserved;new backdates snapshot current definition but use occurrence-date frequency lookup.
+
+Additive005 stores authoritative frequency segments and archive pauses,not progression counters. Native main-window-only semantic command accepts no SQL/path/date,uses shared parameterized plan in one pinned FK-enabled BEGIN IMMEDIATE transaction,validates schema/history and returns transaction receipt. Tests cover native FK originallyOFF→ON,invalid edits and mid-transaction rollback,005 DDL/SQLx-ledger rollback→retry/reopen,calendar Sunday/Monday/year/leap/DST boundaries.
+
+Owner-approved legacy archive policy implemented:startNULL/provenancelegacy_unknown,actual local restoration end only. Unknown interval neutral for future Forging/Resonance,no practice credit/inactivity penalty. Known same-day zero interval removed;unknown legacy retained. Archive state and pause mutation atomic;archived logging blocked.
+
+Backupv3/schema5 export and protective files include all segments/pauses,current and pending rules and unknown origins. Strictv1/schema3 imports preserve IDs/old snapshots,default5 future profiles/null old contributions;strictv2/schema4 retains all weights/origins/nulls. Both old formats leave rhythm unconfigured and legacy archived startunknown. v3 round-trip and old-import→protective-v3 undo preserve complete histories after SQLite reopen. Malformed version/date/ordering/reference/overlap/archive-state input rejected before replacement;file failure,mid-insert rollback and killed-process recovery retain original data. No lossy downgrade.
+
+## Owner Windows acceptance and limits
+
+[Full contract,test matrix and exact Windows steps](HABIT_RHYTHM_001.md). Close old app,keep a personal backup,download/extract/run new EXE. Confirm old records;create all three rhythms;enroll a legacy habit while a past logging date is selected;edit Weekly→Daily and inspect next Monday/current/pending;replace/cancel pending;archive/restore a synthetic habit;verifyv3 export/recovery using safe synthetic data. Close process,disconnect network,reopen and confirm frequency/definition/history/archive/collapse persistence.
+
+Native UI/visual/offline process-restart acceptance remains for owner;not inferred from CI compilation,browser app reload or database reopening. Existing sample habits deliberately remain unconfigured. Clock rollback before saved history safely rejects incompatible changes. Old binaries cannot consume schema5/v3;no downgrade guarantee. No Mastery,Forging,Resonance,medal/icon/art/XP/Android/Vacation/audio/new reward implementation;P01–P09 gameplay parameters remain proposed.
+
+Keep PR #13 unmerged for owner review. Next single queued task:HABIT-SIGILS-001,NOT begun.
+
+## Historical previous deliveries
+
 # Current delivery: UI-COLLAPSE-001 — ready for owner acceptance, PR unmerged
 
 [PR #12](https://github.com/Maximus1978/Relics/pull/12),feature-ui-collapse-001,OPEN/UNMERGED. Prerequisite PR #11 reviewed head c43c0974953c458ef28d6f4e6c4fa7d6d22cc368 was verified mergeable and documentation-only,then merged normally at5b7229d58c040c7ebd44d0fe423f92bdc82c57e2. P01–P09 remain proposed mechanics,NOT final implementation approval. No progression delivered.

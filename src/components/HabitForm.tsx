@@ -4,7 +4,10 @@ import { HabitValidationError, validateHabitInput, type HabitInput } from '../do
 import { contributionSphereIds, ContributionError, validateContributionProfile } from '../domain/contributions';
 import { sphereVisuals } from '../ui/sphereVisuals';
 import SphereIcon from './SphereIcon';
+import { frequencies, nextMonday, rhythmStatus, RhythmError, validateFrequency, type Frequency, type RhythmChange } from '../domain/habitRhythm';
+import './habitRhythm.css';
 type Props = {
+    today: string;
     busy: boolean;
     canSave: boolean;
     habit?: Habit;
@@ -13,11 +16,15 @@ type Props = {
     onCancel: () => void;
 };
 type ErrorState = {
-    field: 'name' | 'spheres' | 'contributions';
+    field: 'name' | 'spheres' | 'contributions' | 'rhythm';
     message: string;
     sphere?: SphereId;
 };
-export default function HabitForm({ busy, canSave, habit, saveError, onSave, onCancel }: Props) {
+export default function HabitForm({ today, busy, canSave, habit, saveError, onSave, onCancel }: Props) {
+    const status = rhythmStatus(habit?.frequencySegments ?? [], today);
+    const [rhythmChange, setRhythmChange] = useState<RhythmChange>({kind:'keep'});
+    const [frequency, setFrequency] = useState<Frequency | ''>(status.pending?.frequency ?? status.current?.frequency ?? '');
+    const frequencyInput = useRef<HTMLSelectElement>(null);
     const [name, setName] = useState(habit?.name ?? '');
     const [selected, setSelected] = useState<SphereId[]>(habit ? [...habit.spheres] : []);
     const [values, setValues] = useState<Record<SphereId, string>>(() => Object.fromEntries(contributionSphereIds.map(id => [id, String(habit?.contributionProfile?.values[id] ?? (habit?.spheres.includes(id) ? 5 : 0))])) as Record<SphereId, string>);
@@ -38,11 +45,13 @@ export default function HabitForm({ busy, canSave, habit, saveError, onSave, onC
         try {
             const input = validateHabitInput(name, selected);
             const contributionProfile = validateContributionProfile({ version: 1, origin: 'user', values: Object.fromEntries(contributionSphereIds.map(id => [id, selected.includes(id) ? (values[id].trim() === '' ? NaN : Number(values[id])) : 0])) }, input.spheres);
+            if (!habit) validateFrequency(frequency);
             setError(null);
-            await onSave({ ...input, contributionProfile });
+            await onSave({ ...input, contributionProfile, rhythmChange: !habit ? {kind:'set',frequency:validateFrequency(frequency)} : rhythmChange });
         }
         catch (failure) {
-            if (failure instanceof HabitValidationError) {
+            if (failure instanceof RhythmError) { setError({field:'rhythm',message:failure.message}); frequencyInput.current?.focus(); }
+            else if (failure instanceof HabitValidationError) {
                 setError(failure);
                 (failure.field === 'name' ? nameInput : firstSphereInput).current?.focus();
             }
@@ -67,6 +76,27 @@ export default function HabitForm({ busy, canSave, habit, saveError, onSave, onC
    <input id="habit-name" ref={nameInput} autoFocus required value={name} disabled={busy} aria-invalid={error?.field === 'name'} aria-describedby={error?.field === 'name' ? 'habit-validation-error' : undefined} onChange={event => { setName(event.target.value); setError(null); }}/>
    {habit?.contributionProfile?.origin === 'legacy-default' && <p className="contribution-default-note">Значения по умолчанию: 5. Сохранение подтвердит профиль только для новых записей.</p>}
   </div>
+  <section className="habit-rhythm" aria-labelledby="habit-rhythm-title">
+   <label id="habit-rhythm-title" htmlFor="habit-frequency">Ритм привычки</label>
+   {habit && <div className="habit-rhythm-status" aria-live="polite">
+    <p data-current-rhythm>Сейчас: {status.current ? frequencies[status.current.frequency] : 'Ритм не настроен'}</p>
+    {status.pending && <p data-pending-rhythm>Запланировано: {frequencies[status.pending.frequency]} — с <time dateTime={status.pending.effectiveOn}>{status.pending.effectiveOn}</time>.</p>}
+   </div>}
+   <select id="habit-frequency" ref={frequencyInput} required={!habit} disabled={busy || status.clockConflict} value={frequency}
+    aria-invalid={error?.field==='rhythm'} aria-describedby={error?.field==='rhythm'?'habit-validation-error':'habit-rhythm-help'}
+    onChange={event=>{const value=event.target.value as Frequency|'';setFrequency(value);setRhythmChange(value?{kind:'set',frequency:value}:{kind:'keep'});setError(null);}}>
+    <option value="" disabled={!!status.current || !!status.pending}>{habit ? 'Пока не настраивать' : 'Выберите ритм'}</option>
+    {Object.entries(frequencies).map(([id,label])=><option key={id} value={id}>{label}</option>)}
+   </select>
+   <p id="habit-rhythm-help">{status.clockConflict ? 'Дата компьютера раньше сохранённой истории. Проверьте её перед изменением ритма.' :
+    !status.current ? 'Первый ритм начнётся в день сохранения по местной дате компьютера. Прошлая история останется без ритма.' :
+    'Новый ритм начнётся со следующего понедельника, строго после сегодняшнего дня. История сохранится.'}</p>
+   {rhythmChange.kind==='set' && (!status.current || rhythmChange.frequency!==status.current.frequency) &&
+     <p className="rhythm-draft" role="status">После сохранения: {frequencies[rhythmChange.frequency]} — с {status.current ? nextMonday(today) : today}.</p>}
+   {rhythmChange.kind==='cancel_pending' && <p className="rhythm-draft" role="status">После сохранения запланированная смена будет отменена.</p>}
+   {status.pending && rhythmChange.kind!=='cancel_pending' && <button type="button" data-cancel-pending disabled={busy || status.clockConflict}
+    onClick={()=>{setRhythmChange({kind:'cancel_pending'});setFrequency(status.current?.frequency??'');setError(null);}}>Отменить запланированную смену</button>}
+  </section>
   <fieldset disabled={busy} aria-describedby="habit-spheres-help">
    <legend>Сферы и вклад</legend>
    <p id="habit-spheres-help">Ваша личная оценка вклада: от 1 до 10. Значения независимы — их не нужно складывать до 10 или 100.</p>

@@ -1,3 +1,4 @@
+import { changeFrequency, validateFrequency } from '../domain/habitRhythm.ts';
 import { rhythmFixtures } from './rhythmFixtures.ts';
 import { defaultContributions,validateContributionProfile } from '../domain/contributions.ts';
 import { localDay, sampleHabits, validateDay, type Activity, type Habit } from '../domain/activity.ts';
@@ -29,14 +30,15 @@ export async function createSanctuaryPreview(): Promise<Awaited<ReturnType<typeo
     async listHabits(status = 'active') {
       return structuredClone(habits.filter(habit => status === 'all' || (habit.archivedAt !== null) === (status === 'archived')));
     },
-    async createHabit(name, selectedSpheres,profile) {
+    async createHabit(name, selectedSpheres,profile,frequency) {
       const habit: Habit = { id: crypto.randomUUID(), ...validateHabitInput(name, selectedSpheres), archivedAt: null, contributionProfile:validateContributionProfile(profile??defaultContributions(selectedSpheres),selectedSpheres) };
+      habit.frequencySegments=changeFrequency([],habit.id,{kind:'set',frequency:validateFrequency(frequency)},localDay(),crypto.randomUUID());habit.archivePauses=[];
       habits.push(habit);
       return structuredClone(habit);
     },
-    async updateHabit(id, name, selectedSpheres,profile) { const input=validateHabitInput(name,selectedSpheres); const contributionProfile=validateContributionProfile(profile??defaultContributions(input.spheres),input.spheres);Object.assign(findHabit(id),input,{contributionProfile}); },
-    async archiveHabit(id) { const habit = findHabit(id); habit.archivedAt ??= new Date().toISOString(); },
-    async restoreHabit(id) { findHabit(id).archivedAt = null; },
+    async updateHabit(id, name, selectedSpheres,profile,rhythmChange={kind:'keep'}) { const input=validateHabitInput(name,selectedSpheres); const contributionProfile=validateContributionProfile(profile??defaultContributions(input.spheres),input.spheres);const habit=findHabit(id);const frequencySegments=changeFrequency(habit.frequencySegments??[],id,rhythmChange,localDay(),crypto.randomUUID());Object.assign(habit,input,{contributionProfile,frequencySegments}); },
+    async archiveHabit(id) { const habit = findHabit(id); if(habit.archivedAt===null){habit.archivedAt=new Date().toISOString();(habit.archivePauses??=[]).push({id:crypto.randomUUID(),habitId:id,startOn:localDay(),endExclusiveOn:null,reason:'archive',provenance:'recorded'});} },
+    async restoreHabit(id) { const habit=findHabit(id);habit.archivedAt=null;habit.archivePauses=(habit.archivePauses??[]).map(p=>p.endExclusiveOn===null?{...p,endExclusiveOn:localDay()}:p).filter(p=>p.startOn===null||p.startOn!==p.endExclusiveOn); },
     async list() { return structuredClone([...activities].sort((left, right) => right.occurredOn.localeCompare(left.occurredOn) || right.recordedAt.localeCompare(left.recordedAt))); },
     async log(definition, day) {
       validateDay(day);

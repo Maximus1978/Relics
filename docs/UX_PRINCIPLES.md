@@ -1,5 +1,11 @@
 # UX principles
 
+## HABIT-RHYTHM-001 shared editor
+Compact labeled native select in existing Sanctuary Create/Edit,with current name/spheres/sliders and unchanged medallion. Russian options Каждый день / 3 раза в неделю / Раз в неделю;new habits require explicit choice,no default Daily. Existing habits may remain “Ритм не настроен”. Explain first enrollment today and later changes next Monday;show current and pending rule with exact YYYY-MM-DD start.
+
+“Отменить запланированную смену” edits a draft;Save commits it,Cancel/Escape writes nothing. Ordinary completion remains one click and accepts backdates. Logging-date selection never changes actual enrollment date. Keyboard/screen-reader combobox,validation focus,visible focus and narrow scrollable actions retained. No schedule calendar,intensity,progress score,new icon or art. Backup summary includes rhythm/archival counts and old-format conversion;full replacement confirmation unchanged. [Scenarios and acceptance](HABIT_RHYTHM_001.md).
+
+
 ## Daily Mode
 
 A calm, compact tracker with recognizable line icons, clear names, and quick logging. Show the selected local date, all contributing spheres, and an unambiguous saved state. Avoid animation or adventure-screen prerequisites for a completion. Android prioritizes short interactions; Windows supports keyboard navigation and visible focus.

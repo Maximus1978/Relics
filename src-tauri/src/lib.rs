@@ -1,6 +1,7 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
 mod backup;
 mod contributions;
+mod rhythm;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -29,6 +30,12 @@ pub fn run() {
             sql: include_str!("../migrations/004_habit_contributions.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 5,
+            description: "habit frequency and archive history",
+            sql: include_str!("../migrations/005_habit_rhythm.sql"),
+            kind: MigrationKind::Up,
+        },
     ];
 
     tauri::Builder::default()
@@ -38,7 +45,8 @@ pub fn run() {
             backup::export_backup,
             backup::preview_backup,
             backup::cancel_backup,
-            backup::restore_backup
+            backup::restore_backup,
+            rhythm::mutate_habit
         ])
         .plugin(
             tauri_plugin_sql::Builder::default()

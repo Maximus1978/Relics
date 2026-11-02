@@ -1,0 +1,129 @@
+{
+  "create": [
+    {
+      "sql": "INSERT INTO habits(id,name,spheres_json,contribution_profile_json) VALUES(?,?,?,?)",
+      "params": [
+        "id",
+        "name",
+        "spheres",
+        "profile"
+      ],
+      "check": "changed"
+    },
+    {
+      "sql": "INSERT INTO habit_frequency_segments(id,habit_id,frequency,effective_on,created_on,version) SELECT ?,?,?,CASE WHEN EXISTS(SELECT 1 FROM habit_frequency_segments WHERE habit_id=? AND effective_on<=?) THEN ? ELSE ? END,?,1 WHERE ?='set' AND COALESCE((SELECT frequency FROM habit_frequency_segments WHERE habit_id=? AND effective_on<=? ORDER BY effective_on DESC LIMIT 1),'')<>? ON CONFLICT(habit_id,effective_on) DO UPDATE SET frequency=excluded.frequency,created_on=excluded.created_on",
+      "params": [
+        "segmentId",
+        "id",
+        "frequency",
+        "id",
+        "today",
+        "nextMonday",
+        "today",
+        "today",
+        "change",
+        "id",
+        "today",
+        "frequency"
+      ]
+    }
+  ],
+  "update": [
+    {
+      "sql": "SELECT CASE WHEN EXISTS(SELECT 1 FROM habit_frequency_segments WHERE habit_id=? AND created_on>?) THEN 0 ELSE 1 END AS ok",
+      "params": [
+        "id",
+        "today"
+      ],
+      "check": "valid"
+    },
+    {
+      "sql": "UPDATE habits SET name=?,spheres_json=?,contribution_profile_json=? WHERE id=?",
+      "params": [
+        "name",
+        "spheres",
+        "profile",
+        "id"
+      ],
+      "check": "changed"
+    },
+    {
+      "sql": "DELETE FROM habit_frequency_segments WHERE habit_id=? AND effective_on>? AND (?='cancel_pending' OR (?='set' AND (SELECT frequency FROM habit_frequency_segments WHERE habit_id=? AND effective_on<=? ORDER BY effective_on DESC LIMIT 1)=?))",
+      "params": [
+        "id",
+        "today",
+        "change",
+        "change",
+        "id",
+        "today",
+        "frequency"
+      ]
+    },
+    {
+      "sql": "INSERT INTO habit_frequency_segments(id,habit_id,frequency,effective_on,created_on,version) SELECT ?,?,?,CASE WHEN EXISTS(SELECT 1 FROM habit_frequency_segments WHERE habit_id=? AND effective_on<=?) THEN ? ELSE ? END,?,1 WHERE ?='set' AND COALESCE((SELECT frequency FROM habit_frequency_segments WHERE habit_id=? AND effective_on<=? ORDER BY effective_on DESC LIMIT 1),'')<>? ON CONFLICT(habit_id,effective_on) DO UPDATE SET frequency=excluded.frequency,created_on=excluded.created_on",
+      "params": [
+        "segmentId",
+        "id",
+        "frequency",
+        "id",
+        "today",
+        "nextMonday",
+        "today",
+        "today",
+        "change",
+        "id",
+        "today",
+        "frequency"
+      ]
+    }
+  ],
+  "archive": [
+    {
+      "sql": "UPDATE habits SET archived_at=COALESCE(archived_at,?) WHERE id=?",
+      "params": [
+        "now",
+        "id"
+      ],
+      "check": "changed"
+    },
+    {
+      "sql": "INSERT INTO habit_archive_pauses(id,habit_id,start_on,end_exclusive_on,reason,provenance) SELECT ?,?,?,NULL,'archive','recorded' WHERE NOT EXISTS(SELECT 1 FROM habit_archive_pauses WHERE habit_id=? AND end_exclusive_on IS NULL)",
+      "params": [
+        "pauseId",
+        "id",
+        "today",
+        "id"
+      ]
+    }
+  ],
+  "restore": [
+    {
+      "sql": "SELECT CASE WHEN EXISTS(SELECT 1 FROM habit_archive_pauses WHERE habit_id=? AND start_on>?) THEN 0 ELSE 1 END AS ok",
+      "params": [
+        "id",
+        "today"
+      ],
+      "check": "valid"
+    },
+    {
+      "sql": "UPDATE habits SET archived_at=NULL WHERE id=?",
+      "params": [
+        "id"
+      ],
+      "check": "changed"
+    },
+    {
+      "sql": "UPDATE habit_archive_pauses SET end_exclusive_on=? WHERE habit_id=? AND end_exclusive_on IS NULL",
+      "params": [
+        "today",
+        "id"
+      ]
+    },
+    {
+      "sql": "DELETE FROM habit_archive_pauses WHERE habit_id=? AND start_on=end_exclusive_on",
+      "params": [
+        "id"
+      ]
+    }
+  ]
+}

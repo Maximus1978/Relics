@@ -1,3 +1,4 @@
+import { createHabitMutationDriver } from '../.github/scripts/habit-sql-test-driver.mjs';
 import { projectSphereContributions } from '../src/domain/sphereContributions.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -7,10 +8,10 @@ import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { contributionSphereIds as ids, defaultContributions, validateContributionProfile, parseContributionProfile, type ContributionProfile } from '../src/domain/contributions.ts';
 import { openActivityRepository, type SqlDatabase } from '../src/data/activityRepository.ts';
-const sql = (version: number) => readFileSync(new URL('../src-tauri/migrations/' + ['001_initial.sql', '002_archive_habits.sql', '003_seed_once.sql', '004_habit_contributions.sql'][version - 1], import.meta.url), 'utf8');
+const sql = (version: number) => readFileSync(new URL('../src-tauri/migrations/' + ['001_initial.sql', '002_archive_habits.sql', '003_seed_once.sql', '004_habit_contributions.sql','005_habit_rhythm.sql'][version - 1], import.meta.url), 'utf8');
 function adapt(db: DatabaseSync): SqlDatabase {
     const bind = (query: string, args: unknown[]) => Object.fromEntries([...new Set(query.match(/\$\d+/g) ?? [])].map((key, i) => [key, args[i] as SQLInputValue]));
-    return { async execute(q, args = []) { return { rowsAffected: Number(db.prepare(q).run(bind(q, args)).changes) }; }, async select<T>(q: string, args: unknown[] = []) { return db.prepare(q).all(bind(q, args)) as T; } };
+    return { mutateHabit:createHabitMutationDriver(db), async execute(q, args = []) { return { rowsAffected: Number(db.prepare(q).run(bind(q, args)).changes) }; }, async select<T>(q: string, args: unknown[] = []) { return db.prepare(q).all(bind(q, args)) as T; } };
 }
 function fixture(context: test.TestContext) {
     const parent = resolve(tmpdir());
@@ -18,7 +19,7 @@ function fixture(context: test.TestContext) {
     const path = join(directory, 'synthetic.db');
     let db = new DatabaseSync(path);
     const migrate = (from = 1) => { db.exec('BEGIN'); try {
-        for (let v = from; v <= 4; v++)
+        for (let v = from; v <= 5; v++)
             db.exec(sql(v));
         db.exec('COMMIT');
     }
@@ -119,7 +120,7 @@ test('W08-W13 values/origin survive edit/reopen; snapshots, duplicate retry and 
     const old = (await r.listHabits()).find(h => h.id === 'read')!;
     await r.log(old, '2000-01-01');
     assert.equal((await r.list())[0].contributionSnapshot?.origin, 'legacy-default');
-    const habit = await r.createHabit('Guitar', ['mind', 'recovery'], guitar());
+    const habit = await r.createHabit('Guitar', ['mind', 'recovery'], guitar(), 'daily');
     await r.log(habit, '2000-01-02');
     const before = await r.list();
     const changed = guitar();
@@ -160,7 +161,7 @@ test('W12 INSERT SELECT snapshots an edit immediately before insertion without m
 
 test('T05 actual SQLite edit/reopen/archive/backdated cancellation uses immutable journal profiles',async context=>{
  const f=fixture(context);f.migrate();let r=await f.repo();
- const h=await r.createHabit('Guitar',['mind','recovery'],guitar());await r.log(h,'2000-01-02');
+ const h=await r.createHabit('Guitar',['mind','recovery'],guitar(),'daily');await r.log(h,'2000-01-02');
  const opts={startDay:'2000-01-01',endDayExclusive:'2000-01-10',asOfDay:'2000-01-10',weekStartsOn:1,trendWeeks:4};
  const before=projectSphereContributions(await r.list(),opts);
  const next=guitar();next.values.mind=2;await r.updateHabit(h.id,'Edited',['mind','recovery'],next);await r.archiveHabit(h.id);r=await f.reopen();
