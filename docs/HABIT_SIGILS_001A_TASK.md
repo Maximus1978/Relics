@@ -1,9 +1,6 @@
-# HABIT-SIGILS-001A — queued owner brief, not started
+# HABIT-SIGILS-001A — owner brief
 
-## Transfer instruction takes precedence
-On 2026-11-01 the owner requested: first merge the accepted HABIT-RHYTHM-001 PR #13 into master,then stop for a move to another computer. This file preserves the supplied next task and its mandatory addendum;it does not mark implementation started. Do NOT create the implementation branch or begin components/artwork/showcase until the owner resumes on the second computer.
-
-The attached full brief below is owner-supplied source. Its instruction to create a HABIT-SIGILS-001A branch is deferred by the later stop instruction. Read AGENTS.md,HANDOFF.md and the latest master before resuming.
+The owner resumed this task on the current computer on 2026-11-09. PR #13 was merged at 6c3333bfd32f09a4ff760e0a107a098aa3c106f0. The brief below records the agreed scope and original prerequisites. See HANDOFF.md for the live delivery state.
 
 ## Mandatory replaceable icon architecture — owner addendum
 The center icon must NEVER be baked into medal artwork. All18 base states(six materials × three craftsmanship stages) need a reusable empty center slot and independently replaceable SVG icons through an iconId prop.

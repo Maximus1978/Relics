@@ -1,3 +1,13 @@
+# HABIT-SIGILS-001A — visual review candidate
+
+The owner canceled the computer transfer on 2026-11-09 and resumed work here. Baseline master is 6c3333bfd32f09a4ff760e0a107a098aa3c106f0, the verified PR #13 merge. Functional rhythm acceptance was recorded separately from native offline restart.
+
+The acceptance scope is six distinct materials with three craft stages, an independent material-treated SVG icon in a common slot, live icon switching, isolated synthetic card states, browser evidence, and Windows CI. The next gate is owner visual approval.
+
+The workshop is a separate Vite page at `/sigils.html`. The browser artifact includes `sigils-review.html`, which opens directly from disk. Use the compact scale and slot overlay controls to inspect all 18 bases, then choose a glyph to update Stone, Bronze, Gold and Platinum. The gold samples demonstrate completion and Resonance at 0, 0.5 and 1. The artwork uses stylized SVG relief and fine grain. It has a cleaner surface treatment than the painterly concept. [Visual implementation and review notes](art/HABIT_MEDALS.md).
+
+Local Node tests, TypeScript/Vite and focused Edge review passed. Windows CI and the release artifact receipt are recorded separately after the hosted run.
+
 # Transfer handoff — owner-authorized PR13 release, then STOP
 
 Owner update2026-11-01:functional HABIT-RHYTHM-001 acceptance on Windows CONFIRMED by the supplied next-task brief. A separate native offline process restart is NOT confirmed. Earlier pending-functional-acceptance/no-merge holds below are historical and superseded by the owner's explicit instruction to merge PR #13 normally into master.
