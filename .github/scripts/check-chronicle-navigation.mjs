@@ -32,7 +32,7 @@ export async function checkChronicleNavigation({send,evaluate,until,click,viewpo
  await go('chronicle');await until('[...document.querySelectorAll(".entry h3")].some(h=>h.textContent==="Чтение")','Archived renamed habit history retains its original name');
  assert.ok(await evaluate('[...document.querySelectorAll(".entry")].find(e=>e.querySelector("h3").textContent==="Чтение").querySelector(".sphere-tags span").dataset.sphere==="mind"'));
  await screenshot('chronicle-archived-history.png');
- await go('archive');await until('document.querySelector("[data-habit-id=demo-read] h4")?.textContent==="Новое имя"','Archive destination retains existing management view');
+ await go('archive');await until('document.querySelector("[data-habit-id=demo-read] .relic-item__name")?.textContent==="Новое имя"','Archive destination retains existing management view');
  await go('sanctuary');await click('[data-habit-id=demo-walk] .habit-actions summary');await click('[data-habit-id=demo-walk] .habit-action-options button:nth-child(2)');await click('.archive-confirmation .form-actions button:last-child');await until('!document.querySelector("[data-habit-id=demo-walk]")','All habits with recorded events can be archived');
  await go('chronicle');await until('document.querySelectorAll(".entry").length===2','History containing only archived habits remains complete');await screenshot('chronicle-archived-only.png');
  await click('.app-rail button[data-backup]');await until('!!document.querySelector(".backup-unavailable")','Backup access remains available from Chronicle');await press('Escape','Escape',27);

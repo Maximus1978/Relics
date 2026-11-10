@@ -109,3 +109,11 @@ PROGRESS-001 review2026-10-31: plan a lightweight phase-local Forging track plus
 ## UI-COLLAPSE-001 implementation candidate
 
 Two explicit semantic toggle buttons independently control existing inventory and Life Rhythm. Both default expanded;only two versioned device-local booleans persist. Hidden/inert bodies retain component data/state but leave keyboard/AX;focus inside moves to toggle before hiding. Header/title,count,Add Habit/archive and inventory feedback remain available. Date/analytics controls survive collapse/navigation;uPlot drawing pauses and remeasures on expand. No rename,medal redesign or persistent analytics settings. Corrupt/denied storage falls back safely without blocking use;native offline restart remains owner acceptance. [Contract/evidence](UI_COLLAPSE_001.md). PROGRESS-001 is merged as proposed mechanics only;no progression implemented.
+
+## Sanctuary habit cards
+
+The saved habit icon is visible in its medal and the sphere tags remain below the name. All ordinary habits display Stone stage 1 at zero Resonance until the progression engine supplies real values. Unrecorded cards retain the stone surface. Hover and focus highlight the rim independently. A green check in the upper left belongs to the saved completion on the selected date.
+
+One native card button handles mouse, touch, Enter and Space. Its accessible name includes the habit, action and date. Its pressed state follows storage. The visible action changes to «Отменить отметку» on a recorded card. The management disclosure in the upper right is separate and keyboard reachable. Archived cards are read-only for completion and offer a separate Restore button.
+
+While storage is pending, the card retains focus and rejects a second activation. A failed write keeps the prior saved state and announces the error. Cancellation uses the saved event ID and does not prompt. Recording again creates a fresh event with current snapshots.

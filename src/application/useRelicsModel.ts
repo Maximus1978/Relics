@@ -49,7 +49,7 @@ export function useRelicsModel() {
     }
   }, [managingHabit, busy]);
 
-  async function perform(action: (store: Repository) => Promise<void>, success: string) {
+  async function perform(action: (store: Repository) => Promise<void>, success: string, refresh: 'all' | 'activities' = 'all') {
     if (!repository || actionLock.current) return;
     actionLock.current = true;
     setBusy(true); setError(''); setMessage('');
@@ -57,10 +57,12 @@ export function useRelicsModel() {
     try {
       await action(repository);
       saved = true;
-      const [entries, savedHabits] = await Promise.all([repository.list(), repository.listHabits('all')]);
-      setActivities(entries); setHabits(savedHabits);
+      const [entries, savedHabits] = await Promise.all([repository.list(), refresh === 'all' ? repository.listHabits('all') : undefined]);
+      setActivities(entries);
+      if (savedHabits) setHabits(savedHabits);
       setMessage(native ? success : `Демонстрация: ${success} Изменения только в памяти этой страницы.`);
     } catch (failure) {
+      if (saved && refresh === 'activities') setRepository(null);
       setError(saved ? native ? 'Изменение сохранено, но список не обновился. Перезапустите приложение.' : 'Демонстрация изменена, но список не обновился. Обновите страницу.'
         : failure instanceof ContributionError || failure instanceof HabitStateError || failure instanceof HabitValidationError ? failure.message
         : failure instanceof Error && failure.message.startsWith('Выберите') ? failure.message
@@ -69,8 +71,13 @@ export function useRelicsModel() {
     } finally { actionLock.current = false; setBusy(false); }
   }
 
-  function log(habit: Habit) {
-    void perform(store => store.log(habit, day), 'Отметка сохранена на выбранную дату.');
+  function toggleCompletion(habit: Habit, activityId?: string) {
+    if (habit.archivedAt !== null) return;
+    if (activityId !== undefined) {
+      void perform(store => store.remove(activityId), 'Отметка отменена.', 'activities');
+    } else {
+      void perform(store => store.log(habit, day), 'Отметка сохранена на выбранную дату.', 'activities');
+    }
   }
 
   async function saveHabit(input: HabitInput) {
@@ -100,7 +107,7 @@ export function useRelicsModel() {
   }
 
   function restoreHabit(habit: Habit) {
-    returnFocus.current = document.getElementById(`habit-actions-${habit.id}`);
+    returnFocus.current = document.getElementById(`restore-habit-${habit.id}`);
     void perform(store => store.restoreHabit(habit.id), 'Привычка возвращена в активный список.');
   }
 
@@ -151,7 +158,7 @@ export function useRelicsModel() {
   return { native, day, setDay, activities, habits, visibleHabits, showArchived, setShowArchived, toggleArchive,
     creatingHabit, editingHabit, archivingHabit, formOpen, managingHabit, canSave: !!repository,
     message, error, busy, addHabitButton, archiveToggle, beginCreate, beginManagement, cancelManagement,
-    saveHabit, archiveHabit, restoreHabit, log, cancelActivity,
+    saveHabit, archiveHabit, restoreHabit, toggleCompletion, cancelActivity,
     backupOpen, backupButton, openBackup, closeBackup, backupOperation };
 }
 

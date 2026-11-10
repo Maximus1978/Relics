@@ -9,8 +9,8 @@ One task at a time. HABIT-RHYTHM-001 was functionally accepted in Windows and me
 The owner resumed HABIT-SIGILS-001A on the current computer on 2026-11-09. [Owner brief and reference](HABIT_SIGILS_001A_TASK.md).
 
 - **001A · owner accepted and merged.** Isolated visual workshop for six materials and three stages. A common empty center accepts an independent material-treated SVG through `iconId`. The owner accepted the designs and PR #14 merged at 33cddc2ee74632604fc36f20283a639eee7f9cc9. [PR #14](https://github.com/Maximus1978/Relics/pull/14).
-- **001B · active.** Create/Edit icon picker and Stone 1 preview, persisted icon identity, neutral legacy default, additive schema 006 and backup v4. Owner review follows the implementation PR.
-- **001C · queued.** Compact production cards, green completion check, card interaction, management menu and accessible cancellation.
+- **001B · owner accepted and merged.** Create/Edit icon picker and Stone 1 preview, persisted icon identity, neutral legacy default, additive schema 006 and backup v4. [PR #15](https://github.com/Maximus1978/Relics/pull/15) merged at d9a56456d705e9bde0625022844137a907c6a6fa.
+- **001C · Windows review.** Production cards display the saved icon. The full card records or cancels for the selected date, with a separate menu and archive Restore. Stone stage 1 and zero Resonance are display defaults. [Handoff and manual acceptance](HANDOFF.md).
 - **PROGRESS-002A · queued.** Deterministic Mastery, Forging and Resonance after numerical approval.
 - **PROGRESS-002B · queued.** Connect progression to material, stage, Forging indicator and light.
 

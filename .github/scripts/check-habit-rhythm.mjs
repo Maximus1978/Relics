@@ -96,7 +96,7 @@ export async function checkHabitRhythm({send,evaluate,until,click,viewport,scree
   await edit(id);await select('three_per_week');await save();segments=db.prepare('SELECT * FROM habit_frequency_segments WHERE habit_id=? ORDER BY effective_on').all(id);assert.equal(segments.length,2);assert.equal(segments[1].id,pendingId);assert.equal(segments[1].frequency,'three_per_week');
   await edit(id);await click('[data-cancel-pending]');await save();assert.equal(db.prepare('SELECT COUNT(*) n FROM habit_frequency_segments WHERE habit_id=?').get(id).n,1);
   await edit('read');await select('weekly');await save();assert.equal(db.prepare('SELECT effective_on FROM habit_frequency_segments WHERE habit_id=?').get('read').effective_on,today);
-  const completedSelector='[data-habit-id="'+created[1]+'"] .completion-button';await click(completedSelector);await until('document.querySelector('+JSON.stringify(completedSelector)+').disabled','Backdated completion remains one click after enrollment');
+  const completedSelector='[data-habit-id="'+created[1]+'"] .completion-button';await click(completedSelector);await until('document.querySelector('+JSON.stringify(completedSelector)+').ariaPressed==="true"','Backdated completion remains one click after enrollment');
   const logged=db.prepare('SELECT * FROM activities WHERE habit_id=?').get(created[1]);assert.ok(logged.occurred_on<today);assert.ok(logged.contribution_snapshot_json);
   assert.deepEqual(db.prepare('SELECT * FROM activities WHERE id=?').get('old-26'),old);
   db.close();db=new DatabaseSync(path);db.exec('PRAGMA foreign_keys=ON');mutate=createHabitMutationDriver(db,()=>today);

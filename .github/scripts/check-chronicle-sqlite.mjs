@@ -23,6 +23,7 @@ export async function checkChronicleSqlite({send,evaluate,until,click,viewport,b
  db.prepare('UPDATE habits SET name=?,spheres_json=?,contribution_profile_json=?,archived_at=? WHERE id=?').run('Нынешнее имя','["body"]',profile({body:5}),'2026-10-29T12:00:00Z','read');
  db.prepare("INSERT INTO habit_archive_pauses VALUES('legacy-read','read',NULL,NULL,'archive','legacy_unknown')").run();
  const mutateHabit=createHabitMutationDriver(db,()=>today);
+ let failInsert = false, heldInsert = null, releaseInsert, insertCalls = 0, lastDeletedId;
  let loads=0,failDelete=false,failLoad=false,failRefresh=false,restored=false,restores=0;
  let releaseLoad;const opening=new Promise(resolve=>releaseLoad=resolve);
  const summary={exportedAt:today+'T12:00:00Z',habits:1,archivedHabits:0,activities:1,formatVersion:3,databaseSchemaVersion:5,targetSchemaVersion:6,frequencySegments:0,configuredHabits:0,archivePauses:0,userEntries:1,defaultEntries:0,legacyEntries:0};
@@ -32,7 +33,20 @@ export async function checkChronicleSqlite({send,evaluate,until,click,viewport,b
   commands.push(cmd);
   if(cmd==='plugin:sql|load'){loads++;await opening;if(failLoad)throw Error('Synthetic unavailable database');assert.equal(args.db,'sqlite:relics.db');return args.db;}
   if(cmd==='plugin:sql|select'){assert.equal(args.db,'sqlite:relics.db');if(restored&&failRefresh)throw Error('Synthetic refresh failure');return db.prepare(args.query).all(bind(args.query,args.values));}
-  if(cmd==='plugin:sql|execute'){assert.equal(args.db,'sqlite:relics.db');if(failDelete&&args.query.startsWith('DELETE'))throw Error('Synthetic delete failure');const result=db.prepare(args.query).run(bind(args.query,args.values));return [Number(result.changes),Number(result.lastInsertRowid)];}
+  if(cmd==='plugin:sql|execute') {
+   assert.equal(args.db,'sqlite:relics.db');
+   if (args.query.startsWith('INSERT INTO activities')) {
+    insertCalls++;
+    if (failInsert) throw Error('Synthetic insert failure');
+    await heldInsert;
+   }
+   if (args.query.startsWith('DELETE FROM activities')) {
+    if (failDelete) throw Error('Synthetic delete failure');
+    lastDeletedId = args.values[0];
+   }
+   const result=db.prepare(args.query).run(bind(args.query,args.values));
+   return [Number(result.changes),Number(result.lastInsertRowid)];
+  }
   if(cmd==='mutate_habit')return mutateHabit(args.input);
   if(cmd==='cancel_backup')return null;
   if(cmd==='preview_backup')return {token:'synthetic-preview-token',summary};
@@ -55,7 +69,55 @@ export async function checkChronicleSqlite({send,evaluate,until,click,viewport,b
   releaseLoad();await until('document.querySelectorAll(".entry").length===3','Real temporary SQLite supplies the complete historical journal');
   assert.equal(await evaluate('document.querySelector("[data-activity-id=bridge-26] h3").textContent'),'Чтение до переименования');
   assert.equal(await evaluate('document.querySelector("[data-activity-id=bridge-26] .sphere-tags span").dataset.sphere'),'mind');
-  await go('sanctuary');const beforeRune=Number(await evaluate('document.querySelector(".sanctuary-medallion").dataset.sphereDays'));
+  await go('sanctuary');
+  const card = '[data-habit-id=walk] .completion-button';
+  const status = `document.querySelector(${JSON.stringify(card)})`;
+  const beforeCards = db.prepare('SELECT * FROM activities ORDER BY id').all();
+  await click('[data-habit-id=walk] .habit-actions summary');
+  await until('document.querySelector("[data-habit-id=walk] .habit-actions").open','Management is a sibling disclosure on a recorded card');
+  await click('[data-habit-id=walk] .habit-actions summary');
+  assert.equal(await evaluate(status + '.ariaPressed'),'true');
+  assert.deepEqual(db.prepare('SELECT * FROM activities ORDER BY id').all(),beforeCards);
+  await click('.date-shortcuts button:nth-child(2)');
+  await until(status + '.ariaPressed==="false"','A different date leaves the existing SQLite activity checked only on its own day');
+  const selectedDay = await evaluate('document.querySelector("input[type=date]").value');
+
+  failInsert = true;
+  await click(card);
+  await until('!!document.querySelector("#inventory [role=alert]") && ' + status + '.ariaPressed==="false"','Failed write leaves the unrecorded card unchanged and announces the error');
+  assert.deepEqual(db.prepare('SELECT * FROM activities ORDER BY id').all(),beforeCards);
+  failInsert = false;
+  heldInsert = new Promise(resolve => releaseInsert = resolve);
+  await click(card);
+  await until(status + '.ariaDisabled==="true" && ' + status + '.ariaPressed==="false"','Pending storage blocks another activation and withholds the check');
+  await click(card);
+  releaseInsert();
+  heldInsert = null;
+  await until(status + '.ariaPressed==="true" && ' + status + '.ariaDisabled==="false"','Successful storage turns on the check after refresh');
+  const recorded = db.prepare('SELECT * FROM activities WHERE habit_id=? AND occurred_on=?').all('walk',selectedDay);
+  assert.equal(insertCalls, 2, 'One failed attempt and one successful attempt reached SQLite');
+  assert.equal(recorded.length, 1);
+  assert.equal(await evaluate('document.querySelector("input[type=date]").value'),selectedDay);
+  await until('document.querySelector(".wheel-gem[data-sphere=body]").dataset.state==="illuminated"','Card logging refreshes the selected-day stone');
+
+  failDelete = true;
+  await click(card);
+  await until('!!document.querySelector("#inventory [role=alert]") && ' + status + '.ariaPressed==="true"','Failed delete retains the saved check and announces the error');
+  assert.deepEqual(db.prepare('SELECT * FROM activities WHERE id=?').get(recorded[0].id),recorded[0]);
+  failDelete = false;
+  await click(card);
+  await until(status + '.ariaPressed==="false" && document.querySelector(".wheel-gem[data-sphere=body]").dataset.state==="subdued"','Successful card cancellation refreshes the check and stone');
+  assert.equal(lastDeletedId, recorded[0].id);
+  assert.deepEqual(db.prepare('SELECT * FROM activities ORDER BY id').all(),beforeCards);
+  await click(card);
+  await until(status + '.ariaPressed==="true"','Recording again creates a fresh mark');
+  assert.notEqual(db.prepare('SELECT id FROM activities WHERE habit_id=? AND occurred_on=?').get('walk',selectedDay).id,recorded[0].id);
+  await click(card);
+  await until(status + '.ariaPressed==="false"','Cleanup cancels only the new test event');
+  assert.deepEqual(db.prepare('SELECT * FROM activities ORDER BY id').all(),beforeCards);
+  await click('.date-shortcuts button:first-child');
+  await until(status + '.ariaPressed==="true"','The independent original current-day activity remains checked');
+  const beforeRune=Number(await evaluate('document.querySelector(".sanctuary-medallion").dataset.sphereDays'));
   await evaluate('document.querySelector(".rhythm-period select").focus()');for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'Home',code:'Home',windowsVirtualKeyCode:36});
   await until('document.querySelector(".rhythm-legend [data-sphere=body] output").textContent==="5"','Actual SQLite event snapshots feed Life Rhythm before cancellation');
   await go('chronicle');failDelete=true;
@@ -73,6 +135,6 @@ export async function checkChronicleSqlite({send,evaluate,until,click,viewport,b
   failRefresh=false;failLoad=true;await send('Page.reload');await until('!!document.querySelector(".rail-status")','Reload keeps the isolated native test bridge');await go('chronicle');await until('document.querySelector(".chronicle-feedback [role=alert]")?.textContent.includes("Не удалось открыть")&&!document.querySelector(".entry")','Repository opening errors do not masquerade as empty history');
   await writeFile(join(output,'chronicle-sqlite-bridge-proof.json'),JSON.stringify({syntheticTemporarySqlite:true,mockedNativeIpc:true,nativeBackupImplementationVerifiedHere:false,nativeUiRuntimeVerified:false,repositoryLoadsBeforeErrorReload:1,restores,checks:'load/error/cancel/immutable other rows/full restore/shared refresh/error after close',commands:[...new Set(commands)]},null,2));
  } finally {
-  releaseLoad();await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:script.identifier});await send('Page.navigate',{url:'http://127.0.0.1:1420'});await until('!!document.querySelector(".preview-notice")&&document.querySelectorAll(".relic-item").length===6','Restore ordinary preview after mock-IPC integration tests');await bindIpc(null);db.close();assert.equal(dirname(directory),parent);assert.ok(basename(directory).startsWith('relics-nav-ui-'));rmSync(directory,{recursive:true,force:true});
+  releaseLoad();releaseInsert?.();await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:script.identifier});await send('Page.navigate',{url:'http://127.0.0.1:1420'});await until('!!document.querySelector(".preview-notice")&&document.querySelectorAll(".relic-item").length===6','Restore ordinary preview after mock-IPC integration tests');await bindIpc(null);db.close();assert.equal(dirname(directory),parent);assert.ok(basename(directory).startsWith('relics-nav-ui-'));rmSync(directory,{recursive:true,force:true});
  }
 }
