@@ -1,5 +1,9 @@
 # Open questions
 
+## PROGRESS-002A review boundary
+
+The experimental engine is implemented for review under progress-001-experimental v1. P01–P07 still require production approval, including thresholds, protected checkpoints, correction behavior, phase-local and terminal feedback, recency and pause presentation. The owner confirmed strict rejection of schema-invalid midweek frequency changes. P08 persistence evolution and P09 production wording/indicator remain separate from the experimental computation. [Synthetic review](PROGRESS_002A.md).
+
 ## HABIT-RHYTHM-001 scope resolution
 Owner explicitly approved unknown legacy archive start(NULL),legacy_unknown provenance,and actual local restoration end. Never invent start;future interpretation neutral,no practice credit or inactivity penalty. Persisted in005/v3 and covered by deterministic tests. No remaining implementation blocker for this policy.
 
@@ -10,8 +14,8 @@ Status: every unresolved item below is open; accepted principles constrain its a
 
 | ID | Question | Resolve before |
 | --- | --- | --- |
-| Q01 | PROGRESS-001 P01–P05 propose full-week cycles, protected phase checkpoints, thresholds, frequency boundaries and deterministic correction replay. Owner has NOT approved these numeric/edge-case choices. | Explicit owner decisions before HABIT-RHYTHM/PROGRESS-002A/B |
-| Q02 | Habit Resonance P06 proposes full expected-interval grace followed by a two-interval fade, not an approved curve; current binary rune remains independent. Contextual Balance window/weights/uncertainty, including all-five35/35, stays BALANCE-001. | Owner Resonance approval before002A/B; separate Balance gate before KPIs/rewards |
+| Q01 | PROGRESS-001 P01–P05 propose full-week cycles, protected phase checkpoints, thresholds, frequency boundaries and deterministic correction replay. Owner has NOT approved these numeric/edge-case choices. | Explicit owner decisions before production PROGRESS-002B |
+| Q02 | Habit Resonance P06 proposes full expected-interval grace followed by a two-interval fade, not an approved curve; current binary rune remains independent. Contextual Balance window/weights/uncertainty, including all-five35/35, stays BALANCE-001. | Owner Resonance approval before production 002B; separate Balance gate before KPIs/rewards |
 | Q03 | Resolved numeric model: selected independent integer 1–10, new selection 5, unselected 0, no normalization. Owner accepts future old-habit 5 defaults included with separate provenance; old activity values stay unknown. Manual icon direction is approved in PROGRESS-001; exact glyph set/default visual acceptance remains P09. Proposed persistence/backup/projection details are in WEIGHTS_001A.md. | Resolved, implemented and owner accepted in PR #8; do not reopen contribution math |
 | Q04 | Scheduled weekdays, local day boundaries, schedule edits, planned rest semantics? | Scheduling |
 | Q05 | Optional per-event intensity scale/effects; repeated sessions, quantities/units and duplicate identity? Intensity/note are approved activity fields, not habit fields. | Respective activity detail/model tasks; current daily uniqueness stays |
@@ -37,7 +41,7 @@ The original assistant responses and actual secret recipes were not retrievable.
 
 ## PROGRESS-001 REVISION approval gates
 
-[Canonical full P01–P09 proposals](PROGRESS_001.md#12-owner-decisions-required-before-dependent-code); [Russian worked review](PROGRESS_001_REVIEW_RU.md). These are explicit open decisions, not implementation permission. Existing no-absence-loss/rune/snapshot/contribution principles remain accepted.
+[Canonical full P01–P09 proposals](PROGRESS_001.md#12-owner-decisions-required-before-production-use); [Russian worked review](PROGRESS_001_REVIEW_RU.md). These are explicit open decisions for production. The experimental replay is available for review. Existing no-absence-loss/rune/snapshot/contribution principles remain accepted.
 
 | Gate | Owner decision needed | Implementation dependency |
 | --- | --- | --- |

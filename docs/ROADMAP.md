@@ -11,8 +11,8 @@ The owner resumed HABIT-SIGILS-001A on the current computer on 2026-11-09. [Owne
 - **001A · owner accepted and merged.** Isolated visual workshop for six materials and three stages. A common empty center accepts an independent material-treated SVG through `iconId`. The owner accepted the designs and PR #14 merged at 33cddc2ee74632604fc36f20283a639eee7f9cc9. [PR #14](https://github.com/Maximus1978/Relics/pull/14).
 - **001B · active.** Create/Edit icon picker and Stone 1 preview, persisted icon identity, neutral legacy default, additive schema 006 and backup v4. Owner review follows the implementation PR.
 - **001C · queued.** Compact production cards, green completion check, card interaction, management menu and accessible cancellation.
-- **PROGRESS-002A · queued.** Deterministic Mastery, Forging and Resonance after numerical approval.
-- **PROGRESS-002B · queued.** Connect progression to material, stage, Forging indicator and light.
+- **PROGRESS-002A · experimental review.** Pure deterministic Mastery, Forging and Resonance replay with a synthetic simulator. [Rules and evidence](PROGRESS_002A.md).
+- **PROGRESS-002B · queued.** Connect progression to material, stage, Forging indicator and light after explicit approval of the applicable numerical candidates.
 
 The later sequence retains ARCHIVE-CLEANUP-001, AUDIO-001 and the approved backlog. Android remains deferred until Windows core mechanics are validated and the owner schedules it.
 
@@ -130,7 +130,7 @@ Keep Sanctuary, Clockwork, Wasteland and Verdant and versioned declarative packs
 | 2 active implementation candidate | UI-COLLAPSE-001 | Independent persistent toggles,strict safe device preferences,visible inventory actions/count,hidden/inert bodies,retained date/chart state and resize. [Windows CI41255208180](https://github.com/Maximus1978/Relics/actions/runs/41255208180) SUCCESS:79 Node/354 browser/22 native plusTS/Vite andEXE. [PR #12](https://github.com/Maximus1978/Relics/pull/12) ready for owner acceptance,unmerged;native offline restart pending. [Contract](UI_COLLAPSE_001.md) |
 | 3 | HABIT-RHYTHM-001 | Approved frequency/effective dates and known archive intervals; atomic save; additive migration and strict older-backup import/export/recovery gates before editor release |
 | 4 | HABIT-SIGILS-001 / HABIT-ICONS-001 | Owner visual gate on canonical registered medals/manual glyphs; small identity/persistence/backup/card increments, no invented live progression |
-| 5 | PROGRESS-002A | Pure deterministic frequency-aware Mastery/Forging/Resonance and deterministic correction replay from authoritative inputs, no ordinary receipt ledger; synthetic tests, no persistence/UI changes |
+| 5 | PROGRESS-002A | Experimental replay and simulator for owner review. The pure engine derives its state from authoritative inputs. Production integration is separately gated. |
 | 6 | PROGRESS-002B | Integrate real journal-derived material/phase,visible within-phase progress and grace/fade/check states;preserve authoritative-input backups,Windows owner acceptance |
 | 7 | ARCHIVE-CLEANUP-001 | Hide unwanted archived habits, retain journal/analytics/FK and archived logging guard; genuine zero-history hard deletion only if separately approved |
 | 8 | AUDIO-001 | Existing sound/world-theme specification scope retained; no audio assets or playback authorized now |

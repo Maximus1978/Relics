@@ -1,5 +1,7 @@
 # PROGRESS-001 REVISION — habit forging and independent medal states
 
+> This page records the original review. [PROGRESS-002A](PROGRESS_002A.md) now implements the candidate in an isolated simulator and pure engine. Production numerical approval is still pending.
+
 ## 1. Authority, baseline and review gates
 
 Status as of 2026-10-31: **documentation proposal; no runtime implementation**. The owner's PROGRESS-001 REVISION brief supersedes conflicting earlier progression proposals. [PR #10](https://github.com/Maximus1978/Relics/pull/10) is merged; current master verified as 8503670a31b8adc74bac61b6a84826e6772664eb (parents 39af6b78 and db1d2f7). Owner reports native NAV-CHRONICLE-001 acceptance. Its earlier review holds are historical.
@@ -155,7 +157,7 @@ At an effective change boundary, retain F/P/material/phase, clear S, and evaluat
 | Cancel and re-record same old habit/day | Current physical cancellation remains; new event ID and current name/sphere/profile snapshot; same occurredOn rhythm lookup; one eligible habit-day, never double credit |
 | New backdate before a frequency change | Current definition snapshots, old effective rhythm for that date; does not reclassify earlier stored snapshot fields |
 | Backdate before enrollment | Journal/analytics/rune show actual occurrence; no invented earlier rhythm or cycle credit |
-| Offline restart / missed evaluation | Rebuild closed cycles with explicit local today; persist each eligible new achievement once; no network/required daily launch |
+| Offline restart / missed evaluation | Rebuild closed cycles with explicit local today. Ordinary phases are derived from history, without persistent receipts or a required daily launch |
 | Archive / restore | Stop logging at repository level; preserve all definitions, frequency/pause history and journal; pauses described below; restoration does not auto-seed/reactivate others |
 | Backup restore | Atomically replace all supported authoritative inputs, then reconstruct ordinary state; cannot infer missing old rhythm from modern settings |
 
@@ -165,13 +167,13 @@ Synthetic habit H enrolls daily Monday2026-11-02. Weeks starting Nov2,9,16 with7
 
 On Dec8, record a backdated Nov24 entry after canceling the old entry. The new name/icon choice/spheres/contribution profile are today's definition (icon is not an activity snapshot in the minimal proposal); occurredOn Nov24 still evaluates under Daily. Its original cancellation may turn Nov23 week into6/7; re-recording returns7/7. Replays change incomplete evidence/Forging deterministically. The revised Daily eligibility is 6/7, so deleting one of seven Nov23-week dates still qualifies: F5/phase 2 remains. If that week originally had exactly six dates (including Nov24), cancellation leaves5/7 and makes it unqualified: replay holds F3 that week, then Nov30's qualified cycle gives F4/Copper phase 1 rather than F5/phase 2. Re-recording Nov24 restores6/7 and F5/phase 2. More extensive corrections to the original three qualifying weeks can legitimately remove Copper altogether. No receipt overrides the corrected evidence, and repeated evaluation has no grant effect.
 
-A weekly switch instead would permit one occurrence from Nov30 onward, still only 1 cycle unit/week; earlier Nov23 requires7. No old contribution snapshots are recomputed from current values.
+A weekly switch instead would permit one occurrence from Nov30 onward, still only 1 cycle unit/week; earlier Nov23 requires6 distinct days. No old contribution snapshots are recomputed from current values.
 
 ### Archive pauses and future Vacation compatibility
 
 Current archivedAt alone cannot reconstruct past archive periods. Smallest adequate proposal adds nonoverlapping per-habit pause intervals with local startOn/endExclusiveOn(nullable while open), stable ID and reason=archive; future explicit vacation can use a separately approved interval adapter. Archive atomically opens today's pause and sets existing archivedAt; restore closes the pause at local today and clears archivedAt. A same-day archive/restore leaves no excluded calendar day; remove/ignore a zero-length interval. Any cycle intersecting a positive pause is neutral, no partial credit. Schedule changes during a pause apply on their scheduled boundary; no cycle can earn until fully evaluable again.
 
-Legacy already-archived habits get an open interval starting explicit upgrade local today, with provenance=legacy-current-archive (not guessed previous vacations/archives). They have no rhythm credit before later explicit enrollment anyway. Historic archive gaps not captured by old schema stay unknown. Active legacy habits get no invented pause. Future pause/correction/effective-date validation must cover clock going backward: reject an end before start and ask for clock correction, never silently corrupt the interval. Explicit pause neutralization is a proposal awaiting approval, not current vacation behavior.
+The owner-approved persistence contract gives already-archived legacy habits a NULL start and explicit legacy_unknown provenance. Restore records the actual local exclusive end. This interval is neutral for Forging and Resonance, without inferred practice or penalties. Historic archive gaps not captured by old schema stay unknown. Active legacy habits get no invented pause. Future pause/correction/effective-date validation must cover clock going backward: reject an end before start and ask for clock correction, never silently corrupt the interval. Explicit pause neutralization is a proposal awaiting approval, not current vacation behavior.
 
 ## 6. Resonance proposal with a full expected-interval grace (P06)
 
@@ -339,7 +341,7 @@ PROGRESS-002A can be reviewed separately without shipping partially migrated pro
 | P-T20 | Stable one-time grant identities under correction/re-record/version/retry; no actual recipes or artifact grants in current scope | Before reward integrations |
 | P-T21 | Phase-local progress2/6→3/6, checkpoint crossing resets local track, first shortfall holds/second resets tail, corrected history changes value truthfully; terminal state/text/AX/current-week neutral | 002A/002B |
 
-## 12. Owner decisions required before dependent code
+## 12. Owner decisions required before production use
 
 | ID | Proposed answer, NOT approval | Blocks |
 | --- | --- | --- |
@@ -349,7 +351,7 @@ PROGRESS-002A can be reviewed separately without shipping partially migrated pro
 | P04 | First enrollment today; later changes next Monday, pending same-date replace, retain F/P and clear S at boundary | Frequency editor/effective history |
 | P05 | Recommended initial MVP reconstructs from journal/effective rhythms/pauses; inactivity cannot lower material, but actual history corrections may. No persistent ordinary attainment receipts | Ordinary correction semantics and engine |
 | P06 | Full light through expected gapg, linear fade over next2g (Weekly 7full/14half/21zero); pause quiet state; curve awaits final approval | Resonance engine/presentation |
-| P07 | Known archive intervals neutralize whole intersected weeks; legacy current archive starts upgrade/import today; future explicit vacation uses neutral adapter | Archive/rhythm schema and lifecycle |
+| P07 | Known archive intervals neutralize whole intersected weeks; legacy archive start is NULL with legacy_unknown provenance and actual restoration end; future explicit vacation uses neutral adapter | Archive/rhythm schema and lifecycle |
 | P08 | Candidate rhythmv3/schema 5→iconv4/schema 6 with strict older imports; no 007/v5 solely for ordinary receipts, derived material reconstructs | Each persistence gate; reverify actual free numbers |
 | P09 | Final «Печати привычек» label, glyph/default, accessible full-card re-toggle (no promised Undo) and lightweight phase-local progress text/track | HABIT-SIGILS owner visual acceptance |
 

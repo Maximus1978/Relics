@@ -8,6 +8,14 @@ Local verification passed 93 Node tests, 33 Rust tests, TypeScript/Vite and 405 
 
 An isolated Windows release smoke build used application identifier `local.relics.sigils001b.smoke` and its own WebView profile. The actual Tauri UI saved Music, edited it to Bicycle, then reopened with Bicycle and the same habit ID after the process stopped and restarted. Both launches used a closed loopback proxy for external requests and allowed the local Tauri transport. The captured request hosts were `tauri.localhost` and `ipc.localhost`. This smoke build used the same application source with an isolated identifier and hidden window.
 
+# PROGRESS-002A — experimental progression replay
+
+PROGRESS-002A authorizes an isolated pure engine, deterministic tests and synthetic review simulator. The input is the persisted journal and habit history with an explicit local date and experimental rules version. Production presentation and persisted data are outside this scope. PR #16 remains open on the reviewed head 97d933571c92e450148165ebc064e8db989ed980 with successful Windows CI 42863965365. This independent branch starts at verified master d9a56456d705e9bde0625022844137a907c6a6fa.
+
+The 21 new tests bring the Node/SQLite suite to 114. Local TypeScript and Vite also pass. The review simulator reconstructs Copper phase 1 from three Weekly events, Stone phase 3 after canceling one, and the original projection after re-recording. A separate replay proves protected phases survive inactivity. The 30,000-event case and fresh Node processes in two time zones confirm deterministic replay. [Rules, test matrix and simulator](PROGRESS_002A.md).
+
+Keep the engine out of Sanctuary. Review numerical P01–P07 and P09 display decisions before authorizing PROGRESS-002B. Hosted check results belong to the implementation PR.
+
 # HABIT-SIGILS-001A — visual review candidate
 
 The owner canceled the computer transfer on 2026-11-09 and resumed work here. Baseline master is 6c3333bfd32f09a4ff760e0a107a098aa3c106f0, the verified PR #13 merge. Functional rhythm acceptance was recorded separately from native offline restart.
