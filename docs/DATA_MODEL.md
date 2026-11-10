@@ -1,5 +1,11 @@
 # Data model
 
+## HABIT-SIGILS-001B — schema 006
+
+Migration 006 adds the required `habits.icon_id` column with the `sigil` default and a SQLite constraint for the 12 curated IDs. The domain exposes it as `Habit.iconId`. TypeScript validation uses the approved medal catalogue and Rust validates native commands and backup fields. Both active and archived legacy habits receive the generic sigil. The generic value has the same meaning whether it came from migration or manual selection, so this contract needs no provenance field.
+
+Create/Edit updates the icon in the same pinned transaction as the habit definition and any explicit rhythm change. An omitted icon on edit keeps the saved value. Keeping the rhythm selection intact retains pending segments. Keeping the contribution values intact retains the whole saved profile and its origin. Activity snapshots, archive intervals and habit IDs keep their existing contracts.
+
 ## HABIT-RHYTHM-001 — implemented schema5 candidate
 See [canonical operational contract and test map](HABIT_RHYTHM_001.md). Additive005 creates habit_frequency_segments(id,habit_id,frequency,effective_on,created_on,version) and habit_archive_pauses(id,habit_id,start_on,end_exclusive_on,reason,provenance);001–004 unchanged. Current Habit reads include both histories;activity snapshots/IDs/dates/daily uniqueness unchanged. Native main-window semantic command performs one pinned FK-enabled BEGIN IMMEDIATE transaction for definition/rhythm/archive writes using one shared bound SQL plan. Empty history means legacy unconfigured,first explicit enrollment actual local today,later change next Monday,pending replace/cancel,applied segments retained.
 

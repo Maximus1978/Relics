@@ -1,3 +1,4 @@
+import { icons, type MedalIconId } from '../src/ui/sigils/medalDesign.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync,type SQLInputValue} from 'node:sqlite';
@@ -8,9 +9,9 @@ import {createHabitMutationDriver} from '../.github/scripts/habit-sql-test-drive
 import {openActivityRepository,type SqlDatabase} from '../src/data/activityRepository.ts';
 import {defaultContributions} from '../src/domain/contributions.ts';
 import {frequencyAt,rhythmStatus,archivePauseAt} from '../src/domain/habitRhythm.ts';
-const migrations=['001_initial.sql','002_archive_habits.sql','003_seed_once.sql','004_habit_contributions.sql','005_habit_rhythm.sql'];
-function fixture(t:test.TestContext,version=5){const parent=resolve(tmpdir()),folder=mkdtempSync(join(parent,'relics-rhythm-')),path=join(folder,'synthetic.db');let db=new DatabaseSync(path),today='2026-10-28';db.exec('PRAGMA foreign_keys=ON');
- const migrate=(from:number,to=5)=>{db.exec('BEGIN');try{for(let v=from;v<=to;v++)db.exec(readFileSync(new URL('../src-tauri/migrations/'+migrations[v-1],import.meta.url),'utf8'));db.exec('COMMIT');}catch(e){db.exec('ROLLBACK');throw e;}};migrate(1,version);
+const migrations=['001_initial.sql','002_archive_habits.sql','003_seed_once.sql','004_habit_contributions.sql','005_habit_rhythm.sql','006_habit_icons.sql'];
+function fixture(t:test.TestContext,version=6){const parent=resolve(tmpdir()),folder=mkdtempSync(join(parent,'relics-rhythm-')),path=join(folder,'synthetic.db');let db=new DatabaseSync(path),today='2026-10-28';db.exec('PRAGMA foreign_keys=ON');
+ const migrate=(from:number,to=6)=>{db.exec('BEGIN');try{for(let v=from;v<=to;v++)db.exec(readFileSync(new URL('../src-tauri/migrations/'+migrations[v-1],import.meta.url),'utf8'));db.exec('COMMIT');}catch(e){db.exec('ROLLBACK');throw e;}};migrate(1,version);
  const adapter=():SqlDatabase=>{const bind=(sql:string,values:unknown[]=[])=>Object.fromEntries([...new Set(sql.match(/\$\d+/g)??[])].map((k,i)=>[k,values[i] as SQLInputValue]));return {mutateHabit:createHabitMutationDriver(db,()=>today),async execute(sql,values=[]){return {rowsAffected:Number(db.prepare(sql).run(bind(sql,values)).changes)};},async select<T>(sql:string,values:unknown[]=[]){return db.prepare(sql).all(bind(sql,values)) as T;}};};
  t.after(()=>{db.close();assert.equal(dirname(folder),parent);rmSync(folder,{recursive:true,force:true});});
  return {get db(){return db;},migrate,setToday(day:string){today=day;},repo:()=>openActivityRepository(adapter()),async reopen(){db.close();db=new DatabaseSync(path);db.exec('PRAGMA foreign_keys=ON');return openActivityRepository(adapter());}};
@@ -21,7 +22,7 @@ test('R01 three new frequencies survive SQLite reopening with stable habit IDs a
 test('R02 migration005 preserves legacy October snapshots and unknown archive start without inferred frequency',async t=>{
  const f=fixture(t,4);f.db.prepare('UPDATE habits SET archived_at=? WHERE id=?').run('2026-10-27T20:00:00Z','read');
  for(const date of ['2026-10-26','2026-10-27'])f.db.prepare('INSERT INTO activities(id,habit_id,habit_name_snapshot,spheres_snapshot_json,occurred_on,recorded_at,timezone,contribution_snapshot_json) VALUES(?,?,?,?,?,?,?,?)').run(date,'read','Old reading','["mind"]',date,date+'T12:00:00Z','America/Los_Angeles',null);
- const entries=f.db.prepare('SELECT * FROM activities ORDER BY id').all(),habits=f.db.prepare('SELECT * FROM habits ORDER BY id').all();f.migrate(5);let r=await f.repo();assert.deepEqual(f.db.prepare('SELECT * FROM activities ORDER BY id').all(),entries);assert.deepEqual(f.db.prepare('SELECT * FROM habits ORDER BY id').all(),habits);let read=(await r.listHabits('all')).find(h=>h.id==='read')!;assert.deepEqual(read.frequencySegments,[]);assert.equal(read.archivePauses?.[0].startOn,null);assert.equal(read.archivePauses?.[0].provenance,'legacy_unknown');assert.equal(archivePauseAt(read.archivePauses!,'2000-01-01'),'legacy_unknown');
+ const entries=f.db.prepare('SELECT * FROM activities ORDER BY id').all(),habits=f.db.prepare('SELECT * FROM habits ORDER BY id').all();f.migrate(5);let r=await f.repo();assert.deepEqual(f.db.prepare('SELECT * FROM activities ORDER BY id').all(),entries);assert.deepEqual(f.db.prepare('SELECT * FROM habits ORDER BY id').all().map(h=>({...h})),habits.map(h=>({...h,icon_id:'sigil'})));let read=(await r.listHabits('all')).find(h=>h.id==='read')!;assert.deepEqual(read.frequencySegments,[]);assert.equal(read.archivePauses?.[0].startOn,null);assert.equal(read.archivePauses?.[0].provenance,'legacy_unknown');assert.equal(archivePauseAt(read.archivePauses!,'2000-01-01'),'legacy_unknown');
  f.setToday('2026-10-30');await r.restoreHabit('read');r=await f.reopen();read=(await r.listHabits()).find(h=>h.id==='read')!;assert.equal(read.archivePauses?.[0].endExclusiveOn,'2026-10-30');assert.equal(archivePauseAt(read.archivePauses!,'2026-10-29'),'legacy_unknown');assert.equal(archivePauseAt(read.archivePauses!,'2026-10-30'),'none');assert.deepEqual(await r.list(),entries.map(e=>({id:e.id,habitId:e.habit_id,habitName:e.habit_name_snapshot,spheres:['mind'],occurredOn:e.occurred_on,recordedAt:e.recorded_at,timezone:e.timezone,contributionSnapshot:null})).reverse());
  await r.updateHabit('read','Renamed',['mind'],undefined,{kind:'set',frequency:'weekly'});const enrolled=(await r.listHabits()).find(h=>h.id==='read')!;assert.equal(enrolled.frequencySegments?.[0].effectiveOn,'2026-10-30');assert.equal(frequencyAt(enrolled.frequencySegments!,'2026-10-27'),null);assert.deepEqual(f.db.prepare('SELECT * FROM activities ORDER BY id').all(),entries);
 });
@@ -45,4 +46,46 @@ test('R06 invalid edits and mid-transaction failure cannot damage the definition
 test('R07 SQLite constraints reject invalid local dates,enum,FK,overlapping pauses and duplicates',async t=>{
  const f=fixture(t);for(const date of ['2025-02-29','2026-13-01','2026-02-30'])assert.throws(()=>f.db.prepare('INSERT INTO habit_frequency_segments VALUES(?,?,?,?,?,?)').run(date,'read','daily',date,date,1));assert.throws(()=>f.db.prepare('INSERT INTO habit_frequency_segments VALUES(?,?,?,?,?,?)').run('bad-enum','read','whenever','2026-10-28','2026-10-28',1));assert.throws(()=>f.db.prepare('INSERT INTO habit_frequency_segments VALUES(?,?,?,?,?,?)').run('bad-fk','absent','daily','2026-10-28','2026-10-28',1));
  f.db.prepare('INSERT INTO habit_archive_pauses VALUES(?,?,?,?,?,?)').run('one','read','2026-10-28','2026-10-30','archive','recorded');assert.throws(()=>f.db.prepare('INSERT INTO habit_archive_pauses VALUES(?,?,?,?,?,?)').run('overlap','read','2026-10-29',null,'archive','recorded'));
+});
+
+test('001B creates and edits icons without changing identity, history, or pending rhythm', async t => {
+ const f=fixture(t), r=await f.repo();
+ const profile=defaultContributions(['mind'],'legacy-default');
+ const habit=await r.createHabit('Reading',['mind'],profile,'daily','book');
+ await r.log(habit,'2000-01-01');
+ await r.updateHabit(habit.id,habit.name,habit.spheres,profile,{kind:'set',frequency:'weekly'});
+ const before=(await r.listHabits()).find(item=>item.id===habit.id)!;
+ const activities=await r.list();
+ await r.updateHabit(habit.id,habit.name,habit.spheres,profile,{kind:'keep'},'music');
+ const reopened=await f.reopen();
+ assert.deepEqual((await reopened.listHabits()).find(item=>item.id===habit.id),{...before,iconId:'music'});
+ assert.deepEqual(await reopened.list(),activities);
+ await reopened.updateHabit(habit.id,'Morning walk',['body'],undefined,{kind:'keep'},'walk');
+ const edited=(await reopened.listHabits()).find(item=>item.id===habit.id)!;
+ assert.equal(edited.name,'Morning walk');
+ assert.equal(edited.iconId,'walk');
+ assert.deepEqual(edited.spheres,['body']);
+ assert.deepEqual(edited.frequencySegments,before.frequencySegments);
+ await reopened.archiveHabit(habit.id);
+ assert.equal((await reopened.listHabits('archived')).find(item=>item.id===habit.id)?.iconId,'walk');
+ f.setToday('2026-10-30');
+ await reopened.restoreHabit(habit.id);
+ assert.equal((await reopened.listHabits()).find(item=>item.id===habit.id)?.iconId,'walk');
+ assert.deepEqual(await reopened.list(),activities);
+});
+
+test('001B SQLite and the curated registry agree, and a later failure rolls back an icon edit', async t => {
+ const f=fixture(t), r=await f.repo();
+ const habit=await r.createHabit('Reading',['mind'],undefined,'daily');
+ const update=f.db.prepare('UPDATE habits SET icon_id=? WHERE id=?');
+ const schema=f.db.prepare("SELECT sql FROM sqlite_master WHERE name='habits'").get()?.sql as string;
+ const iconConstraint=schema.slice(schema.lastIndexOf('CHECK (icon_id IN'));
+ assert.deepEqual([...iconConstraint.matchAll(/'([^']+)'/g)].map(match=>match[1]).sort(),Object.keys(icons).sort());
+ for(const id of Object.keys(icons)) update.run(id,habit.id);
+ assert.throws(()=>update.run('invalid',habit.id));
+ const before=await r.listHabits('all');
+ await assert.rejects(r.updateHabit(habit.id,'Invalid',['mind'],undefined,{kind:'keep'},'invalid' as MedalIconId));
+ f.db.exec("CREATE TRIGGER synthetic_icon_failure BEFORE INSERT ON habit_frequency_segments BEGIN SELECT RAISE(ABORT,'synthetic'); END");
+ await assert.rejects(r.updateHabit(habit.id,'Rollback',['mind'],undefined,{kind:'set',frequency:'weekly'},'book'));
+ assert.deepEqual(await r.listHabits('all'),before);
 });

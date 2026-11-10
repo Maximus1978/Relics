@@ -1,3 +1,5 @@
+import HabitIconPicker from './HabitIconPicker';
+import { defaultHabitIcon } from '../domain/habitIcon';
 import { useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { spheres, type Habit, type SphereId } from '../domain/activity';
 import { HabitValidationError, validateHabitInput, type HabitInput } from '../domain/habit';
@@ -25,6 +27,7 @@ export default function HabitForm({ today, busy, canSave, habit, saveError, onSa
     const [rhythmChange, setRhythmChange] = useState<RhythmChange>({kind:'keep'});
     const [frequency, setFrequency] = useState<Frequency | ''>(status.pending?.frequency ?? status.current?.frequency ?? '');
     const frequencyInput = useRef<HTMLSelectElement>(null);
+    const [iconId, setIconId] = useState(habit?.iconId ?? defaultHabitIcon);
     const [name, setName] = useState(habit?.name ?? '');
     const [selected, setSelected] = useState<SphereId[]>(habit ? [...habit.spheres] : []);
     const [values, setValues] = useState<Record<SphereId, string>>(() => Object.fromEntries(contributionSphereIds.map(id => [id, String(habit?.contributionProfile?.values[id] ?? (habit?.spheres.includes(id) ? 5 : 0))])) as Record<SphereId, string>);
@@ -47,7 +50,15 @@ export default function HabitForm({ today, busy, canSave, habit, saveError, onSa
             const contributionProfile = validateContributionProfile({ version: 1, origin: 'user', values: Object.fromEntries(contributionSphereIds.map(id => [id, selected.includes(id) ? (values[id].trim() === '' ? NaN : Number(values[id])) : 0])) }, input.spheres);
             if (!habit) validateFrequency(frequency);
             setError(null);
-            await onSave({ ...input, contributionProfile, rhythmChange: !habit ? {kind:'set',frequency:validateFrequency(frequency)} : rhythmChange });
+            const savedProfile = habit?.contributionProfile;
+            const preserveProfile = savedProfile && contributionSphereIds.every(sphere =>
+                savedProfile.values[sphere] === contributionProfile.values[sphere]);
+            await onSave({
+                ...input,
+                iconId: iconId === habit?.iconId ? undefined : iconId,
+                contributionProfile: preserveProfile ? savedProfile : contributionProfile,
+                rhythmChange: !habit ? { kind: 'set', frequency: validateFrequency(frequency) } : rhythmChange,
+            });
         }
         catch (failure) {
             if (failure instanceof RhythmError) { setError({field:'rhythm',message:failure.message}); frequencyInput.current?.focus(); }
@@ -74,7 +85,7 @@ export default function HabitForm({ today, busy, canSave, habit, saveError, onSa
   <div className="habit-name-panel">
    <label className="name-field" htmlFor="habit-name">Название привычки</label>
    <input id="habit-name" ref={nameInput} autoFocus required value={name} disabled={busy} aria-invalid={error?.field === 'name'} aria-describedby={error?.field === 'name' ? 'habit-validation-error' : undefined} onChange={event => { setName(event.target.value); setError(null); }}/>
-   {habit?.contributionProfile?.origin === 'legacy-default' && <p className="contribution-default-note">Значения по умолчанию: 5. Сохранение подтвердит профиль только для новых записей.</p>}
+   {habit?.contributionProfile?.origin === 'legacy-default' && <p className="contribution-default-note">Значения по умолчанию: 5. Изменение вклада применится только к новым записям.</p>}
   </div>
   <section className="habit-rhythm" aria-labelledby="habit-rhythm-title">
    <label id="habit-rhythm-title" htmlFor="habit-frequency">Ритм привычки</label>
@@ -97,6 +108,7 @@ export default function HabitForm({ today, busy, canSave, habit, saveError, onSa
    {status.pending && rhythmChange.kind!=='cancel_pending' && <button type="button" data-cancel-pending disabled={busy || status.clockConflict}
     onClick={()=>{setRhythmChange({kind:'cancel_pending'});setFrequency(status.current?.frequency??'');setError(null);}}>Отменить запланированную смену</button>}
   </section>
+  <HabitIconPicker value={iconId} onChange={setIconId} disabled={busy} />
   <fieldset disabled={busy} aria-describedby="habit-spheres-help">
    <legend>Сферы и вклад</legend>
    <p id="habit-spheres-help">Ваша личная оценка вклада: от 1 до 10. Значения независимы — их не нужно складывать до 10 или 100.</p>

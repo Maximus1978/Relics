@@ -1,12 +1,13 @@
 {
   "create": [
     {
-      "sql": "INSERT INTO habits(id,name,spheres_json,contribution_profile_json) VALUES(?,?,?,?)",
+      "sql": "INSERT INTO habits(id,name,spheres_json,contribution_profile_json,icon_id) VALUES(?,?,?,?,COALESCE(?,'sigil'))",
       "params": [
         "id",
         "name",
         "spheres",
-        "profile"
+        "profile",
+        "iconId"
       ],
       "check": "changed"
     },
@@ -38,11 +39,12 @@
       "check": "valid"
     },
     {
-      "sql": "UPDATE habits SET name=?,spheres_json=?,contribution_profile_json=? WHERE id=?",
+      "sql": "UPDATE habits SET name=?,spheres_json=?,contribution_profile_json=?,icon_id=COALESCE(?,icon_id) WHERE id=?",
       "params": [
         "name",
         "spheres",
         "profile",
+        "iconId",
         "id"
       ],
       "check": "changed"

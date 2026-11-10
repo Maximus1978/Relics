@@ -1,4 +1,5 @@
 use super::model::{self, Activity, Backup, BackupResult, Data, Habit};
+use crate::habit_icon::IconId;
 use sqlx::{Connection, Row, SqliteConnection, SqlitePool};
 use std::{
     fs::{self, File},
@@ -82,7 +83,7 @@ pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup>
     {
         return Err("История ритма превышает ограничения копии;данные не обрезаны.".into());
     }
-    let habit_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(name AS BLOB)) + length(CAST(spheres_json AS BLOB)) + COALESCE(length(archived_at),0) + COALESCE(length(CAST(contribution_profile_json AS BLOB)),0)),0) AS bytes FROM habits")
+    let habit_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(name AS BLOB)) + length(CAST(spheres_json AS BLOB)) + COALESCE(length(archived_at),0) + COALESCE(length(CAST(contribution_profile_json AS BLOB)),0) + length(CAST(icon_id AS BLOB))),0) AS bytes FROM habits")
         .fetch_one(&mut *connection).await.map_err(|_| "Не удалось проверить размер привычек.")?;
     let activity_size = sqlx::query("SELECT COUNT(*) AS total, COALESCE(SUM(length(CAST(id AS BLOB)) + length(CAST(habit_id AS BLOB)) + length(CAST(habit_name_snapshot AS BLOB)) + length(CAST(spheres_snapshot_json AS BLOB)) + length(occurred_on) + length(recorded_at) + length(timezone) + COALESCE(length(CAST(contribution_snapshot_json AS BLOB)),0)),0) AS bytes FROM activities")
         .fetch_one(&mut *connection).await.map_err(|_| "Не удалось проверить размер журнала.")?;
@@ -98,7 +99,7 @@ pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup>
         );
     }
     let habit_rows = sqlx::query(
-        "SELECT id, name, spheres_json, archived_at, contribution_profile_json FROM habits ORDER BY rowid LIMIT 20001",
+        "SELECT id, name, spheres_json, archived_at, contribution_profile_json, icon_id FROM habits ORDER BY rowid LIMIT 20001",
     )
     .fetch_all(&mut *connection)
     .await
@@ -111,6 +112,7 @@ pub async fn snapshot(connection: &mut SqliteConnection) -> BackupResult<Backup>
             id: row.get("id"),
             name: row.get("name"),
             archived_at: row.get("archived_at"),
+            icon_id: IconId::parse(row.get("icon_id"))?,
             contribution_profile: serde_json::from_str(
                 &row.try_get::<String, _>("contribution_profile_json")
                     .map_err(|_| "Отсутствует профиль вклада привычки.")?,
@@ -229,12 +231,13 @@ pub(crate) async fn replace(
         .map_err(|_| "Не удалось заменить привычки; транзакция отменена.")?;
     after_delete()?;
     for habit in &backup.data.habits {
-        sqlx::query("INSERT INTO habits (id, name, spheres_json, archived_at, contribution_profile_json) VALUES (?, ?, ?, ?, ?)")
+        sqlx::query("INSERT INTO habits (id, name, spheres_json, archived_at, contribution_profile_json, icon_id) VALUES (?, ?, ?, ?, ?, ?)")
             .bind(&habit.id)
             .bind(&habit.name)
             .bind(serde_json::to_string(&habit.spheres).map_err(|_| "Ошибка сфер.")?)
             .bind(&habit.archived_at)
             .bind(serde_json::to_string(&habit.contribution_profile).map_err(|_|"Ошибка профиля вклада.")?)
+            .bind(habit.icon_id.as_str())
             .execute(&mut *transaction)
             .await
             .map_err(|_| "Не удалось восстановить привычки; транзакция отменена.")?;

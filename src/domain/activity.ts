@@ -1,3 +1,5 @@
+import { defaultHabitIcon } from './habitIcon.ts';
+import type { MedalIconId } from '../ui/sigils/medalDesign.ts';
 import type { FrequencySegment, ArchivePause } from './habitRhythm.ts';
 import { defaultContributions } from './contributions.ts';
 import type { ContributionProfile } from './contributions.ts';
@@ -10,7 +12,7 @@ export const spheres = {
 } as const;
 
 export type SphereId = keyof typeof spheres;
-export type Habit = { id: string; name: string; spheres: SphereId[]; archivedAt: string | null; contributionProfile: ContributionProfile; frequencySegments?: FrequencySegment[]; archivePauses?: ArchivePause[] };
+export type Habit = { id: string; name: string; spheres: SphereId[]; archivedAt: string | null; iconId: MedalIconId; contributionProfile: ContributionProfile; frequencySegments?: FrequencySegment[]; archivePauses?: ArchivePause[] };
 export type Activity = {
   id: string;
   habitId: string;
@@ -22,12 +24,12 @@ export type Activity = {
   contributionSnapshot: ContributionProfile | null;
 };
 
-const originalSamples: Omit<Habit,'contributionProfile'>[] = [
+const originalSamples: Omit<Habit,'contributionProfile'|'iconId'>[] = [
   { id: 'walk', name: 'Прогулка', spheres: ['body', 'recovery'], archivedAt: null },
   { id: 'read', name: 'Чтение', spheres: ['mind'], archivedAt: null },
   { id: 'connect', name: 'Разговор с близким', spheres: ['relationships'], archivedAt: null },
 ];
-export const sampleHabits: Habit[]=originalSamples.map(habit=>({...habit,contributionProfile:defaultContributions(habit.spheres,'legacy-default')}));
+export const sampleHabits: Habit[]=originalSamples.map(habit=>({...habit,iconId:defaultHabitIcon,contributionProfile:defaultContributions(habit.spheres,'legacy-default')}));
 
 export function localDay(date = new Date()): string {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;

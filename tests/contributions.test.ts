@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { contributionSphereIds as ids, defaultContributions, validateContributionProfile, parseContributionProfile, type ContributionProfile } from '../src/domain/contributions.ts';
 import { openActivityRepository, type SqlDatabase } from '../src/data/activityRepository.ts';
-const sql = (version: number) => readFileSync(new URL('../src-tauri/migrations/' + ['001_initial.sql', '002_archive_habits.sql', '003_seed_once.sql', '004_habit_contributions.sql','005_habit_rhythm.sql'][version - 1], import.meta.url), 'utf8');
+const sql = (version: number) => readFileSync(new URL('../src-tauri/migrations/' + ['001_initial.sql', '002_archive_habits.sql', '003_seed_once.sql', '004_habit_contributions.sql','005_habit_rhythm.sql','006_habit_icons.sql'][version - 1], import.meta.url), 'utf8');
 function adapt(db: DatabaseSync): SqlDatabase {
     const bind = (query: string, args: unknown[]) => Object.fromEntries([...new Set(query.match(/\$\d+/g) ?? [])].map((key, i) => [key, args[i] as SQLInputValue]));
     return { mutateHabit:createHabitMutationDriver(db), async execute(q, args = []) { return { rowsAffected: Number(db.prepare(q).run(bind(q, args)).changes) }; }, async select<T>(q: string, args: unknown[] = []) { return db.prepare(q).all(bind(q, args)) as T; } };
@@ -19,7 +19,7 @@ function fixture(context: test.TestContext) {
     const path = join(directory, 'synthetic.db');
     let db = new DatabaseSync(path);
     const migrate = (from = 1) => { db.exec('BEGIN'); try {
-        for (let v = from; v <= 5; v++)
+        for (let v = from; v <= 6; v++)
             db.exec(sql(v));
         db.exec('COMMIT');
     }

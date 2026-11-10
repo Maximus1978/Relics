@@ -75,8 +75,8 @@ export function useRelicsModel() {
 
   async function saveHabit(input: HabitInput) {
     await perform(async store => {
-      if (editingHabit) await store.updateHabit(editingHabit.id, input.name, input.spheres, input.contributionProfile, input.rhythmChange);
-      else { await store.createHabit(input.name, input.spheres, input.contributionProfile, input.rhythmChange?.kind === 'set' ? input.rhythmChange.frequency : undefined); setShowArchived(false); }
+      if (editingHabit) await store.updateHabit(editingHabit.id, input.name, input.spheres, input.contributionProfile, input.rhythmChange, input.iconId);
+      else { await store.createHabit(input.name, input.spheres, input.contributionProfile, input.rhythmChange?.kind === 'set' ? input.rhythmChange.frequency : undefined, input.iconId); setShowArchived(false); }
       setCreatingHabit(false); setEditingHabit(null);
     }, 'Привычка сохранена.');
   }

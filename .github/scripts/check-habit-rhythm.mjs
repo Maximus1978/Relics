@@ -10,7 +10,7 @@ import {createHabitMutationDriver} from './habit-sql-test-driver.mjs';
 export async function checkHabitRhythm({send,evaluate,until,click,viewport,screenshot,bindIpc,output}){
  const parent=resolve(tmpdir()),directory=mkdtempSync(join(parent,'relics-rhythm-ui-')),path=join(directory,'synthetic.db');
  let db=new DatabaseSync(path);db.exec('PRAGMA foreign_keys=ON');
- for(const f of ['001_initial.sql','002_archive_habits.sql','003_seed_once.sql','004_habit_contributions.sql','005_habit_rhythm.sql'])db.exec(readFileSync(new URL('../../src-tauri/migrations/'+f,import.meta.url),'utf8'));
+ for(const f of ['001_initial.sql','002_archive_habits.sql','003_seed_once.sql','004_habit_contributions.sql','005_habit_rhythm.sql','006_habit_icons.sql'])db.exec(readFileSync(new URL('../../src-tauri/migrations/'+f,import.meta.url),'utf8'));
  const today=await evaluate('document.querySelector("input[type=date]").max');
  const date=new Date(today+'T12:00:00Z');date.setUTCDate(date.getUTCDate()+((8-date.getUTCDay())%7||7));const monday=date.toISOString().slice(0,10);
  db.prepare('INSERT INTO activities(id,habit_id,habit_name_snapshot,spheres_snapshot_json,occurred_on,recorded_at,timezone,contribution_snapshot_json) VALUES(?,?,?,?,?,?,?,?)').run('old-26','read','Чтение 26 октября','["mind"]','2026-10-26','2026-10-26T12:00:00Z','Synthetic',null);
@@ -40,15 +40,58 @@ export async function checkHabitRhythm({send,evaluate,until,click,viewport,scree
    if(frequency==='daily'){
     await click('.creation-form button[type=submit]');await until('document.activeElement.id==="habit-frequency"&&document.querySelector("#habit-validation-error").textContent.includes("ритм")','New habit requires explicit rhythm and focuses accessible selector');
     const ax=await send('Accessibility.getFullAXTree');assert.ok(ax.nodes.some(n=>n.role?.value==='combobox'&&n.name?.value.includes('Ритм')));
+    const iconOptions = await evaluate(`[...document.querySelectorAll('.habit-icons__option')].map(label=>label.textContent.trim())`);
+    assert.equal(iconOptions.length,12);
+    assert.ok(iconOptions.every(label=>ax.nodes.some(node=>node.role?.value==='radio'&&node.name?.value===label)));
+    assert.equal(await evaluate('document.querySelector("input[name=habit-icon]:checked").value'),'sigil');
+    await evaluate('document.querySelector("input[name=habit-icon]:checked").focus()');
+    await send('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
+    await send('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
+    await until('document.querySelector(".habit-icons__preview .habit-medal").dataset.icon==="walk"','Arrow keys select an accessible radio and update the Create medal');
+    assert.equal(await evaluate('document.querySelectorAll("input[name=habit-icon]:checked").length'),1);
    }
-   await select(frequency);await screenshot('habit-rhythm-create-'+frequency+'.png');await save();
+   await select(frequency);
+   if(frequency==='daily'){
+    await until('(() => { const medal = document.querySelector(".habit-icons__preview .habit-medal"); return medal?.dataset.icon === "walk" && medal.dataset.material === "stone" && medal.dataset.stage === "1"; })()','Create retains the selected icon when frequency changes');
+    await evaluate('document.querySelector(".world-dialog").scrollTop=0');
+    await screenshot('habit-icon-create.png');
+   }
+   await screenshot('habit-rhythm-create-'+frequency+'.png');await save();
    const habit=db.prepare('SELECT * FROM habits WHERE name=?').get(name),segments=db.prepare('SELECT * FROM habit_frequency_segments WHERE habit_id=?').all(habit.id);
-   assert.equal(segments.length,1);assert.equal(segments[0].effective_on,today);assert.equal(segments[0].frequency,frequency);created.push(habit.id);
+   assert.equal(segments.length,1);assert.equal(segments[0].effective_on,today);assert.equal(segments[0].frequency,frequency);assert.equal(habit.icon_id,frequency==='daily'?'walk':'sigil');created.push(habit.id);
   }
   const id=created[2];await edit(id);await select('daily');await until('document.querySelector(".rhythm-draft").textContent.includes('+JSON.stringify(monday)+')','Pending preview uses next Monday after actual today, not selected backdate');await save();
   let segments=db.prepare('SELECT * FROM habit_frequency_segments WHERE habit_id=? ORDER BY effective_on').all(id);assert.equal(segments.length,2);const pendingId=segments[1].id;assert.equal(segments[0].frequency,'weekly');assert.equal(segments[1].effective_on,monday);
   await edit(id);await until('document.querySelector("[data-current-rhythm]").textContent.includes("Раз в неделю")&&document.querySelector("[data-pending-rhythm]").textContent.includes('+JSON.stringify(monday)+')','Current and pending rules have separate readable labels and exact date');
   await screenshot('habit-rhythm-edit-pending.png');await viewport(390,844);assert.ok(await evaluate('document.querySelector(".world-dialog").scrollWidth<=innerWidth'));await screenshot('habit-rhythm-edit-narrow.png');await viewport(1440,1100);
+  const definitionBeforeIcon=db.prepare('SELECT * FROM habits WHERE id=?').get(id);
+  const slotCraft=await evaluate('document.querySelector(".habit-icons__preview [data-layer=craft]").innerHTML');
+  await click('.habit-icons__option:has(input[value="bicycle"])');
+  await until('document.querySelector(".habit-icons__preview .habit-medal").dataset.icon==="bicycle"','Click switches the live Edit medal immediately');
+  assert.equal(await evaluate('document.querySelector(".habit-icons__preview [data-layer=craft]").innerHTML'),slotCraft);
+  await evaluate('document.querySelector(".world-dialog").scrollTop=0');
+  await screenshot('habit-icon-edit.png');
+  await viewport(390,844);
+  const touch=await evaluate(`(() => {
+    const option = document.querySelector('.habit-icons__option:has(input[value="book"])');
+    option.scrollIntoView({block:'center'});
+    const box = option.getBoundingClientRect();
+    return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+  })()`);
+  await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1});
+  try {
+   await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch]});
+   await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   await until('document.querySelector(".habit-icons__preview .habit-medal").dataset.icon==="book"','Touch selects the icon in the narrow Edit layout');
+  } finally { await send('Emulation.setTouchEmulationEnabled',{enabled:false}); }
+  assert.ok(await evaluate('document.querySelector(".world-dialog").scrollWidth<=innerWidth'));
+  await evaluate('document.querySelector(".habit-icons").scrollIntoView({block:"start"})');
+  await screenshot('habit-icon-edit-narrow.png');
+  await viewport(1440,1100);
+  await save();
+  assert.deepEqual({...db.prepare('SELECT * FROM habits WHERE id=?').get(id)},{...definitionBeforeIcon,icon_id:'book'});
+  assert.deepEqual(db.prepare('SELECT * FROM habit_frequency_segments WHERE habit_id=? ORDER BY effective_on').all(id),segments);
+  await edit(id);
   await click('[data-cancel-pending]');await cancel();assert.equal(db.prepare('SELECT COUNT(*) n FROM habit_frequency_segments WHERE habit_id=?').get(id).n,2);
   await edit(id);await select('three_per_week');await save();segments=db.prepare('SELECT * FROM habit_frequency_segments WHERE habit_id=? ORDER BY effective_on').all(id);assert.equal(segments.length,2);assert.equal(segments[1].id,pendingId);assert.equal(segments[1].frequency,'three_per_week');
   await edit(id);await click('[data-cancel-pending]');await save();assert.equal(db.prepare('SELECT COUNT(*) n FROM habit_frequency_segments WHERE habit_id=?').get(id).n,1);
@@ -58,7 +101,8 @@ export async function checkHabitRhythm({send,evaluate,until,click,viewport,scree
   assert.deepEqual(db.prepare('SELECT * FROM activities WHERE id=?').get('old-26'),old);
   db.close();db=new DatabaseSync(path);db.exec('PRAGMA foreign_keys=ON');mutate=createHabitMutationDriver(db,()=>today);
   await send('Page.reload');await until('document.querySelectorAll(".relic-item").length===6','Closing and reopening synthetic SQLite plus app reload preserves three new definitions');
-  await edit(id);await until('document.querySelector("[data-current-rhythm]").textContent.includes("Раз в неделю")&&!document.querySelector("[data-pending-rhythm]")','Canceled pending rule remains canceled after database reopening');await cancel();
+  await edit(id);await until('document.querySelector("[data-current-rhythm]").textContent.includes("Раз в неделю")&&!document.querySelector("[data-pending-rhythm]")','Canceled pending rule remains canceled after database reopening');
+  await until('document.querySelector("input[name=habit-icon]:checked").value==="book"','Edited icon survives SQLite reopen and application reload');await cancel();
   await click('.app-rail [data-nav=chronicle]');await until('[...document.querySelectorAll(".entry h3")].some(e=>e.textContent==="Чтение 26 октября")','Unconfigured legacy activity remains visible unchanged in Chronicle');
   assert.deepEqual(db.prepare('SELECT * FROM activities WHERE id=?').get('old-26'),old);assert.deepEqual(db.prepare('SELECT * FROM activities WHERE id=?').get(logged.id),logged);
   await writeFile(join(output,'habit-rhythm-proof.json'),JSON.stringify({syntheticTemporarySqlite:true,mockedNativeIpc:true,nativeUiRuntimeVerified:false,ownerJournalTouched:false,today,nextMonday:monday,createdFrequencies:['daily','three_per_week','weekly'],checks:'required selector/legacy keep/enrollment actual today/current+pending/replace stable ID/cancel draft and saved/reopen/backdated snapshots/narrow/AX',nativeRecoveryTests:'separate Rust suite'},null,2));
