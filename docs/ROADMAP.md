@@ -1,5 +1,9 @@
 # Roadmap
 
+## Progression experiment
+
+PROGRESS-002A is in experimental review. The pure replay and simulator supersede the earlier approval-first scheduling note below. PROGRESS-002B remains gated on approval of the applicable numerical rules and display contract. [Rules and evidence](PROGRESS_002A.md).
+
 ## Execution rule and current release
 
 DOC-GAME-002 is complete: approved product decisions consolidated, owner-accepted STATE-001 released by regular merge of PR #6 at be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9, with only Markdown changes after the tested implementation. The owner tested STATE-001 on Windows and accepted its functionality/current visual direction, four-state rune, independent daily stones and responsive technical layers. Preserve this implementation; art imperfections are non-blocking. HANDOFF records actual merge/evidence.
@@ -11,8 +15,8 @@ The owner resumed HABIT-SIGILS-001A on the current computer on 2026-11-09. [Owne
 - **001A · owner accepted and merged.** Isolated visual workshop for six materials and three stages. A common empty center accepts an independent material-treated SVG through `iconId`. The owner accepted the designs and PR #14 merged at 33cddc2ee74632604fc36f20283a639eee7f9cc9. [PR #14](https://github.com/Maximus1978/Relics/pull/14).
 - **001B · active.** Create/Edit icon picker and Stone 1 preview, persisted icon identity, neutral legacy default, additive schema 006 and backup v4. Owner review follows the implementation PR.
 - **001C · queued.** Compact production cards, green completion check, card interaction, management menu and accessible cancellation.
-- **PROGRESS-002A · experimental review.** Pure deterministic Mastery, Forging and Resonance replay with a synthetic simulator. [Rules and evidence](PROGRESS_002A.md).
-- **PROGRESS-002B · queued.** Connect progression to material, stage, Forging indicator and light after explicit approval of the applicable numerical candidates.
+- **PROGRESS-002A · queued.** Deterministic Mastery, Forging and Resonance after numerical approval.
+- **PROGRESS-002B · queued.** Connect progression to material, stage, Forging indicator and light.
 
 The later sequence retains ARCHIVE-CLEANUP-001, AUDIO-001 and the approved backlog. Android remains deferred until Windows core mechanics are validated and the owner schedules it.
 
