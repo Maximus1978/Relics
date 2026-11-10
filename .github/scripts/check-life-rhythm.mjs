@@ -51,7 +51,7 @@ export async function checkLifeRhythm({send,evaluate,until,click,viewport,output
  await evaluate('(()=>{const input=document.querySelector("input[type=date]");const d=new Date(input.max+"T12:00:00");d.setDate(d.getDate()-((d.getDay()+6)%7)-3);const day=[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value").set.call(input,day);input.dispatchEvent(new Event("input",{bubbles:true}));input.dispatchEvent(new Event("change",{bubbles:true}));})()');
  assert.equal(await read(),initial,'Selected logging date does not reanchor analytics');
  await click('[data-habit-id=demo-guitar] .completion-button');
- await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled','Backdated journal logging remains one click');
+ await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").getAttribute("aria-pressed")==="true"','Backdated journal logging remains one click');
  await until('Number(document.querySelector(".rhythm-quality strong").textContent)===25','Backdated addition refreshes real snapshot aggregation');
  await click('[aria-label="Разделы Relics"] button:nth-child(2)');
  await until('!!document.querySelector("#chronicle")','Chronicle navigation opens distinct history view');

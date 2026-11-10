@@ -6,10 +6,9 @@ type Props = {
   disabled: boolean;
   onEdit: () => void;
   onArchive: () => void;
-  onRestore: () => void;
 };
 
-export default function HabitActions({ habit, disabled, onEdit, onArchive, onRestore }: Props) {
+export default function HabitActions({ habit, disabled, onEdit, onArchive }: Props) {
   function act(event: MouseEvent<HTMLButtonElement>, action: () => void) {
     const disclosure = event.currentTarget.closest('details');
     if (disclosure) disclosure.open = false;
@@ -28,9 +27,7 @@ export default function HabitActions({ habit, disabled, onEdit, onArchive, onRes
     </summary>
     <div className="habit-action-options">
       <button type="button" disabled={disabled} onClick={event => act(event, onEdit)}>Изменить</button>
-      {habit.archivedAt === null
-        ? <button type="button" disabled={disabled} onClick={event => act(event, onArchive)}>В архив…</button>
-        : <button type="button" disabled={disabled} onClick={event => act(event, onRestore)}>Восстановить</button>}
+      {habit.archivedAt === null && <button type="button" disabled={disabled} onClick={event => act(event, onArchive)}>В архив…</button>}
     </div>
   </details>;
 }

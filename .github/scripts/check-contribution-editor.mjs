@@ -54,8 +54,8 @@ export async function checkContributionEditor({send,evaluate,until,click,viewpor
  await click(checkbox('recovery'));await until('document.querySelector("#contribution-number-recovery").value==="5"','Reselect resets contribution to5');
  for(const s of ['body','relationships','work'])await click(checkbox(s));
  await value('mind','7');await value('recovery','3');await evaluate('document.querySelector("#habit-frequency").value="daily";document.querySelector("#habit-frequency").dispatchEvent(new Event("change",{bubbles:true}))');await click('.creation-form button[type=submit]');
- await until('!document.querySelector(".creation-form")&&[...document.querySelectorAll(".relic-item h4")].some(h=>h.textContent==="Вклад — проверка")','Valid contribution habit saves without an extra logging step');
- const card=await evaluate('[...document.querySelectorAll(".relic-item")].find(c=>c.querySelector("h4").textContent==="Вклад — проверка").dataset.habitId');
+ await until('!document.querySelector(".creation-form")&&[...document.querySelectorAll(".relic-item__name")].some(h=>h.textContent==="Вклад — проверка")','Valid contribution habit saves without an extra logging step');
+ const card=await evaluate('[...document.querySelectorAll(".relic-item")].find(c=>c.querySelector(".relic-item__name").textContent==="Вклад — проверка").dataset.habitId');
  async function edit(){await click(`[data-habit-id="${card}"] .habit-actions summary`);await click(`[data-habit-id="${card}"] .habit-action-options button:first-child`);await until('document.querySelector("#habit-name")?.value==="Вклад — проверка"','Edit opens saved contribution profile');}
  await edit();await until('document.querySelector("#contribution-number-mind").value==="7"&&document.querySelector("#contribution-number-recovery").value==="3"','Edit restores exact independent saved values');
  await screenshot('weights-edit-two.png');await click(checkbox('recovery'));await screenshot('weights-edit-one.png');
@@ -65,7 +65,7 @@ export async function checkContributionEditor({send,evaluate,until,click,viewpor
  await edit();await until('document.querySelector("#contribution-number-mind").value==="7"&&document.querySelector("#contribution-number-recovery").value==="3"&&[...document.querySelectorAll(".creation-form input[type=checkbox]")].filter(i=>i.checked).length===2','Canceled edit preserves the saved contribution profile');
  await press('Escape','Escape',27);await until('!document.querySelector(".creation-form")','Close contribution editor');
  await click(`[data-habit-id="${card}"] .completion-button`);
- await until(`document.querySelector('[data-habit-id="${card}"] .completion-button').disabled`,'Ordinary weighted habit completion remains one click');
+ await until(`document.querySelector('[data-habit-id="${card}"] .completion-button').getAttribute('aria-pressed')==='true'`,'Ordinary weighted habit completion remains one click');
  await send('Page.reload');await until('document.querySelectorAll(".relic-item").length===6','Contribution preview resets and never persists real data');
  await viewport(1440,900);
 }

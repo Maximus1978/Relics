@@ -1,3 +1,13 @@
+# HABIT-SIGILS-001C — Sanctuary habit cards
+
+The owner accepted HABIT-SIGILS-001B on Windows and authorized the regular merge of [PR #15](https://github.com/Maximus1978/Relics/pull/15). The reviewed head was `90d378861d710b9b7b8f68dae01f9ab38c5a4a99`, with [successful Windows CI](https://github.com/Maximus1978/Relics/actions/runs/42856062998). The 001C branch starts from verified master merge `d9a56456d705e9bde0625022844137a907c6a6fa`, whose tree matches the tested head.
+
+Sanctuary now renders the saved habit icon using the approved HabitMedal. Stone, stage 1 and zero Resonance are fixed presentation defaults until real progression. The green check and accessible pressed state belong to the selected date. The existing repository records or removes exactly the selected event. A repeat activation cancels without confirmation. Recording again creates a new event with current snapshots. The card waits for storage and refresh, and blocks a second activation while pending. A failed write leaves the prior state and announces the error. A committed write followed by a refresh failure disables further card mutations until restart. The archive uses a static card and separate Restore control.
+
+For Windows acceptance, use the Windows x64 ZIP from the implementation PR checks and launch `relics.exe` with WebView2. Create two test habits with different icons, then change one icon in Edit. Select a past date and activate one card, then return to Today to confirm date independence. Reopen offline, reselect the past date and verify the saved icon and green check. Activate it again and verify that its Chronicle entry is removed while the other date's history stays intact. Tab to a card and its menu independently. Open the archive, check that its cards have no logging action, and restore the test habit.
+
+The approved medal assets, central rune and shrines are unchanged. SQLite schema 6, backup v4, Chronicle, Life Rhythm and historical habit data keep their existing contracts. The Windows build is unsigned. Browser screenshots use synthetic data and the PR tracks Windows build and runtime evidence separately. Keep the implementation PR open for owner acceptance. PROGRESS-002A remains queued.
+
 # HABIT-SIGILS-001B — icon selection and persistence
 
 The owner accepted the 001A artwork on 2026-11-10. PR #14 was verified against reviewed head 5913c136e71a6f2362683a1af2582f30ab6ea355 and Windows run 42653290503 for tested head 670f4b2df0bc618b2bb88ff8313aa91cb763443c. Only HANDOFF and ROADMAP changed after the tested head. Normal merge 33cddc2ee74632604fc36f20283a639eee7f9cc9 was verified on origin/master. The 001B feature branch starts there.
