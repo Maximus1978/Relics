@@ -14,14 +14,14 @@ test('an unrecorded selected day is subdued, without evaluating failure or chang
   const before = structuredClone(entries);
   const selected = selectedDayActivity(entries, '2026-10-28');
   assert.deepEqual(selected.illuminated, dark);
-  assert.equal(selected.completedHabitIds.size, 0);
+  assert.equal(selected.activityIdsByHabit.size, 0);
   assert.deepEqual(entries, before);
 });
 
 test('one saved snapshot illuminates its sphere and only its completed habit', () => {
   const selected = selectedDayActivity([entry('a', '2026-10-27', ['mind'])], '2026-10-27');
   assert.deepEqual(selected.illuminated, { ...dark, mind: true });
-  assert.deepEqual([...selected.completedHabitIds], ['habit-a']);
+  assert.deepEqual([...selected.activityIdsByHabit], [['habit-a', 'a']]);
 });
 
 test('multisphere and overlapping activities illuminate every sphere once', () => {
@@ -30,7 +30,7 @@ test('multisphere and overlapping activities illuminate every sphere once', () =
     entry('c', '2026-10-27', ['relationships', 'work']),
   ], '2026-10-27');
   assert.deepEqual(selected.illuminated, { body: true, mind: true, relationships: true, work: true, recovery: true });
-  assert.equal(selected.completedHabitIds.size, 3);
+  assert.equal(selected.activityIdsByHabit.size, 3);
 });
 
 test('cancellation immediately recomputes the remaining recorded contributions', () => {
@@ -65,6 +65,6 @@ test('empty/invalid date input cannot crash the presentation or fabricate activi
   const entries = [entry('a', '2026-02-30', ['mind'])];
   for (const day of ['', 'invalid', '0000-01-01', '2026-02-30']) {
     assert.deepEqual(selectedDayActivity(entries, day).illuminated, dark);
-    assert.equal(selectedDayActivity(entries, day).completedHabitIds.size, 0);
+    assert.equal(selectedDayActivity(entries, day).activityIdsByHabit.size, 0);
   }
 });

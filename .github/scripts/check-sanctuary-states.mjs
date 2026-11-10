@@ -29,7 +29,7 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   }
   async function log(id) {
     await click(`[data-habit-id="demo-${id}"] .completion-button`);
-    await until(`document.querySelector('[data-habit-id="demo-${id}"]')?.dataset.state === 'illuminated' && !document.querySelector('.save-status').textContent.includes('Сохраняем')`, `Saved ${id} awakens its ordinary relic`);
+    await until(`document.querySelector('[data-habit-id="demo-${id}"]')?.dataset.completed === 'true' && !document.querySelector('.save-status').textContent.includes('Сохраняем')`, `Saved ${id} shows its selected-day check`);
   }
   async function go(view) {await click('.app-rail [data-nav='+view+']');await until('document.activeElement.id==='+JSON.stringify(view==='chronicle'?'journal-title':'sanctuary-title'),'State test navigates to '+view);}
   async function cancelMatching(name, day) {
@@ -49,7 +49,7 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
 
   await selectDay('2000-01-01');
   await expectSpheres([], 'Unrecorded past day subdues every gemstone without disabling habits');
-  assert.equal(await evaluate('[...document.querySelectorAll(".completion-button")].every(button => !button.disabled)'), true);
+  assert.equal(await evaluate('[...document.querySelectorAll(".completion-button")].every(button => button.getAttribute("aria-disabled")==="false")'), true);
   assert.deepEqual(await evaluate('[...document.querySelectorAll(".recorded-ring")].map(node => node.getAttribute("aria-label"))'), observation);
   assert.equal(await evaluate('document.querySelector(".sanctuary-rune").dataset.represented'), '3');
   await screenshot('state-empty-selected-day-recent-diverse.png');
@@ -67,7 +67,7 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await click('.creation-form input[value="recovery"]');
   await click('.creation-form input[value="body"]');
   await click('.creation-form button[type="submit"]');
-  await until('!document.querySelector(".creation-form") && document.querySelector("[data-habit-id=demo-guitar]")?.dataset.sphere === "body"', 'Definition changes future identity, not historical contributions');
+  await until('!document.querySelector(".creation-form") && document.querySelector("[data-habit-id=demo-guitar]")?.querySelector(".sphere-tags span").dataset.sphere === "body"', 'Definition changes future identity, not historical contributions');
   await expectSpheres(['mind', 'recovery'], 'Edited definitions leave saved sphere illumination unchanged');
   await cancelMatching('Гитара', '2000-01-01');
   await expectSpheres(['mind'], 'Cancelling a multisphere snapshot removes only its remaining contributions');
@@ -89,7 +89,7 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await closeup('medallion-dormant.png');
   await geometry.capture('dormant');
   await checkMedallionLayers({output,evaluate,send,viewport,screenshot});
-  await closeup('habit-gem-subdued.png', '[data-habit-id="demo-walk"] .relic-art');
+  await closeup('habit-medal-unrecorded.png', '[data-habit-id="demo-walk"] .habit-medal');
   await viewport(390, 844);
   await screenshot('state-subdued-narrow.png');
   await viewport(1440, 900);
@@ -117,7 +117,7 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await screenshot('state-all-five-desktop.png');
   await closeup('medallion-harmony.png');
   await geometry.capture('harmony');
-  await closeup('habit-gem-illuminated.png', '[data-habit-id="demo-walk"] .relic-art');
+  await closeup('habit-medal-recorded.png', '[data-habit-id="demo-walk"] .habit-medal');
   for (const [width, height] of [[1280,800],[1000,800],[390,844],[320,844]]) {
     await viewport(width,height);
     await until('document.documentElement.scrollWidth <= innerWidth', `All-sphere state fits ${width}px`);
@@ -136,7 +136,7 @@ export async function checkSanctuaryStates({ output, send, evaluate, until, clic
   await until('!document.querySelector("[data-habit-id=demo-connect]")', 'Archived habit is removed from active cards');
   await expectSpheres(['body', 'mind', 'relationships', 'work', 'recovery'], 'Archived historical snapshots still illuminate every recorded sphere');
   await click('.inventory-heading .button-quiet');
-  await until('document.querySelector("[data-habit-id=demo-connect] .relic-art")?.dataset.state === "illuminated" && !document.querySelector(".completion-button")', 'Archive retains its selected-day historical gem without allowing logging');
+  await until('document.querySelector("[data-habit-id=demo-connect] .relic-item__check") && !document.querySelector(".completion-button")', 'Archive retains its selected-day historical check without allowing logging');
   await click('[data-habit-id="demo-connect"] .restore-button');
   await until('!document.querySelector("[data-habit-id=demo-connect]")','Restored synthetic habit leaves archive without losing its history');
   await click('.inventory-heading .button-quiet');

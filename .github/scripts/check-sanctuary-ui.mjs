@@ -70,8 +70,8 @@ async function click(selector) {
 async function viewport(width, height = 1000) {
   await send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
 }
-async function screenshot(name) {
-  await evaluate('window.scrollTo(0, 0)');
+async function screenshot(name, resetScroll = true) {
+  if (resetScroll) await evaluate('window.scrollTo(0, 0)');
   const captured = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
   await writeFile(join(output, name), Buffer.from(captured.data, 'base64'));
 }
@@ -136,12 +136,24 @@ try {
   await press('Escape', 'Escape', 27);
   await until('!document.querySelector(".creation-form") && document.activeElement.matches(".inventory-heading .button-primary")', 'Escape cancels and returns focus');
 
+  await until('document.querySelectorAll("#habit-list > .relic-item").length === 6 && [...document.querySelectorAll("#habit-list .habit-medal")].every(medal => medal.dataset.icon === "sigil" && medal.dataset.material === "stone" && medal.dataset.stage === "1" && medal.dataset.resonance === "0")', 'Legacy definitions render the same neutral Stone 1 instead of first-sphere pendants');
+  assert.equal(await evaluate('document.querySelectorAll("#habit-list .relic-item__check").length'), 1);
+  const nameAndDate = await evaluate('document.querySelector("[data-habit-id=demo-guitar] .completion-button").ariaLabel');
+  const accessible = await send('Accessibility.getFullAXTree');
+  assert.ok(accessible.nodes.some(node => node.role?.value === 'button' && node.name?.value === nameAndDate && node.properties.some(property => property.name === 'pressed' && property.value.value === 'false')));
+  assert.match(nameAndDate, /^Отметить: Гитара, .+\d/);
+  assert.ok(await evaluate('document.querySelector(".completion-button").nextElementSibling.matches(".habit-actions")'));
+  await evaluate('document.querySelector("[data-habit-id=demo-guitar] .completion-button").focus()');
+  await press('Enter', 'Enter', 13);
+  await until('document.activeElement.matches(".completion-button[aria-pressed=true]") && document.activeElement.ariaLabel.startsWith("Отменить отметку:")', 'Enter saves, keeps focus, and exposes the cancellation action');
+  await press(' ', 'Space', 32);
+  await until('document.activeElement.matches(".completion-button[aria-pressed=false]") && !document.activeElement.querySelector(".relic-item__check")', 'Space cancels the same selected-date mark and keeps focus');
   await click(`${card} .completion-button`);
-  await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled && document.querySelector("[data-habit-id=demo-guitar] .completion-button").textContent.includes("Отмечено")', 'One-click completion has unambiguous disabled saved state');
+  await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").getAttribute("aria-pressed") === "true" && !!document.querySelector("[data-habit-id=demo-guitar] .relic-item__check")', 'One-click completion shows the saved check and pressed state');
   await click('.date-shortcuts button:nth-child(2)');
-  await until('document.querySelector(".date-shortcuts button:nth-child(2)").getAttribute("aria-pressed") === "true" && !document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled', 'Yesterday selects its own completion state');
+  await until('document.querySelector(".date-shortcuts button:nth-child(2)").getAttribute("aria-pressed") === "true" && document.querySelector("[data-habit-id=demo-guitar] .completion-button").getAttribute("aria-pressed") === "false"', 'Yesterday selects its own completion state');
   await click(`${card} .completion-button`);
-  await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").disabled && document.querySelector("[data-habit-id=demo-guitar] .completion-button").textContent.includes("Отмечено")', 'Backdated completion works in the in-memory preview');
+  await until('document.querySelector("[data-habit-id=demo-guitar] .completion-button").getAttribute("aria-pressed") === "true" && !!document.querySelector("[data-habit-id=demo-guitar] .relic-item__check")', 'Backdated completion works in the in-memory preview');
   await click('.date-shortcuts button:first-child');
   await until('document.querySelector(".date-shortcuts button:first-child").getAttribute("aria-pressed") === "true"', 'Today shortcut restores selected day');
 
@@ -154,8 +166,34 @@ try {
   await screenshot('sanctuary-edit.png');
   await evaluate('document.querySelector("#habit-name").select()');
   await send('Input.insertText', { text: 'Гитара у окна' });
+  await click('input[name=habit-icon][value=music]');
   await click('.creation-form button[type="submit"]');
-  await until('!document.querySelector(".creation-form") && document.querySelector("[data-habit-id=demo-guitar] h4").textContent === "Гитара у окна"', 'Edited definition renders');
+  await until('!document.querySelector(".creation-form") && document.querySelector("[data-habit-id=demo-guitar] .relic-item__name").textContent === "Гитара у окна"', 'Edited definition renders');
+  await until('document.querySelector("[data-habit-id=demo-guitar] .habit-medal").dataset.icon === "music"', 'The edited icon immediately appears on the same production card');
+  for (const [id, icon] of [['walk', 'walk'], ['read', 'book']]) {
+    await click('[data-habit-id=demo-' + id + '] .habit-actions summary');
+    await click('[data-habit-id=demo-' + id + '] .habit-action-options button:first-child');
+    await until('!!document.querySelector(".creation-form")', 'Open production card editor for ' + id);
+    await click('input[name=habit-icon][value=' + icon + ']');
+    await click('.creation-form button[type="submit"]');
+    await until('!document.querySelector(".creation-form") && document.querySelector("[data-habit-id=demo-' + id + '] .habit-medal").dataset.icon === "' + icon + '"', 'Selected ' + icon + ' updates its own medal');
+  }
+  await evaluate('document.activeElement.blur()');
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 10, y: 10 });
+  await screenshot('habit-cards-mixed.png');
+  await click('.date-shortcuts button:nth-child(2)');
+  await until('document.querySelector("[data-habit-id=demo-read] .completion-button").ariaPressed === "true" && document.querySelector("[data-habit-id=demo-walk] .completion-button").ariaPressed === "false"', 'Historical day shows a different pair of saved marks while retaining the same icon identities');
+  await screenshot('habit-cards-historical.png');
+  await click('.date-shortcuts button:first-child');
+  const hovered = await evaluate('(()=>{const r=document.querySelector("[data-habit-id=demo-read] .completion-button").getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()');
+  await send('Input.dispatchMouseEvent', {type:'mouseMoved', ...hovered});
+  await until('document.querySelector("[data-habit-id=demo-read] .completion-button").matches(":hover[aria-pressed=false]") && getComputedStyle(document.querySelector("[data-habit-id=demo-read] .completion-button")).boxShadow!=="none"', 'Hover highlights an unrecorded card without changing its state');
+  await screenshot('habit-cards-hover.png');
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 10, y: 10 });
+  await press('Tab', 'Tab', 9);
+  await evaluate('document.querySelector("[data-habit-id=demo-guitar] .completion-button").focus()');
+  await until('document.activeElement.matches(".completion-button:focus-visible[aria-pressed=true]") && getComputedStyle(document.activeElement).outlineStyle==="solid"', 'Keyboard focus remains visible on a recorded medal card');
+  await screenshot('habit-cards-focus.png');
   await click('.app-rail [data-nav=chronicle]');
   await until('document.querySelector("#chronicle") && [...document.querySelectorAll(".entry h3")].filter(title => title.textContent === "Гитара").length === 2', 'Dedicated Chronicle preserves historical name snapshots');
   await screenshot('sanctuary-journal.png');
@@ -174,12 +212,11 @@ try {
   await until('!document.querySelector("[data-habit-id=demo-guitar]")', 'Archive hides the active card');
   await click('.inventory-heading .button-quiet');
   await until('document.querySelectorAll(".relic-item").length === 1 && !document.querySelector(".completion-button")', 'Archive management omits completion controls');
-  await screenshot('sanctuary-archived.png');
-  await click(`${card} .habit-actions summary`);
-  await click(`${card} .habit-action-options button:nth-child(2)`);
+  await screenshot('habit-cards-archived.png');
+  await click(`${card} .restore-button`);
   await until('!document.querySelector("[data-habit-id=demo-guitar]")', 'Restore removes the card from the archive');
   await click('.inventory-heading .button-quiet');
-  await until('document.querySelector("[data-habit-id=demo-guitar] h4")?.textContent === "Гитара у окна"', 'Restore retains edited definition');
+  await until('document.querySelector("[data-habit-id=demo-guitar] .relic-item__name")?.textContent === "Гитара у окна"', 'Restore retains edited definition');
   await click('.app-rail [data-nav=chronicle]');
   await until('document.activeElement.id==="journal-title"','Chronicle opens for cancellation');
   const entryCount = await evaluate('document.querySelectorAll(".entry").length');
@@ -187,7 +224,7 @@ try {
   await until(`document.querySelectorAll('.entry').length === ${entryCount - 1}`, 'Existing journal cancellation remains accessible');
 
   await send('Page.reload');
-  await until('document.querySelector("[data-habit-id=demo-guitar] h4")?.textContent === "Гитара"', 'Preview reload discards changes');
+  await until('document.querySelector("[data-habit-id=demo-guitar] .relic-item__name")?.textContent === "Гитара"', 'Preview reload discards changes');
   for (const width of [320, 390, 768, 1000, 1280]) {
     await viewport(width);
     await until('document.documentElement.scrollWidth <= window.innerWidth', `No horizontal overflow at ${width}px`);
@@ -196,6 +233,21 @@ try {
     if (width === 390) await screenshot('sanctuary-mobile.png');
   }
   checks.push('Visible controls retain 44px target height across responsive widths');
+  await viewport(390, 844);
+  await send('Emulation.setTouchEmulationEnabled', {enabled:true,maxTouchPoints:1});
+  const readCard = '[data-habit-id=demo-read] .completion-button';
+  const point = await evaluate('(()=>{const card=document.querySelector(' + JSON.stringify(readCard) + ');card.scrollIntoView({block:"center"});const r=card.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()');
+  const touch = async () => {
+    await send('Input.dispatchTouchEvent', {type:'touchStart',touchPoints:[point]});
+    await send('Input.dispatchTouchEvent', {type:'touchEnd',touchPoints:[]});
+  };
+  await touch();
+  await until('document.querySelector(' + JSON.stringify(readCard) + ').ariaPressed === "true"', 'A single touch records without a second synthetic click');
+  await screenshot('habit-cards-narrow.png', false);
+  await touch();
+  await until('document.querySelector(' + JSON.stringify(readCard) + ').ariaPressed === "false"', 'A second touch cancels the persisted mark');
+  await send('Emulation.setTouchEmulationEnabled', {enabled:false});
+
   await viewport(640);
   await evaluate('document.documentElement.style.fontSize = "200%"');
   await until('document.documentElement.scrollWidth <= window.innerWidth', 'Text enlargement has no horizontal overflow');

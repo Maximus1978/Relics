@@ -1,6 +1,6 @@
-# Current task — HABIT-SIGILS-001B
+# Current task — HABIT-SIGILS-001C
 
-The owner accepted 001A and authorized PR #14 merge and a focused 001B PR. Add Create/Edit icon selection, icon persistence and backup v4 compatibility. Review the storage and release constraints in DATA_MODEL, BACKUP, ROADMAP and HANDOFF. The approved medal designs are the preview source. Production card integration is separately queued.
+The owner accepted 001B and authorized merging PR #15 and opening a focused 001C PR. Use the approved medal and saved icon in production Sanctuary cards with selected-day completion. Preserve schema 6 and backup v4. See HANDOFF for the Windows acceptance gate.
 
 # Relics agent instructions
 
