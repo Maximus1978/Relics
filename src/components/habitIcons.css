@@ -1,0 +1,88 @@
+.habit-icons > p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 9px;
+}
+
+.habit-icons__layout {
+  display: grid;
+  grid-template-columns: 105px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.habit-icons__preview {
+  margin: 0;
+  text-align: center;
+  color: #edcf9f;
+  font-size: 12px;
+}
+
+.habit-icons__preview .habit-medal {
+  width: min(100%, 98px);
+  margin: 0 auto;
+}
+
+.habit-icons__choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 126px), 1fr));
+  gap: 6px;
+}
+
+.habit-icons__option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  padding: 5px 7px;
+  border: 1px solid #82704b;
+  border-radius: 3px;
+  background: #111c23;
+  color: #edd9b7;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.habit-icons__option input {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  accent-color: #eac782;
+}
+
+.habit-icons__option svg {
+  flex: none;
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.habit-icons__option span { overflow-wrap: anywhere; }
+.habit-icons__option:has(:checked) {
+  border-color: #efcc88;
+  background: #4b3621;
+  color: #fff2d7;
+}
+.habit-icons__option input:focus-visible { outline: none; }
+.habit-icons__option:has(:focus-visible) {
+  outline: 2px solid #ffe0a2;
+  outline-offset: 2px;
+}
+
+.habit-icons:disabled .habit-icons__option { cursor: default; opacity: .65; }
+
+@media (max-width: 620px) {
+  .habit-icons__layout { grid-template-columns: minmax(0, 1fr); }
+  .habit-icons__preview .habit-medal { width: 80px; }
+  .habit-icons__choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

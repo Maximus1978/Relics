@@ -3,6 +3,7 @@ use super::{
     storage,
 };
 use crate::contributions::{Origin, Profile};
+use crate::habit_icon::IconId;
 use crate::rhythm::{
     ArchivePause, Frequency, FrequencySegment, HabitMutation, MutationKind, RhythmChange,
 };
@@ -27,6 +28,7 @@ fn example() -> Backup {
                 name: "Гитара 'вечером'".into(),
                 spheres: vec!["mind".into(), "recovery".into()],
                 archived_at: None,
+                icon_id: IconId::Music,
                 contribution_profile: {
                     let mut p = Profile::defaults(&vec!["mind".into(), "recovery".into()]);
                     p.origin = Origin::User;
@@ -40,6 +42,7 @@ fn example() -> Backup {
                 name: "Книги".into(),
                 spheres: vec!["mind".into()],
                 archived_at: Some("2026-10-27T22:10:00.123Z".into()),
+                icon_id: IconId::Book,
                 contribution_profile: Profile::defaults(&vec!["mind".into()]),
             },
         ],
@@ -136,6 +139,10 @@ fn make_migrator(version: usize) -> Migrator {
             "habit frequency and archive history",
             include_str!("../../migrations/005_habit_rhythm.sql"),
         ),
+        (
+            "manual habit icon identity",
+            include_str!("../../migrations/006_habit_icons.sql"),
+        ),
     ];
     let migrations = definitions
         .iter()
@@ -164,7 +171,7 @@ async fn fixture() -> (TempDir, PathBuf, SqlitePool) {
     let temporary = tempfile::tempdir().unwrap();
     let path = temporary.path().join("synthetic.db");
     let pool = connect(&path).await;
-    migrate(&pool, 5).await;
+    migrate(&pool, 6).await;
     (temporary, path, pool)
 }
 
@@ -183,7 +190,7 @@ fn rejects_malformed_unknown_versions_fields_and_missing_archive_property() {
     assert!(model::parse(b"not json").is_err());
     for (key, value) in [
         ("format", serde_json::json!("other")),
-        ("formatVersion", serde_json::json!(4)),
+        ("formatVersion", serde_json::json!(5)),
         ("databaseSchemaVersion", serde_json::json!(2)),
         ("exportedAt", serde_json::json!("2026-99-99")),
         ("appVersion", serde_json::json!(null)),
@@ -284,10 +291,10 @@ async fn full_export_restore_reopen_preserves_metadata_snapshots_and_archive() {
     let checked = storage::read_backup(&external).unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 5).await;
+    migrate(&reopened, 6).await;
     assert_eq!(storage::export(&reopened).await.unwrap().data, backup.data);
     let other = connect(&temporary.path().join("fresh.db")).await;
-    migrate(&other, 5).await;
+    migrate(&other, 6).await;
     storage::restore(&other, &checked, &temporary.path().join("fresh-recovery"))
         .await
         .unwrap();
@@ -309,7 +316,7 @@ async fn empty_restored_database_stays_empty_after_migrations_and_reopen() {
         .unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 5).await;
+    migrate(&reopened, 6).await;
     assert_eq!(storage::export(&reopened).await.unwrap().data, backup.data);
     reopened.close().await;
 }
@@ -509,7 +516,7 @@ async fn migration_from_v1_and_archived_v2_preserves_history_and_does_not_reseed
         .fetch_one(&pool)
         .await
         .unwrap();
-    migrate(&pool, 5).await;
+    migrate(&pool, 6).await;
     let migrated = storage::export(&pool).await.unwrap();
     assert_eq!(migrated.data.activities[0].habit_name, "October snapshot");
     assert_eq!(migrated.data.activities[0].contribution_snapshot, None);
@@ -530,7 +537,7 @@ async fn migration_from_v1_and_archived_v2_preserves_history_and_does_not_reseed
         .execute(&pool)
         .await
         .unwrap();
-    migrate(&pool, 5).await;
+    migrate(&pool, 6).await;
     assert_eq!(
         sqlx::query("SELECT COUNT(*) AS total FROM habits WHERE id = 'read'")
             .fetch_one(&pool)
@@ -623,6 +630,7 @@ fn old_v1_bytes() -> Vec<u8> {
         .remove("archivePauses");
     for h in value["data"]["habits"].as_array_mut().unwrap() {
         h.as_object_mut().unwrap().remove("contributionProfile");
+        h.as_object_mut().unwrap().remove("iconId");
     }
     for a in value["data"]["activities"].as_array_mut().unwrap() {
         a.as_object_mut().unwrap().remove("contributionSnapshot");
@@ -705,8 +713,8 @@ async fn v1_full_replacement_can_be_undone_with_complete_v2_weighted_safety() {
         .await
         .unwrap();
     let converted = storage::export(&pool).await.unwrap();
-    assert_eq!(converted.format_version, 3);
-    assert_eq!(converted.database_schema_version, 5);
+    assert_eq!(converted.format_version, 4);
+    assert_eq!(converted.database_schema_version, 6);
     assert_eq!(converted.data, old.data);
     assert!(converted
         .data
@@ -714,14 +722,14 @@ async fn v1_full_replacement_can_be_undone_with_complete_v2_weighted_safety() {
         .iter()
         .all(|a| a.contribution_snapshot.is_none()));
     let protective = storage::read_backup(&safety).unwrap();
-    assert_eq!(protective.format_version, 3);
+    assert_eq!(protective.format_version, 4);
     assert_eq!(protective.data, before);
     storage::restore(&pool, &protective, &temporary.path().join("undo"))
         .await
         .unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 5).await;
+    migrate(&reopened, 6).await;
     let after = storage::export(&reopened).await.unwrap();
     assert_eq!(after.data, before);
     assert_eq!(after.summary().user_entries, 1);
@@ -759,7 +767,7 @@ async fn migration_four_failure_rolls_back_schema_data_and_actual_sqlx_ledger() 
         .unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 5).await;
+    migrate(&reopened, 6).await;
     assert_eq!(
         storage::export(&reopened).await.unwrap().data.habits.len(),
         3
@@ -780,8 +788,8 @@ async fn schema_three_upgrade_keeps_october_records_and_archived_profiles() {
     for day in ["2026-10-26", "2026-10-27"] {
         sqlx::query("INSERT INTO activities VALUES (?,'read','Historical name','[\"mind\",\"recovery\"]',?,'2026-10-27T00:00:00Z','UTC')").bind(day).bind(day).execute(&pool).await.unwrap();
     }
-    migrate(&pool, 5).await;
-    migrate(&pool, 5).await;
+    migrate(&pool, 6).await;
+    migrate(&pool, 6).await;
     pool.close().await;
     let reopened = connect(&path).await;
     let saved = storage::export(&reopened).await.unwrap();
@@ -838,6 +846,7 @@ fn rhythm_input(kind: MutationKind, id: &str, change: RhythmChange) -> HabitMuta
         spheres: definition.then(|| vec!["mind".into(), "recovery".into()]),
         contribution_profile: definition
             .then(|| Profile::defaults(&vec!["mind".into(), "recovery".into()])),
+        icon_id: None,
         rhythm_change: change,
     }
 }
@@ -975,7 +984,7 @@ async fn native_rhythm_enrollment_pending_replace_cancel_and_reopen_are_atomic()
     let snapshot = storage::export(&pool).await.unwrap();
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 5).await;
+    migrate(&reopened, 6).await;
     assert_eq!(
         storage::export(&reopened).await.unwrap().data,
         snapshot.data
@@ -1109,8 +1118,18 @@ async fn native_definition_rhythm_failure_rolls_back_all_changes() {
     .is_err());
     assert_eq!(storage::export(&pool).await.unwrap().data, before);
 }
-fn old_v2_bytes() -> Vec<u8> {
+fn old_v3_bytes() -> Vec<u8> {
     let mut value = serde_json::to_value(example()).unwrap();
+    value["formatVersion"] = serde_json::json!(3);
+    value["databaseSchemaVersion"] = serde_json::json!(5);
+    for h in value["data"]["habits"].as_array_mut().unwrap() {
+        h.as_object_mut().unwrap().remove("iconId");
+    }
+    serde_json::to_vec(&value).unwrap()
+}
+
+fn old_v2_bytes() -> Vec<u8> {
+    let mut value: serde_json::Value = serde_json::from_slice(&old_v3_bytes()).unwrap();
     value["formatVersion"] = serde_json::json!(2);
     value["databaseSchemaVersion"] = serde_json::json!(4);
     value["data"]
@@ -1124,7 +1143,7 @@ fn old_v2_bytes() -> Vec<u8> {
     serde_json::to_vec(&value).unwrap()
 }
 #[tokio::test]
-async fn v3_histories_round_trip_old_v1_v2_import_and_native_protective_undo() {
+async fn v4_round_trip_old_v1_v2_v3_import_and_native_protective_undo() {
     let (temp, path, pool) = fixture().await;
     let input = example();
     storage::restore(&pool, &input, &temp.path().join("setup"))
@@ -1132,16 +1151,22 @@ async fn v3_histories_round_trip_old_v1_v2_import_and_native_protective_undo() {
         .unwrap();
     let before = storage::export(&pool).await.unwrap();
     assert_eq!(before.data.frequency_segments.len(), 2);
-    for bytes in [old_v1_bytes(), old_v2_bytes()] {
+    for bytes in [old_v1_bytes(), old_v2_bytes(), old_v3_bytes()] {
         let old = model::parse(&bytes).unwrap();
-        assert!(old.data.frequency_segments.is_empty());
+        assert!(old.data.habits.iter().all(|h| h.icon_id == IconId::Sigil));
+        if old.format_version == 3 {
+            assert_eq!(old.data.frequency_segments, before.data.frequency_segments);
+            assert_eq!(old.data.archive_pauses, before.data.archive_pauses);
+        } else {
+            assert!(old.data.frequency_segments.is_empty());
+        }
         assert_eq!(old.data.archive_pauses[0].start_on, None);
         assert_eq!(old.data.archive_pauses[0].provenance, "legacy_unknown");
         let safety = storage::restore(&pool, &old, &temp.path().join("recovery"))
             .await
             .unwrap();
         let recovered = storage::read_backup(&safety).unwrap();
-        assert_eq!(recovered.format_version, 3);
+        assert_eq!(recovered.format_version, 4);
         assert_eq!(recovered.data, before.data);
         assert_eq!(storage::export(&pool).await.unwrap().data, old.data);
         storage::restore(&pool, &recovered, &temp.path().join("undo"))
@@ -1151,12 +1176,12 @@ async fn v3_histories_round_trip_old_v1_v2_import_and_native_protective_undo() {
     }
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 5).await;
+    migrate(&reopened, 6).await;
     assert_eq!(storage::export(&reopened).await.unwrap().data, before.data);
     reopened.close().await;
 }
 #[test]
-fn strict_v3_rejects_missing_unknown_out_of_order_inconsistent_frequency_and_archive_history() {
+fn strict_v4_rejects_missing_unknown_out_of_order_inconsistent_frequency_and_archive_history() {
     let value = serde_json::to_value(example()).unwrap();
     for collection in ["frequencySegments", "archivePauses"] {
         let mut bad = value.clone();
@@ -1198,7 +1223,7 @@ fn strict_v3_rejects_missing_unknown_out_of_order_inconsistent_frequency_and_arc
     assert!(model::parse(&serde_json::to_vec(&old).unwrap()).is_err());
 }
 #[tokio::test]
-async fn v3_replacement_failure_keeps_histories_and_snapshots_together() {
+async fn v4_replacement_failure_keeps_histories_and_snapshots_together() {
     let (temp, _path, pool) = fixture().await;
     storage::restore(&pool, &example(), &temp.path().join("setup"))
         .await
@@ -1257,11 +1282,121 @@ async fn migration_five_failure_rolls_back_ddl_and_sqlx_ledger_then_retries() {
         .execute(&pool)
         .await
         .unwrap();
-    migrate(&pool, 5).await;
+    migrate(&pool, 6).await;
     let before = storage::export(&pool).await.unwrap().data;
     pool.close().await;
     let reopened = connect(&path).await;
-    migrate(&reopened, 5).await;
+    migrate(&reopened, 6).await;
     assert_eq!(storage::export(&reopened).await.unwrap().data, before);
     reopened.close().await;
+}
+
+#[tokio::test]
+async fn native_restart_preserves_icon_and_habit_metadata() {
+    let (temporary, path, pool) = fixture().await;
+    let fixture = example();
+    storage::restore(&pool, &fixture, &temporary.path().join("setup"))
+        .await
+        .unwrap();
+
+    let mut input = rhythm_input(MutationKind::Update, "guitar", RhythmChange::Keep);
+    let original = &fixture.data.habits[0];
+    input.name = Some(original.name.clone());
+    input.spheres = Some(original.spheres.clone());
+    input.contribution_profile = Some(original.contribution_profile.clone());
+    input.icon_id = Some(IconId::Bicycle);
+    crate::rhythm::mutate(&pool, &input, "2026-10-29", "2026-10-29T12:00:00Z")
+        .await
+        .unwrap();
+
+    let mut expected = fixture.data;
+    expected.habits[0].icon_id = IconId::Bicycle;
+    assert_eq!(storage::export(&pool).await.unwrap().data, expected);
+    pool.close().await;
+
+    let status = Command::new(std::env::current_exe().unwrap())
+        .args(["--exact", "backup::tests::icon_reopen_helper", "--ignored"])
+        .env("RELICS_SYNTHETIC_ICON_DB", &path)
+        .status()
+        .unwrap();
+    assert!(status.success());
+}
+
+#[test]
+#[ignore]
+fn icon_reopen_helper() {
+    let path = PathBuf::from(
+        std::env::var_os("RELICS_SYNTHETIC_ICON_DB").expect("synthetic icon helper only"),
+    );
+    assert_eq!(path.file_name().unwrap(), "synthetic.db");
+    tokio::runtime::Runtime::new().unwrap().block_on(async {
+        let pool = connect(&path).await;
+        migrate(&pool, 6).await;
+        let mut expected = example().data;
+        expected.habits[0].icon_id = IconId::Bicycle;
+        assert_eq!(storage::export(&pool).await.unwrap().data, expected);
+        pool.close().await;
+    });
+}
+
+#[tokio::test]
+async fn migration006_defaults_active_and_archived_habits_and_keeps_old_rows() {
+    let temp = tempfile::tempdir().unwrap();
+    let pool = connect(&temp.path().join("synthetic.db")).await;
+    migrate(&pool, 5).await;
+    sqlx::query("UPDATE habits SET archived_at='2026-10-27T22:00:00Z' WHERE id='read'")
+        .execute(&pool)
+        .await
+        .unwrap();
+    sqlx::query("INSERT INTO habit_archive_pauses(id,habit_id,start_on,end_exclusive_on,reason,provenance) VALUES('pause','read','2026-10-27',NULL,'archive','recorded')")
+        .execute(&pool).await.unwrap();
+    sqlx::query("INSERT INTO activities(id,habit_id,habit_name_snapshot,spheres_snapshot_json,occurred_on,recorded_at,timezone) VALUES('old','read','Earlier name','[\"mind\"]','2026-10-26','2026-10-26T22:00:00Z','UTC')")
+        .execute(&pool).await.unwrap();
+
+    migrate(&pool, 6).await;
+    let data = storage::export(&pool).await.unwrap().data;
+    assert_eq!(data.habits.len(), 3);
+    assert!(data
+        .habits
+        .iter()
+        .all(|habit| habit.icon_id == IconId::Sigil));
+    assert!(data
+        .habits
+        .iter()
+        .any(|habit| habit.id == "read" && habit.archived_at.is_some()));
+    assert_eq!(data.activities[0].habit_name, "Earlier name");
+    assert_eq!(data.archive_pauses[0].id, "pause");
+    assert!(
+        sqlx::query("UPDATE habits SET icon_id='unsupported' WHERE id='read'")
+            .execute(&pool)
+            .await
+            .is_err()
+    );
+    assert_eq!(storage::export(&pool).await.unwrap().data, data);
+}
+
+#[test]
+fn invalid_or_missing_icon_ids_fail_before_restore_or_mutation() {
+    let current = serde_json::to_value(example()).unwrap();
+    for value in [
+        serde_json::json!("invalid"),
+        serde_json::json!("__proto__"),
+        serde_json::json!(null),
+        serde_json::json!(3),
+    ] {
+        let mut backup = current.clone();
+        backup["data"]["habits"][0]["iconId"] = value.clone();
+        assert!(model::parse(&serde_json::to_vec(&backup).unwrap()).is_err());
+        let mutation = serde_json::json!({"kind": "update", "id": "guitar", "iconId": value});
+        assert!(serde_json::from_value::<HabitMutation>(mutation).is_err());
+    }
+    let mut missing = current.clone();
+    missing["data"]["habits"][0]
+        .as_object_mut()
+        .unwrap()
+        .remove("iconId");
+    assert!(model::parse(&serde_json::to_vec(&missing).unwrap()).is_err());
+    let mut legacy: serde_json::Value = serde_json::from_slice(&old_v3_bytes()).unwrap();
+    legacy["data"]["habits"][0]["iconId"] = serde_json::json!("book");
+    assert!(model::parse(&serde_json::to_vec(&legacy).unwrap()).is_err());
 }

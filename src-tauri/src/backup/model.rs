@@ -1,4 +1,5 @@
 use crate::contributions::{Origin, Profile};
+use crate::habit_icon::IconId;
 use crate::rhythm::{self, ArchivePause, FrequencySegment};
 use chrono::{DateTime, Datelike, NaiveDate, Utc};
 use serde::{Deserialize, Deserializer, Serialize};
@@ -7,7 +8,8 @@ use std::collections::{HashMap, HashSet};
 pub const MAX_BYTES: usize = 32 * 1024 * 1024;
 pub const MAX_HABITS: usize = 20_000;
 pub const MAX_ACTIVITIES: usize = 100_000;
-pub const SCHEMA_VERSION: u32 = 5;
+pub const SCHEMA_VERSION: u32 = crate::DATABASE_SCHEMA_VERSION;
+const FORMAT_VERSION: u32 = 4;
 
 pub type BackupResult<T> = Result<T, String>;
 
@@ -20,6 +22,7 @@ pub struct Habit {
     #[serde(deserialize_with = "required_nullable")]
     pub archived_at: Option<String>,
     pub contribution_profile: Profile,
+    pub icon_id: IconId,
 }
 
 fn required_nullable<'de, D: Deserializer<'de>, T: Deserialize<'de>>(
@@ -84,7 +87,7 @@ impl Backup {
     pub fn new(data: Data) -> Self {
         Self {
             format: "relics-backup".into(),
-            format_version: 3,
+            format_version: FORMAT_VERSION,
             exported_at: Utc::now().to_rfc3339(),
             app_version: env!("CARGO_PKG_VERSION").into(),
             database_schema_version: SCHEMA_VERSION,
@@ -146,11 +149,12 @@ impl Backup {
 
     pub fn validate(&self) -> BackupResult<()> {
         if self.format != "relics-backup"
-            || !((self.format_version == 3 && self.database_schema_version == SCHEMA_VERSION)
-                || (self.format_version == 2 && self.database_schema_version == 4)
-                || (self.format_version == 1 && self.database_schema_version == 3))
+            || !matches!(
+                (self.format_version, self.database_schema_version),
+                (FORMAT_VERSION, SCHEMA_VERSION) | (3, 5) | (2, 4) | (1, 3)
+            )
         {
-            return Err("Неподдерживаемый формат или версия резервной копии. Нужны relics-backup v1/схема 3, v2/схема 4 или v3/схема 5.".into());
+            return Err("Неподдерживаемый формат или версия резервной копии. Нужны relics-backup v1/схема 3, v2/схема 4, v3/схема 5 или v4/схема 6.".into());
         }
         timestamp(&self.exported_at)?;
         text(&self.app_version, 64)?;
@@ -272,20 +276,67 @@ pub fn legacy_pauses(habits: &[Habit]) -> Vec<ArchivePause> {
 
 // Separate strict DTOs preserve each supported original version boundary.
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct LegacyHabit {
+    id: String,
+    name: String,
+    spheres: Vec<String>,
+    #[serde(deserialize_with = "required_nullable")]
+    archived_at: Option<String>,
+    contribution_profile: Profile,
+}
+
+impl From<LegacyHabit> for Habit {
+    fn from(old: LegacyHabit) -> Self {
+        Self {
+            id: old.id,
+            name: old.name,
+            spheres: old.spheres,
+            archived_at: old.archived_at,
+            contribution_profile: old.contribution_profile,
+            icon_id: IconId::default(),
+        }
+    }
+}
+
+#[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct V2Data {
-    habits: Vec<Habit>,
+    habits: Vec<LegacyHabit>,
     activities: Vec<Activity>,
 }
+
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct V2Backup {
+struct V3Data {
+    habits: Vec<LegacyHabit>,
+    activities: Vec<Activity>,
+    frequency_segments: Vec<FrequencySegment>,
+    archive_pauses: Vec<ArchivePause>,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct LegacyBackup<T> {
     format: String,
     format_version: u32,
     exported_at: String,
     app_version: String,
     database_schema_version: u32,
-    data: V2Data,
+    data: T,
+}
+
+impl<T> LegacyBackup<T> {
+    fn upgrade(self, adapt: impl FnOnce(T) -> Data) -> Backup {
+        Backup {
+            format: self.format,
+            format_version: self.format_version,
+            exported_at: self.exported_at,
+            app_version: self.app_version,
+            database_schema_version: self.database_schema_version,
+            data: adapt(self.data),
+        }
+    }
 }
 
 #[derive(Deserialize)]
@@ -315,16 +366,6 @@ struct V1Data {
     activities: Vec<V1Activity>,
 }
 #[derive(Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct V1Backup {
-    format: String,
-    format_version: u32,
-    exported_at: String,
-    app_version: String,
-    database_schema_version: u32,
-    data: V1Data,
-}
-#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct VersionProbe {
     format_version: u32,
@@ -340,68 +381,63 @@ pub fn parse(bytes: &[u8]) -> BackupResult<Backup> {
     };
     let probe: VersionProbe = serde_json::from_slice(bytes).map_err(|_| error())?;
     let backup = match probe.format_version {
-        1 => {
-            let old: V1Backup = serde_json::from_slice(bytes).map_err(|_| error())?;
-            Backup {
-                format: old.format,
-                format_version: old.format_version,
-                exported_at: old.exported_at,
-                app_version: old.app_version,
-                database_schema_version: old.database_schema_version,
-                data: {
-                    let mut data = Data {
-                        habits: old
-                            .data
-                            .habits
-                            .into_iter()
-                            .map(|h| Habit {
-                                contribution_profile: Profile::defaults(&h.spheres),
-                                id: h.id,
-                                name: h.name,
-                                spheres: h.spheres,
-                                archived_at: h.archived_at,
-                            })
-                            .collect(),
-                        activities: old
-                            .data
-                            .activities
-                            .into_iter()
-                            .map(|a| Activity {
-                                id: a.id,
-                                habit_id: a.habit_id,
-                                habit_name: a.habit_name,
-                                spheres: a.spheres,
-                                occurred_on: a.occurred_on,
-                                recorded_at: a.recorded_at,
-                                timezone: a.timezone,
-                                contribution_snapshot: None,
-                            })
-                            .collect(),
-                        ..Data::default()
-                    };
-                    data.archive_pauses = legacy_pauses(&data.habits);
-                    data
-                },
-            }
-        }
-        2 => {
-            let old: V2Backup = serde_json::from_slice(bytes).map_err(|_| error())?;
-            let archive_pauses = legacy_pauses(&old.data.habits);
-            Backup {
-                format: old.format,
-                format_version: old.format_version,
-                exported_at: old.exported_at,
-                app_version: old.app_version,
-                database_schema_version: old.database_schema_version,
-                data: Data {
-                    habits: old.data.habits,
-                    activities: old.data.activities,
-                    frequency_segments: vec![],
+        1 => serde_json::from_slice::<LegacyBackup<V1Data>>(bytes)
+            .map_err(|_| error())?
+            .upgrade(|old| {
+                let habits: Vec<_> = old
+                    .habits
+                    .into_iter()
+                    .map(|h| Habit {
+                        contribution_profile: Profile::defaults(&h.spheres),
+                        id: h.id,
+                        name: h.name,
+                        spheres: h.spheres,
+                        archived_at: h.archived_at,
+                        icon_id: IconId::default(),
+                    })
+                    .collect();
+                let archive_pauses = legacy_pauses(&habits);
+                Data {
+                    habits,
+                    activities: old
+                        .activities
+                        .into_iter()
+                        .map(|a| Activity {
+                            id: a.id,
+                            habit_id: a.habit_id,
+                            habit_name: a.habit_name,
+                            spheres: a.spheres,
+                            occurred_on: a.occurred_on,
+                            recorded_at: a.recorded_at,
+                            timezone: a.timezone,
+                            contribution_snapshot: None,
+                        })
+                        .collect(),
                     archive_pauses,
-                },
-            }
-        }
-        3 => serde_json::from_slice::<Backup>(bytes).map_err(|_| error())?,
+                    ..Data::default()
+                }
+            }),
+        2 => serde_json::from_slice::<LegacyBackup<V2Data>>(bytes)
+            .map_err(|_| error())?
+            .upgrade(|old| {
+                let habits: Vec<Habit> = old.habits.into_iter().map(Into::into).collect();
+                let archive_pauses = legacy_pauses(&habits);
+                Data {
+                    habits,
+                    activities: old.activities,
+                    archive_pauses,
+                    frequency_segments: vec![],
+                }
+            }),
+        3 => serde_json::from_slice::<LegacyBackup<V3Data>>(bytes)
+            .map_err(|_| error())?
+            .upgrade(|old| Data {
+                habits: old.habits.into_iter().map(Into::into).collect(),
+                activities: old.activities,
+                archive_pauses: old.archive_pauses,
+                frequency_segments: old.frequency_segments,
+            }),
+        FORMAT_VERSION => serde_json::from_slice::<Backup>(bytes).map_err(|_| error())?,
         _ => return Err("Неподдерживаемая версия копии. Обновите Relics.".into()),
     };
     backup.validate()?;
@@ -409,8 +445,8 @@ pub fn parse(bytes: &[u8]) -> BackupResult<Backup> {
 }
 pub fn encode(backup: &Backup) -> BackupResult<Vec<u8>> {
     backup.validate()?;
-    if backup.format_version != 3 || backup.database_schema_version != SCHEMA_VERSION {
-        return Err("Экспорт без потери данных доступен только в формате v3.".into());
+    if backup.format_version != FORMAT_VERSION || backup.database_schema_version != SCHEMA_VERSION {
+        return Err("Экспорт без потери данных доступен только в формате v4.".into());
     }
     let mut bytes =
         serde_json::to_vec_pretty(backup).map_err(|_| "Не удалось подготовить JSON.")?;

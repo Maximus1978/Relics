@@ -54,7 +54,12 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
   }
   function weightsOnce(){if(Number(database.prepare('PRAGMA user_version').get()?.user_version)>=4)return;database.exec('BEGIN');try{database.exec(readFileSync(new URL('../src-tauri/migrations/004_habit_contributions.sql',import.meta.url),'utf8'));database.exec('PRAGMA user_version=4; COMMIT');}catch(error){database.exec('ROLLBACK');throw error;}}
   function rhythmOnce(){if(Number(database.prepare('PRAGMA user_version').get()?.user_version)>=5)return;database.exec(readFileSync(new URL('../src-tauri/migrations/005_habit_rhythm.sql',import.meta.url),'utf8'));database.exec('PRAGMA user_version=5');}
-  if (initialVersion === 2) { migrate(); seedOnce(); weightsOnce(); rhythmOnce(); }
+  function iconsOnce() {
+    if (Number(database.prepare('PRAGMA user_version').get()?.user_version) >= 6) return;
+    database.exec(readFileSync(new URL('../src-tauri/migrations/006_habit_icons.sql', import.meta.url), 'utf8'));
+    database.exec('PRAGMA user_version=6');
+  }
+  if (initialVersion === 2) { migrate(); seedOnce(); weightsOnce(); rhythmOnce(); iconsOnce(); }
   context.after(() => {
     database.close();
     if (dirname(folder) !== temporaryRoot) throw new Error('Unexpected test cleanup directory.');
@@ -63,13 +68,13 @@ function fixture(context: TestContext, initialVersion: 1 | 2 = 2) {
   return {
     get database() { return database; },
     migrate,
-    open() { seedOnce(); weightsOnce(); rhythmOnce(); return openActivityRepository(sqliteAdapter(database)); },
+    open() { seedOnce(); weightsOnce(); rhythmOnce(); iconsOnce(); return openActivityRepository(sqliteAdapter(database)); },
     reopen() {
       database.close();
       database = new DatabaseSync(path);
       database.exec('PRAGMA foreign_keys = ON');
       migrate();
-      seedOnce(); weightsOnce(); rhythmOnce();
+      seedOnce(); weightsOnce(); rhythmOnce(); iconsOnce();
       return openActivityRepository(sqliteAdapter(database));
     },
   };
@@ -165,7 +170,7 @@ test('repeated startup neither duplicates samples nor overwrites existing defini
   for (const sample of sampleHabits) assert.equal(habits.filter(habit => habit.id === sample.id).length, 1);
   assert.deepEqual(habits.find(habit => habit.id === custom.id), custom);
   assert.deepEqual(habits.find(habit => habit.id === 'walk'), {
-    id: 'walk', name: 'Сохранённое название', spheres: ['recovery'], archivedAt: null, contributionProfile:defaultContributions(['recovery']),frequencySegments:[],archivePauses:[],
+    id: 'walk', name: 'Сохранённое название', spheres: ['recovery'], archivedAt: null, iconId: 'sigil', contributionProfile:defaultContributions(['recovery']),frequencySegments:[],archivePauses:[],
   });
 });
 

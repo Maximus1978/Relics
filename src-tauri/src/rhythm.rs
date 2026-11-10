@@ -1,4 +1,5 @@
 use crate::contributions::Profile;
+use crate::habit_icon::{optional_icon, IconId};
 use chrono::{Datelike, Days, NaiveDate};
 use serde::{Deserialize, Deserializer, Serialize};
 use sqlx::{Connection, Row, SqliteConnection, SqlitePool};
@@ -205,6 +206,8 @@ pub struct HabitMutation {
     pub name: Option<String>,
     pub spheres: Option<Vec<String>>,
     pub contribution_profile: Option<Profile>,
+    #[serde(default, deserialize_with = "optional_icon")]
+    pub icon_id: Option<IconId>,
     #[serde(default)]
     pub rhythm_change: RhythmChange,
 }
@@ -259,6 +262,10 @@ fn context(
     let mut values = HashMap::from([
         ("id".into(), Some(input.id.clone())),
         ("name".into(), input.name.clone()),
+        (
+            "iconId".into(),
+            input.icon_id.map(|icon| icon.as_str().to_owned()),
+        ),
         (
             "spheres".into(),
             input
@@ -336,7 +343,7 @@ pub async fn mutate(
             .fetch_one(&mut *tx)
             .await
             .map_err(|_| "Не удалось проверить версию базы.")?;
-    if version != Some(5) {
+    if version != Some(crate::DATABASE_SCHEMA_VERSION as i64) {
         return Err("Версия базы не поддерживается. Обновите Relics.".into());
     }
     for step in &plans[name] {

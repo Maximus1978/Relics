@@ -11,7 +11,6 @@ import Chronicle from './ui/sanctuary/Chronicle';
 import LifeRhythm from './ui/sanctuary/LifeRhythm';
 import WorldDialog from './ui/sanctuary/WorldDialog';
 import BackupDialog from './ui/sanctuary/BackupDialog';
-import RelicArt from './ui/sanctuary/RelicArt';
 import ShellIcon from './ui/sanctuary/ShellIcon';
 import { sanctuaryArt } from './ui/sanctuary/art';
 import './ui/sanctuary/shell.css';
@@ -71,8 +70,7 @@ export default function App() {
     <nav className="mobile-navigation" aria-label="Разделы на узком экране"><button data-nav="sanctuary" aria-current={destination === 'sanctuary' ? 'page' : undefined} onClick={() => navigate('sanctuary')}><ShellIcon kind="sanctuary" /><span>Sanctuary</span></button><button data-nav="chronicle" aria-current={destination === 'chronicle' ? 'page' : undefined} onClick={() => navigate('chronicle')}><ShellIcon kind="chronicle" /><span>Хроника</span></button><button data-nav="archive" aria-current={destination === 'archive' ? 'page' : undefined} onClick={() => navigate('archive')}><ShellIcon kind="archive" /><span>Архив</span></button><button aria-label="Резервная копия" disabled={model.busy || model.managingHabit} onClick={model.openBackup}><ShellIcon kind="backup" /><span>Копия</span></button></nav>
     {model.backupOpen && <BackupDialog model={model} />}
     {model.formOpen && <WorldDialog labelledBy="create-habit-title" busy={model.busy} onClose={model.cancelManagement}>
-      <div className="habit-editor"><div className="habit-editor__art"><RelicArt sphere={model.editingHabit?.spheres[0] ?? 'recovery'} /><p>Одна привычка может объединять несколько граней жизни.</p></div>
-        <HabitForm today={today} key={model.editingHabit?.id ?? 'new'} busy={model.busy} canSave={model.canSave} habit={model.editingHabit ?? undefined} saveError={model.error} onSave={model.saveHabit} onCancel={model.cancelManagement} /></div>
+      <HabitForm today={today} key={model.editingHabit?.id ?? 'new'} busy={model.busy} canSave={model.canSave} habit={model.editingHabit ?? undefined} saveError={model.error} onSave={model.saveHabit} onCancel={model.cancelManagement} />
     </WorldDialog>}
     {model.archivingHabit && <WorldDialog labelledBy="archive-confirm-title" busy={model.busy} onClose={model.cancelManagement}>
       <div className="archive-confirmation"><ShellIcon kind="archive" /><h3 id="archive-confirm-title">В архив: {model.archivingHabit.name}?</h3><p>Привычка исчезнет из активного списка. Все записи в хронике сохранятся. Вы сможете восстановить её из архива.</p>

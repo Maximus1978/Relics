@@ -1,3 +1,9 @@
+# HABIT-SIGILS-001B — icon selection and persistence
+
+The owner accepted the 001A artwork on 2026-11-10. PR #14 was verified against reviewed head 5913c136e71a6f2362683a1af2582f30ab6ea355 and Windows run 42653290503 for tested head 670f4b2df0bc618b2bb88ff8313aa91cb763443c. Only HANDOFF and ROADMAP changed after the tested head. Normal merge 33cddc2ee74632604fc36f20283a639eee7f9cc9 was verified on origin/master. The 001B feature branch starts there.
+
+The current acceptance scope is Create/Edit selection and neutral preview, schema 006, strict backup v4 with v1–v3 import, native offline reopen evidence, browser screenshots and a Windows build. The next review gate is owner acceptance of 001B.
+
 # HABIT-SIGILS-001A — visual review candidate
 
 The owner canceled the computer transfer on 2026-11-09 and resumed work here. Baseline master is 6c3333bfd32f09a4ff760e0a107a098aa3c106f0, the verified PR #13 merge. Functional rhythm acceptance was recorded separately from native offline restart.

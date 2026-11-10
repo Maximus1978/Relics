@@ -1,6 +1,9 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
 mod backup;
 mod contributions;
+mod habit_icon;
+
+const DATABASE_SCHEMA_VERSION: u32 = 6;
 mod rhythm;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -34,6 +37,12 @@ pub fn run() {
             version: 5,
             description: "habit frequency and archive history",
             sql: include_str!("../migrations/005_habit_rhythm.sql"),
+            kind: MigrationKind::Up,
+        },
+        Migration {
+            version: DATABASE_SCHEMA_VERSION as i64,
+            description: "manual habit icon identity",
+            sql: include_str!("../migrations/006_habit_icons.sql"),
             kind: MigrationKind::Up,
         },
     ];

@@ -12,7 +12,7 @@ import {join,resolve,dirname,basename} from 'node:path';
 export async function checkChronicleSqlite({send,evaluate,until,click,viewport,bindIpc,output}) {
  const parent=resolve(tmpdir()),directory=mkdtempSync(join(parent,'relics-nav-ui-'));
  const db=new DatabaseSync(join(directory,'synthetic.db'));db.exec('PRAGMA foreign_keys=ON');
- for(const file of ['001_initial.sql','002_archive_habits.sql','003_seed_once.sql','004_habit_contributions.sql','005_habit_rhythm.sql'])db.exec(readFileSync(new URL('../../src-tauri/migrations/'+file,import.meta.url),'utf8'));
+ for(const file of ['001_initial.sql','002_archive_habits.sql','003_seed_once.sql','004_habit_contributions.sql','005_habit_rhythm.sql','006_habit_icons.sql'])db.exec(readFileSync(new URL('../../src-tauri/migrations/'+file,import.meta.url),'utf8'));
  const today=await evaluate('document.querySelector("input[type=date]").max');
  const recentDay=offset=>{const date=new Date(today+'T12:00:00Z');date.setUTCDate(date.getUTCDate()+offset);return date.toISOString().slice(0,10);};
  const profile=(values,origin='user')=>JSON.stringify({version:1,origin,values:{body:0,mind:0,relationships:0,work:0,recovery:0,...values}});
@@ -25,7 +25,7 @@ export async function checkChronicleSqlite({send,evaluate,until,click,viewport,b
  const mutateHabit=createHabitMutationDriver(db,()=>today);
  let loads=0,failDelete=false,failLoad=false,failRefresh=false,restored=false,restores=0;
  let releaseLoad;const opening=new Promise(resolve=>releaseLoad=resolve);
- const summary={exportedAt:today+'T12:00:00Z',habits:1,archivedHabits:0,activities:1,formatVersion:3,databaseSchemaVersion:5,targetSchemaVersion:5,frequencySegments:0,configuredHabits:0,archivePauses:0,userEntries:1,defaultEntries:0,legacyEntries:0};
+ const summary={exportedAt:today+'T12:00:00Z',habits:1,archivedHabits:0,activities:1,formatVersion:3,databaseSchemaVersion:5,targetSchemaVersion:6,frequencySegments:0,configuredHabits:0,archivePauses:0,userEntries:1,defaultEntries:0,legacyEntries:0};
  const bind=(q,values=[])=>Object.fromEntries([...new Set(q.match(/\$\d+/g)??[])].map((name,i)=>[name,values[i]]));
  const commands=[];
  await bindIpc(async(cmd,args={})=>{
@@ -39,7 +39,7 @@ export async function checkChronicleSqlite({send,evaluate,until,click,viewport,b
   if(cmd==='restore_backup'){
    assert.equal(args.token,'synthetic-preview-token');restores++;
    db.exec('BEGIN');try {db.exec('DELETE FROM habit_frequency_segments; DELETE FROM habit_archive_pauses; DELETE FROM activities; DELETE FROM habits');db.prepare('INSERT INTO habits(id,name,spheres_json,contribution_profile_json) VALUES(?,?,?,?)').run('restored','Текущее имя после импорта','["work"]',profile({work:7}));insert.run('restored-event','restored','Дело после восстановления','["work"]',today,today+'T12:00:00Z','Synthetic',profile({work:7}));db.exec('COMMIT');}catch(e){db.exec('ROLLBACK');throw e;}
-   restored=true;return {summary,safetyFile:'synthetic-recovery-v3.json'};
+   restored=true;return {summary,safetyFile:'synthetic-recovery-v4.json'};
   }
   throw Error('Unexpected test IPC '+cmd);
  });

@@ -1,6 +1,6 @@
-# Current task — HABIT-SIGILS-001A
+# Current task — HABIT-SIGILS-001B
 
-The owner resumed work on this computer on 2026-11-09. The isolated visual showcase and its verification are the active scope. Use the owner brief and reference under docs/HABIT_SIGILS_001A_TASK.md. The release gate is owner review of the rendered art and a separate PR. The Create/Edit picker, persistence, production cards, and progression engine each have later tasks.
+The owner accepted 001A and authorized PR #14 merge and a focused 001B PR. Add Create/Edit icon selection, icon persistence and backup v4 compatibility. Review the storage and release constraints in DATA_MODEL, BACKUP, ROADMAP and HANDOFF. The approved medal designs are the preview source. Production card integration is separately queued.
 
 # Relics agent instructions
 

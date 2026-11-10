@@ -1,10 +1,6 @@
 .world-dialog { color: var(--ink); padding: 30px; width: min(760px, calc(100vw - 40px)); max-height: calc(100dvh - 40px); overflow: auto; border: 1px solid #bca06b; border-image: var(--panel-art) 24 / 13px / 0 stretch; background: radial-gradient(ellipse at 10% 40%, #54462b60, transparent 55%), #0a1218; box-shadow: 0 20px 100px #000c, inset 0 0 45px #0008; }
 .world-dialog::backdrop { background: #02070cbb; backdrop-filter: blur(4px); }
 .world-dialog__close { position: absolute; right: 5px; top: 5px; width: 44px; height: 44px; background: transparent; border: 0; padding: 10px; }
-.habit-editor { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 25px; align-items: center; }
-.habit-editor__art { text-align: center; color: #cfb37c; }
-.habit-editor__art .relic-art { width: 180px; height: 180px; }
-.habit-editor__art p { color: #c6b999; font: 19px/1.5 var(--font-display); }
 .creation-form { min-width: 0; }
 .creation-form h3 { font-size: 28px; margin-bottom: 22px; color: #ead2a3; }
 .name-field { display: block; font-size: 14px; margin-bottom: 7px; }
@@ -23,18 +19,14 @@
 .archive-confirmation h3 { color: #e5cda0; font-size: 27px; margin: 0 30px 15px 0; }
 .archive-confirmation p { line-height: 1.6; }
 @media (max-width: 760px) { .world-dialog { margin: 0; width: 100vw; max-width: none; height: 100dvh; max-height: none; padding: 68px 20px 25px; border-width: 0; } .world-dialog__close { top: 12px; right: 12px; }
-  .habit-editor { display: block; } .habit-editor__art { display: none; } .creation-form h3 { font-size: 28px; } .sphere-options { grid-template-columns: 1fr; } .sphere-option { font-size: 14px; min-height: 52px; gap: 12px; } .creation-form > input { min-height: 48px; } .form-actions { padding-bottom: env(safe-area-inset-bottom); }
+  .creation-form h3 { font-size: 28px; } .sphere-options { grid-template-columns: 1fr; } .sphere-option { font-size: 14px; min-height: 52px; gap: 12px; } .creation-form > input { min-height: 48px; } .form-actions { padding-bottom: env(safe-area-inset-bottom); }
 }
 
 /* Shared Create/Edit contribution editor; reuse existing medallion and Sanctuary assets. */
 .world-dialog:has(.creation-form) { width:min(850px,calc(100vw - 40px)); padding:26px; }
-.habit-editor { display:block; position:relative; }
-.habit-editor__art { position:absolute; left:0; top:76px; width:160px; }
-.habit-editor__art .relic-art { width:155px; height:155px; }
-.habit-editor__art p { font:12px/1.45 var(--font-body); margin:6px 0; }
 .creation-form h3 { margin:0 34px 5px 0; }
 .habit-form-subtitle { color:var(--muted); font-size:13px; margin:0 0 22px; }
-.habit-name-panel { margin-left:187px; min-height:166px; padding-top:10px; }
+.habit-name-panel { padding-top:10px; }
 .habit-name-panel>input { width:100%; font-size:16px; min-height:44px; }
 .creation-form fieldset { margin:12px 0; padding:13px 12px; border:1px solid #7c653f88; background:#050d13a8; }
 .creation-form legend { color:#e6c998; font:21px var(--font-display); padding:0 6px; }
@@ -60,16 +52,13 @@
 .creation-form .form-actions { margin-top:14px; }
 @media(max-width:760px) {
  .world-dialog:has(.creation-form) { width:100vw; padding:60px 16px 22px; }
- .habit-name-panel { margin-left:0; min-height:0; padding:0; margin-bottom:22px; }
- .habit-editor__art { display:none; }
+ .habit-name-panel { padding:0; margin-bottom:22px; }
  .sphere-contribution-row { grid-template-columns:1fr; gap:0; padding:7px 0; }
  .sphere-option { min-height:44px; padding-bottom:0; }
  .contribution-controls { margin-left:31px; gap:12px; }
  .contribution-scale small { font-size:10px; }
  .creation-form fieldset { padding:10px 8px; }
 }
-
-.habit-editor__art p { display:none; }
 .sphere-contribution-row[data-selected=true] { background:linear-gradient(100deg,color-mix(in srgb,var(--sphere-dark) 28%,transparent),transparent 92%); }
 .contribution-scale input[type=range] { appearance:none; -webkit-appearance:none; border:0; box-shadow:none; border-radius:0; }
 .contribution-scale input[type=range]::-webkit-slider-runnable-track { height:5px; border:1px solid #53616a77; border-radius:4px; background:linear-gradient(to right,var(--sphere) 0 var(--contribution-fill),#344046 var(--contribution-fill) 100%); }

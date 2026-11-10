@@ -22,7 +22,7 @@ export async function checkContributionEditor({send,evaluate,until,click,viewpor
  await click(checkbox('mind'));await chosen(1,'One sphere selection is supported');
  await until('document.querySelector("#contribution-number-mind").value==="5"','A newly selected sphere starts at5');
  assert.ok(await evaluate('["body","relationships","work","recovery"].every(s=>document.querySelector("#contribution-number-"+s).disabled&&document.querySelector("#contribution-number-"+s).value==="0"&&document.querySelector("#contribution-range-"+s).disabled)'));
- await until('document.querySelector(".habit-editor__art").getBoundingClientRect().bottom<=document.querySelector(".creation-form legend").getBoundingClientRect().top','Existing medallion art does not overlap sphere section');
+ await until('document.querySelector(".habit-icons__preview").getBoundingClientRect().bottom<=document.querySelector("[aria-describedby=habit-spheres-help] legend").getBoundingClientRect().top','Neutral habit medal preview fits above the sphere section');
  await evaluate('document.querySelector("#sphere-mind").focus()');
  await press(' ','Space',32);await until('document.querySelector("#contribution-number-mind").disabled','Space unselects sphere and disables numeric control');
  await press(' ','Space',32);await until('document.querySelector("#contribution-number-mind").value==="5"&&!document.querySelector("#contribution-number-mind").disabled','Space selects sphere with default5');

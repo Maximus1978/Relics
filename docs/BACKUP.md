@@ -1,6 +1,12 @@
 # BACKUP-001 — local backup and full-replacement restore
 
-## Current candidate — HABIT-RHYTHM-001, v3/schema5
+## Current candidate — HABIT-SIGILS-001B, v4 and schema 006
+
+Exports and protective files use formatVersion 4 and databaseSchemaVersion 6. Every habit includes its required `iconId` from the curated catalogue. Activity records carry their existing snapshots. Restore validates the full envelope before replacement, preserves each icon in the pinned transaction and publishes a verified protective v4 copy first.
+
+Version-specific readers accept v1/schema 3, v2/schema 4 and v3/schema 5. Each old habit receives the deterministic `sigil` default. The v3 adapter preserves contribution profiles, history segments and archive intervals. Invalid IDs, unexpected fields in supported versions, incompatible schema pairs and unsupported versions reject the whole restore. See HANDOFF for the automated and Windows review evidence.
+
+## Historical HABIT-RHYTHM-001 contract, v3 and schema 005
 [Complete fields,validation,adapters,recovery tests and Windows steps](HABIT_RHYTHM_001.md#backupv3-compatibility). New exports/protective files use formatVersion3/databaseSchemaVersion5. data requires frequencySegments and archivePauses alongside unchanged habits/activities. Frequency record:id,habitId,frequency(daily|three_per_week|weekly),effectiveOn,createdOn,version1. Pause:id,habitId,startOn(nullable required),endExclusiveOn(nullable required),reason=archive,provenance=recorded|legacy_unknown. No derived progression/UI preferences.
 
 Strictv1/schema3 andv2/schema4 import remains supported;no extra new fields accepted in old envelopes. v1 weights adapt as before,v2 values/origins/nulls stay exact. Both have no rhythm history and synthesize only unknown-start legacy archive metadata for archived definitions. No guessed schedule/start date. Restore actual unknown archive end survivesv3.
