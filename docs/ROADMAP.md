@@ -1,5 +1,9 @@
 # Roadmap
 
+## Progression experiment
+
+PROGRESS-002A is in experimental review. The pure replay and simulator supersede the earlier approval-first scheduling note below. PROGRESS-002B remains gated on approval of the applicable numerical rules and display contract. [Rules and evidence](PROGRESS_002A.md).
+
 ## Execution rule and current release
 
 DOC-GAME-002 is complete: approved product decisions consolidated, owner-accepted STATE-001 released by regular merge of PR #6 at be2cd4e9fd5ecb90a34aae22e578e2c6f19939a9, with only Markdown changes after the tested implementation. The owner tested STATE-001 on Windows and accepted its functionality/current visual direction, four-state rune, independent daily stones and responsive technical layers. Preserve this implementation; art imperfections are non-blocking. HANDOFF records actual merge/evidence.
@@ -130,7 +134,7 @@ Keep Sanctuary, Clockwork, Wasteland and Verdant and versioned declarative packs
 | 2 active implementation candidate | UI-COLLAPSE-001 | Independent persistent toggles,strict safe device preferences,visible inventory actions/count,hidden/inert bodies,retained date/chart state and resize. [Windows CI41255208180](https://github.com/Maximus1978/Relics/actions/runs/41255208180) SUCCESS:79 Node/354 browser/22 native plusTS/Vite andEXE. [PR #12](https://github.com/Maximus1978/Relics/pull/12) ready for owner acceptance,unmerged;native offline restart pending. [Contract](UI_COLLAPSE_001.md) |
 | 3 | HABIT-RHYTHM-001 | Approved frequency/effective dates and known archive intervals; atomic save; additive migration and strict older-backup import/export/recovery gates before editor release |
 | 4 | HABIT-SIGILS-001 / HABIT-ICONS-001 | Owner visual gate on canonical registered medals/manual glyphs; small identity/persistence/backup/card increments, no invented live progression |
-| 5 | PROGRESS-002A | Pure deterministic frequency-aware Mastery/Forging/Resonance and deterministic correction replay from authoritative inputs, no ordinary receipt ledger; synthetic tests, no persistence/UI changes |
+| 5 | PROGRESS-002A | Experimental replay and simulator for owner review. The pure engine derives its state from authoritative inputs. Production integration is separately gated. |
 | 6 | PROGRESS-002B | Integrate real journal-derived material/phase,visible within-phase progress and grace/fade/check states;preserve authoritative-input backups,Windows owner acceptance |
 | 7 | ARCHIVE-CLEANUP-001 | Hide unwanted archived habits, retain journal/analytics/FK and archived logging guard; genuine zero-history hard deletion only if separately approved |
 | 8 | AUDIO-001 | Existing sound/world-theme specification scope retained; no audio assets or playback authorized now |

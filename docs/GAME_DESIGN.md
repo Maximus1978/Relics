@@ -3,7 +3,7 @@
 ## HABIT-RHYTHM-001 operational boundary
 Frequency persistence/editor is now implemented as a review candidate;see [contract](HABIT_RHYTHM_001.md). Intentions daily/three_per_week/weekly preserve one habit ID. Legacy habits remain unconfigured until explicit enrollment today;later edits begin next Monday with visible cancellable pending rule. Occurrence-date lookup does not rewrite event snapshots. Archive pauses retain explicit unknown legacy starts and actual restoration ends;unknown history is neutral,not evidence of practice or inactivity.
 
-This operational model supplies future engines only. P01–P09 numerical/checkpoint/curve/gameplay parameters remain proposed. No Mastery,Forging,Resonance,medal,XP,rewards or Vacation calculation is delivered. Selected-day completion and existing seven-day binary rune remain independent and unchanged. Intention changes carry no loss/status warning.
+This operational model supplies future engines only. P01–P09 numerical/checkpoint/curve/gameplay parameters remain proposed. PROGRESS-002A supplies a separate experimental Mastery, Forging and Resonance simulator. Production medallions, XP, rewards and Vacation remain outside that engine. Selected-day completion and existing seven-day binary rune remain independent and unchanged. Intention changes carry no loss/status warning.
 
 
 ## Status and approved core loop

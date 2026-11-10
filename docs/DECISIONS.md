@@ -136,6 +136,10 @@ D080 — Revised numerical candidates,NOT final approval: P01 minima6/3/1 per co
 
 [Updated canonical spec](PROGRESS_001.md),[Russian review](PROGRESS_001_REVIEW_RU.md),[open gates](OPEN_QUESTIONS.md). Reusable material geometry,manual icon,completion check,subdued real metal,no grayscale replacement,interaction layers,collapse/archive/Vacation/audio and Adventure/world roadmap remain intact. Update the SAME PR #11 only;no implementation,artwork generation,automatic merge or next task. Historical D075/D076 are retained above for traceability,not current correction policy.
 
+## PROGRESS-002A experimental authorization
+
+D093 — Evaluate PROGRESS-001 candidates as progress-001-experimental v1 in an isolated pure engine. The owner confirmed strict persisted effective-date validation. Later midweek changes are invalid, while valid initial partial weeks and archive overlaps are tested as neutral. Ordinary material is reconstructed from evidence and protected against inactivity. Numerical approval and the production display remain separate gates. [Review evidence](PROGRESS_002A.md).
+
 ## UI-COLLAPSE-001 authorized prerequisite and candidate
 
 D081 — Owner authorized normal merge of PR #11 after reviewed head c43c0974953c458ef28d6f4e6c4fa7d6d22cc368 matched,mergeable status and16 Markdown-only changes verified. Merge5b7229d58c040c7ebd44d0fe423f92bdc82c57e2 verified with parents8503670/c43c097,then feature-ui-collapse-001. PROGRESS-001 passed review as a proposed contract only;P01–P09 are not final owner-approved implementation parameters. Earlier PR #11 no-merge holds are superseded by this explicit task instruction.
