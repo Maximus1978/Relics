@@ -1,21 +1,21 @@
 # Open questions
 
-## PROGRESS-002A review boundary
+## Mastery v1 approval boundary
 
-The experimental engine is implemented for review under progress-001-experimental v1. P01–P07 still require production approval, including thresholds, protected checkpoints, correction behavior, phase-local and terminal feedback, recency and pause presentation. The owner confirmed strict rejection of schema-invalid midweek frequency changes. P08 persistence evolution and P09 production wording/indicator remain separate from the experimental computation. [Synthetic review](PROGRESS_002A.md).
+P01–P07 are approved for ordinary habit progression. [Production behavior and acceptance](PROGRESS_002B.md). Future persistence changes, other visual refinements and additional gameplay retain separate gates.
 
 ## HABIT-RHYTHM-001 scope resolution
 Owner explicitly approved unknown legacy archive start(NULL),legacy_unknown provenance,and actual local restoration end. Never invent start;future interpretation neutral,no practice credit or inactivity penalty. Persisted in005/v3 and covered by deterministic tests. No remaining implementation blocker for this policy.
 
-Authorized candidate operational rules:first enrollment actual local today,later edits strictly next Monday,current/pending visible,single replaceable/cancellable pending rule,legacy unconfigured. Exact scheduling behavior awaits owner Windows acceptance;it does not approve every P01–P09 gameplay parameter. Historical enrollment,custom weekdays,Vacation,icon selection and all progression numbers remain separately deferred. Clock rollback incompatible with saved history safely rejects writes rather than guessing. Native UI/offline restart acceptance remains outstanding until owner tests the new EXE.
+Authorized candidate operational rules:first enrollment actual local today,later edits strictly next Monday,current/pending visible,single replaceable/cancellable pending rule,legacy unconfigured. Exact scheduling behavior awaits owner Windows acceptance;it does not approve every P01–P09 gameplay parameter. Historical enrollment, custom weekdays and Vacation remain separately deferred. Clock rollback incompatible with saved history safely rejects writes rather than guessing. Native UI/offline restart acceptance remains outstanding until owner tests the new EXE.
 
 
-Status: every unresolved item below is open; accepted principles constrain its answer. Questions are resolved in individual tasks. Do not silently turn an implementation convenience into a product decision. Current one-completion-per-day/cancellation behavior remains provisional and unchanged; resolved backup choices are identified explicitly. Owner acceptance of STATE-001 is recorded in D049, not an open visual gate. Q03's numeric semantics/defaults are now resolved by the owner; the owner has approved the WEIGHTS-001A contract. WEIGHTS-001B and trends are now owner-accepted and merged; NAV-CHRONICLE-001 is accepted/merged8503670. Current specification review is PROGRESS-001 REVISION; P01–P09 below are proposals, not resolved formulas.
+Status: every unresolved item below is open; accepted principles constrain its answer. Questions are resolved in individual tasks. Do not silently turn an implementation convenience into a product decision. Current one-completion-per-day/cancellation behavior remains provisional and unchanged; resolved backup choices are identified explicitly. Owner acceptance of STATE-001 is recorded in D049, not an open visual gate. Q03's numeric semantics/defaults are now resolved by the owner; the owner has approved the WEIGHTS-001A contract. WEIGHTS-001B and trends are now owner-accepted and merged; NAV-CHRONICLE-001 is accepted/merged8503670. The Mastery v1 decision resolves P01–P07.
 
 | ID | Question | Resolve before |
 | --- | --- | --- |
-| Q01 | PROGRESS-001 P01–P05 propose full-week cycles, protected phase checkpoints, thresholds, frequency boundaries and deterministic correction replay. Owner has NOT approved these numeric/edge-case choices. | Explicit owner decisions before production PROGRESS-002B |
-| Q02 | Habit Resonance P06 proposes full expected-interval grace followed by a two-interval fade, not an approved curve; current binary rune remains independent. Contextual Balance window/weights/uncertainty, including all-five35/35, stays BALANCE-001. | Owner Resonance approval before production 002B; separate Balance gate before KPIs/rewards |
+| Q01 | PROGRESS-001 P01–P05 propose full-week cycles, protected phase checkpoints, thresholds, frequency boundaries and deterministic correction replay. Approved for ordinary Mastery v1. | Resolved for this scope |
+| Q02 | Habit Resonance P06 proposes full expected-interval grace followed by a two-interval fade, approved for Mastery v1. The current binary rune remains independent. Contextual Balance window/weights/uncertainty, including all-five35/35, stays BALANCE-001. | Balance gate before KPIs or rewards |
 | Q03 | Resolved numeric model: selected independent integer 1–10, new selection 5, unselected 0, no normalization. Owner accepts future old-habit 5 defaults included with separate provenance; old activity values stay unknown. Manual icon direction is approved in PROGRESS-001; exact glyph set/default visual acceptance remains P09. Proposed persistence/backup/projection details are in WEIGHTS_001A.md. | Resolved, implemented and owner accepted in PR #8; do not reopen contribution math |
 | Q04 | Scheduled weekdays, local day boundaries, schedule edits, planned rest semantics? | Scheduling |
 | Q05 | Optional per-event intensity scale/effects; repeated sessions, quantities/units and duplicate identity? Intensity/note are approved activity fields, not habit fields. | Respective activity detail/model tasks; current daily uniqueness stays |
@@ -41,12 +41,12 @@ The original assistant responses and actual secret recipes were not retrievable.
 
 ## PROGRESS-001 REVISION approval gates
 
-[Canonical full P01–P09 proposals](PROGRESS_001.md#12-owner-decisions-required-before-production-use); [Russian worked review](PROGRESS_001_REVIEW_RU.md). These are explicit open decisions for production. The experimental replay is available for review. Existing no-absence-loss/rune/snapshot/contribution principles remain accepted.
+[Mastery v1 decisions and separate gates](PROGRESS_001.md#12-owner-decisions-required-before-production-use); [Russian worked review](PROGRESS_001_REVIEW_RU.md). P01–P07 in this table are approved as Mastery v1. P08 and remaining P09 work retain separate gates. Existing no-absence-loss/rune/snapshot/contribution principles remain accepted.
 
 | Gate | Owner decision needed | Implementation dependency |
 | --- | --- | --- |
-| P01 | Complete Monday weeks, minima6/3/1; Daily 6/7 and7/7 qualify equally, no extra multiplier; neutral current/partial weeks and unconfigured legacy. Asymmetric allowance awaits final approval | Rhythm and cycle model |
-| P02 | Recommended model B: one shortfall holds; two clear only tail after earned phase checkpoint; no loss of material/engraving | Forging |
+| P01 | Complete Monday weeks, minima6/3/1; Daily 6/7 and7/7 qualify equally, no extra multiplier; neutral current/partial weeks and unconfigured legacy. Asymmetric allowance approved | Rhythm and cycle model |
+| P02 | Approved Model B: one shortfall holds; two clear only tail after earned phase checkpoint; no loss of material/engraving | Forging |
 | P03 |0/3/9/18/36/72 material thresholds and three phase points including84/96 Platinum;phase-local visible progress (e.g.2/6 cycles) | Pacing and art mapping |
 | P04 | First enrollment today; next-Monday frequency changes, pending same-date replacement, keep frontier/clear shortfall run | Definition history/editor |
 | P05 | Prefer deterministic reconstruction from journal/frequency/pause history:no inactivity loss, but actual correction may change ordinary progress/material; no persistent attainment receipts to preserve unsupported history | Ordinary correction semantics |
@@ -57,4 +57,4 @@ The original assistant responses and actual secret recipes were not retrievable.
 
 Q04 weekday calendar remains later than the initial count rhythm; no MVP weekday editor. “Whenever I feel like it” habit frequency is explicitly deferred; optional experiences remain a separate future mechanism. Q07 permanent Artifact/discovery correction is NOT resolved by the ordinary medal receipt proposal. Q11 supported v1/v2 restore is implemented; v3+ here are proposals requiring full native tests, not supported files. Vacation expiry/afterglow, Balance, sound, unique reward formulas and optional Android packaging remain their existing separate gates. UI-COLLAPSE-001 is next recommended small task after review, not begun.
 
-Review 2026-10-31 supersedes the prior P01 strict7/7, P05 correction-retention receipts and P06 immediate fading. P01–P09 remain proposed unless explicitly finally approved. Protected phase checkpoints remain the preferred inactivity policy; they are reconstructed within replay and can change after actual evidence correction. Unique Artifact/discovery storage and Q07 correction decisions are unchanged. No runtime work or automatic PR #11 merge.
+Review 2026-10-31 supersedes the prior P01 strict7/7, P05 correction-retention receipts and P06 immediate fading. The later 002B decision approved P01–P07. Protected phase checkpoints remain the preferred inactivity policy; they are reconstructed within replay and can change after actual evidence correction. Unique Artifact/discovery storage and Q07 correction decisions are unchanged. No runtime work or automatic PR #11 merge.

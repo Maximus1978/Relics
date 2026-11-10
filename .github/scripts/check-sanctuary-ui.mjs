@@ -1,3 +1,4 @@
+import { checkMastery } from './check-mastery.mjs';
 import { checkHabitSigils } from './check-habit-sigils.mjs';
 import {checkHabitRhythm} from './check-habit-rhythm.mjs';
 import { checkSectionCollapse } from './check-section-collapse.mjs';
@@ -268,6 +269,7 @@ try {
   await checkSanctuaryStates({ output, send, evaluate, until, click, viewport, screenshot });
   await checkHabitRhythm({send,evaluate,until,click,viewport,screenshot,bindIpc,output});
   await checkSectionCollapse({send,evaluate,until,click,viewport,output});
+  await checkMastery({send,evaluate,until,click,viewport,screenshot,bindIpc});
   await checkHabitSigils({send,evaluate,until,viewport,click,press,output});
   assert.deepEqual(runtimeErrors, []);
   await writeFile(join(output, 'result.json'), JSON.stringify({ browserRendering: 'passed', interactionChecks: checks, runtimeErrors, nativeUiRuntimeVerified: false, storage: 'Synthetic in-memory demonstration; resets on reload' }, null, 2));

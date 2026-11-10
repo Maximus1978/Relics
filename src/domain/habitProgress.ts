@@ -3,7 +3,7 @@ import { archivePauseAt, calendarDay, validateFrequencyHistory, type ArchivePaus
 import { startOfWeek } from './sphereContributions.ts';
 
 export type ProgressRules = Readonly<{ id: string; version: number }>;
-export const experimentalProgressRules = Object.freeze({ id: 'progress-001-experimental', version: 1 });
+export const masteryV1Rules = Object.freeze({ id: 'mastery', version: 1 });
 
 const minimumDays = { daily: 6, three_per_week: 3, weekly: 1 } as const;
 const intendedDays = { daily: 7, three_per_week: 3, weekly: 1 } as const;
@@ -72,7 +72,7 @@ function requireDay(day: string, kind: string) {
 }
 
 function validateOptions(options: Options) {
-  if (options.rules?.id !== experimentalProgressRules.id || options.rules.version !== experimentalProgressRules.version) {
+  if (options.rules?.id !== masteryV1Rules.id || options.rules.version !== masteryV1Rules.version) {
     throw new ProgressInputError('Unsupported progression rules ID or version.');
   }
   requireDay(options.today, 'evaluation');
@@ -227,12 +227,14 @@ function replayHabit(habit: ProgressHabit, dates: ReadonlySet<string> | undefine
     completed: frontier - protectedCheckpoint,
     required: next.threshold - protectedCheckpoint,
     threshold: next.threshold,
+    material: next.material,
+    phase: next.phase,
   } : null;
   const archive = archivePauseAt(pauses, options.today);
   const unknownEnd = pauses[0]?.provenance === 'legacy_unknown' ? pauseEnds[0] : -Infinity;
   return {
     habitId: habit.id,
-    rules: experimentalProgressRules,
+    rules: masteryV1Rules,
     today: options.today,
     currentFrequency,
     archive,

@@ -1,8 +1,8 @@
 # Roadmap
 
-## Progression experiment
+## Mastery v1
 
-PROGRESS-002A is in experimental review. The pure replay and simulator supersede the earlier approval-first scheduling note below. PROGRESS-002B remains gated on approval of the applicable numerical rules and display contract. [Rules and evidence](PROGRESS_002A.md).
+PROGRESS-002A passed the combined CI and was merged in PR #17 after PR #16. The owner approved the mechanics as Mastery v1. PROGRESS-002B connects them to Sanctuary and awaits Windows acceptance. [Implementation and acceptance](PROGRESS_002B.md).
 
 ## Execution rule and current release
 
@@ -14,9 +14,9 @@ The owner resumed HABIT-SIGILS-001A on the current computer on 2026-11-09. [Owne
 
 - **001A · owner accepted and merged.** Isolated visual workshop for six materials and three stages. A common empty center accepts an independent material-treated SVG through `iconId`. The owner accepted the designs and PR #14 merged at 33cddc2ee74632604fc36f20283a639eee7f9cc9. [PR #14](https://github.com/Maximus1978/Relics/pull/14).
 - **001B · owner accepted and merged.** Create/Edit icon picker and Stone 1 preview, persisted icon identity, neutral legacy default, additive schema 006 and backup v4. [PR #15](https://github.com/Maximus1978/Relics/pull/15) merged at d9a56456d705e9bde0625022844137a907c6a6fa.
-- **001C · Windows review.** Production cards display the saved icon. The full card records or cancels for the selected date, with a separate menu and archive Restore. Stone stage 1 and zero Resonance are display defaults. [Handoff and manual acceptance](HANDOFF.md).
-- **PROGRESS-002A · queued.** Deterministic Mastery, Forging and Resonance after numerical approval.
-- **PROGRESS-002B · queued.** Connect progression to material, stage, Forging indicator and light.
+- **001C · merged in PR #16.** Production cards display the saved icon. The full card records or cancels for the selected date, with a separate menu and archive Restore. Stone stage 1 and zero Resonance are display defaults. [Handoff and manual acceptance](HANDOFF.md).
+- **PROGRESS-002A · merged in PR #17.** Pure deterministic replay and synthetic simulator.
+- **PROGRESS-002B · Windows review.** Real material, stage, Forging and Resonance in the existing Sanctuary cards.
 
 The later sequence retains ARCHIVE-CLEANUP-001, AUDIO-001 and the approved backlog. Android remains deferred until Windows core mechanics are validated and the owner schedules it.
 
@@ -130,11 +130,11 @@ Keep Sanctuary, Clockwork, Wasteland and Verdant and versioned declarative packs
 
 | Order | Task | Scope and dependency |
 | --- | --- | --- |
-| 1 completed proposal review | PROGRESS-001 | PR #11 merged5b7229d after authorized review;P01–P09 still proposed and must be explicitly decided before affected mechanics code |
+| 1 completed proposal review | PROGRESS-001 | PR #11 merged5b7229d after authorized review;historical candidate review, superseded for P01–P07 by Mastery v1 |
 | 2 active implementation candidate | UI-COLLAPSE-001 | Independent persistent toggles,strict safe device preferences,visible inventory actions/count,hidden/inert bodies,retained date/chart state and resize. [Windows CI41255208180](https://github.com/Maximus1978/Relics/actions/runs/41255208180) SUCCESS:79 Node/354 browser/22 native plusTS/Vite andEXE. [PR #12](https://github.com/Maximus1978/Relics/pull/12) ready for owner acceptance,unmerged;native offline restart pending. [Contract](UI_COLLAPSE_001.md) |
 | 3 | HABIT-RHYTHM-001 | Approved frequency/effective dates and known archive intervals; atomic save; additive migration and strict older-backup import/export/recovery gates before editor release |
 | 4 | HABIT-SIGILS-001 / HABIT-ICONS-001 | Owner visual gate on canonical registered medals/manual glyphs; small identity/persistence/backup/card increments, no invented live progression |
-| 5 | PROGRESS-002A | Experimental replay and simulator for owner review. The pure engine derives its state from authoritative inputs. Production integration is separately gated. |
+| 5 | PROGRESS-002A | Merged pure replay and simulator. Mastery v1 uses the same authoritative inputs. |
 | 6 | PROGRESS-002B | Integrate real journal-derived material/phase,visible within-phase progress and grace/fade/check states;preserve authoritative-input backups,Windows owner acceptance |
 | 7 | ARCHIVE-CLEANUP-001 | Hide unwanted archived habits, retain journal/analytics/FK and archived logging guard; genuine zero-history hard deletion only if separately approved |
 | 8 | AUDIO-001 | Existing sound/world-theme specification scope retained; no audio assets or playback authorized now |
@@ -145,4 +145,4 @@ Preserve Vacation Mode/cosmetic afterglow, contextual opt-in Life Rhythm insight
 
 ### PROGRESS-001 product-review correction 2026-10-31
 
-Historical review receipt before UI-COLLAPSE-001:PR #11 was documentation-only/unmerged at that stage and is now normally merged5b7229d as a proposed contract. Revised P01 candidate6/3/1 eligibility:Daily6/7 suffices,not7/7;current partial week neutral,cap1,no sphere-value multiplier. P05 now prefers journal/effective-history reconstruction:no material decay from absence,but genuine correction may change ordinary material;no proposed007/v5 or persistent attainment receipts solely to preserve unsupported history. Artifact/discovery storage remains separate and unchanged. P06 adds full expected-interval grace then2-interval fade (Weekly7full/14half/21zero). Add a compact phase-local Forging progress text/track,not currency. P01–P09 remain proposed;all prior small tasks/future systems/worlds retained and next UI-COLLAPSE-001 not begun.
+Historical review receipt before UI-COLLAPSE-001:PR #11 was documentation-only/unmerged at that stage and is now normally merged5b7229d as a proposed contract. Revised P01 candidate6/3/1 eligibility:Daily6/7 suffices,not7/7;current partial week neutral,cap1,no sphere-value multiplier. P05 now prefers journal/effective-history reconstruction:no material decay from absence,but genuine correction may change ordinary material;no proposed007/v5 or persistent attainment receipts solely to preserve unsupported history. Artifact/discovery storage remains separate and unchanged. P06 adds full expected-interval grace then2-interval fade (Weekly7full/14half/21zero). Add a compact phase-local Forging progress text/track,not currency. The later 002B decision approves P01–P07. The remaining task boundaries and worlds are retained.
