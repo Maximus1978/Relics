@@ -1,3 +1,4 @@
+import { checkHabitSigils } from './check-habit-sigils.mjs';
 import {checkHabitRhythm} from './check-habit-rhythm.mjs';
 import { checkSectionCollapse } from './check-section-collapse.mjs';
 import { checkChronicleSqlite } from './check-chronicle-sqlite.mjs';
@@ -31,7 +32,7 @@ socket.addEventListener('message', event => {
       error=>send('Runtime.evaluate',{expression:'window.__chronicleTestResolve?.('+invocation.id+',false,'+JSON.stringify(String(error.message??error))+')'})
     ).catch(()=>{});
   }
-  if (message.method === 'Runtime.exceptionThrown') runtimeErrors.push(message.params.exceptionDetails.text);
+  if (message.method === 'Runtime.exceptionThrown') runtimeErrors.push(message.params.exceptionDetails.exception?.description ?? message.params.exceptionDetails.text);
   const request = pending.get(message.id);
   if (!request) return;
   pending.delete(message.id); clearTimeout(request.timeout);
@@ -215,6 +216,7 @@ try {
   await checkSanctuaryStates({ output, send, evaluate, until, click, viewport, screenshot });
   await checkHabitRhythm({send,evaluate,until,click,viewport,screenshot,bindIpc,output});
   await checkSectionCollapse({send,evaluate,until,click,viewport,output});
+  await checkHabitSigils({send,evaluate,until,viewport,click,press,output});
   assert.deepEqual(runtimeErrors, []);
   await writeFile(join(output, 'result.json'), JSON.stringify({ browserRendering: 'passed', interactionChecks: checks, runtimeErrors, nativeUiRuntimeVerified: false, storage: 'Synthetic in-memory demonstration; resets on reload' }, null, 2));
   console.log(`Sanctuary browser verification passed: ${checks.length} checks. Native runtime remains unverified.`);

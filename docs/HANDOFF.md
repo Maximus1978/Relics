@@ -1,3 +1,20 @@
+# HABIT-SIGILS-001A — visual review candidate
+
+The owner canceled the computer transfer on 2026-11-09 and resumed work here. Baseline master is 6c3333bfd32f09a4ff760e0a107a098aa3c106f0, the verified PR #13 merge. Functional rhythm acceptance was recorded separately from native offline restart.
+
+The acceptance scope is six distinct materials with three craft stages, an independent material-treated SVG icon in a common slot, live icon switching, isolated synthetic card states, browser evidence, and Windows CI. The next gate is owner visual approval.
+
+The workshop is a separate Vite page at `/sigils.html`. The browser artifact includes `sigils-review.html`, which opens directly from disk. Use the compact scale and slot overlay controls to inspect all 18 bases, then choose a glyph to update Stone, Bronze, Gold and Platinum. The gold samples demonstrate completion and Resonance at 0, 0.5 and 1. The artwork uses stylized SVG relief and fine grain. It has a cleaner surface treatment than the painterly concept. [Visual implementation and review notes](art/HABIT_MEDALS.md).
+
+## Verification and review artifacts
+
+[PR #14](https://github.com/Maximus1978/Relics/pull/14) is open for owner visual review. The tested implementation is `670f4b2df0bc618b2bb88ff8313aa91cb763443c` and the Windows build source is GitHub's synthetic PR merge `a1bc193faee4d5a14c93efe17b6d6e761f6ee61f`. [Windows CI run 42653290503](https://github.com/Maximus1978/Relics/actions/runs/42653290503) passed locked installation, 91 Node tests, TypeScript and Vite, 398 Edge checks with zero runtime errors, Windows x64 compilation, and 30 native tests. The standalone crash helper is intentionally ignored and exercised by its passing parent. The equivalent local suite passed after a rerun of the existing browser scenario.
+
+- [Browser review ZIP](https://github.com/Maximus1978/Relics/actions/runs/42653290503/artifacts/13689939194). SHA256 `45765a2c2ce709af307ef70afede94c5d15cb2cd41d293c02a75de817b925474`. Includes the 18-state contact sheet, compact view, center alignment, four live icon examples, completion and Resonance, hover and focus, and mobile renders. The included HTML opened directly from disk and changed icons with zero external resource loads.
+- [Windows x64 ZIP](https://github.com/Maximus1978/Relics/actions/runs/42653290503/artifacts/13691503727). SHA256 `c3df61eb97cfc2d7aa339e5e69f8598d561f1eb137af8817f9f4b1e2e425cab0`. The extracted executable hash `ba93131cd43f244efa22780177618953623047cf869dd977a3fd6816ac579263` matched its manifest. Visual verification is from the Edge workshop. The EXE verification covers compilation and artifact integrity.
+
+The next action is owner visual review of 001A. The later icon persistence task is queued in ROADMAP. The final verification receipt changes Markdown only.
+
 # Transfer handoff — owner-authorized PR13 release, then STOP
 
 Owner update2026-11-01:functional HABIT-RHYTHM-001 acceptance on Windows CONFIRMED by the supplied next-task brief. A separate native offline process restart is NOT confirmed. Earlier pending-functional-acceptance/no-merge holds below are historical and superseded by the owner's explicit instruction to merge PR #13 normally into master.

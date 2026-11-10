@@ -1,0 +1,15 @@
+.habit-medal {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  overflow: visible;
+  filter: drop-shadow(0 5px 6px #000a);
+}
+.medal-icon-shadow, .medal-icon-face {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.medal-icon-shadow { stroke: #171011; stroke-width: 5.1; }
+.medal-icon-face { stroke-width: 3.3; }
