@@ -4,6 +4,10 @@ The owner accepted the 001A artwork on 2026-11-10. PR #14 was verified against r
 
 The current acceptance scope is Create/Edit selection and neutral preview, schema 006, strict backup v4 with v1–v3 import, native offline reopen evidence, browser screenshots and a Windows build. The next review gate is owner acceptance of 001B.
 
+Local verification passed 93 Node tests, 33 Rust tests, TypeScript/Vite and 405 Edge checks. Two standalone Rust helpers ran through their passing parents. The browser suite used a temporary SQLite database and captured Create and Edit, including a narrow touch selection and the screen-reader accessibility names.
+
+An isolated Windows release smoke build used application identifier `local.relics.sigils001b.smoke` and its own WebView profile. The actual Tauri UI saved Music, edited it to Bicycle, then reopened with Bicycle and the same habit ID after the process stopped and restarted. Both launches used a closed loopback proxy for external requests and allowed the local Tauri transport. The captured request hosts were `tauri.localhost` and `ipc.localhost`. This smoke build used the same application source with an isolated identifier and hidden window.
+
 # HABIT-SIGILS-001A — visual review candidate
 
 The owner canceled the computer transfer on 2026-11-09 and resumed work here. Baseline master is 6c3333bfd32f09a4ff760e0a107a098aa3c106f0, the verified PR #13 merge. Functional rhythm acceptance was recorded separately from native offline restart.
