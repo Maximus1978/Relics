@@ -4,6 +4,10 @@ The owner approved P01–P07 as Mastery v1. PR #16 merged at 2a10e2e082dbf411d5a
 
 The acceptance scope is real medal material, craftsmanship, phase-local Forging and Resonance in Sanctuary, with independent selected-day completion, fail-safe invalid history and unchanged journal storage. Stop at the owner Windows review of the 002B PR. [Implementation, verification and acceptance](PROGRESS_002B.md).
 
+## ALCHEMY-001 planning note
+
+The owner added hybrid alchemy to the roadmap. The design distinguishes permanent Mastery, recent Resonance and renewable medal charge. Completed Todo and episodic tasks and closed authored combinations extend the experiment inputs. The full-charge reset is the first spending candidate. The second mechanism, charge tuning and correction policy remain open for the later specification. PROGRESS-002B remains at Windows acceptance. [Roadmap](ROADMAP.md) · [Concept](GAME_DESIGN.md#hybrid-alchemy-and-medal-energy)
+
 # HABIT-SIGILS-001C — Sanctuary habit cards
 
 The owner accepted HABIT-SIGILS-001B on Windows and authorized the regular merge of [PR #15](https://github.com/Maximus1978/Relics/pull/15). The reviewed head was `90d378861d710b9b7b8f68dae01f9ab38c5a4a99`, with [successful Windows CI](https://github.com/Maximus1978/Relics/actions/runs/42856062998). The 001C branch starts from verified master merge `d9a56456d705e9bde0625022844137a907c6a6fa`, whose tree matches the tested head.

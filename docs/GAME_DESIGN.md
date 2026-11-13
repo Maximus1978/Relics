@@ -16,6 +16,26 @@ Approved intended loop, not yet implemented end to end:
 
 Daily logging remains useful without Adventure Mode. Discoveries are curated and meaningful, not infinite random loot. Basic experimentation never consumes permanent practice, Mastery, earned artifact evolution or discoveries. Whether some advanced crafting consumes renewable materials is undecided. Opportunities invite experiences rather than create compulsory tasks. Diversity, unexpected combinations, returning to interests and trying new experiences may support authored discovery conditions; exact conditions stay outside public documentation. There is no mandatory daily login, punitive streak system or optimal XP-grinding build.
 
+## Hybrid alchemy and medal energy
+
+ALCHEMY-001 will specify this owner-approved direction before implementation. Permanent Mastery and earned medal stages survive inactivity and stay outside experiment costs. Resonance describes recent participation and controls medal illumination. Alchemical Charge is a separate renewable resource accumulated through repeated recorded practice on the medal.
+
+| Resource behavior | Planned direction |
+| --- | --- |
+| Accumulate | Eligible practice replenishes Alchemical Charge. A full charge is shown as 100% and makes the medal ready to serve as a catalyst. |
+| Spend | The player intentionally commits the charge to an experiment. The specified candidate is one experiment per fully charged medal, followed by a reset of its charge to zero. The medal and its earned stage are retained. |
+| Fade | During inactivity both charge and Resonance may fade under coordinated rules. New practice can replenish charge. Unspent energy creates no debt or obligation. |
+
+Each mechanism needs a clear purpose in the interface. A person should be able to tell whether a medal is glowing from recent practice and whether it is ready for alchemy. Model real practice patterns before choosing charge gain, decay and display rules. The second active spending mechanism is open. Passive fading is already part of the resource lifecycle.
+
+| Experiment input | Role |
+| --- | --- |
+| Habit medals | Serve as catalysts. Their earned material sets the possible reaction quality and their renewable charge pays for use. |
+| Todo and episodic tasks | Completing an actual task can yield components and record its contribution to the relevant life spheres. A planned or open task carries no recorded contribution. Numeric Balance remains under BALANCE-001. |
+| Hidden combinations | Authored discoveries respond to specific combinations of medals, components and achievements. Keep exact recipes and conditions in the closed catalog under the [content policy](CONTENT_POLICY.md). |
+
+Repeated cancellation and re-marking of the same occurrence must never yield additional energy. ALCHEMY-001 and AUDIT-001 must specify how to identify the same occurrence across corrections and preserve that guarantee through retries and after spending. Compare ordinary logging, backdating, correction and restart in synthetic scenarios before implementation.
+
 ## Five spheres and habit identity
 
 | Stable ID | English | Russian | Meaning |
