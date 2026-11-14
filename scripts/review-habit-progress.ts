@@ -1,4 +1,4 @@
-import { experimentalProgressRules as rules, projectHabitProgress } from '../src/domain/habitProgress.ts';
+import { masteryV1Rules as rules, projectHabitProgress } from '../src/domain/habitProgress.ts';
 import { activity, date, habit, practice } from '../tests/fixtures/habitProgress.ts';
 
 const definition = habit();
@@ -11,7 +11,7 @@ if (!recorded.some(event => event.occurredOn === removedDate)) {
 }
 const without = recorded.filter(event => event.occurredOn !== removedDate);
 const evidence = {
-  experimental: true,
+  synthetic: true,
   recordedDates: recorded.map(event => event.occurredOn),
   removedDate,
   frequencyHistory: definition.frequencySegments,
@@ -26,7 +26,7 @@ const evidence = {
 if (process.argv.includes('--json')) {
   console.log(JSON.stringify(evidence));
 } else {
-  console.log('EXPERIMENTAL RULES — synthetic histories; no owner approval of numerical rules');
+  console.log('MASTERY v1 — approved rules, synthetic histories');
   console.log('Rules:', rules.id, 'version', rules.version);
   console.log('Evaluation date:', today, '| recorded:', evidence.recordedDates.join(', '), '| correction:', removedDate);
   console.table(evidence.frequencyHistory);

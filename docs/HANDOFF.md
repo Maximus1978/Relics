@@ -1,3 +1,13 @@
+# PROGRESS-002B — Mastery v1 in Sanctuary
+
+The owner approved P01–P07 as Mastery v1. PR #16 merged at 2a10e2e082dbf411d5a3a6802535c665e4c03a9d. PR #17 was synchronized without changing reviewed card or engine behavior, and [combined Windows CI](https://github.com/Maximus1978/Relics/actions/runs/42900015119) passed on d9639c58dc0c664d1018da7d5109959de353a0df. PR #17 merged at a1aada09c7fd3904ffed9575b44ce9f60ff0a064. The 002B feature branch starts from that exact master tree.
+
+The acceptance scope is real medal material, craftsmanship, phase-local Forging and Resonance in Sanctuary, with independent selected-day completion, fail-safe invalid history and unchanged journal storage. Stop at the owner Windows review of the 002B PR. [Implementation, verification and acceptance](PROGRESS_002B.md).
+
+## ALCHEMY-001 planning note
+
+The owner added hybrid alchemy and an independent episodic Todo list to the roadmap. Permanent Mastery, recent Resonance and renewable Alchemical Charge remain distinct. There are **two charge-loss paths**: voluntary full-charge experiment (candidate: reset after use) and passive inactivity fading; a second active spend mode is NOT required. TODO-001 specifies a useful non-gamified Todo list before TODO-002 implementation and later audited TODO-ALCHEMY-001 rewards. Charge gain/decay, readiness beyond full Charge, Vacation interaction and correction/atomic accounting remain open. No implementation, schema/backup changes, game data or secret recipes are authorized by these planning notes. PROGRESS-002B remains at Windows acceptance, with unchanged tested source. [Roadmap](ROADMAP.md) · [Concept](GAME_DESIGN.md#hybrid-alchemy-and-medal-energy)
+
 # HABIT-SIGILS-001C — Sanctuary habit cards
 
 The owner accepted HABIT-SIGILS-001B on Windows and authorized the regular merge of [PR #15](https://github.com/Maximus1978/Relics/pull/15). The reviewed head was `90d378861d710b9b7b8f68dae01f9ab38c5a4a99`, with [successful Windows CI](https://github.com/Maximus1978/Relics/actions/runs/42856062998). The 001C branch starts from verified master merge `d9a56456d705e9bde0625022844137a907c6a6fa`, whose tree matches the tested head.

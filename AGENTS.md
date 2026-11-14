@@ -1,6 +1,6 @@
-# Current task — HABIT-SIGILS-001C
+# Current task — PROGRESS-002B
 
-The owner accepted 001B and authorized merging PR #15 and opening a focused 001C PR. Use the approved medal and saved icon in production Sanctuary cards with selected-day completion. Preserve schema 6 and backup v4. See HANDOFF for the Windows acceptance gate.
+The owner approved Mastery v1 and authorized the normal merge of prerequisites PR #16 and PR #17 after combined CI. Integrate the reviewed replay into Sanctuary without new persistence or reward behavior. HANDOFF records the Windows acceptance gate.
 
 # Relics agent instructions
 
@@ -40,4 +40,4 @@ Read README.md, docs/PRODUCT_VISION.md, docs/ROADMAP.md, docs/DECISIONS.md, and 
 
 ## Progression specification and current task boundary
 
-Read docs/PROGRESS_001.md for the proposed mechanics and docs/art/HABIT_MEDALS.md for the artwork contract. The 001A fixture supplies all display values. P01–P09 gameplay candidates remain pending their own review.
+Read docs/PROGRESS_001.md for the approved Mastery v1 mechanics and docs/art/HABIT_MEDALS.md for the artwork contract. PROGRESS-002B connects real journal history to existing Sanctuary cards. Other gameplay systems retain separate approval gates.

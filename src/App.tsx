@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { medallionIllumination } from './domain/medallionIllumination';
 import { useLocalDay } from './application/useLocalDay';
+import { projectInventoryMastery } from './application/inventoryMastery';
 import { useRelicsModel } from './application/useRelicsModel';
 import { useSectionPreferences } from './application/useSectionPreferences';
 import HabitForm from './components/HabitForm';
@@ -28,6 +29,7 @@ export default function App() {
     document.getElementById(focusTarget.current)?.focus({preventScroll:true});
   }, [navigationRevision]);
   const today = useLocalDay();
+  const mastery = useMemo(() => projectInventoryMastery(model.habits, model.activities, today), [model.habits, model.activities, today]);
   const illumination = medallionIllumination(model.activities, model.day, today);
   const selected = illumination.selected;
 
@@ -62,7 +64,7 @@ export default function App() {
           <label>Дата отметки<input type="date" value={model.day} max={today} disabled={model.busy || model.managingHabit} onChange={event => model.setDay(event.target.value)} /></label></div>
       </header>
       <SphereInstallation illumination={illumination} />
-      <RelicInventory model={model} selected={selected} expanded={sections.preferences.inventoryExpanded} onToggle={() => sections.setExpanded('inventoryExpanded', !sections.preferences.inventoryExpanded)} />
+      <RelicInventory model={model} selected={selected} mastery={mastery} expanded={sections.preferences.inventoryExpanded} onToggle={() => sections.setExpanded('inventoryExpanded', !sections.preferences.inventoryExpanded)} />
       <LifeRhythm activities={model.activities} today={today} ready={model.canSave} expanded={sections.preferences.rhythmExpanded} onToggle={() => sections.setExpanded('rhythmExpanded', !sections.preferences.rhythmExpanded)} />
       </div>
       {view === 'chronicle' && <Chronicle model={model} />}
