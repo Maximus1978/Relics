@@ -6,7 +6,7 @@ The acceptance scope is real medal material, craftsmanship, phase-local Forging 
 
 ## ALCHEMY-001 planning note
 
-The owner added hybrid alchemy to the roadmap. The design distinguishes permanent Mastery, recent Resonance and renewable medal charge. Completed Todo and episodic tasks and closed authored combinations extend the experiment inputs. The full-charge reset is the first spending candidate. The second mechanism, charge tuning and correction policy remain open for the later specification. PROGRESS-002B remains at Windows acceptance. [Roadmap](ROADMAP.md) · [Concept](GAME_DESIGN.md#hybrid-alchemy-and-medal-energy)
+The owner added hybrid alchemy and an independent episodic Todo list to the roadmap. Permanent Mastery, recent Resonance and renewable Alchemical Charge remain distinct. There are **two charge-loss paths**: voluntary full-charge experiment (candidate: reset after use) and passive inactivity fading; a second active spend mode is NOT required. TODO-001 specifies a useful non-gamified Todo list before TODO-002 implementation and later audited TODO-ALCHEMY-001 rewards. Charge gain/decay, readiness beyond full Charge, Vacation interaction and correction/atomic accounting remain open. No implementation, schema/backup changes, game data or secret recipes are authorized by these planning notes. PROGRESS-002B remains at Windows acceptance, with unchanged tested source. [Roadmap](ROADMAP.md) · [Concept](GAME_DESIGN.md#hybrid-alchemy-and-medal-energy)
 
 # HABIT-SIGILS-001C — Sanctuary habit cards
 
