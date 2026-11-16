@@ -1,12 +1,16 @@
-# PROGRESS-002B — Mastery v1 in Sanctuary
+# TODO-001 — Episodic Tasks specification
 
-The owner approved P01–P07 as Mastery v1. PR #16 merged at 2a10e2e082dbf411d5a3a6802535c665e4c03a9d. PR #17 was synchronized without changing reviewed card or engine behavior, and [combined Windows CI](https://github.com/Maximus1978/Relics/actions/runs/42900015119) passed on d9639c58dc0c664d1018da7d5109959de353a0df. PR #17 merged at a1aada09c7fd3904ffed9575b44ce9f60ff0a064. The 002B feature branch starts from that exact master tree.
+Status **documentation proposal for owner review**. Branch `docs-todo-001` starts from the verified PROGRESS-002B merge below. [The contract](TODO_001.md) specifies the standalone offline list, correction-safe completion identity, snapshot-based Chronicle and Life Rhythm, SQLite and backup compatibility, and Windows checks. TODO-002A is the next queued implementation candidate after approval. Alchemy integration remains a separately reviewed roadmap item.
 
-The acceptance scope is real medal material, craftsmanship, phase-local Forging and Resonance in Sanctuary, with independent selected-day completion, fail-safe invalid history and unchanged journal storage. Stop at the owner Windows review of the 002B PR. [Implementation, verification and acceptance](PROGRESS_002B.md).
+# PROGRESS-002B — Mastery v1 released
+
+The owner accepted Mastery v1 and authorized the normal merge of [PR #18](https://github.com/Maximus1978/Relics/pull/18). The reviewed head was `b0cf79ba9bfac2dc1fcdf1fdf6d1214775a31bd0`. It descends from tested implementation `a189b471a8db4a7ea47315d48d1b94c61310b582`. All six intervening commits changed Markdown only. The merge is `18ef184186e74b2700bb1f6646522c533fa15c2a`. The fetched `origin/master` matched that SHA, and the merge tree matched the reviewed head.
+
+[Windows CI 42903336255](https://github.com/Maximus1978/Relics/actions/runs/42903336255) passed for the tested implementation. The hosted job completed locked dependency installation, Node tests, TypeScript, Vite, Edge rendering checks, Tauri Windows x64 compilation and the native backup safety suite. [Windows ZIP](https://github.com/Maximus1978/Relics/actions/runs/42903336255/artifacts/13805200301). This CI evidence is separate from the owner’s release approval. [Released behavior and acceptance steps](PROGRESS_002B.md).
 
 ## ALCHEMY-001 planning note
 
-The owner added hybrid alchemy and an independent episodic Todo list to the roadmap. Permanent Mastery, recent Resonance and renewable Alchemical Charge remain distinct. There are **two charge-loss paths**: voluntary full-charge experiment (candidate: reset after use) and passive inactivity fading; a second active spend mode is NOT required. TODO-001 specifies a useful non-gamified Todo list before TODO-002 implementation and later audited TODO-ALCHEMY-001 rewards. Charge gain/decay, readiness beyond full Charge, Vacation interaction and correction/atomic accounting remain open. No implementation, schema/backup changes, game data or secret recipes are authorized by these planning notes. PROGRESS-002B remains at Windows acceptance, with unchanged tested source. [Roadmap](ROADMAP.md) · [Concept](GAME_DESIGN.md#hybrid-alchemy-and-medal-energy)
+The owner added hybrid alchemy and an independent episodic Todo list to the roadmap. Permanent Mastery, recent Resonance and renewable Alchemical Charge remain distinct. The two charge-loss paths are voluntary full-charge experimentation (candidate: reset after use) and passive inactivity fading. TODO-001 proposes a useful standalone list before TODO-002 implementation and later audited TODO-ALCHEMY-001 rewards. Charge gain/decay, readiness beyond full Charge, Vacation interaction, and correction/atomic accounting remain open. [Roadmap](ROADMAP.md) · [Concept](GAME_DESIGN.md#hybrid-alchemy-and-medal-energy)
 
 # HABIT-SIGILS-001C — Sanctuary habit cards
 

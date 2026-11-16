@@ -2,7 +2,7 @@
 
 ## Mastery v1
 
-PROGRESS-002A passed the combined CI and was merged in PR #17 after PR #16. The owner approved the mechanics as Mastery v1. PROGRESS-002B connects them to Sanctuary and awaits Windows acceptance. [Implementation and acceptance](PROGRESS_002B.md).
+PROGRESS-002A passed the combined CI and was merged in PR #17 after PR #16. The owner approved the mechanics as Mastery v1. PROGRESS-002B connects them to Sanctuary and is owner-accepted, merged in [PR #18](https://github.com/Maximus1978/Relics/pull/18) at `18ef184186e74b2700bb1f6646522c533fa15c2a`. [Implementation and acceptance](PROGRESS_002B.md).
 
 ## Execution rule and current release
 
@@ -16,9 +16,9 @@ The owner resumed HABIT-SIGILS-001A on the current computer on 2026-11-09. [Owne
 - **001B · owner accepted and merged.** Create/Edit icon picker and Stone 1 preview, persisted icon identity, neutral legacy default, additive schema 006 and backup v4. [PR #15](https://github.com/Maximus1978/Relics/pull/15) merged at d9a56456d705e9bde0625022844137a907c6a6fa.
 - **001C · merged in PR #16.** Production cards display the saved icon. The full card records or cancels for the selected date, with a separate menu and archive Restore. Stone stage 1 and zero Resonance are display defaults. [Handoff and manual acceptance](HANDOFF.md).
 - **PROGRESS-002A · merged in PR #17.** Pure deterministic replay and synthetic simulator.
-- **PROGRESS-002B · Windows review.** Real material, stage, Forging and Resonance in the existing Sanctuary cards.
+- **PROGRESS-002B · owner accepted and merged.** Real material, stage, Forging and Resonance in the existing Sanctuary cards.
 
-The later sequence retains ARCHIVE-CLEANUP-001, AUDIO-001 and the approved backlog. Android remains deferred until Windows core mechanics are validated and the owner schedules it.
+Current task **TODO-001** is a documentation proposal for owner review. [Standalone Todo contract](TODO_001.md). TODO-002 is the next Todo implementation candidate after approval. The later sequence retains ARCHIVE-CLEANUP-001, AUDIO-001 and the approved backlog. Android remains deferred until Windows core mechanics are validated and the owner schedules it.
 
 ## Accepted foundation
 
@@ -57,18 +57,18 @@ The PROGRESS-001 REVISION priority override above is authoritative; accepted com
 | 4 | ACTIVITY-DETAILS-001A | Optional per-activity note with additive migration and legacy compatibility; not a habit field |
 | 4 | ACTIVITY-DETAILS-001B | Optional per-activity intensity after scale/effect agreement; distinct from contribution weights; no forced entry |
 | 4 | ACTIVITY-MODEL-001 | Small design/compatibility task for repeated sessions and quantities/units/identity; do not remove current uniqueness until a separately approved implementation |
-| 5 specification | TODO-001 | Define an ordinary independent episodic task list (create/edit, optional due date, complete/reopen, history and archive/hide), offline persistence and backup contracts. Optional dated sphere-contribution snapshots occur only on real completion. No habit frequency, automatic Mastery, fake journal entries, compulsory game rewards or numeric Balance without BALANCE-001. Specify correction/reopen identity and tests before code. |
+| 5 · proposed for owner review | TODO-001 | [Standalone Todo contract](TODO_001.md) for offline task lifecycle, optional due dates and completion snapshots, correction-safe identity, Chronicle, Life Rhythm, and SQLite/backup acceptance. |
 | 5 specification gate | BALANCE-001 | Specify contextual sphere diversity, evaluation window, contribution weighting, anti-grinding and missing-data/life context; cover one-all-five-habit 35/35 case. No formulas/KPIs implemented. Required before numeric Balance or Balance-derived rewards |
 | Proposed contract reviewed;PR #11 merged | PROGRESS-001 | [Revised canonical spec](PROGRESS_001.md): two Forging models, exact cycle/threshold/correction examples, layered medal/reference contract, minimal history/backup design and P01–P09 gates; numerical choices proposed, no runtime changes |
 | Superseded split, scope retained | PROGRESS-002 | Replaced by separately reviewed pure engine PROGRESS-002A and data/visual integration PROGRESS-002B below; no large combined implementation |
 | 6 prerequisite | AUDIT-001 | Auditable corrections and explicit consequences for resource/discovery grants before permanent rewards depend on mutable history |
-| 6 implementation | TODO-002 | Build the independent, useful offline Todo list after TODO-001 approval, with verified persistence, backup upgrade/older imports, safe edit/reopen and stable event identity. No alchemical rewards or Mastery changes in this task. |
+| 6 · queued after TODO-001 approval | TODO-002 | [Three reviewable increments](TODO_001.md#9-acceptance-and-implementation-sequence): A native lifecycle/migration/backup; B Windows task list and Chronicle; C Life Rhythm and Windows acceptance. |
 | 6 prerequisite | WORLD-001 | Validate versioned declarative pack schema/loader, compatibility, safe component/effect vocabulary and public/closed boundary |
 | 6 specification | ALCHEMY-001 | Model the [hybrid alchemy concept](GAME_DESIGN.md#hybrid-alchemy-and-medal-energy). Two charge-loss paths are approved: deliberate full-charge experiment (candidate: reset Charge to zero after commitment) and passive fading from inactivity, **not** a second active spending mode. Distinguish Charge from recency-based Resonance and permanent Mastery; include catalyst quality, Todo components, authored hidden recipes, gain/fade/Vacation rules, atomic spend and correction/retry scenarios. The full-Charge versus full-Resonance readiness gate and all numerical parameters remain open. Coordinate with AUDIT-001 before any grants. |
 | 6 | ESSENCE-001 | Minimal thematic essence/material inventory and idempotent activity-derived accounting, with yields and correction behavior reviewed under ALCHEMY-001 and AUDIT-001 |
 | 6 | DISCOVERY-001 | Bounded authored 2–3-element rule evaluation, stable versioned discovery grants and duplicate/correction tests using synthetic fixtures |
 | 6 | ALCHEMY-UI-001 | Implement a small experiment flow after the ALCHEMY-001 contract, ESSENCE-001 and DISCOVERY-001. Use real inventory and recipes with clear catalyst readiness, atomic intentional spending and no fake results. |
-| 6 integration | TODO-ALCHEMY-001 | After TODO-002, AUDIT-001, ESSENCE-001 and the approved Alchemy contract, connect eligible completed Todo events to idempotent component grants and approved life-sphere analytics. Do not credit Mastery, invent task completions or assume every checked item deserves a reward. |
+| 6 integration | TODO-ALCHEMY-001 | After TODO-002, AUDIT-001, ESSENCE-001 and the approved Alchemy contract, connect eligible completed Todo events to idempotent component grants. Chronicle and Life Rhythm ship in standalone TODO-002. Do not credit Mastery, invent task completions or assume every checked item deserves a reward. |
 | 6 | SANCTUARY-001 | Separately authorized spoiler-safe catalog integration; close one minimal real activity → essence → experiment → authored discovery → optional experience loop |
 | 7 specification | BLESSINGS-001 | After approved progression/discovery contracts: define bounded optional temporary effect origins, duration/expiry, stacking, chance/safeguards and correction policy. Review before code; no XP multiplier, fake records or artificial Balance |
 | 7 optional follow-up | BLESSINGS-002 | After BLESSINGS-001 approval and required origin/content services: implement one approved cosmetic temporary effect with expiry and persistence tests; defer hints/encounters to separate approved increments |
