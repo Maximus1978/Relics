@@ -1,6 +1,6 @@
 # PROGRESS-001 REVISION — habit forging and independent medal states
 
-> This page records the original review. [PROGRESS-002A](PROGRESS_002A.md) now implements the candidate in an isolated simulator and pure engine. Production numerical approval is still pending.
+> The owner approved P01–P07 as Mastery v1 on 2026-11-10. The [production implementation and acceptance](PROGRESS_002B.md) supersede earlier review statuses. The [deterministic evidence](PROGRESS_002A.md) retains the original experimental scenarios.
 
 ## 1. Authority, baseline and review gates
 
@@ -13,7 +13,7 @@ Status as of 2026-10-31: **documentation proposal; no runtime implementation**. 
 | Proposed for owner review | Cycle calendar, interruption allowance, protected checkpoints, thresholds, phase cutoffs, Resonance curve, frequency boundaries, deterministic history correction, legacy enrollment, archive pause representation, migrations/backup sequence |
 | Deferred | Actual engine, medal/icon assets, card redesign, collapse controls, frequency persistence, numeric Balance, rewards, Vacation implementation, audio, Adventure/Android |
 
-The 2026-10-31 product review supersedes the original daily 7/7 requirement, correction-retention receipts and immediate-fade Resonance proposals. The revised numerical candidates remain awaiting final owner approval; no implementation is authorized. Inactivity is distinct from correcting the evidence used to derive ordinary medals.
+The 2026-10-31 product review supersedes the original daily 7/7 requirement, correction-retention receipts and immediate-fade Resonance proposals. The revised numerical candidates were later approved as Mastery v1 in PROGRESS-002B. Inactivity is distinct from correcting the evidence used to derive ordinary medals.
 
 No runtime code, schema, tests, artwork, dependencies or secret content changes in this task. All examples below are synthetic design oracles, not executed application behavior. [Russian review package](PROGRESS_001_REVIEW_RU.md). The numbers below must NOT be treated as approved merely because this PR is merged: explicit owner decisions P01–P09 in section 12 gate the dependent implementations.
 
@@ -37,7 +37,7 @@ No engine can infer whether unrecorded real-life practice occurred. Internal sho
 
 Use complete Monday–Sunday local-calendar weeks for all three rhythms. Intended frequency remains daily/three-per-week/weekly, without booked weekdays. Proposed **eligibility minima** are at least6 distinct recorded habit-days out of 7 for Daily,3 distinct days for Three/week,1 distinct day for Weekly. Daily 7/7 is welcome but NOT necessary. Each qualified cycle contributes exactly **one practice-cycle unit**:6 and7 daily days give the same1; extra days, repeated records or subjective sphere values never multiply it. Counts are observations, not health norms.
 
-The asymmetry is intentional: the high-frequency Daily intention allows one unrecorded day per complete week for ordinary interruptions, without asking the user to recreate evidence or maintain perfection. Applying a one-day discount to3/week would silently turn it into2/week, while discounting Weekly would allow an empty week to qualify. Those lower-frequency rhythms retain their meaningful count. Daily's6-day eligibility does not redefine its intended recency interval: Daily Resonance still uses an expected one-day interval. This is a game-design allowance, not a scientific compliance rate. The 6/3/1 numbers await final owner approval (P01).
+The asymmetry is intentional: the high-frequency Daily intention allows one unrecorded day per complete week for ordinary interruptions, without asking the user to recreate evidence or maintain perfection. Applying a one-day discount to3/week would silently turn it into2/week, while discounting Weekly would allow an empty week to qualify. Those lower-frequency rhythms retain their meaningful count. Daily's6-day eligibility does not redefine its intended recency interval: Daily Resonance still uses an expected one-day interval. This is a game-design allowance, not a scientific compliance rate. Mastery v1 uses the approved 6/3/1 minima (P01).
 
 A cycle is evaluable only after its Sunday has ended relative to explicit today, all seven days share one applicable frequency segment, the habit is enrolled, and no day is excluded by a known archive/vacation pause. Current/initial partial/mixed/paused weeks are neutral: no unit, no shortfall, no grace reset/consumption. Even if six dates are already recorded this week, its unit is not finalized before the week closes. No prorating. Re-evaluate closed cycles on corrections/backdates/reopening/restore. Local YYYY-MM-DD arithmetic, not elapsed168 hours, handles DST/leap/year boundaries.
 
@@ -48,7 +48,7 @@ An eligible closed cycle below6/3/1 gives no unit. Proposed interruption allowan
 | A: successful cycles, material checkpoints only | Reset unfinished credit to the last material starting threshold | Preserve material and previously reached phase appearance in chronological replay | Repeating work behind an unchanged phase can make visible craft/progress disagree |
 | B: successful cycles plus protected phase checkpoints — recommended | Reset only credit above the most recent phase/material checkpoint | Preserve material and every phase reached in chronological replay | More derived phase boundaries, but smaller lost tail and clear visible checkpoint |
 
-Model B remains the preferred candidate, not an approved reset formula. Checkpoints protect against **inactivity in an unchanged history**, not against an actual correction to that history. Both models are reconstructed without persistent ordinary attainment receipts. No XP currency, punitive debt, removal of events or extra reward. If tolerance is rejected, review policy before engine code rather than silently introduce a third model.
+The owner selected Model B for Mastery v1. Checkpoints protect against **inactivity in an unchanged history**, not against an actual correction to that history. Both models are reconstructed without persistent ordinary attainment receipts. No XP currency, punitive debt, removal of events or extra reward. Model A remains a historical comparison.
 
 ### Recommended deterministic fold (Model B, still proposed)
 
@@ -126,11 +126,11 @@ Real enrollment off Monday adds up to6 neutral initial days; no earned unit from
 | Gold |36 /48 /60|Engraving → precise relief → finished gold|
 | Platinum |72 /84 /96|Advanced craft → intricate detail → refined brilliance|
 
-Phase 3 remains until the next material threshold; Platinum phase 3 at 96 is the terminal ordinary-medal craft state, not a seventh material or rarity tier. The twelve-cycle post-Platinum phase spacing is another provisional pacing choice. MasteryTier and earnedPhase are attained states derived by chronological replay; Forging is the unprotected tail to the next checkpoint. Acquired engravings do not disappear through inactivity, tail resets or Resonance fading. Actual history correction can reconstruct a different material/phase (P05); no former result is stored as overriding evidence. Model B protects each phase checkpoint. The owner prefers three phases but has not approved these cutoff numbers.
+Phase 3 remains until the next material threshold; Platinum phase 3 at 96 is the terminal ordinary-medal craft state, not a seventh material or rarity tier. The twelve-cycle post-Platinum phase spacing is another provisional pacing choice. MasteryTier and earnedPhase are attained states derived by chronological replay; Forging is the unprotected tail to the next checkpoint. Acquired engravings do not disappear through inactivity, tail resets or Resonance fading. Actual history correction can reconstruct a different material/phase (P05); no former result is stored as overriding evidence. Model B protects each phase checkpoint. Mastery v1 uses all eighteen approved checkpoints.
 
 These are six material treatments of one recognizable ordinary medal family. Controlled additive ornament can evolve by tier/phase; it is not six random unrelated reward objects. Each frame/material variant shares center-icon registration. Ordinary craftsmanship stays visually subordinate to truly authored unique Artifacts.
 
-### Visible Forging progress within the current phase (P03/P09 candidate)
+### Visible Forging progress within the current phase (P03/P09)
 
 Show a compact thin progress track plus readable text on the habit card or its existing detail area, not a new currency/reward panel. Let P be the latest derived phase/material checkpoint, N the next checkpoint and F current frontier. Display u=F-P, required=N-P and fraction u/required, with a localized example: «Ковка этапа:2 из 6 циклов». Use native progress semantics or equivalent accessible label/value; text conveys the same information without color/animation. Keep the earned material/phase and selected-date check separate. No fictional live tier in production before the engine exists.
 
@@ -173,9 +173,9 @@ A weekly switch instead would permit one occurrence from Nov30 onward, still onl
 
 Current archivedAt alone cannot reconstruct past archive periods. Smallest adequate proposal adds nonoverlapping per-habit pause intervals with local startOn/endExclusiveOn(nullable while open), stable ID and reason=archive; future explicit vacation can use a separately approved interval adapter. Archive atomically opens today's pause and sets existing archivedAt; restore closes the pause at local today and clears archivedAt. A same-day archive/restore leaves no excluded calendar day; remove/ignore a zero-length interval. Any cycle intersecting a positive pause is neutral, no partial credit. Schedule changes during a pause apply on their scheduled boundary; no cycle can earn until fully evaluable again.
 
-The owner-approved persistence contract gives already-archived legacy habits a NULL start and explicit legacy_unknown provenance. Restore records the actual local exclusive end. This interval is neutral for Forging and Resonance, without inferred practice or penalties. Historic archive gaps not captured by old schema stay unknown. Active legacy habits get no invented pause. Future pause/correction/effective-date validation must cover clock going backward: reject an end before start and ask for clock correction, never silently corrupt the interval. Explicit pause neutralization is a proposal awaiting approval, not current vacation behavior.
+The owner-approved persistence contract gives already-archived legacy habits a NULL start and explicit legacy_unknown provenance. Restore records the actual local exclusive end. This interval is neutral for Forging and Resonance, without inferred practice or penalties. Historic archive gaps not captured by old schema stay unknown. Active legacy habits get no invented pause. Future pause/correction/effective-date validation must cover clock going backward: reject an end before start and ask for clock correction, never silently corrupt the interval. Mastery v1 applies this rule to archive pauses. Vacation remains separately gated.
 
-## 6. Resonance proposal with a full expected-interval grace (P06)
+## 6. Mastery v1 Resonance with a full expected-interval grace (P06)
 
 Use intended rhythm f in{7,3,1}, expectedGap g=7/f local-calendar days, and age a>=0 since the latest actual recorded participation since enrollment at/before explicit actual today. A record in an unfinished/under-target week still counts as recent participation. Daily eligibility6/7 is an allowance for cycle qualification, not a redefinition of its daily intended interval; Daily g=1, Three/week g=7/3, Weekly g=7.
 
@@ -187,7 +187,7 @@ Use intended rhythm f in{7,3,1}, expectedGap g=7/f local-calendar days, and age 
 | Three/week |7/3 days (~2.33) |14/3 days (~4.67) |Day 7 | Day 2→100%, day 3→6/7 (~85.7%), day 4→9/14 (~64.3%), day 5→3/7 (~42.9%), day 7→0% |
 | Weekly |Day 7 |Day 14 |Day 21 |0→100%,7→100%,14→50%,21→0%|
 
-Actual age uses integer calendar-day differences; fractional boundaries explain the formula, not fractional occurrence dates or a rounding of 7/3 to2/3 days. Percentages here are design parameters only, not scientific life/psychological measurement, forgetting rate, a user Balance score or gameplay currency. Formula/horizon remain proposed pending P06 approval.
+Actual age uses integer calendar-day differences; fractional boundaries explain the formula, not fractional occurrence dates or a rounding of 7/3 to2/3 days. Percentages here are design parameters only, not scientific life/psychological measurement, forgetting rate, a user Balance score or gameplay currency. This curve and horizon are approved for Mastery v1 (P06).
 
 SelectedDate changes never reanchor this clock or alter R; the selected-day check stays truthful independently. Frequency changes can alter current g/light without repricing previous cycles or material. Multiple entries on one day do not stack light. Pause/archive suppress optional active halo as previously proposed; restore derives recency from real dated participation and actual today, never an automatic refill. Future Vacation/afterglow policy remains separately reviewed; it cannot fabricate participation or change the binary central rune. Store occurrence dates unchanged across travel/timezone; supply explicit today. Reduced motion keeps state legible with no required animation.
 
@@ -341,18 +341,20 @@ PROGRESS-002A can be reviewed separately without shipping partially migrated pro
 | P-T20 | Stable one-time grant identities under correction/re-record/version/retry; no actual recipes or artifact grants in current scope | Before reward integrations |
 | P-T21 | Phase-local progress2/6→3/6, checkpoint crossing resets local track, first shortfall holds/second resets tail, corrected history changes value truthfully; terminal state/text/AX/current-week neutral | 002A/002B |
 
-## 12. Owner decisions required before production use
+<a id="12-owner-decisions-required-before-production-use"></a>
 
-| ID | Proposed answer, NOT approval | Blocks |
+## 12. Mastery v1 approval and separate gates
+
+| ID | Decision | Status |
 | --- | --- | --- |
-| P01 | Complete Monday weeks, minima6/3/1 with explicit Daily allowance; cap 1, no partial prorating or pre-enrollment inference; numbers await final approval | Rhythm/progression evaluation |
-| P02 | Model B; first under-target cycle holds, second resets only above earned phase checkpoint | Forging engine/phase contract |
-| P03 | Cumulative0/3/9/18/36/72,exact phase checkpoints incl Platinum84/96 and readable within-phase progress | Progression pacing and earned art mapping |
-| P04 | First enrollment today; later changes next Monday, pending same-date replace, retain F/P and clear S at boundary | Frequency editor/effective history |
-| P05 | Recommended initial MVP reconstructs from journal/effective rhythms/pauses; inactivity cannot lower material, but actual history corrections may. No persistent ordinary attainment receipts | Ordinary correction semantics and engine |
-| P06 | Full light through expected gapg, linear fade over next2g (Weekly 7full/14half/21zero); pause quiet state; curve awaits final approval | Resonance engine/presentation |
-| P07 | Known archive intervals neutralize whole intersected weeks; legacy archive start is NULL with legacy_unknown provenance and actual restoration end; future explicit vacation uses neutral adapter | Archive/rhythm schema and lifecycle |
-| P08 | Candidate rhythmv3/schema 5→iconv4/schema 6 with strict older imports; no 007/v5 solely for ordinary receipts, derived material reconstructs | Each persistence gate; reverify actual free numbers |
-| P09 | Final «Печати привычек» label, glyph/default, accessible full-card re-toggle (no promised Undo) and lightweight phase-local progress text/track | HABIT-SIGILS owner visual acceptance |
+| P01 | Closed Monday weeks, distinct minima 6/3/1, one cycle per qualified week | Approved for Mastery v1 |
+| P02 | Model B protects every acquired phase. First shortfall holds, second resets only the unfinished tail | Approved for Mastery v1 |
+| P03 | Material thresholds 0/3/9/18/36/72 with the three phases per material listed above, ending at Platinum 96 | Approved for Mastery v1 |
+| P04 | Keep historical effective dates and F/P at a rhythm change. Clear S at the effective boundary | Approved for Mastery v1 |
+| P05 | Rebuild ordinary progress from authoritative history. Inactivity preserves earned stages and evidence corrections can recompute them | Approved for Mastery v1 |
+| P06 | Full light through the expected interval, followed by a linear fade over two further intervals | Approved for Mastery v1 |
+| P07 | Known pauses neutralize intersecting weeks. The legacy unknown start and actual restoration end remain explicit | Approved for Mastery v1 |
+| P08 | Current schema 6 and backup v4 contain authoritative input. Any future persistence change has its own review | Separate persistence gate |
+| P09 | Actual phase-local progress and accessible card descriptions are in 002B. Future inventory naming and visual revisions remain separate | 002B Windows acceptance |
 
-Approval of the product direction alone does not resolve these numerical/edge-case gates. UI-COLLAPSE can be scheduled independently after this review without approving the progression formula; do not begin it automatically. Exact reward yields, Balance, vacation expiry/afterglow and sounds remain their own open questions. Stop after one documentation PR.
+Rewards, Balance, Vacation, audio and authored discovery remain separately gated.

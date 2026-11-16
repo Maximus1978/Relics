@@ -1,8 +1,8 @@
 # Roadmap
 
-## Progression experiment
+## Mastery v1
 
-PROGRESS-002A is in experimental review. The pure replay and simulator supersede the earlier approval-first scheduling note below. PROGRESS-002B remains gated on approval of the applicable numerical rules and display contract. [Rules and evidence](PROGRESS_002A.md).
+PROGRESS-002A passed the combined CI and was merged in PR #17 after PR #16. The owner approved the mechanics as Mastery v1. PROGRESS-002B connects them to Sanctuary and awaits Windows acceptance. [Implementation and acceptance](PROGRESS_002B.md).
 
 ## Execution rule and current release
 
@@ -14,9 +14,9 @@ The owner resumed HABIT-SIGILS-001A on the current computer on 2026-11-09. [Owne
 
 - **001A · owner accepted and merged.** Isolated visual workshop for six materials and three stages. A common empty center accepts an independent material-treated SVG through `iconId`. The owner accepted the designs and PR #14 merged at 33cddc2ee74632604fc36f20283a639eee7f9cc9. [PR #14](https://github.com/Maximus1978/Relics/pull/14).
 - **001B · owner accepted and merged.** Create/Edit icon picker and Stone 1 preview, persisted icon identity, neutral legacy default, additive schema 006 and backup v4. [PR #15](https://github.com/Maximus1978/Relics/pull/15) merged at d9a56456d705e9bde0625022844137a907c6a6fa.
-- **001C · Windows review.** Production cards display the saved icon. The full card records or cancels for the selected date, with a separate menu and archive Restore. Stone stage 1 and zero Resonance are display defaults. [Handoff and manual acceptance](HANDOFF.md).
-- **PROGRESS-002A · queued.** Deterministic Mastery, Forging and Resonance after numerical approval.
-- **PROGRESS-002B · queued.** Connect progression to material, stage, Forging indicator and light.
+- **001C · merged in PR #16.** Production cards display the saved icon. The full card records or cancels for the selected date, with a separate menu and archive Restore. Stone stage 1 and zero Resonance are display defaults. [Handoff and manual acceptance](HANDOFF.md).
+- **PROGRESS-002A · merged in PR #17.** Pure deterministic replay and synthetic simulator.
+- **PROGRESS-002B · Windows review.** Real material, stage, Forging and Resonance in the existing Sanctuary cards.
 
 The later sequence retains ARCHIVE-CLEANUP-001, AUDIO-001 and the approved backlog. Android remains deferred until Windows core mechanics are validated and the owner schedules it.
 
@@ -57,14 +57,18 @@ The PROGRESS-001 REVISION priority override above is authoritative; accepted com
 | 4 | ACTIVITY-DETAILS-001A | Optional per-activity note with additive migration and legacy compatibility; not a habit field |
 | 4 | ACTIVITY-DETAILS-001B | Optional per-activity intensity after scale/effect agreement; distinct from contribution weights; no forced entry |
 | 4 | ACTIVITY-MODEL-001 | Small design/compatibility task for repeated sessions and quantities/units/identity; do not remove current uniqueness until a separately approved implementation |
+| 5 specification | TODO-001 | Define an ordinary independent episodic task list (create/edit, optional due date, complete/reopen, history and archive/hide), offline persistence and backup contracts. Optional dated sphere-contribution snapshots occur only on real completion. No habit frequency, automatic Mastery, fake journal entries, compulsory game rewards or numeric Balance without BALANCE-001. Specify correction/reopen identity and tests before code. |
 | 5 specification gate | BALANCE-001 | Specify contextual sphere diversity, evaluation window, contribution weighting, anti-grinding and missing-data/life context; cover one-all-five-habit 35/35 case. No formulas/KPIs implemented. Required before numeric Balance or Balance-derived rewards |
 | Proposed contract reviewed;PR #11 merged | PROGRESS-001 | [Revised canonical spec](PROGRESS_001.md): two Forging models, exact cycle/threshold/correction examples, layered medal/reference contract, minimal history/backup design and P01–P09 gates; numerical choices proposed, no runtime changes |
 | Superseded split, scope retained | PROGRESS-002 | Replaced by separately reviewed pure engine PROGRESS-002A and data/visual integration PROGRESS-002B below; no large combined implementation |
 | 6 prerequisite | AUDIT-001 | Auditable corrections and explicit consequences for resource/discovery grants before permanent rewards depend on mutable history |
+| 6 implementation | TODO-002 | Build the independent, useful offline Todo list after TODO-001 approval, with verified persistence, backup upgrade/older imports, safe edit/reopen and stable event identity. No alchemical rewards or Mastery changes in this task. |
 | 6 prerequisite | WORLD-001 | Validate versioned declarative pack schema/loader, compatibility, safe component/effect vocabulary and public/closed boundary |
-| 6 | ESSENCE-001 | Minimal thematic essence/material inventory and idempotent activity-derived accounting; approved yields/correction policy, no permanent-progress spending |
+| 6 specification | ALCHEMY-001 | Model the [hybrid alchemy concept](GAME_DESIGN.md#hybrid-alchemy-and-medal-energy). Two charge-loss paths are approved: deliberate full-charge experiment (candidate: reset Charge to zero after commitment) and passive fading from inactivity, **not** a second active spending mode. Distinguish Charge from recency-based Resonance and permanent Mastery; include catalyst quality, Todo components, authored hidden recipes, gain/fade/Vacation rules, atomic spend and correction/retry scenarios. The full-Charge versus full-Resonance readiness gate and all numerical parameters remain open. Coordinate with AUDIT-001 before any grants. |
+| 6 | ESSENCE-001 | Minimal thematic essence/material inventory and idempotent activity-derived accounting, with yields and correction behavior reviewed under ALCHEMY-001 and AUDIT-001 |
 | 6 | DISCOVERY-001 | Bounded authored 2–3-element rule evaluation, stable versioned discovery grants and duplicate/correction tests using synthetic fixtures |
-| 6 | ALCHEMY-UI-001 | Small working ingredient-selection/experiment/result UI after ESSENCE-001 and DISCOVERY-001; backed by real inventory/rules, never a fake screen |
+| 6 | ALCHEMY-UI-001 | Implement a small experiment flow after the ALCHEMY-001 contract, ESSENCE-001 and DISCOVERY-001. Use real inventory and recipes with clear catalyst readiness, atomic intentional spending and no fake results. |
+| 6 integration | TODO-ALCHEMY-001 | After TODO-002, AUDIT-001, ESSENCE-001 and the approved Alchemy contract, connect eligible completed Todo events to idempotent component grants and approved life-sphere analytics. Do not credit Mastery, invent task completions or assume every checked item deserves a reward. |
 | 6 | SANCTUARY-001 | Separately authorized spoiler-safe catalog integration; close one minimal real activity → essence → experiment → authored discovery → optional experience loop |
 | 7 specification | BLESSINGS-001 | After approved progression/discovery contracts: define bounded optional temporary effect origins, duration/expiry, stacking, chance/safeguards and correction policy. Review before code; no XP multiplier, fake records or artificial Balance |
 | 7 optional follow-up | BLESSINGS-002 | After BLESSINGS-001 approval and required origin/content services: implement one approved cosmetic temporary effect with expiry and persistence tests; defer hints/encounters to separate approved increments |
@@ -130,11 +134,11 @@ Keep Sanctuary, Clockwork, Wasteland and Verdant and versioned declarative packs
 
 | Order | Task | Scope and dependency |
 | --- | --- | --- |
-| 1 completed proposal review | PROGRESS-001 | PR #11 merged5b7229d after authorized review;P01–P09 still proposed and must be explicitly decided before affected mechanics code |
+| 1 completed proposal review | PROGRESS-001 | PR #11 merged5b7229d after authorized review;historical candidate review, superseded for P01–P07 by Mastery v1 |
 | 2 active implementation candidate | UI-COLLAPSE-001 | Independent persistent toggles,strict safe device preferences,visible inventory actions/count,hidden/inert bodies,retained date/chart state and resize. [Windows CI41255208180](https://github.com/Maximus1978/Relics/actions/runs/41255208180) SUCCESS:79 Node/354 browser/22 native plusTS/Vite andEXE. [PR #12](https://github.com/Maximus1978/Relics/pull/12) ready for owner acceptance,unmerged;native offline restart pending. [Contract](UI_COLLAPSE_001.md) |
 | 3 | HABIT-RHYTHM-001 | Approved frequency/effective dates and known archive intervals; atomic save; additive migration and strict older-backup import/export/recovery gates before editor release |
 | 4 | HABIT-SIGILS-001 / HABIT-ICONS-001 | Owner visual gate on canonical registered medals/manual glyphs; small identity/persistence/backup/card increments, no invented live progression |
-| 5 | PROGRESS-002A | Experimental replay and simulator for owner review. The pure engine derives its state from authoritative inputs. Production integration is separately gated. |
+| 5 | PROGRESS-002A | Merged pure replay and simulator. Mastery v1 uses the same authoritative inputs. |
 | 6 | PROGRESS-002B | Integrate real journal-derived material/phase,visible within-phase progress and grace/fade/check states;preserve authoritative-input backups,Windows owner acceptance |
 | 7 | ARCHIVE-CLEANUP-001 | Hide unwanted archived habits, retain journal/analytics/FK and archived logging guard; genuine zero-history hard deletion only if separately approved |
 | 8 | AUDIO-001 | Existing sound/world-theme specification scope retained; no audio assets or playback authorized now |
@@ -145,4 +149,4 @@ Preserve Vacation Mode/cosmetic afterglow, contextual opt-in Life Rhythm insight
 
 ### PROGRESS-001 product-review correction 2026-10-31
 
-Historical review receipt before UI-COLLAPSE-001:PR #11 was documentation-only/unmerged at that stage and is now normally merged5b7229d as a proposed contract. Revised P01 candidate6/3/1 eligibility:Daily6/7 suffices,not7/7;current partial week neutral,cap1,no sphere-value multiplier. P05 now prefers journal/effective-history reconstruction:no material decay from absence,but genuine correction may change ordinary material;no proposed007/v5 or persistent attainment receipts solely to preserve unsupported history. Artifact/discovery storage remains separate and unchanged. P06 adds full expected-interval grace then2-interval fade (Weekly7full/14half/21zero). Add a compact phase-local Forging progress text/track,not currency. P01–P09 remain proposed;all prior small tasks/future systems/worlds retained and next UI-COLLAPSE-001 not begun.
+Historical review receipt before UI-COLLAPSE-001:PR #11 was documentation-only/unmerged at that stage and is now normally merged5b7229d as a proposed contract. Revised P01 candidate6/3/1 eligibility:Daily6/7 suffices,not7/7;current partial week neutral,cap1,no sphere-value multiplier. P05 now prefers journal/effective-history reconstruction:no material decay from absence,but genuine correction may change ordinary material;no proposed007/v5 or persistent attainment receipts solely to preserve unsupported history. Artifact/discovery storage remains separate and unchanged. P06 adds full expected-interval grace then2-interval fade (Weekly7full/14half/21zero). Add a compact phase-local Forging progress text/track,not currency. The later 002B decision approves P01–P07. The remaining task boundaries and worlds are retained.

@@ -1,6 +1,6 @@
 # PROGRESS-002A — experimental replay review
 
-`progress-001-experimental` version 1 implements the numerical candidates for review. The owner has authorized experimental evaluation. Final approval is required before using these values in Sanctuary.
+`progress-001-experimental` version 1 implements the numerical candidates for review. The owner subsequently approved these mechanics as Mastery v1, rules ID mastery version 1. PROGRESS-002B connects that replay to Sanctuary. The original experimental ID here identifies the historical review.
 
 ## Run the synthetic review
 
@@ -27,7 +27,7 @@ The report includes the recorded dates, frequency history, weekly classification
 
 Closed Monday weeks use distinct recorded local dates. The 6/3/1 thresholds give one unit. Initial partial, open, unconfigured and archive-intersecting weeks are neutral. A known pause is half-open. An unknown legacy start remains neutral before actual restoration. A later segment effective on a non-Monday is invalid under the persisted schema 6 contract and is rejected before replay. First enrollment midweek is valid. A boundary clears S when effective, including the first day of an open week, without crediting that week.
 
-F/P/S are the frontier, protected checkpoint and consecutive eligible shortfalls, capped at two. Two shortfalls return F to P. At Platinum phase 3, successful weeks can still increase the experimental F counter. P remains 96 and both unfinished progress and the next-phase track are exhausted. This preserves the candidate's one-unit-per-qualified-week rule without inventing another tier or a spendable total.
+F/P/S are the frontier, protected checkpoint and consecutive eligible shortfalls, capped at two. Two shortfalls return F to P. At Platinum phase 3, successful weeks can still increase the derived F counter. P remains 96 and both unfinished progress and the next-phase track are exhausted. This preserves the approved one-unit-per-qualified-week rule without inventing another tier or a spendable total.
 
 Resonance uses the rhythm effective on `today` and the latest recorded local date since enrollment. Pre-enrollment records and dates within a legacy unknown interval give no light credit. Active archive intervals suppress light. Restoration derives it from eligible recorded evidence with elapsed calendar age. Future-dated events are structurally validated and excluded from the as-of view. Selected date, sphere units, names, icons and event recording timestamps have no effect.
 
@@ -44,4 +44,4 @@ The 21 focused cases in `tests/habitProgress.test.ts` cover the requested 30 che
 | 26–30 | Reordered and frozen inputs, fresh-process equality across time zones, writes denied in the simulator subprocess, unsupported rules, legacy/unconfigured safety and invalid history |
 | Scale | 30,000 records across 625 weeks and eight habits, no stored aggregates |
 
-No application entry point imports the engine. Schema 6, backup v4, Sanctuary cards and the central rune retain their production behavior. The next gate is review of P01–P07 experimental behavior and the P09 display contract. P08 remains a separately gated persistence policy. PROGRESS-002B requires a new task and explicit approval.
+002A originally kept the engine isolated. The approved production integration and Windows acceptance steps are in [PROGRESS-002B](PROGRESS_002B.md). Schema 6 and backup v4 still carry authoritative history only.

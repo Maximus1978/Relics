@@ -3,7 +3,7 @@
 ## HABIT-RHYTHM-001 operational boundary
 Frequency persistence/editor is now implemented as a review candidate;see [contract](HABIT_RHYTHM_001.md). Intentions daily/three_per_week/weekly preserve one habit ID. Legacy habits remain unconfigured until explicit enrollment today;later edits begin next Monday with visible cancellable pending rule. Occurrence-date lookup does not rewrite event snapshots. Archive pauses retain explicit unknown legacy starts and actual restoration ends;unknown history is neutral,not evidence of practice or inactivity.
 
-This operational model supplies future engines only. P01–P09 numerical/checkpoint/curve/gameplay parameters remain proposed. PROGRESS-002A supplies a separate experimental Mastery, Forging and Resonance simulator. Production medallions, XP, rewards and Vacation remain outside that engine. Selected-day completion and existing seven-day binary rune remain independent and unchanged. Intention changes carry no loss/status warning.
+This operational model supplies Mastery v1. The owner approved P01–P07 in PROGRESS-002B and the production Sanctuary inventory now projects earned medal stages, unfinished Forging and temporary Resonance. XP, rewards and Vacation remain outside that engine. Selected-day completion and existing seven-day binary rune remain independent and unchanged. Intention changes carry no loss/status warning.
 
 
 ## Status and approved core loop
@@ -15,6 +15,28 @@ Approved intended loop, not yet implemented end to end:
 **Real activities → permanent Mastery and thematic essences → player-driven experiments → authored discoveries → optional new experiences.**
 
 Daily logging remains useful without Adventure Mode. Discoveries are curated and meaningful, not infinite random loot. Basic experimentation never consumes permanent practice, Mastery, earned artifact evolution or discoveries. Whether some advanced crafting consumes renewable materials is undecided. Opportunities invite experiences rather than create compulsory tasks. Diversity, unexpected combinations, returning to interests and trying new experiences may support authored discovery conditions; exact conditions stay outside public documentation. There is no mandatory daily login, punitive streak system or optimal XP-grinding build.
+
+## Hybrid alchemy and medal energy
+
+ALCHEMY-001 will specify this owner-approved direction before implementation. Permanent Mastery and earned medal stages survive inactivity and stay outside experiment costs. Resonance describes recent participation and controls medal illumination. Alchemical Charge is a separate renewable resource accumulated through repeated recorded practice on the medal.
+
+| Resource behavior | Planned direction |
+| --- | --- |
+| Accumulate | Eligible practice replenishes Alchemical Charge. A full charge is shown as 100% and makes the medal ready to serve as a catalyst. |
+| Spend | The player intentionally commits the charge to an experiment. The specified candidate is one experiment per fully charged medal, followed by a reset of its charge to zero. The medal and its earned stage are retained. |
+| Fade | During inactivity both charge and Resonance may fade under coordinated rules. New practice can replenish charge. Unspent energy creates no debt or obligation. |
+
+**Two approved ways to lose charge, not two active spending actions:** (1) voluntarily commit a full catalyst charge to an alchemical experiment; (2) let the unspent charge fade naturally during inactivity. A second active spending mechanism is **not** an owner requirement. Spending never downgrades permanent Mastery or directly changes the read-only Resonance projection. A habit medal is not deleted or consumed. A full Charge meter is the proposed catalyst-readiness gate; current Resonance reaching 100% after recent practice does not itself mean Charge is full. Whether a separate full-Resonance eligibility gate should also exist remains an explicit design question. Model practice rhythms, pauses and ordinary absences before approving gain/fade numbers. Never turn fading into debt or a catch-up obligation.
+
+| Experiment input | Role |
+| --- | --- |
+| Habit medals | Serve as catalysts. Their earned material sets the possible reaction quality and their renewable charge pays for use. |
+| Todo and episodic tasks | Completing an actual task can yield components and record its contribution to the relevant life spheres. A planned or open task carries no recorded contribution. Numeric Balance remains under BALANCE-001. |
+| Hidden combinations | Authored discoveries respond to specific combinations of medals, components and achievements. Keep exact recipes and conditions in the closed catalog under the [content policy](CONTENT_POLICY.md). |
+
+**Todo is useful without Alchemy.** Design an independent, offline-first, ordinary one-off task list: create/edit, optional due date, complete/reopen and archive or hide completed items. No recurring-habit frequency, medal, Forging or compulsory gamification. An open or planned task yields no activity, energy or sphere contribution. A genuinely completed task may optionally create a dated, immutable sphere-contribution snapshot; do not force sphere selection or invent a contribution for plain checklist items. Completion may later yield bounded thematic components, but not automatically increase numeric Balance: BALANCE-001 must govern any aggregate contribution and anti-gaming policy. Task edits/reopen/corrections must not silently rewrite older snapshots. Do not synthesize a Habit activity just to reuse Mastery, Chronicle or the current seven-day rune. Specify explicit integration with the existing journal and Life Rhythm instead.
+
+Repeated cancellation and re-marking of the same habit occurrence or Todo completion must never yield additional energy or items. ALCHEMY-001 and AUDIT-001 must define stable occurrence identity across corrections/backdating and persisted idempotent grant/spend receipts. Charge cannot be calculated solely from journal records after irreversible spending: define a transactional charge ledger or equivalent authoritative accounting, rollback on failure, retry handling and backup/restore preservation. Define what a failed, canceled or unknown experiment spends before implementation. Compare repeated clicks, corrections, restarts, offline restores and spending after backdated entries in synthetic scenarios. Vacation Mode and any Charge fading during it are separately gated; do not silently apply normal absence decay to a known vacation.
 
 ## Five spheres and habit identity
 
@@ -130,20 +152,20 @@ No new input on normal completion, new medallion/icon art, intensity/duration/qu
 
 ## PROGRESS-001 REVISION — authoritative ordinary-habit direction
 
-[Canonical specification](PROGRESS_001.md) is the single proposed numerical/engineering/visual contract; [Russian review](PROGRESS_001_REVIEW_RU.md) is its owner-facing summary. Approved direction: stable editable Habit identity; material Mastery retained through inactivity; separate unfinished Forging; recent frequency-aware Resonance; selected-date binary completion. Daily/three-weekly/weekly are count intentions, not compulsory calendar appointments. Changes preserve historical name/sphere/contribution snapshots; frequency needs minimal explicit effective-date history. Current rune/trends/Chronicle remain independent.
+[Canonical specification](PROGRESS_001.md) records the approved Mastery v1 rules and the earlier design review; [Russian review](PROGRESS_001_REVIEW_RU.md) is its owner-facing summary. Approved direction: stable editable Habit identity; material Mastery retained through inactivity; separate unfinished Forging; recent frequency-aware Resonance; selected-date binary completion. Daily/three-weekly/weekly are count intentions, not compulsory calendar appointments. Changes preserve historical name/sphere/contribution snapshots; frequency needs minimal explicit effective-date history. Current rune/trends/Chronicle remain independent.
 
 Six ordinary material families Stone/Copper/Bronze/Silver/Gold/Platinum and preferably three deterministic acquired detail phases follow the owner reference, never random alternative medals or Unique Artifact rarity. Manual icon uses material treatment, not sphere color. Green saved check, temporary glow and hover/focus/press are independent; no full-medal grayscale or absence-based loss of earned geometry. Compact full-card toggle/separate menu and independent inventory/analytics collapse are future tasks, not current UI. See [reference contract](art/HABIT_MEDALS.md).
 
-The earlier undefined event thresholds0/7/21/50/120/250 are retained only as provisional comparison. Recommended successful-week frontier 0/3/9/18/36/72, protected phase checkpoints, tolerance, grace-then-fade Resonance and deterministic correction replay are NOT approved formulas. Owner decisions P01–P09 gate implementation. Missing evidence is not confirmed life failure; no daily-login requirement or automaticity claim. Basic experiments never consume permanent progress.
+The earlier undefined event thresholds0/7/21/50/120/250 are retained only as provisional comparison. The owner approved successful-week thresholds 0/3/9/18/36/72, protected phase checkpoints, the two-shortfall rule, grace-then-fade Resonance and deterministic correction replay for Mastery v1. Missing evidence is not confirmed life failure; no daily-login requirement or automaticity claim. Basic experiments never consume permanent progress.
 
 Optional spontaneous experiences/microquests belong to future authored discovery/experience work, not a new habit frequency or sphere. Vacation must eventually suspend ordinary expectations without fake completion; exact lifecycle/afterglow remains separate. All previously approved Adventure scope, worlds and optional Android remain in ROADMAP. No secret recipes or numerical resource/reward rules are invented.
 
 ### Product review2026-10-31 — revised candidates, not implementation
 
-P01 now proposes eligibility6/3/1 distinct recorded habit-days per complete week:Daily has one-day allowance, while3/week andWeekly retain their meaningful count. Daily 6/7 and7/7 both give1 cycle; extra records or subjective sphere magnitudes never multiply it. Current partial weeks remain neutral. Protected phase checkpoints remain the preferred Forging candidate, not an approved formula.
+Mastery v1 uses eligibility 6/3/1 distinct recorded habit-days per complete week:Daily has one-day allowance, while3/week andWeekly retain their meaningful count. Daily 6/7 and7/7 both give1 cycle; extra records or subjective sphere magnitudes never multiply it. Current partial weeks remain neutral. Mastery v1 protects every acquired phase checkpoint.
 
 P05 distinguishes inactivity (never reduces attained material) from actual history correction (can legitimately change reconstructed progress/material). Prefer deterministic replay from authoritative journal/effective frequency/pause history for initial MVP; do not store permanent ordinary milestone receipts solely to retain unsupported achievements. Unique Artifact/discovery persistence/correction rules remain unchanged.
 
-P06 proposes full illumination through expected intervalg, then fading over2g:Weekly 0/7days=100%,14=50%,21=0%; Daily 0/1full,2half,3zero; Three/weekg=7/3. Not a forgetting rate or psychological measurement. Material, Forging and selected-date check are independent.
+P06 uses full illumination through expected intervalg, then fading over2g:Weekly 0/7days=100%,14=50%,21=0%; Daily 0/1full,2half,3zero; Three/weekg=7/3. Not a forgetting rate or psychological measurement. Material, Forging and selected-date check are independent.
 
-Plan phase-local Forging feedback with thin track and accessible text, e.g.Silver 18→24 at F20 displays2/6 cycles, next qualified week3/6. It is progression information, not currency/reward. Six materials/three phases and P01–P09 remain review candidates;[canonical examples/tests](PROGRESS_001.md).
+Sanctuary shows phase-local Forging feedback with thin track and accessible text, e.g.Silver 18→24 at F20 displays2/6 cycles, next qualified week3/6. It is progression information, not currency/reward. The approved six materials and three phases are documented with [examples and tests](PROGRESS_001.md).

@@ -4,7 +4,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { defaultContributions } from '../src/domain/contributions.ts';
 import { changeFrequency, type ArchivePause, type Frequency } from '../src/domain/habitRhythm.ts';
-import { experimentalProgressRules as rules, ProgressInputError, projectHabitProgress, projectHabitsProgress } from '../src/domain/habitProgress.ts';
+import { masteryV1Rules as rules, ProgressInputError, projectHabitProgress, projectHabitsProgress } from '../src/domain/habitProgress.ts';
 import { activity, date, habit, monday, practice, segment } from './fixtures/habitProgress.ts';
 
 const allSpheres = ['body', 'mind', 'relationships', 'work', 'recovery'] as const;
@@ -57,9 +57,9 @@ test('All 18 material and phase thresholds are inclusive', () => {
 });
 
 test('Phase-local progress restarts at the next checkpoint and Platinum ends the track', () => {
-  assert.deepEqual(project(Array(20).fill(1)).forging.nextPhase, { completed: 2, required: 6, threshold: 24 });
+  assert.deepEqual(project(Array(20).fill(1)).forging.nextPhase, { completed: 2, required: 6, threshold: 24, material: 'silver', phase: 2 });
   assert.equal(project(Array(21).fill(1)).forging.unfinished, 3);
-  assert.deepEqual(project(Array(24).fill(1)).forging.nextPhase, { completed: 0, required: 6, threshold: 30 });
+  assert.deepEqual(project(Array(24).fill(1)).forging.nextPhase, { completed: 0, required: 6, threshold: 30, material: 'silver', phase: 3 });
   for (const count of [96, 97, 120]) {
     const result = project(Array(count).fill(1));
     assert.deepEqual(result.mastery, { material: 'platinum', phase: 3 });
