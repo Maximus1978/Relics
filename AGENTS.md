@@ -1,6 +1,6 @@
-# Current task — PROGRESS-002B
+# Current task — TODO-001
 
-The owner approved Mastery v1 and authorized the normal merge of prerequisites PR #16 and PR #17 after combined CI. Integrate the reviewed replay into Sanctuary without new persistence or reward behavior. HANDOFF records the Windows acceptance gate.
+PROGRESS-002B is released in PR #18. Draft the standalone episodic tasks contract for owner review in a documentation-only PR. See docs/TODO_001.md and docs/HANDOFF.md.
 
 # Relics agent instructions
 
@@ -38,6 +38,6 @@ Read README.md, docs/PRODUCT_VISION.md, docs/ROADMAP.md, docs/DECISIONS.md, and 
 - No real closed catalog has been imported. See docs/CONTENT_POLICY.md.
 - Do not commit personal databases, notes, logs, or closed content. Do not create commits/branches or publish without the applicable user instruction.
 
-## Progression specification and current task boundary
+## Progression specification
 
 Read docs/PROGRESS_001.md for the approved Mastery v1 mechanics and docs/art/HABIT_MEDALS.md for the artwork contract. PROGRESS-002B connects real journal history to existing Sanctuary cards. Other gameplay systems retain separate approval gates.
